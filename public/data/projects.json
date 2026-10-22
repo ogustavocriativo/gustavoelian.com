@@ -1,0 +1,704 @@
+{
+ "fronts": [
+  {
+   "id": "web",
+   "label": "Web · IA · Dev",
+   "description": "Sites, sistemas, apps e inteligência artificial"
+  },
+  {
+   "id": "social",
+   "label": "Mídias sociais e campanhas",
+   "description": "Linhas criativas, campanhas e canais de conteúdo"
+  },
+  {
+   "id": "trade",
+   "label": "Eventos e ativações",
+   "description": "Trade, rebranding, cenografia e ativação de marca"
+  },
+  {
+   "id": "branding",
+   "label": "Branding e rebranding",
+   "description": "Identidade, arquitetura de marca, embalagem e aplicação"
+  }
+ ],
+ "projects": [
+  {
+   "id": "universo-demian",
+   "case": true,
+   "featured": true,
+   "title": "Universo Instituto Demian",
+   "kind": "Ecossistema digital",
+   "client": "Instituto Demian · Assis/SP",
+   "year": "2026",
+   "fronts": [
+    "web"
+   ],
+   "summary": "Site institucional, sites dos médicos, landing page de protocolo, link na bio, aplicativo e ferramentas de conteúdo.",
+   "cover": "img/cases/institutodemian/d0.jpg",
+   "theme": {
+    "bg": "#F6F1EC",
+    "ink": "#2B2522",
+    "soft": "#6E625C",
+    "panel": "#33292A",
+    "onPanel": "#F6F1EC",
+    "accent": "#B5603A",
+    "accentInk": "#9A4A28",
+    "chip": "#EADFD6"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Web · IA · Dev",
+     "title": "Universo Instituto Demian",
+     "lead": "Um ecossistema digital para um instituto médico em Assis/SP. Cada médico, cada protocolo e cada canal ganhou o seu lugar, e todos falam a mesma língua.",
+     "image": "img/cases/institutodemian/d0.jpg",
+     "phone": "img/cases/institutodemian/m0.jpg",
+     "chips": [
+      "Instituto Demian",
+      "Assis/SP",
+      "2026",
+      "7 produtos digitais"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "O ecossistema",
+     "title": "Do primeiro clique à consulta",
+     "text": [
+      "O site do instituto apresenta a equipe e os cuidados. Os sites da Dra. Mônica e do Dr. Marcelo aprofundam cada especialidade. A landing page do PELVEiD® conduz à pré-avaliação.",
+      "Em todas as páginas, o caminho termina no mesmo lugar: o agendamento pelo WhatsApp, atendido pela equipe do instituto."
+     ],
+     "image": "img/cases/dramonica/d0.jpg"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Peças",
+     "title": "O que foi construído",
+     "items": [
+      {
+       "title": "Instituto Demian",
+       "kind": "Site institucional",
+       "text": "Instituto, médicos, cuidados, como chegar e agendamento.",
+       "url": "https://institutodemian.netlify.app",
+       "image": "img/cases/institutodemian/d4.jpg"
+      },
+      {
+       "title": "Dra. Mônica Demian",
+       "kind": "Site profissional",
+       "text": "Método de acompanhamento, cuidados, campanha Outubro Mulher e dúvidas frequentes.",
+       "url": "https://dramonica.netlify.app",
+       "image": "img/cases/dramonica/d2.jpg"
+      },
+      {
+       "title": "PELVEiD®",
+       "kind": "Landing page",
+       "text": "Protocolos de cuidado íntimo e pélvico, com pré-avaliação on-line.",
+       "url": "https://pelveid.netlify.app",
+       "image": "img/cases/pelveid/d0.jpg"
+      },
+      {
+       "title": "Dr. Marcelo Demian",
+       "kind": "Link na bio",
+       "text": "Agendamento, teleconsulta, site do instituto e contato em uma página.",
+       "url": "https://drmarcelodemian.netlify.app",
+       "image": "img/cases/drmarcelodemian/d0.jpg"
+      },
+      {
+       "title": "Tá Feita IA",
+       "kind": "Aplicativo",
+       "text": "App da linha Cuidado de Mulher, com acesso por convite enviado pela clínica no WhatsApp.",
+       "url": "https://tafeita-ia.netlify.app",
+       "image": "img/cases/tafeita-ia/m0.jpg",
+       "tall": true
+      },
+      {
+       "title": "Aprovação de conteúdo",
+       "kind": "Ferramenta interna",
+       "text": "O médico aprova cada post, comenta ajustes e devolve tudo pelo WhatsApp.",
+       "url": "https://aprova-drmarcelo.netlify.app",
+       "image": "img/cases/aprova-drmarcelo/d3.jpg"
+      },
+      {
+       "title": "Calendário editorial",
+       "kind": "Ferramenta interna",
+       "text": "Ciclo de conteúdo de quatro semanas, com roteiro de gravação para cada dia.",
+       "url": "https://calendario-drmarcelodemian.netlify.app",
+       "image": "img/cases/calendario-drmarcelodemian/d0.jpg"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Jornada",
+     "title": "Como o paciente percorre o ecossistema",
+     "image": "img/cases/pelveid/m0.jpg",
+     "items": [
+      {
+       "t": "Encontra",
+       "d": "Chega pelo Instagram, pelo link na bio ou pela busca e cai no site do instituto ou do médico."
+      },
+      {
+       "t": "Entende",
+       "d": "Lê sobre o cuidado certo para o seu caso, em linguagem clara, com respostas às dúvidas mais comuns."
+      },
+      {
+       "t": "Agenda",
+       "d": "Fala com a equipe pelo WhatsApp, a partir de qualquer página."
+      },
+      {
+       "t": "Acompanha",
+       "d": "Recebe o convite do aplicativo e segue o cuidado entre uma consulta e outra."
+      }
+     ]
+    },
+    {
+     "type": "strip",
+     "title": "Telas do ecossistema",
+     "images": [
+      "img/cases/institutodemian/d5.jpg",
+      "img/cases/dramonica/d4.jpg",
+      "img/cases/pelveid/d3.jpg",
+      "img/cases/dramonica/d3.jpg",
+      "img/cases/pelveid/d4.jpg",
+      "img/cases/aprova-drmarcelo/d1.jpg",
+      "img/cases/calendario-drmarcelodemian/d2.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Bastidores",
+     "title": "Ferramentas para o conteúdo não parar",
+     "text": [
+      "Além do que o paciente vê, o ecossistema tem ferramentas para a equipe: um calendário editorial com roteiros prontos e uma página de aprovação, onde o médico revisa cada publicação antes de ir ao ar."
+     ],
+     "image": "img/cases/aprova-drmarcelo/d2.jpg"
+    }
+   ]
+  },
+  {
+   "id": "campanhas-e-canais",
+   "case": true,
+   "featured": true,
+   "title": "IBI Shopping e canais no YouTube",
+   "kind": "Campanhas e conteúdo",
+   "client": "IBI Shopping · criadores de conteúdo",
+   "year": "2022–2025",
+   "fronts": [
+    "social"
+   ],
+   "summary": "Linha criativa “Celebre cada momento”, campanhas do IBI Shopping e mentoria de canais no YouTube e em vídeos verticais.",
+   "cover": "img/cases/ibi/lc-04.jpg",
+   "logo": "ibi",
+   "theme": {
+    "bg": "#F3F1E8",
+    "ink": "#22302A",
+    "soft": "#5C6660",
+    "panel": "#2E4A3E",
+    "onPanel": "#F3F1E8",
+    "accent": "#FFB64A",
+    "accentInk": "#2E6B4F",
+    "chip": "#E2E8DF"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Mídias sociais e campanhas",
+     "title": "Celebre cada momento",
+     "lead": "Campanhas de um shopping inteiro e estratégia para canais de criadores: duas frentes do mesmo trabalho, que é transformar marca em conversa.",
+     "image": "img/cases/ibi/lc-04.jpg",
+     "chips": [
+      "IBI Shopping",
+      "Montes Claros/MG",
+      "2025",
+      "Mentoria de canais"
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "IBI Shopping · Linha criativa 2025",
+     "title": "Uma voz para cada momento",
+     "text": [
+      "Sob o slogan Celebre cada momento, a linha criativa 2025 dividiu a comunicação do shopping em grupos de interesse. Cada grupo tem cor, ícone e voz próprios, e todos assinam com o mesmo símbolo.",
+      "Desenvolvida pela Coordenação de Mídia e Trade do setor de Marketing, que eu coordenava."
+     ],
+     "image": "img/cases/ibi/lc-06.jpg"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Linhas de comunicação",
+     "title": "Sete formas de celebrar",
+     "items": [
+      {
+       "title": "Celebre sabores",
+       "kind": "Alimentação",
+       "text": "Praça de alimentação, cafés e quiosques.",
+       "image": "img/cases/ibi/lc-10.jpg"
+      },
+      {
+       "title": "Celebre sorrisos",
+       "kind": "Diversão",
+       "text": "Cinema, eventos, ativações, feiras e oficinas.",
+       "image": "img/cases/ibi/lc-14.jpg"
+      },
+      {
+       "title": "Celebre deslumbre",
+       "kind": "Beleza e estética",
+       "text": "Farmácias, salões e cuidados.",
+       "image": "img/cases/ibi/lc-18.jpg"
+      },
+      {
+       "title": "Celebre beleza",
+       "kind": "Moda e praia",
+       "text": "Vestuário, calçados, acessórios e ótica.",
+       "image": "img/cases/ibi/lc-22.jpg"
+      },
+      {
+       "title": "Celebre realizações",
+       "kind": "Serviços",
+       "text": "Praticidade e serviços do dia a dia.",
+       "image": "img/cases/ibi/lc-26.jpg"
+      },
+      {
+       "title": "Celebre culturas",
+       "kind": "ESG",
+       "text": "Ações sociais, culturais e ambientais.",
+       "image": "img/cases/ibi/lc-30.jpg"
+      },
+      {
+       "title": "É lugar de pet feliz",
+       "kind": "Pet friendly",
+       "text": "Campanha que apresenta o shopping como espaço pet friendly.",
+       "image": "img/cases/ibi/lc-32.jpg"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Planejamento",
+     "title": "Institucionais, promocionais e sociais",
+     "text": [
+      "O planejamento estratégico de marketing organizou as campanhas em três tipos, com orçamento focado em resultado e um roteiro para o triênio 2025–2027.",
+      "Nas datas do varejo, as campanhas promocionais ganharam assinatura própria, como “Seu amor, meu aconchego” no Dia das Mães."
+     ],
+     "image": "img/cases/campanhas/ibi-pecas.jpg"
+    },
+    {
+     "type": "strip",
+     "title": "Peças da linha criativa",
+     "images": [
+      "img/cases/ibi/lc-01.jpg",
+      "img/cases/ibi/lc-10.jpg",
+      "img/cases/ibi/lc-14.jpg",
+      "img/cases/ibi/lc-18.jpg",
+      "img/cases/ibi/lc-22.jpg",
+      "img/cases/ibi/lc-26.jpg",
+      "img/cases/ibi/lc-30.jpg",
+      "img/cases/ibi/pe-01.jpg",
+      "img/cases/ibi/pe-15.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "dark": true,
+     "eyebrow": "Mentoria e canais",
+     "title": "Conteúdo para plataformas de vídeo",
+     "text": [
+      "Como produtor e consultor na AJR Mentorias de YouTube, fiz mentoria e gerenciamento omnichannel de canais de criadores, entre eles Dra. Mônica Demian, Daniel Cady, Kamila Simioni, Thales Baião e Astrologia Luz e Sombra.",
+      "As estratégias cobriram o YouTube e as plataformas verticais: TikTok, Kwai, Shorts e Reels."
+     ],
+     "image": "img/cases/campanhas/mentorias.jpg"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Reality show",
+     "title": "Gestão de persona em A Fazenda 15",
+     "text": [
+      "Atuei como gestor de persona na participação de Kamila Simioni em A Fazenda 15, com identidade própria para as redes durante o programa."
+     ],
+     "image": "img/cases/campanhas/team-simioni.jpg"
+    },
+    {
+     "type": "split",
+     "eyebrow": "Gerenciamento de conteúdo",
+     "title": "Perfis que trabalham juntos",
+     "text": [
+      "Direção de arte, copywriting e marketing de influência aplicados à rotina dos perfis, com identidade consistente entre capa, destaques e publicações."
+     ],
+     "image": "img/cases/campanhas/perfis.jpg"
+    }
+   ]
+  },
+  {
+   "id": "ibi-rebranding-front",
+   "case": true,
+   "featured": true,
+   "title": "IBI Shopping: rebranding e IBI Front",
+   "kind": "Rebranding, sinalização e ativação",
+   "client": "IBI Shopping",
+   "year": "2025",
+   "fronts": [
+    "trade"
+   ],
+   "summary": "Implantação da nova marca no espaço físico, estudo de sinalização e o IBI Front, ativação do shopping na Expomontes 2025.",
+   "cover": "img/cases/ibifront/pf-05.jpg",
+   "logo": "ibifront",
+   "theme": {
+    "bg": "#F7EFE2",
+    "ink": "#2E2116",
+    "soft": "#6E5B49",
+    "panel": "#3A2A1C",
+    "onPanel": "#F7EFE2",
+    "accent": "#E09A3E",
+    "accentInk": "#9A5B16",
+    "chip": "#EEDFC8"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Eventos e ativações · trade",
+     "title": "De Ibituruna a IBI",
+     "lead": "Em 17 de março de 2025, o Shopping Ibituruna se tornou IBI Shopping. Coordenei a chegada da nova marca ao espaço físico e levei o shopping para a Expomontes com o IBI Front.",
+     "image": "img/cases/ibifront/pf-05.jpg",
+     "chips": [
+      "IBI Shopping",
+      "Montes Claros/MG",
+      "2025",
+      "Rebranding + ativação"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Rebranding",
+     "title": "Uma marca nova, valores de sempre",
+     "text": [
+      "O novo posicionamento foi registrado em um manual de diretrizes visuais, com a marca IBI, os valores (pessoas, foco, inclusão, amor, respeito e qualidade) e as linhas de comunicação.",
+      "Na operação, fiquei com o gerenciamento do rebranding: a substituição das peças antigas pelas novas em todo o shopping."
+     ],
+     "image": "img/cases/trade/rebranding-sistema.jpg"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Mall communication",
+     "title": "Naming e sinalização",
+     "text": [
+      "O estudo de aplicabilidade de naming e mall communication deu aos corredores nomes de árvores, como Pequizeiro, Jacarandá, Sapucaia, Cedro e Jequitibá, e aos pisos os nomes Serra do Mel e Serra Negra.",
+      "A partir das plantas, foram definidos totens, placas de comunicação, comunicação de corredores e de parede."
+     ],
+     "image": "img/cases/ibi/mc-07.jpg"
+    },
+    {
+     "type": "strip",
+     "title": "Sinalização e peças",
+     "images": [
+      "img/cases/trade/sinalizacao-plantas.jpg",
+      "img/cases/ibi/mc-06.jpg",
+      "img/cases/ibi/mc-08.jpg",
+      "img/cases/ibi/mc-09.jpg",
+      "img/cases/trade/rebranding-pecas.jpg"
+     ]
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "IBI Front · Expomontes 2025",
+     "title": "Um shopping dentro da exposição",
+     "image": "img/cases/ibifront/pf-14.jpg",
+     "items": [
+      {
+       "t": "Pórtico de entrada",
+       "d": "Celeiro de madeira com a marca IBI Front iluminada, pensado para o dia e para a noite."
+      },
+      {
+       "t": "Túnel e panorâmicas",
+       "d": "Painéis com fachadas de Montes Claros e o conceito Eu ❤ celebrar."
+      },
+      {
+       "t": "Palco Front",
+       "d": "Estrutura com a marca para shows e ativações."
+      },
+      {
+       "t": "Cubo IBI celebra e gramado",
+       "d": "Ponto de foto e convivência no centro do espaço."
+      },
+      {
+       "t": "Espaço conforto",
+       "d": "Área de descanso com mobiliário de carretel e luz quente."
+      }
+     ]
+    },
+    {
+     "type": "strip",
+     "title": "Do projeto ao evento",
+     "images": [
+      "img/cases/ibifront/pf-01.jpg",
+      "img/cases/ibifront/pf-03.jpg",
+      "img/cases/ibifront/pf-07.jpg",
+      "img/cases/ibifront/pf-09.jpg",
+      "img/cases/ibifront/pf-12.jpg",
+      "img/cases/ibifront/pf-17.jpg",
+      "img/cases/ibifront/pf-20.jpg",
+      "img/cases/ibifront/pf-23.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Identidade do espaço",
+     "title": "Eu ❤ celebrar",
+     "text": [
+      "A marca IBI Front e o conceito Eu ❤ celebrar trouxeram para a exposição referências de Montes Claros: a catedral, o mercado, as fachadas do centro e o jeito catrumano de falar."
+     ],
+     "image": "img/cases/ibifront/pf-03.jpg"
+    },
+    {
+     "type": "split",
+     "eyebrow": "No evento",
+     "title": "O IBI Front aberto ao público",
+     "text": [
+      "Durante a Expomontes, o espaço recebeu visitantes, convidados e influenciadores, com a marca presente em cada ponto de foto."
+     ],
+     "image": "img/cases/trade/ibifront-fotos.jpg"
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Gustavo Elian · Coordenador de Marketing",
+      "Maria Eduarda David · Estagiária de Arquitetura (projeto de ativação)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "agrofort",
+   "case": true,
+   "featured": true,
+   "title": "Agrofort · Grupo Fort",
+   "kind": "Marca, embalagem e catálogo",
+   "client": "Agrofort · uma empresa do Grupo Fort",
+   "year": "2025",
+   "fronts": [
+    "branding"
+   ],
+   "summary": "Sistema de marca dos queijos de Januária aplicado a rótulos, catálogo de produtos e outdoors.",
+   "cover": "img/cases/agrofort/hero.jpg",
+   "logo": "agrofort",
+   "theme": {
+    "bg": "#F4EDE1",
+    "ink": "#2C1E14",
+    "soft": "#6B5847",
+    "panel": "#2C1E14",
+    "onPanel": "#F4EDE1",
+    "accent": "#D59C37",
+    "accentInk": "#8A402D",
+    "chip": "#E8DCC8"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Branding e rebranding",
+     "title": "É de Januária. De dentro do Peruaçu.",
+     "lead": "Uma marca de queijos que fala de território, afeto e sabor: cada produto tem nome de gente da terra, e tudo isso precisava caber em rótulo, catálogo e outdoor.",
+     "image": "img/cases/agrofort/hero.jpg",
+     "chips": [
+      "Agrofort",
+      "Grupo Fort",
+      "Januária/MG",
+      "Rótulos · catálogo · outdoor"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Posicionamento",
+     "title": "Tradição, território, afeto e sabor",
+     "text": [
+      "A marca se apresenta pelo lugar de onde vem: Januária, no norte de Minas, à beira do Peruaçu. A comunicação usa a fala da região e trata cada queijo como um personagem com nome próprio.",
+      "A flor de quatro pétalas, em verde, ocre e terracota, assina o sistema e aparece em todas as aplicações."
+     ],
+     "image": "img/cases/agrofort/cat-03.jpg"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Arquitetura de marca",
+     "title": "Uma família com nome e sobrenome",
+     "items": [
+      {
+       "title": "Seu Janu",
+       "kind": "Queijo meia cura",
+       "text": "Minas padrão da linha de queijos meia cura.",
+       "image": "img/cases/agrofort/cat-06.jpg"
+      },
+      {
+       "title": "Chica Rosa",
+       "kind": "Queijo trufado",
+       "text": "Queijo trufado com goiabada.",
+       "image": "img/cases/agrofort/cat-10.jpg"
+      },
+      {
+       "title": "Chico Flor · Ti Chico · Chico Velho",
+       "kind": "Queijos maturados",
+       "text": "Linha de maturados, cada um com seu tempo de cura.",
+       "image": "img/cases/agrofort/cat-12.jpg"
+      },
+      {
+       "title": "Nossos derivados",
+       "kind": "Pães, biscoitos e manteiga",
+       "text": "Dona Janu, Seu Peruá, Tia Açu e a manteiga Gruta do Tatu.",
+       "image": "img/cases/agrofort/cat-16.jpg"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Embalagem",
+     "title": "Rótulos que se reconhecem na prateleira",
+     "text": [
+      "Cada queijo ganhou um rótulo circular com a flor da marca, uma cor própria e o nome em destaque. O verso concentra selo, informação nutricional e dados obrigatórios."
+     ],
+     "image": "img/cases/agrofort/rot-3.jpg"
+    },
+    {
+     "type": "strip",
+     "title": "Rótulos da linha",
+     "images": [
+      "img/cases/agrofort/rot-1.jpg",
+      "img/cases/agrofort/rot-2.jpg",
+      "img/cases/agrofort/rot-3.jpg",
+      "img/cases/agrofort/rot-4.jpg",
+      "img/cases/agrofort/rot-5.jpg",
+      "img/cases/agrofort/rot-6.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Catálogo de produtos",
+     "title": "Um catálogo para vender e para contar história",
+     "text": [
+      "O catálogo apresenta a marca, os parceiros, a linha de queijos e os derivados, com fotografia de produto e texto em português e inglês, e termina com o mapa e os contatos."
+     ],
+     "image": "img/cases/agrofort/cat-05.jpg"
+    },
+    {
+     "type": "strip",
+     "title": "Páginas do catálogo",
+     "images": [
+      "img/cases/agrofort/cat-01.jpg",
+      "img/cases/agrofort/cat-02.jpg",
+      "img/cases/agrofort/cat-05.jpg",
+      "img/cases/agrofort/cat-06.jpg",
+      "img/cases/agrofort/cat-10.jpg",
+      "img/cases/agrofort/cat-13.jpg",
+      "img/cases/agrofort/cat-14.jpg",
+      "img/cases/agrofort/cat-17.jpg",
+      "img/cases/agrofort/cat-20.jpg",
+      "img/cases/agrofort/cat-21.jpg",
+      "img/cases/agrofort/cat-22.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Mídia exterior",
+     "title": "Outdoor",
+     "text": [
+      "A mesma linguagem foi levada para o outdoor: a marca, a origem e o produto em destaque, com o convite “Experimente”."
+     ],
+     "image": "img/cases/agrofort/out-1.jpg",
+     "wide": true
+    }
+   ]
+  },
+  {
+   "id": "fazenda-encantada-loja",
+   "title": "Loja Fazenda Encantada",
+   "kind": "Site com loja",
+   "client": "Fazenda Encantada · Itacambira",
+   "fronts": [
+    "web",
+    "branding"
+   ],
+   "summary": "Site com loja para geleias, doces e laticínios feitos na fazenda.",
+   "url": "https://fazencantada.netlify.app",
+   "cover": "img/proj/fazencantada.jpg"
+  },
+  {
+   "id": "fernandes-adv",
+   "title": "Fernandes Advocacia",
+   "kind": "Sistema de gestão",
+   "client": "Fernandes Advocacia",
+   "fronts": [
+    "web"
+   ],
+   "summary": "Sistema com clientes, processos, pendências, audiências, calendário, kanban e documentos.",
+   "url": "https://fernandes-adv.netlify.app",
+   "cover": "img/proj/fernandes-adv.jpg"
+  },
+  {
+   "id": "focados",
+   "title": "FOCO · App do Colaborador",
+   "kind": "Aplicativo",
+   "client": "Desafios FOCO 2026",
+   "fronts": [
+    "web"
+   ],
+   "summary": "App de desafios para colaboradores, com pontuação reconhecida pelo e-mail.",
+   "url": "https://focados.netlify.app",
+   "cover": "img/proj/focados.jpg"
+  },
+  {
+   "id": "investiga-gazeta",
+   "title": "Gazeta · Investigação 1888–1890",
+   "kind": "Sistema de pesquisa",
+   "client": "Pesquisa de mestrado · PPGH/Unimontes",
+   "fronts": [
+    "web"
+   ],
+   "summary": "Acervo de capas, busca, notas e exportação em ABNT.",
+   "url": "https://investiga-gazeta.netlify.app",
+   "cover": "img/proj/investiga-gazeta.jpg"
+  },
+  {
+   "id": "enehisp",
+   "title": "II ENEHISP",
+   "kind": "Sistema e comunicação do evento",
+   "client": "Encontro de Estudos em História Política",
+   "fronts": [
+    "web",
+    "trade"
+   ],
+   "summary": "Confirmação de apresentação, escolha de sessão e modelo de slides.",
+   "url": "https://enehisp.netlify.app",
+   "cover": "img/proj/enehisp.jpg"
+  },
+  {
+   "id": "utopia-eventos",
+   "title": "Utopia Eventos",
+   "kind": "Produção de eventos",
+   "client": "Utopia Eventos e Promoções Esportivas",
+   "year": "2020–2022",
+   "fronts": [
+    "trade"
+   ],
+   "summary": "Sócio-diretor. Calourada ARCA (3 edições, mais de 2.000 pessoas), Halloween Noite Macabra 2022 (mais de 1.500), Jogos Inter Atléticas e Papo Calcinha com Kamila Simioni (BH, 2023).",
+   "draft": true
+  },
+  {
+   "id": "noite-de-mulher",
+   "title": "Noite de Mulher",
+   "kind": "Evento",
+   "fronts": [
+    "trade"
+   ],
+   "summary": "Identidade e comunicação do evento.",
+   "draft": true
+  }
+ ]
+}

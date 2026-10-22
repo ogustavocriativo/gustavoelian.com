@@ -1,0 +1,30 @@
+[build]
+  publish = "public"
+  command = ""
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Página de cada case: gustavoelian.com/projetos/<id>
+[[redirects]]
+  from = "/projetos/*"
+  to = "/projeto.html"
+  status = 200
+
+# Proposta do cliente: gustavoelian.com/<nome-codigo>
+# Regra não forçada: arquivos reais (index, /app, imagens) sempre têm prioridade.
+[[redirects]]
+  from = "/*"
+  to = "/proposta.html"
+  status = 200
+
+[[headers]]
+  for = "/app/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/proposta.html"
+  [headers.values]
+    X-Robots-Tag = "noindex"
