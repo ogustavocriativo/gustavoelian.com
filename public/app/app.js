@@ -476,7 +476,7 @@ async function renderEditor(slug) {
       go.disabled = true; go.textContent = "Trocando…";
       try {
         q = await api(`/api/quotes/${q.slug}/rename`, { method: "POST", body: { slug: v } });
-        slug = q.slug; history.replaceState(null, "", `#/q/${q.slug}`); drawLink(); close(); toast("Link atualizado"); haptic();
+        slug = q.slug; history.replaceState(null, "", `#/q/${q.slug}`); drawLink(); close(); toast("Link atualizado"); haptic(); warmPreview(q.slug);
       } catch (x) { err.textContent = x.message; go.disabled = false; go.textContent = "Salvar novo link"; }
     } }, "Salvar novo link");
     inpt.addEventListener("keydown", (e) => { if (e.key === "Enter") go.click(); });
@@ -496,7 +496,7 @@ async function renderEditor(slug) {
     saveBtn.disabled = true;
     try {
       q = q.slug ? await api(`/api/quotes/${q.slug}`, { method: "PUT", body: payload }) : await api("/api/quotes", { method: "POST", body: payload });
-      dirty = false; saveBtn.lastChild.textContent = "Salvo"; haptic(); if (!silent) toast("Proposta salva");
+      dirty = false; saveBtn.lastChild.textContent = "Salvo"; haptic(); if (!silent) toast("Proposta salva"); warmPreview(q.slug);
       if (!slug) { history.replaceState(null, "", `#/q/${q.slug}`); slug = q.slug; }
       drawLink(); return q;
     } catch (x) { toast(x.message); return null; } finally { saveBtn.disabled = false; }
@@ -515,8 +515,15 @@ async function renderEditor(slug) {
   window.onbeforeunload = () => (dirty ? true : undefined);
 }
 
+// gera a prévia do WhatsApp antes do envio, para o cliente ver o banner na hora
+function warmPreview(slug) {
+  if (!slug) return;
+  fetch(`/api/og/${slug}`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((m) => { if (m?.image) fetch(m.image.replace(location.origin, "")).catch(() => {}); }).catch(() => {});
+  fetch(`/${slug}`, { cache: "no-store" }).catch(() => {});
+}
 async function copy(text) { try { await navigator.clipboard.writeText(text); toast("Link copiado"); haptic(); } catch { prompt("Copie o link:", text); } }
 function shareQuote(q) {
+  warmPreview(q.slug);
   const url = `${location.origin}/${q.slug}`;
   const first = String(q.client?.name || "").split(" ")[0];
   const text = `Olá, ${first}! Preparei sua proposta. Por aqui você vê os detalhes, escolhe a condição e aprova:`;

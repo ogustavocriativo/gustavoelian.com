@@ -7,7 +7,7 @@ import { Resvg } from "@resvg/resvg-js";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
-import { aliasOf, getQuote } from "../lib/core.mts";
+import { aliasOf, getQuote, store } from "../lib/core.mts";
 import { LOGO_LIGHT } from "../lib/og-logo.mts";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
@@ -25,7 +25,7 @@ async function info(slug: string, para: string | null) {
   if (slug === "demonstracao") return { name: cap(first(para || "Marina")), title: "Identidade visual e site", demo: true };
   let q: any = await getQuote(slug);
   if (!q) { const to = await aliasOf(slug); if (to) q = await getQuote(to); }
-  if (!q || !q.published) return null;
+  if (!q) return null;
   return { name: cap(first(q.client?.name)), title: String(q.title || "Proposta").slice(0, 70), demo: false };
 }
 
@@ -47,23 +47,34 @@ function svg(name: string, title: string) {
 </svg>`;
 }
 
+// Versão da prévia: muda quando nome ou título mudam. Com ela na URL, a imagem pode ficar em cache "para sempre".
+const ver = (i: any) => { let x = 5381; for (const c of `${i.name}|${i.title}`) x = ((x << 5) + x + c.charCodeAt(0)) >>> 0; return x.toString(36); };
+const CDN_IMG = { "content-type": "image/png", "cache-control": "public, max-age=86400", "netlify-cdn-cache-control": "public, durable, s-maxage=31536000, immutable" };
+
 export default async (req: Request, context: Context) => {
   const url = new URL(req.url);
   const slug = String(context.params.slug || "").toLowerCase();
   if (!/^[a-z0-9-]{3,60}$/.test(slug)) return new Response("Não encontrado", { status: 404 });
   const para = url.searchParams.get("para");
   const i = await info(slug, para);
-  if (!i) return new Response(JSON.stringify({ error: "Não encontrado" }), { status: 404, headers: { "content-type": "application/json" } });
+  if (!i) return new Response(JSON.stringify({ error: "Não encontrado" }), { status: 404, headers: { "content-type": "application/json", "cache-control": "no-store" } });
+  const v = ver(i);
   if (url.pathname.endsWith("/image")) {
+    // 1º acesso desenha e guarda; os seguintes saem prontos (do cache da CDN ou do armazenamento)
+    const key = `${i.demo ? "demo-" + v : slug + "-" + v}.png`;
+    const og = store("og-images");
+    const saved = await og.get(key, { type: "arrayBuffer" }).catch(() => null);
+    if (saved) return new Response(saved as ArrayBuffer, { headers: CDN_IMG });
     const png = new Resvg(svg(i.name, i.title), { font: { fontFiles: fontFiles(), loadSystemFonts: false, defaultFontFamily: "LT Wave" }, fitTo: { mode: "width", value: 1200 } }).render().asPng();
-    return new Response(png, { headers: { "content-type": "image/png", "cache-control": "public, max-age=600, s-maxage=3600" } });
+    await og.set(key, png).catch(() => {});
+    return new Response(png, { headers: CDN_IMG });
   }
-  const q = para ? `?para=${encodeURIComponent(para)}` : "";
+  const q = new URLSearchParams({ v, ...(para ? { para } : {}) }).toString();
   return new Response(JSON.stringify({
     title: `${i.name}, sua proposta está pronta · Gustavo Elian`,
     description: `${i.title}. Escopo, prazo e investimento. Escolha a condição e aprove online.`,
-    image: `${url.origin}/api/og/${slug}/image${q}`,
-  }), { headers: { "content-type": "application/json", "cache-control": "public, max-age=60" } });
+    image: `${url.origin}/api/og/${slug}/image?${q}`,
+  }), { headers: { "content-type": "application/json", "cache-control": "public, max-age=30", "netlify-cdn-cache-control": "public, durable, s-maxage=60, stale-while-revalidate=604800" } });
 };
 
 export const config: Config = { path: ["/api/og/:slug", "/api/og/:slug/image"] };

@@ -17,7 +17,8 @@ export default async (req: Request, context: any) => {
     .replace(/(<meta property="og:title" content=")[^"]*/, `$1${esc(meta.title)}`)
     .replace(/(<meta property="og:description" content=")[^"]*/, `$1${esc(meta.description)}`)
     .replace(/(<meta name="description" content=")[^"]*/, `$1${esc(meta.description)}`)
-    .replace(/(<meta property="og:image" content=")[^"]*/, `$1${esc(meta.image)}`);
+    .replace(/(<meta property="og:image" content=")[^"]*/, `$1${esc(meta.image)}`)
+    .replace(/(<meta property="og:url" content=")[^"]*/, `$1${esc(url.origin + url.pathname)}`);
   const headers = new Headers(res.headers); headers.delete("content-length");
   return new Response(html, { status: res.status, headers });
 };
