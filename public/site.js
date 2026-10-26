@@ -282,7 +282,9 @@
     const hh = c.hero || {};
     const setT = (id, v) => { const el = document.getElementById(id); if (el && v) el.textContent = v; };
     setT("heroTitle", hh.title); setT("heroHand", hh.hand); setT("heroLead", hh.lead);
-    if (hh.sub) document.getElementById("heroSub").replaceChildren(hh.sub);
+    // a carinha ;) ou :) do fim da frase ganha a cor de destaque (azul no claro, verde no escuro)
+    if (hh.sub) document.getElementById("heroSub").replaceChildren(...String(hh.sub).split(/(\s*[;:]-?[)D]\s*$)/).filter(Boolean).map((t) => (/^\s*[;:]-?[)D]\s*$/.test(t) ? h("em", {}, " " + t.trim()) : t)));
+    if (hh.photo?.key) { const ph = document.getElementById("heroPhoto"); if (ph) { ph.src = media(hh.photo); ph.removeAttribute("width"); ph.removeAttribute("height"); ph.alt = hh.photoAlt || "Gustavo Elian"; const st = focusStyle(hh.photo); if (st) ph.setAttribute("style", st); } }
     (hh.cards || []).forEach((cd, i) => {
       const el = document.querySelector(`.datum.d${i + 1}`); if (!el || !cd.title) return;
       const isNext = el.classList.contains("next");

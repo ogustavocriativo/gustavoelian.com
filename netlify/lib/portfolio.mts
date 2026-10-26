@@ -116,6 +116,8 @@ export function cleanSite(i: any) {
     hero: {
       title: str(hh.title, 120), sub: str(hh.sub, 160), hand: str(hh.hand, 120), lead: str(hh.lead, 400),
       cards: (Array.isArray(hh.cards) ? hh.cards : []).slice(0, 3).map((c: any) => ({ k: str(c?.k, 40), title: str(c?.title, 60), sub: str(c?.sub, 80), href: safeLink(str(c?.href, 300)) })),
+      // foto da abertura (já recortada em 4:5) e o original, para reenquadrar depois
+      photo: mediaRef(hh.photo), photoOrig: mediaRef(hh.photoOrig), photoAlt: str(hh.photoAlt, 160),
     },
     services: (Array.isArray(i?.services) ? i.services : []).slice(0, 8).map((x: any) => ({ title: str(x?.title, 80), text: str(x?.text, 240) })).filter((x: any) => x.title),
     about: {

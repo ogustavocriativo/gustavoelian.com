@@ -1376,6 +1376,31 @@ async function renderSiteContent() {
     e.target.value = ""; status.textContent = "Alterações não salvas";
   } });
   drawPhotos();
+  // foto da abertura: troca e enquadramento (moldura 4:5, a mesma do site)
+  const heroBox = h("div", { class: "hero-photo-ed" });
+  const heroIn = h("input", { type: "file", accept: "image/jpeg,image/png,image/webp,image/avif", style: "display:none" });
+  const heroSend = async (file, isReframe) => {
+    const c2 = await pfCropThen(file, "4:5", "Enquadrar a foto da abertura"); if (!c2) return;
+    status.textContent = "Enviando foto…";
+    try {
+      if (!isReframe) c.hero.photoOrig = await pfUpload("site", "page", file, 2400);
+      c.hero.photo = await pfUpload("site", "page", c2.file, 1400, c2.focus);
+      touch(); drawHero(); toast("Foto pronta. Salve para publicar.");
+    } catch (x) { toast(x.message); status.textContent = "Alterações não salvas"; }
+  };
+  heroIn.onchange = () => { const f0 = heroIn.files[0]; heroIn.value = ""; if (f0) heroSend(f0, false); };
+  const drawHero = () => heroBox.replaceChildren(
+    h("div", { class: "hero-photo-frame" }, h("img", { src: c.hero.photo?.key ? `/api/media/${c.hero.photo.key}` : "/img/hero-foto.jpg", alt: "Foto atual da abertura" })),
+    h("div", { class: "stack", style: "gap:8px" },
+      h("span", { class: "pf-lbl" }, "Foto da abertura"),
+      h("p", { class: "hint", style: "margin:0" }, c.hero.photo?.key ? "Foto enviada por você." : "Foto padrão do site."),
+      h("button", { class: "btn small", type: "button", onclick: () => heroIn.click() }, icon("image"), "Trocar foto"),
+      c.hero.photo?.key ? h("button", { class: "btn small", type: "button", onclick: async () => {
+        try { const ref = c.hero.photoOrig?.key ? c.hero.photoOrig : c.hero.photo; const blob = await fetch(`/api/media/${ref.key}`).then((r) => r.blob()); await heroSend(new File([blob], "foto." + ((blob.type.split("/")[1]) || "jpg"), { type: blob.type || "image/jpeg" }), true); } catch { toast("Não foi possível abrir a foto"); }
+      } }, icon("pen"), "Reenquadrar") : null,
+      c.hero.photo?.key ? h("button", { class: "btn ghost small", type: "button", onclick: () => { delete c.hero.photo; delete c.hero.photoOrig; touch(); drawHero(); } }, "Voltar à foto padrão") : null,
+      h("label", { class: "f" }, h("span", {}, "Descrição da foto (acessibilidade)"), inp(c.hero, "photoAlt", { placeholder: "Ex.: Gustavo à noite numa rua de festa" }))));
+  drawHero();
   const saveBtn = h("button", { class: "btn primary", type: "button", onclick: async () => {
     saveBtn.disabled = true; status.textContent = "Salvando…";
     try { await api("/api/site-content", { method: "PUT", body: c }); dirty = false; status.textContent = "Salvo · no site em até 1 min"; status.className = "pf-state ok"; haptic(); toast("Sobre e trajetória atualizados"); }
@@ -1384,6 +1409,7 @@ async function renderSiteContent() {
   shell({ title: "Textos da página inicial", eyebrow: "Abertura, serviços, sobre e trajetória", back: "#/portfolio", compact: true, nav: false },
     h("div", { class: "stack pf-edit" },
       h("section", { class: "form-card glass" }, h("h2", {}, "Abertura"),
+        heroBox, heroIn,
         f("Título", inp(c.hero, "title")), f("Linha abaixo do título", inp(c.hero, "sub")), f("Frase manuscrita", inp(c.hero, "hand")),
         f("Texto de apoio", inp(c.hero, "lead", { rows: 3 }, "textarea")),
         ...c.hero.cards.map((cd, i) => h("div", { class: "pf-item" }, h("strong", { style: "font-weight:500" }, `Cartão sobre a foto ${i + 1}${i === 1 ? " (com selo \"aprovado\")" : ""}`),
