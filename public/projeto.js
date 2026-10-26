@@ -17,6 +17,14 @@ function h(tag, attrs = {}, ...kids) {
 const src = (p) => "/" + p.replace(/^\//, "");
 const paras = (t) => (Array.isArray(t) ? t : [t]).map((x) => h("p", { class: "soft" }, x));
 
+// Perfil do Instagram incorporado (grade de posts + cabeçalho do perfil). Aceita @perfil ou o link.
+function igProfile(v, title) {
+  const user = String(v).trim().replace(/^@/, "").replace(/^https?:\/\/(www\.)?instagram\.com\//, "").split(/[/?#]/)[0];
+  if (!/^[A-Za-z0-9_.]{1,30}$/.test(user)) return null;
+  return h("figure", { class: "img ig-prof", style: "margin:0" },
+    h("iframe", { src: `https://www.instagram.com/${user}/embed/`, title: `Perfil @${user} no Instagram`, loading: "lazy", allowtransparency: "true", scrolling: "no" }),
+    h("a", { class: "ig-prof-link", href: `https://www.instagram.com/${user}/`, target: "_blank", rel: "noopener" }, `Ver @${user} no Instagram ↗`));
+}
 const R = {
   // publicações do Instagram dentro do case (mesmo bloco do Studio, posicionado entre as seções)
   insta(s) { return PF.insta({ insta: s.items || [], instaTitle: s.title, instaCredit: s.credit, instaKicker: s.kicker, instaLead: s.lead }); },
@@ -43,7 +51,7 @@ const R = {
     return h("section", { class: `blk split reveal${s.panel ? " panel on-panel" : ""}${s.reverse ? " reverse" : ""}${s.wide ? " wide" : ""}` },
       h("div", { class: "wrap" },
         h("div", { class: "text" }, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title), ...paras(s.text)),
-        s.image ? h("figure", { class: "img", style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : null));
+        s.profile ? igProfile(s.profile, s.title) : s.image ? h("figure", { class: "img", style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : null));
   },
   cards(s) {
     return h("section", { class: "blk cards reveal" }, h("div", { class: "wrap" },
@@ -177,21 +185,32 @@ async function main() {
 
   const pf = p.pf;
   // página editada no Studio substitui a do arquivo base
-  const edited = await fetch(`/api/portfolio/${encodeURIComponent(p.id)}/page`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-  const src_ = edited?.sections?.length ? edited.sections : p.sections || [];
-  const sections = src_.filter((s) => !s.hidden).map((s) => R[s.type]?.(s, p, data.base)).filter(Boolean);
+  const EDIT = new URLSearchParams(location.search).has("editar");
+  const edited = await fetch(`/api/portfolio/${encodeURIComponent(p.id)}/page`, EDIT ? { cache: "no-store" } : {}).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  // vale a versão mais recente: a editada no Studio ou a do arquivo base (quando o base foi atualizado depois)
+  const baseNewer = p.updatedAt && edited?.updatedAt && p.updatedAt > edited.updatedAt;
+  let src_ = edited?.sections?.length && !baseNewer ? edited.sections : p.sections || [];
+  // editor visual: rascunho não salvo tem prioridade e todas as seções aparecem (as ocultas, esmaecidas)
+  let draft = null;
+  if (EDIT) { try { draft = JSON.parse(sessionStorage.getItem(`ge_draft_${p.id}`) || "null"); } catch {} if (draft?.sections) src_ = draft.sections; }
+  const sections = src_.map((s, i) => ({ s, i })).filter(({ s }) => EDIT || !s.hidden).map(({ s, i }) => {
+    let el = null; try { el = R[s.type]?.(s, p, data.base); } catch (x) { console.error(x); }
+    if (EDIT) { el = el || h("section", { class: "blk", style: "padding:48px 0;text-align:center;opacity:.6" }, `Seção "${s.type}" sem visualização`); el.dataset.si = String(i); if (s.hidden) el.classList.add("ed-hidden"); }
+    return el;
+  }).filter(Boolean);
   const head = sections.length ? sections.shift() : PF.simpleHero(p, data);
   const blocks = [head, PF.banner(pf, p), PF.metrics(pf), ...sections, PF.gallery(pf, p), PF.insta(pf?.insta?.length ? pf : p), PF.feedback(pf)].filter(Boolean);
-  const pages = data.list.filter((x) => x.hasPage);
-  const i = pages.indexOf(p), nx = pages[(i + 1) % pages.length];
   blocks.push(
     h("section", { class: "blk cta on-panel" }, h("div", { class: "wrap" },
       h("span", { class: "eyebrow" }, "Vamos conversar"),
       h("h2", {}, "Quer um projeto como este?"),
       h("p", { class: "soft", style: "max-width:34em" }, "Conte o que você precisa. Eu monto a proposta com escopo, prazo e investimento."),
-      h("div", { class: "row" }, h("a", { class: "btn accent", href: `https://wa.me/${WA}?text=${msg}`, target: "_blank", rel: "noopener" }, "Pedir orçamento no WhatsApp"), h("a", { class: "btn ghost", href: "/#projetos" }, "Ver outros projetos")))),
-    nx && nx !== p ? h("div", { class: "wrap next" }, h("span", { class: "eyebrow" }, "Próximo projeto"), h("a", { href: `/projetos/${nx.id}` }, h("strong", {}, `${nx.title} →`))) : null);
+      h("div", { class: "row" }, h("a", { class: "btn accent", href: `https://wa.me/${WA}?text=${msg}`, target: "_blank", rel: "noopener" }, "Pedir orçamento no WhatsApp"), h("a", { class: "btn ghost", href: "/#projetos" }, "Ver outros projetos")))));
   root.replaceChildren(...blocks.filter(Boolean));
   window.CaseFX?.run(root);
+  if (EDIT) {
+    window.__GE_EDIT = { id: p.id, title: p.title, sections: JSON.parse(JSON.stringify(src_)), base: JSON.parse(JSON.stringify(p.sections || [])), saved: JSON.parse(JSON.stringify(edited?.sections?.length && !baseNewer ? edited.sections : p.sections || [])), fromBase: !edited?.sections?.length || !!baseNewer, dirty: !!draft };
+    const sc = document.createElement("script"); sc.src = "/editor-canvas.js?v=1"; document.body.append(sc);
+  }
 }
 main().catch((e) => { console.error(e); root.replaceChildren(h("p", { class: "loading" }, "Não foi possível carregar o projeto. Atualize a página.")); });

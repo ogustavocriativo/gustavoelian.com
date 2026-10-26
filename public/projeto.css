@@ -241,3 +241,8 @@ dialog.pf-dlg form{position:sticky;bottom:0;padding:10px;background:#fff;text-al
   .pf-ig::-webkit-scrollbar{display:none}
   .pf-ig-it{scroll-snap-align:start}
 }
+
+/* perfil do Instagram incorporado numa seção */
+.ig-prof{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.ig-prof iframe{width:100%;max-width:540px;margin-inline:auto;height:clamp(520px,62vw,720px);border:0;border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(127,127,127,.25)}
+.ig-prof-link{align-self:center;font-size:14px;opacity:.8}

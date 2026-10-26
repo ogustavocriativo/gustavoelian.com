@@ -437,3 +437,9 @@
 .lmo-w span{font-size:clamp(1.5rem,4vw,3.25rem);font-weight:300;letter-spacing:-.02em}
 .lmo-w b{font-size:clamp(2.25rem,7vw,6rem);font-weight:700;letter-spacing:-.04em;display:inline-block}
 @media (prefers-reduced-motion:reduce){.lmo-in{transition:none}.lmo-g{animation:none}}
+
+/* blocos com vídeo no lugar da imagem */
+.bk-art video{display:block;width:100%;height:100%;object-fit:inherit}
+.bk-art.cover video{object-fit:cover}
+.bk-art.contain video{object-fit:contain;height:auto;max-height:100%}
+.mq-dot{flex:none;width:clamp(10px,1.2vw,16px);aspect-ratio:1;border-radius:50%;background:currentColor;opacity:.55}

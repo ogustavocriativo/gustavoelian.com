@@ -31,7 +31,9 @@ window.CaseFX = (() => {
         class: `bk-art ${b.fit || "contain"}${b.anim ? " a-" + b.anim : ""}${b.round ? " round" : ""}`,
         style: b.fit === "bleed" ? `left:${b.x ?? 0}%;top:${b.y ?? 0}%;width:${b.w ?? 100}%` : `--w:${b.w ?? 72}%`,
         ...(b.par ? { "data-par": String(b.par) } : {}),
-      }, h("img", { src: src(b.img), alt: b.alt || "", loading: b.eager ? null : "lazy", style: b.pos ? `object-position:${b.pos}` : null })) : null;
+      }, /\.(mp4|webm)$/i.test(b.img)
+        ? h("video", { src: src(b.img), poster: b.poster ? src(b.poster) : null, muted: "", loop: "", autoplay: "", playsinline: "", preload: "metadata", "aria-label": b.alt || "Vídeo", style: b.pos ? `object-position:${b.pos}` : null })
+        : h("img", { src: src(b.img), alt: b.alt || "", loading: b.eager ? null : "lazy", style: b.pos ? `object-position:${b.pos}` : null })) : null;
       const t = b.text;
       const txt = t ? h("div", { class: `bk-text ${t.size || "m"} ${t.align || "end"}` },
         t.back ? h("a", { class: "bk-back", href: back }, "← Todos os projetos") : null,
@@ -75,7 +77,7 @@ window.CaseFX = (() => {
     R.marquee = (s) => {
       const g = s.glyph ? src(s.glyph) : null;
       const seq = (hidden) => h("div", { class: "mq-set", ...(hidden ? { "aria-hidden": "true" } : {}) },
-        ...s.items.flatMap((t) => [h("span", { class: "mq-t" }, t), h("i", { class: "mq-g", style: g ? `--g:url("${g}")` : null, "aria-hidden": "true" })]));
+        ...s.items.flatMap((t) => [h("span", { class: "mq-t" }, t), h("i", { class: g ? "mq-g" : "mq-dot", style: g ? `--g:url("${g}")` : null, "aria-hidden": "true" })]));
       return h("section", { class: "blk marquee" }, h("div", { class: "mq-run" }, seq(false), seq(true)));
     };
 

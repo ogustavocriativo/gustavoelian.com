@@ -245,7 +245,7 @@
         "h1": true,
         "eyebrow": "Rebranding · campanhas · ativação",
         "title": "IBI Shopping",
-        "body": "Em 17 de março de 2025, o Shopping Ibituruna virou IBI Shopping. Depois veio a linha criativa “Celebre cada momento”, o calendário de campanhas e o IBI Front na Expomontes. Tudo sob a mesma coordenação de marketing.",
+        "body": "Em 17 de março de 2025, o Shopping Ibituruna virou IBI Shopping. Veio a linha criativa “Celebre cada momento”, o calendário de campanhas e o IBI Front na Expomontes. Tudo sob a mesma coordenação de marketing.",
         "chips": [
          "Montes Claros/MG",
          "2025",
@@ -698,28 +698,6 @@
         "size": "m",
         "align": "center"
        }
-      }
-     ]
-    },
-    {
-     "type": "reels",
-     "bg": "#7A1E14",
-     "fg": "#FCEDE8",
-     "eyebrow": "Vídeos das campanhas",
-     "title": "Mães e Namorados em movimento",
-     "text": "Vídeos verticais para redes e telas, com a assinatura do IBI Shopping no fim.",
-     "items": [
-      {
-       "src": "video/ibi/maes.mp4",
-       "poster": "video/ibi/maes.jpg",
-       "ratio": "9/16",
-       "label": "Mãe, amor que apaixona"
-      },
-      {
-       "src": "video/ibi/namorados.mp4",
-       "poster": "video/ibi/namorados.jpg",
-       "ratio": "9/16",
-       "label": "Seu amor, meu aconchego"
       }
      ]
     },
@@ -1406,7 +1384,8 @@
     }
    ],
    "instaTitle": "Aftermovie do IBI Front",
-   "instaCredit": "Reprodução @pardalpro.mkt"
+   "instaCredit": "Reprodução @pardalpro.mkt",
+   "updatedAt": "2026-10-26T12:30:00.000Z"
   },
   {
    "id": "canais-e-mentoria",
@@ -1534,20 +1513,20 @@
      "image": "img/cases/campanhas/perfis.jpg",
      "bg": "#E29A1C",
      "fg": "#2E4A3E",
-     "fx": "tilt"
+     "fx": "tilt",
+     "profile": ""
     },
     {
      "type": "marquee",
      "items": [
-      "YouTube",
-      "Shorts",
-      "Reels",
-      "TikTok",
-      "Kwai"
+      "Dra. Mônica Demian",
+      "Daniel Cady",
+      "Kamila Simioni",
+      "Thales Baião",
+      "Astrologia Luz e Sombra"
      ],
-     "glyph": "img/cases/ibifront/ill/flor-ibi.webp",
-     "bg": "#FF3D57",
-     "fg": "#1E1A2E"
+     "bg": "#1E1B2E",
+     "fg": "#F2EFE6"
     }
    ],
    "coverStyle": "photo",
@@ -2812,10 +2791,11 @@
       },
       {
        "area": "m",
-       "bg": "#222",
-       "img": "img/cases/focado/rb/p02.webp",
-       "alt": "Marca Foco Group sobre fundo grafite com linhas do grafismo",
-       "fit": "cover"
+       "bg": "#4B4B4B",
+       "img": "video/focados/fococast-logo.mp4",
+       "alt": "Logo animada do FOCOCAST",
+       "fit": "cover",
+       "poster": "video/focados/fococast-logo.jpg"
       }
      ]
     },
@@ -3712,7 +3692,11 @@
       "Identidade aplicada, redes e materiais do evento: Gustavo Elian"
      ]
     }
-   ]
+   ],
+   "coverVideo": "video/conahist/capa-cidades.mp4",
+   "coverPoster": "video/conahist/capa-cidades.jpg",
+   "coverFit": "contain",
+   "coverBg": "#EDEAE3"
   },
   {
    "id": "utopia-eventos",

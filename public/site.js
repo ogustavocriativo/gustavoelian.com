@@ -72,7 +72,7 @@
   function card(p, data) {
     let m;
     if (p.pf?.thumb) m = mediaEl(p.pf.thumb, `${p.title}: animação de capa`);
-    else if (p.coverVideo) m = watchVideo(h("video", { src: src(p.coverVideo), poster: p.coverPoster ? src(p.coverPoster) : null, muted: true, loop: true, playsinline: true, preload: "none", "aria-label": `${p.title}: vinheta` }));
+    else if (p.coverVideo) m = watchVideo(h("video", { src: src(p.coverVideo), poster: p.coverPoster ? src(p.coverPoster) : null, muted: true, loop: true, playsinline: true, preload: "none", "aria-label": `${p.title}: vinheta`, style: p.coverFit === "contain" ? `object-fit:contain;background:${p.coverBg || "#EEE"}` : null }));
     else if (p.coverThumb) m = h("img", { src: p.coverThumb, alt: `${p.title}: ${p.kind || ""}`, loading: "lazy", decoding: "async", width: 960, height: 600 });
     else m = h("span", { class: "tcov", style: "display:grid;place-items:center;height:100%;font-size:2rem;font-weight:300;color:#9A9CA3" }, p.title);
     const met = firstMetric(p);

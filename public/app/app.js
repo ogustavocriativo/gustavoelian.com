@@ -887,7 +887,7 @@ async function renderPortfolioList() {
     h("div", { class: "stack" },
       h("div", { class: "glass card pf-intro" },
         h("p", {}, `${visible} de ${order.length} projetos visíveis no site. A ordem abaixo é a ordem da página inicial: use as setas para reorganizar.`),
-        h("div", { class: "btns" }, h("a", { class: "btn small", href: "#/portfolio/moodboard" }, icon("box"), "Moodboard"), h("a", { class: "btn small", href: "#/portfolio/sobre" }, icon("pen"), "Textos da página inicial"), h("a", { class: "btn ghost small", href: "/", target: "_blank", rel: "noopener" }, icon("eye"), "Abrir o site"))),
+        h("div", { class: "btns" }, h("a", { class: "btn small primary", href: "#/editor" }, icon("pen"), "Editor visual"), h("a", { class: "btn small", href: "#/portfolio/moodboard" }, icon("box"), "Moodboard"), h("a", { class: "btn small", href: "#/portfolio/sobre" }, icon("pen"), "Textos da página inicial"), h("a", { class: "btn ghost small", href: "/", target: "_blank", rel: "noopener" }, icon("eye"), "Abrir o site"))),
       list), h("div", { class: "gap24" }));
 }
 
@@ -1297,7 +1297,7 @@ h("button", { class: "btn ghost small", type: "button", onclick: () => { e.galle
     h("div", { class: "stack pf-edit" },
       h("section", { class: "form-card glass" },
         h("label", { class: "switch" }, "Mostrar no site", h("input", { type: "checkbox", role: "switch", checked: !e.hidden, onchange: (ev) => { e.hidden = !ev.target.checked; touch(); } })),
-        h("div", { class: "btns" }, h("a", { class: "btn small", href: `#/portfolio/${id}/pagina` }, icon("pen"), "Editar página do projeto"), h("a", { class: "btn ghost small", href: pageUrl, target: "_blank", rel: "noopener" }, icon("eye"), "Ver página"))),
+        h("div", { class: "btns" }, h("a", { class: "btn small primary", href: `#/editor/${id}` }, icon("pen"), "Editor visual"), h("a", { class: "btn small", href: `#/portfolio/${id}/pagina` }, "Editar por campos"), h("a", { class: "btn ghost small", href: pageUrl, target: "_blank", rel: "noopener" }, icon("eye"), "Ver página"))),
       placeSec,
       cardSec,
       h("section", { class: "form-card glass" }, h("h2", {}, "Thumb animada"), h("p", { class: "hint" }, "Capa do card na página inicial. GIF até 4,5 MB, ou MP4 (recomendado: até 10× mais leve). 1280×800."), thumb.el),
@@ -1419,8 +1419,9 @@ async function renderPageEdit(id) {
   loading("Página do projeto");
   const base = catalog.projects.find((x) => x.id === id) || {};
   const got = await api(`/api/portfolio/${id}/page`).catch(() => null);
-  let secs = JSON.parse(JSON.stringify(got?.sections?.length ? got.sections : base.sections || []));
-  const fromBase = !got?.sections?.length;
+  const baseNewer = base.updatedAt && got?.updatedAt && base.updatedAt > got.updatedAt;
+  let secs = JSON.parse(JSON.stringify(got?.sections?.length && !baseNewer ? got.sections : base.sections || []));
+  const fromBase = !got?.sections?.length || !!baseNewer;
   let dirty = false;
   const status = h("span", { class: "pf-state", role: "status" }, fromBase ? "Mostrando a versão publicada" : "Tudo salvo");
   const touch = () => { dirty = true; status.textContent = "Alterações não salvas"; status.className = "pf-state warn"; };
@@ -1539,6 +1540,32 @@ async function renderPageEdit(id) {
 }
 
 /* ================= roteamento ================= */
+/* ================= editor visual (canvas) ================= */
+function renderCanvasList() {
+  const list = catalog.projects.filter((p) => p.sections?.length && !p.draft);
+  shell({ title: "Editor visual", eyebrow: "Site", back: "#/portfolio", actions: headerActions() },
+    h("p", { class: "hint", style: "margin:0 0 12px" }, "Abra uma página e edite direto nela: clique no texto para escrever, na imagem para trocar, e use a barra de cada seção para mover, duplicar, ocultar ou excluir."),
+    h("div", { class: "list" }, ...list.map((p) => h("a", { class: "row-card glass", href: `#/editor/${p.id}` },
+      p.cover ? h("img", { src: "/" + p.cover, alt: "", style: "width:56px;height:40px;object-fit:cover;border-radius:10px" }) : h("span"),
+      h("div", { class: "who" }, h("strong", {}, p.title), h("div", { class: "sub" }, `/projetos/${p.id}`)), icon("pen")))));
+}
+function renderCanvas(id) {
+  const p = catalog.projects.find((x) => x.id === id);
+  let vp = lsGet("ge_canvas_vp") || "d";
+  const frame = h("iframe", { class: "canvas-frame", src: `/projetos/${id}?editar`, title: `Editor visual: ${p?.title || id}` });
+  const stage = h("div", { class: `canvas-stage ${vp}` }, frame);
+  const seg = h("div", { class: "seg canvas-seg", role: "group", "aria-label": "Formato" },
+    ...[["d", "Computador"], ["m", "Celular"]].map(([k, l]) => h("button", { type: "button", "aria-pressed": String(vp === k), onclick: (e) => {
+      vp = k; lsSet("ge_canvas_vp", k); stage.className = `canvas-stage ${k}`;
+      seg.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === e.currentTarget)));
+    } }, l)));
+  shell({ title: p?.title || id, eyebrow: "Editor visual", back: "#/editor", compact: true, nav: false,
+    actions: [seg, h("a", { class: "ibtn", href: `/projetos/${id}`, target: "_blank", rel: "noopener", "aria-label": "Abrir página no site" }, icon("eye"))] }, stage);
+  document.body.classList.add("canvas-mode");
+  const off = () => { document.body.classList.remove("canvas-mode"); removeEventListener("hashchange", off); };
+  addEventListener("hashchange", off);
+}
+
 async function route() {
   window.onbeforeunload = null;
   try {
@@ -1559,6 +1586,8 @@ async function route() {
     if (r === "/portfolio/sobre") return await renderSiteContent();
     if (r === "/portfolio/moodboard") return await renderMoodboard();
     if ((m = r.match(/^\/portfolio\/([a-z0-9-]+)\/pagina$/))) return await renderPageEdit(m[1]);
+    if (r === "/editor") return renderCanvasList();
+    if ((m = r.match(/^\/editor\/([a-z0-9-]+)$/))) return renderCanvas(m[1]);
     if ((m = r.match(/^\/portfolio\/([a-z0-9-]+)$/))) return await renderPortfolioEdit(m[1]);
     if ((m = r.match(/^\/c\/([a-z0-9-]+)$/))) return await renderContract(m[1]);
     if ((m = r.match(/^\/q\/([a-z0-9-]+)\/(detalhe|atividade)$/))) return await renderProposalDetail(m[1]);
