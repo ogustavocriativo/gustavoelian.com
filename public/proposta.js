@@ -18,7 +18,7 @@ function h(tag, attrs = {}, ...kids) {
 }
 function toast(m) { toastEl.textContent = m; toastEl.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (toastEl.hidden = true), 3000); }
 async function post(action, body) {
-  const r = await fetch(`/api/p/${slug}/${action}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  const r = await fetch(`/api/p/${slug}/${action}${location.search}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(d.error || "Não foi possível enviar. Tente de novo.");
   return d;
@@ -187,12 +187,14 @@ function approve() {
     if (!fd.get("accept")) { err.textContent = "Para aprovar, marque que leu e aceita os termos."; return; }
     const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Registrando…";
     try {
-      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), accept: true, signature: pad.getData() });
+      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad.getData() });
+      if (D.demo) { try { sessionStorage.setItem("ge_demo", JSON.stringify({ selection: sel, approvedAt: new Date().toISOString(), signer: { name: fd.get("name") } })); } catch {} }
       await load(); toast("Proposta aprovada. Obrigado!"); location.hash = "#pagamento";
     } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "Aprovar proposta"; }
   } },
     h("div", { class: "grid2" }, inp("name", "Nome completo *", "text", { autocomplete: "name", value: D.quote.client.name || "" }), inp("doc", "CPF ou CNPJ *", "text", { inputmode: "numeric", autocomplete: "off" })),
     h("div", { class: "grid2" }, inp("email", "E-mail *", "email", { autocomplete: "email" }), h("label", { class: "f", for: "phone" }, "WhatsApp", h("input", { id: "phone", name: "phone", type: "tel", autocomplete: "tel" }))),
+    D.quote.contractEnabled ? inp("address", "Endereço completo, com cidade *", "text", { autocomplete: "street-address" }) : null,
     D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), h("div", { class: "contract", id: "contractText", tabindex: "0" }, D.contractPreview)] : null,
     D.quote.contractEnabled ? pad : null,
     h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
@@ -209,6 +211,11 @@ async function payment() {
   if (s.paidAt || params.get("pagamento") === "ok") { sec.append(h("div", { class: "done" }, h("strong", {}, "Recebemos o seu pagamento. Obrigado! Em breve entro em contato para começarmos."))); return sec; }
   if (s.paymentNotice) sec.append(h("div", { class: "done" }, h("strong", {}, "Comprovante recebido. Assim que o valor for confirmado, começamos.")));
   const method = s.selection?.method || "avista";
+  if (D.demo) {
+    sec.append(h("p", { class: "lead" }, method === "cartao" ? "Aqui a cliente pagaria com cartão, Apple Pay ou Google Pay, em ambiente seguro do Stripe." : `Aqui aparece o QR Code do Pix com a entrada de ${D.payments.entryPct}%, o código copia e cola e o botão para enviar o comprovante.`),
+      h("div", { class: "done" }, h("strong", {}, "Na demonstração nenhum pagamento é gerado.")), h("p", {}, "Assim que o pagamento cai, você recebe o aviso no Studio e a cliente acompanha tudo em gustavoelian.com/acompanhar."));
+    return sec;
+  }
   if (method === "cartao" && D.payments.card) {
     sec.append(h("p", { class: "lead" }, "Pague com cartão de crédito, Apple Pay ou Google Pay em ambiente seguro."),
       h("button", { class: "btn dark", type: "button", onclick: async (e) => {
@@ -259,7 +266,7 @@ function questions() {
 }
 
 async function load() {
-  const r = await fetch(`/api/p/${slug}`);
+  const r = await fetch(`/api/p/${slug}${location.search}`);
   if (!r.ok) {
     document.title = "Proposta não encontrada · Gustavo Elian";
     app.replaceChildren(h("section", { class: "blk hero" }, h("h1", {}, "Proposta não encontrada"), h("p", { class: "lead" }, "Confira o link recebido ou fale comigo."),
@@ -268,13 +275,18 @@ async function load() {
     return;
   }
   D = await r.json();
+  // demonstração: nada vai para o servidor; o andamento fica só nesta aba
+  if (D.demo) { try { Object.assign(D.state, JSON.parse(sessionStorage.getItem("ge_demo") || "{}")); } catch {} }
   catalog = catalog || (await fetch("/data/projects.json").then((x) => x.json()));
   sel = D.state.selection || { packageId: (D.quote.packages.find((p) => p.highlight) || D.quote.packages[0])?.id || null, itemIds: D.quote.items.map((i) => i.id), method: "avista" };
   document.title = `Proposta · ${D.quote.client.name} · Gustavo Elian`;
   document.getElementById("topPdf").href = `/api/pdf/${slug}/orcamento?download`;
+  if (D.demo) document.getElementById("topPdf").hidden = true;
   const pay = await payment();
-  app.replaceChildren(...[hero(), services(), chooser(), bonuses(), works(), attachments(), approve(), pay, questions()].filter(Boolean));
-  document.getElementById("foot").replaceChildren(h("span", {}, `${D.issuer.name} · ${D.issuer.doc}`), h("span", {}, D.issuer.email), h("a", { href: "/" }, D.issuer.site));
+  const demoBar = D.demo ? h("div", { class: "demo-bar", role: "note" }, h("strong", {}, "Demonstração"), " Proposta fictícia para você ver como funciona. Nada é gravado nem cobrado. ",
+    h("button", { type: "button", onclick: () => { try { sessionStorage.removeItem("ge_demo"); } catch {} location.hash = ""; load(); scrollTo(0, 0); } }, "Recomeçar")) : null;
+  app.replaceChildren(...[demoBar, hero(), services(), chooser(), bonuses(), works(), attachments(), approve(), pay, questions()].filter(Boolean));
+  document.getElementById("foot").replaceChildren(h("span", {}, [D.issuer.name, D.issuer.doc].filter(Boolean).join(" · ")), h("span", {}, D.issuer.email), h("a", { href: "/" }, D.issuer.site));
   if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
 }
 

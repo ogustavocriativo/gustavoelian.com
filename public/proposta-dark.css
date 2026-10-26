@@ -1,0 +1,31 @@
+/* Proposta B: página da proposta no visual escuro do site (referência Luma). Ativa com <html class="dark">. */
+@font-face{font-family:"LT Wave";src:url(/fonts/LTWave-Light.woff2) format("woff2");font-weight:300;font-display:swap}
+html.dark{
+  --bg:#0A0A0B;--surface:#1C1C1F;--surface2:#141416;--fg:#F1F1EC;--fg2:#A6A79F;--line:#26262A;--slate:#6B6C66;
+  --accent:#C5DD63;--accent-ink:#D3EA77;--on-accent:#0A0A0B;--ok:#C5DD63;--ok-bg:#1B2410;--invert:#F1F1EC;--invert-fg:#0A0A0B;color-scheme:dark;
+}
+html.dark body{background:var(--bg)}
+html.dark body::after{content:"";position:fixed;z-index:-1;right:-25vmax;top:-20vmax;width:70vmax;height:70vmax;border-radius:50%;background:radial-gradient(closest-side,rgba(197,221,99,.14),rgba(86,99,28,.08) 45%,transparent 70%);pointer-events:none}
+html.dark h1,html.dark h2,html.dark h3{font-weight:300;letter-spacing:-.035em}
+html.dark .hero h1{font-weight:300}
+html.dark .top{background:color-mix(in srgb,#0A0A0B 82%,transparent)}
+html.dark section.blk{border-color:var(--line)}
+html.dark .btn.primary,html.dark .btn.dark{background:linear-gradient(135deg,#9DB441,#D3EA77);color:#0A0A0B;box-shadow:0 10px 40px -14px rgba(197,221,99,.6)}
+html.dark .btn.ghost{border-color:#2C2C30}
+html.dark .item,html.dark .work,html.dark .contract,html.dark .pix{background:var(--surface2);border-color:var(--line)}
+html.dark .item .price{font-weight:400;font-size:1.5rem;letter-spacing:-.02em}
+html.dark .opt{background:var(--surface2);border-color:#26262A}
+html.dark .opt:has(input:checked){border-color:var(--accent);background:#151A0C;box-shadow:0 0 0 4px rgba(197,221,99,.08)}
+html.dark .opt .v{font-weight:400;font-size:1.125rem}
+html.dark .seg button[aria-pressed=true]{background:#2A2A2E;box-shadow:none}
+/* resumo do valor: cartão claro com glow, como os cartões de dado da referência */
+html.dark .summary{background:radial-gradient(circle at 85% 0%,rgba(197,221,99,.35),transparent 55%),#F4F5EE;color:#0E0E10}
+html.dark .summary .big{font-weight:300;letter-spacing:-.045em}
+html.dark .summary small{color:#55575E;opacity:1}
+html.dark .bonus div{background:var(--surface2);box-shadow:inset 0 0 0 1px var(--line)}
+html.dark .pill{background:var(--surface)}
+html.dark .pill.ok,html.dark .done{background:var(--ok-bg);color:var(--accent-ink)}
+html.dark input[type=text],html.dark input[type=email],html.dark input[type=tel],html.dark textarea{background:#111113;border-color:#2A2A2E}
+html.dark .sig{background:#111113;border-color:#4A4B46}
+html.dark #toast{background:#F1F1EC;color:#0A0A0B}
+html.dark .eyebrow{color:var(--accent-ink)}

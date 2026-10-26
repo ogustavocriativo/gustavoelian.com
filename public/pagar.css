@@ -1,0 +1,31 @@
+/* Link de pagamento: um cartão central, valor em destaque (figura), escolha Pix/cartão (região comum), ação única por estado. 8pt. */
+.pg{max-width:480px;padding-top:32px;padding-bottom:64px;display:flex;flex-direction:column;gap:16px}
+.pg-card{background:var(--surface2);border:1px solid var(--line);border-radius:28px;padding:32px 24px;display:flex;flex-direction:column;gap:24px}
+.pg-head{text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.pg-to{font-size:.875rem;color:var(--fg2)}
+.pg-amt{font-size:clamp(2.75rem,12vw,3.5rem);font-weight:700;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.pg-amt small{font-size:.45em;font-weight:500;margin-right:4px;color:var(--fg2)}
+.pg-desc{font-size:1rem;color:var(--fg2);max-width:28em}
+.pg .seg button{border:0;border-radius:999px;padding:12px;font:inherit;font-weight:500;background:transparent;color:var(--fg);cursor:pointer;min-height:44px}
+.pg .seg button[aria-pressed=true]{background:var(--bg);box-shadow:0 1px 2px rgba(0,0,0,.12);font-weight:700}
+.pg-pane{display:flex;flex-direction:column;gap:16px;align-items:stretch}
+.pg-qr{align-self:center;width:208px;height:208px;padding:12px;border-radius:20px;background:#fff}
+.pg-qr svg{width:100%;height:100%;display:block}
+.pg-code{display:flex;gap:8px;align-items:center;padding:8px 8px 8px 16px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.pg-code code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.8125rem;color:var(--fg2)}
+.pg-note{font-size:.875rem;color:var(--fg2);text-align:center}
+.pg-row{display:flex;justify-content:space-between;gap:16px;font-size:.9375rem}
+.pg-row b{font-variant-numeric:tabular-nums}
+.pg .btn{width:100%;min-height:52px}
+.pg-trust{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;font-size:.8125rem;color:var(--fg2)}
+.pg-trust span{display:inline-flex;align-items:center;gap:6px}
+.pg-trust svg{width:14px;height:14px}
+/* pago: tela cheia de confirmação, como o "enviado" da referência */
+.pg-ok{border-radius:28px;padding:56px 24px;text-align:center;background:#C5DD63;color:#0A0A0B;display:flex;flex-direction:column;align-items:center;gap:12px}
+.pg-ok .ck{width:72px;height:72px;border-radius:50%;background:#0A0A0B;color:#C5DD63;display:grid;place-items:center;animation:pg-pop .5s cubic-bezier(.2,1.4,.4,1)}
+.pg-ok .ck svg{width:36px;height:36px}
+.pg-ok h1{font-size:2.5rem;letter-spacing:-.03em}
+.pg-ok p{color:#2A3110}
+@keyframes pg-pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pg-ok .ck{animation:none}}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:12px 20px;border-radius:999px;font-size:.9375rem;z-index:50}

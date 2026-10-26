@@ -58,7 +58,8 @@
       "Assis/SP",
       "2026",
       "7 produtos digitais"
-     ]
+     ],
+     "block": "img/cases/institutodemian/hero-block.jpg"
     },
     {
      "type": "split",
@@ -178,19 +179,23 @@
    ]
   },
   {
-   "id": "campanhas-e-canais",
+   "id": "ibi-shopping",
    "case": true,
    "featured": true,
-   "title": "IBI Shopping e canais no YouTube",
-   "kind": "Campanhas e conteúdo",
-   "client": "IBI Shopping · criadores de conteúdo",
-   "year": "2022–2025",
+   "title": "IBI Shopping: rebranding, campanhas e IBI Front",
+   "kind": "Rebranding, campanhas e ativação",
+   "client": "IBI Shopping",
+   "year": "2025",
    "fronts": [
-    "social"
+    "branding",
+    "social",
+    "trade"
    ],
-   "summary": "Linha criativa “Celebre cada momento”, campanhas do IBI Shopping e mentoria de canais no YouTube e em vídeos verticais.",
-   "cover": "img/cases/ibi/lc-04.jpg",
+   "summary": "Rebranding do Shopping Ibituruna para IBI Shopping, linha criativa “Celebre cada momento”, calendário de campanhas e o IBI Front na Expomontes 2025.",
+   "cover": "img/cases/ibi/lc/p4.jpg",
    "logo": "ibi",
+   "coverVideo": "video/ibi/vinheta-ibi.mp4",
+   "coverPoster": "video/ibi/vinheta-ibi.jpg",
    "theme": {
     "bg": "#F3F1E8",
     "ink": "#22302A",
@@ -203,173 +208,96 @@
    },
    "sections": [
     {
-     "type": "hero",
-     "kicker": "Mídias sociais e campanhas",
-     "title": "Celebre cada momento",
-     "lead": "Campanhas de um shopping inteiro e estratégia para canais de criadores: duas frentes do mesmo trabalho, que é transformar marca em conversa.",
-     "image": "img/cases/ibi/lc-04.jpg",
-     "chips": [
-      "IBI Shopping",
-      "Montes Claros/MG",
-      "2025",
-      "Mentoria de canais"
-     ]
-    },
-    {
-     "type": "split",
-     "panel": true,
-     "eyebrow": "IBI Shopping · Linha criativa 2025",
-     "title": "Uma voz para cada momento",
-     "text": [
-      "Sob o slogan Celebre cada momento, a linha criativa 2025 dividiu a comunicação do shopping em grupos de interesse. Cada grupo tem cor, ícone e voz próprios, e todos assinam com o mesmo símbolo.",
-      "Desenvolvida pela Coordenação de Mídia e Trade do setor de Marketing, que eu coordenava."
+     "type": "board",
+     "cols": "repeat(6,1fr)",
+     "rows": "clamp(26px,3.4vw,46px) minmax(230px,18vw) minmax(230px,18vw)",
+     "areas": [
+      "s s s s s s",
+      "t t t l l l",
+      "t t t l l l"
      ],
-     "image": "img/cases/ibi/lc-06.jpg"
-    },
-    {
-     "type": "cards",
-     "eyebrow": "Linhas de comunicação",
-     "title": "Sete formas de celebrar",
-     "items": [
+     "mcols": "1fr 1fr",
+     "mrows": "28px auto 70vw",
+     "mareas": [
+      "s s",
+      "t t",
+      "l l"
+     ],
+     "blocks": [
       {
-       "title": "Celebre sabores",
-       "kind": "Alimentação",
-       "text": "Praça de alimentação, cafés e quiosques.",
-       "image": "img/cases/ibi/lc-10.jpg"
+       "area": "s",
+       "stripes": [
+        "#E8381F",
+        "#474AFF",
+        "#E85C1A",
+        "#2E4A3E",
+        "#7A0000",
+        "#55553A",
+        "#E29A1C"
+       ]
       },
       {
-       "title": "Celebre sorrisos",
-       "kind": "Diversão",
-       "text": "Cinema, eventos, ativações, feiras e oficinas.",
-       "image": "img/cases/ibi/lc-14.jpg"
+       "area": "t",
+       "bg": "#2E4A3E",
+       "fg": "#FBF6EA",
+       "text": {
+        "back": true,
+        "h1": true,
+        "eyebrow": "Rebranding · campanhas · ativação",
+        "title": "IBI Shopping",
+        "body": "Em 17 de março de 2025, o Shopping Ibituruna virou IBI Shopping. Depois veio a linha criativa “Celebre cada momento”, o calendário de campanhas e o IBI Front na Expomontes. Tudo sob a mesma coordenação de marketing.",
+        "chips": [
+         "Montes Claros/MG",
+         "2025",
+         "Coordenação de Marketing"
+        ],
+        "size": "xl",
+        "align": "center"
+       }
       },
       {
-       "title": "Celebre deslumbre",
-       "kind": "Beleza e estética",
-       "text": "Farmácias, salões e cuidados.",
-       "image": "img/cases/ibi/lc-18.jpg"
-      },
-      {
-       "title": "Celebre beleza",
-       "kind": "Moda e praia",
-       "text": "Vestuário, calçados, acessórios e ótica.",
-       "image": "img/cases/ibi/lc-22.jpg"
-      },
-      {
-       "title": "Celebre realizações",
-       "kind": "Serviços",
-       "text": "Praticidade e serviços do dia a dia.",
-       "image": "img/cases/ibi/lc-26.jpg"
-      },
-      {
-       "title": "Celebre culturas",
-       "kind": "ESG",
-       "text": "Ações sociais, culturais e ambientais.",
-       "image": "img/cases/ibi/lc-30.jpg"
-      },
-      {
-       "title": "É lugar de pet feliz",
-       "kind": "Pet friendly",
-       "text": "Campanha que apresenta o shopping como espaço pet friendly.",
-       "image": "img/cases/ibi/lc-32.jpg"
+       "area": "l",
+       "bg": "#45B97C",
+       "img": "img/cases/ibifront/ill/flor-ibi.webp",
+       "alt": "Símbolo IBI",
+       "w": 44,
+       "anim": "spin",
+       "eager": true
       }
      ]
     },
     {
-     "type": "split",
-     "reverse": true,
-     "eyebrow": "Planejamento",
-     "title": "Institucionais, promocionais e sociais",
-     "text": [
-      "O planejamento estratégico de marketing organizou as campanhas em três tipos, com orçamento focado em resultado e um roteiro para o triênio 2025–2027.",
-      "Nas datas do varejo, as campanhas promocionais ganharam assinatura própria, como “Seu amor, meu aconchego” no Dia das Mães."
-     ],
-     "image": "img/cases/campanhas/ibi-pecas.jpg"
+     "type": "band",
+     "video": "video/ibifront/v4.mp4",
+     "poster": "video/ibifront/v4.jpg",
+     "ratio": "6912/512",
+     "bg": "#3A2A1C",
+     "label": "Testeira de palco do IBI Front"
     },
     {
-     "type": "strip",
-     "title": "Peças da linha criativa",
-     "images": [
-      "img/cases/ibi/lc-01.jpg",
-      "img/cases/ibi/lc-10.jpg",
-      "img/cases/ibi/lc-14.jpg",
-      "img/cases/ibi/lc-18.jpg",
-      "img/cases/ibi/lc-22.jpg",
-      "img/cases/ibi/lc-26.jpg",
-      "img/cases/ibi/lc-30.jpg",
-      "img/cases/ibi/pe-01.jpg",
-      "img/cases/ibi/pe-15.jpg"
-     ]
-    },
-    {
-     "type": "split",
-     "panel": true,
-     "dark": true,
-     "eyebrow": "Mentoria e canais",
-     "title": "Conteúdo para plataformas de vídeo",
-     "text": [
-      "Como produtor e consultor na AJR Mentorias de YouTube, fiz mentoria e gerenciamento omnichannel de canais de criadores, entre eles Dra. Mônica Demian, Daniel Cady, Kamila Simioni, Thales Baião e Astrologia Luz e Sombra.",
-      "As estratégias cobriram o YouTube e as plataformas verticais: TikTok, Kwai, Shorts e Reels."
+     "type": "board",
+     "cols": "1fr",
+     "rows": "minmax(230px,17vw)",
+     "areas": [
+      "t"
      ],
-     "image": "img/cases/campanhas/mentorias.jpg"
-    },
-    {
-     "type": "split",
-     "reverse": true,
-     "eyebrow": "Reality show",
-     "title": "Gestão de persona em A Fazenda 15",
-     "text": [
-      "Atuei como gestor de persona na participação de Kamila Simioni em A Fazenda 15, com identidade própria para as redes durante o programa."
+     "mrows": "auto",
+     "mareas": [
+      "t"
      ],
-     "image": "img/cases/campanhas/team-simioni.jpg"
-    },
-    {
-     "type": "split",
-     "eyebrow": "Gerenciamento de conteúdo",
-     "title": "Perfis que trabalham juntos",
-     "text": [
-      "Direção de arte, copywriting e marketing de influência aplicados à rotina dos perfis, com identidade consistente entre capa, destaques e publicações."
-     ],
-     "image": "img/cases/campanhas/perfis.jpg"
-    }
-   ]
-  },
-  {
-   "id": "ibi-rebranding-front",
-   "case": true,
-   "featured": true,
-   "title": "IBI Shopping: rebranding e IBI Front",
-   "kind": "Rebranding, sinalização e ativação",
-   "client": "IBI Shopping",
-   "year": "2025",
-   "fronts": [
-    "trade"
-   ],
-   "summary": "Implantação da nova marca no espaço físico, estudo de sinalização e o IBI Front, ativação do shopping na Expomontes 2025.",
-   "cover": "img/cases/ibifront/pf-05.jpg",
-   "logo": "ibifront",
-   "theme": {
-    "bg": "#F7EFE2",
-    "ink": "#2E2116",
-    "soft": "#6E5B49",
-    "panel": "#3A2A1C",
-    "onPanel": "#F7EFE2",
-    "accent": "#E09A3E",
-    "accentInk": "#9A5B16",
-    "chip": "#EEDFC8"
-   },
-   "sections": [
-    {
-     "type": "hero",
-     "kicker": "Eventos e ativações · trade",
-     "title": "De Ibituruna a IBI",
-     "lead": "Em 17 de março de 2025, o Shopping Ibituruna se tornou IBI Shopping. Coordenei a chegada da nova marca ao espaço físico e levei o shopping para a Expomontes com o IBI Front.",
-     "image": "img/cases/ibifront/pf-05.jpg",
-     "chips": [
-      "IBI Shopping",
-      "Montes Claros/MG",
-      "2025",
-      "Rebranding + ativação"
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#2E4A3E",
+       "fg": "#FBF6EA",
+       "text": {
+        "eyebrow": "Parte 1",
+        "title": "Rebranding",
+        "body": "De Shopping Ibituruna a IBI Shopping: nome, símbolo, sinalização e uma nova forma de falar.",
+        "size": "xl",
+        "align": "center"
+       }
+      }
      ]
     },
     {
@@ -381,6 +309,46 @@
       "Na operação, fiquei com o gerenciamento do rebranding: a substituição das peças antigas pelas novas em todo o shopping."
      ],
      "image": "img/cases/trade/rebranding-sistema.jpg"
+    },
+    {
+     "type": "board",
+     "_artigo": true,
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(380px,28vw)",
+     "areas": [
+      "t t t a"
+     ],
+     "mrows": "auto 60vw",
+     "mareas": [
+      "t t",
+      "a a"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#2E4A3E",
+       "fg": "#F7EFE2",
+       "text": {
+        "eyebrow": "Publicação acadêmica · Revista Multidisciplinar, v. 39, n. 1, 2026",
+        "title": "Semiótica e História Social no branding",
+        "body": "O rebranding do IBI Shopping virou estudo de caso no artigo “Semiótica e História Social no branding: conversão de signos urbanos e ícones marcários”, de Gustavo Elian Siqueira Montes e Gustavo Souza Santos. O texto relaciona imagem, patrimônio e identidade regional na construção da nova marca.",
+        "link": {
+         "href": "https://portalunifipmoc.emnuvens.com.br/rm/article/view/411",
+         "label": "Ler o artigo ↗"
+        },
+        "size": "l",
+        "align": "center"
+       }
+      },
+      {
+       "area": "a",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/flor-ibi.webp",
+       "alt": "Flor do símbolo IBI",
+       "w": 50,
+       "anim": "spin"
+      }
+     ]
     },
     {
      "type": "split",
@@ -402,6 +370,503 @@
       "img/cases/ibi/mc-08.jpg",
       "img/cases/ibi/mc-09.jpg",
       "img/cases/trade/rebranding-pecas.jpg"
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "1fr",
+     "rows": "minmax(230px,17vw)",
+     "areas": [
+      "t"
+     ],
+     "mrows": "auto",
+     "mareas": [
+      "t"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#E29A1C",
+       "fg": "#2E4A3E",
+       "text": {
+        "eyebrow": "Parte 2",
+        "title": "Campanhas",
+        "body": "Linha criativa, calendário do ano, ponto de trocas, vídeos e parcerias.",
+        "size": "xl",
+        "align": "center"
+       }
+      }
+     ]
+    },
+    {
+     "type": "logoMotion",
+     "glyph": "img/cases/ibifront/ill/flor-ibi.webp",
+     "prefix": "celebre",
+     "label": "Símbolo IBI nas cores das linhas de campanha",
+     "palettes": [
+      {
+       "name": "sabores",
+       "bg": "#FFE1D2",
+       "fg": "#E8381F"
+      },
+      {
+       "name": "sorrisos",
+       "bg": "#E4E5FF",
+       "fg": "#474AFF"
+      },
+      {
+       "name": "deslumbre",
+       "bg": "#FFF6B0",
+       "fg": "#E85C1A"
+      },
+      {
+       "name": "beleza",
+       "bg": "#DCEBDF",
+       "fg": "#2E4A3E"
+      },
+      {
+       "name": "realizações",
+       "bg": "#F9DCD2",
+       "fg": "#7A0000"
+      },
+      {
+       "name": "culturas",
+       "bg": "#E8E6D6",
+       "fg": "#55553A"
+      },
+      {
+       "name": "cada momento",
+       "bg": "#2E4A3E",
+       "fg": "#FBF6EA"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(170px,13vw) minmax(170px,13vw)",
+     "areas": [
+      "t t a a",
+      "t t b b"
+     ],
+     "mrows": "auto 30vw 30vw",
+     "mareas": [
+      "t t",
+      "a a",
+      "b b"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#E29A1C",
+       "fg": "#2E4A3E",
+       "text": {
+        "eyebrow": "IBI Shopping · Linha criativa 2025",
+        "title": "Uma voz para cada momento",
+        "body": [
+         "Sob o slogan Celebre cada momento, a linha criativa 2025 dividiu a comunicação do shopping em grupos de interesse. Cada grupo tem cor, ícone e voz próprios, e todos assinam com o mesmo símbolo.",
+         "Desenvolvida pela Coordenação de Mídia e Trade do setor de Marketing, que eu coordenava."
+        ],
+        "size": "l",
+        "align": "center"
+       }
+      },
+      {
+       "area": "a",
+       "bg": "#FBF6EA",
+       "img": "img/cases/ibi/lc/lk-variantes-a.webp",
+       "alt": "Variações de cor da assinatura",
+       "w": 86
+      },
+      {
+       "area": "b",
+       "bg": "#EFE7D3",
+       "img": "img/cases/ibi/lc/lk-variantes-b.webp",
+       "alt": "Variações da assinatura em fundos escuros e laranja",
+       "w": 86
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Linhas de comunicação",
+     "title": "Seis formas de celebrar",
+     "text": "Cada linha atende um grupo de lojas e serviços. Passe o mouse ou toque no bloco para ver a peça-chave.",
+     "cols": "repeat(3,1fr)",
+     "rows": "repeat(2,minmax(240px,22vw))",
+     "areas": [
+      "a b c",
+      "d e f"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "repeat(3,52vw)",
+     "mareas": [
+      "a b",
+      "c d",
+      "e f"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#FFE1D2",
+       "fg": "#E8381F",
+       "img": "img/cases/ibi/lc/lk-sabores.webp",
+       "alt": "Celebre sabores",
+       "w": 44,
+       "photo": "img/cases/ibi/lc/p10.jpg",
+       "tag": "Alimentação · cafés e quiosques"
+      },
+      {
+       "area": "b",
+       "bg": "#E4E5FF",
+       "fg": "#474AFF",
+       "img": "img/cases/ibi/lc/lk-sorrisos.webp",
+       "alt": "Celebre sorrisos",
+       "w": 44,
+       "photo": "img/cases/ibi/lc/p14.jpg",
+       "tag": "Diversão e entretenimento"
+      },
+      {
+       "area": "c",
+       "bg": "#FFF6B0",
+       "fg": "#E85C1A",
+       "img": "img/cases/ibi/lc/lk-deslumbre.webp",
+       "alt": "Celebre deslumbre",
+       "w": 44,
+       "photo": "img/cases/ibi/lc/p18.jpg",
+       "tag": "Beleza e estética"
+      },
+      {
+       "area": "d",
+       "bg": "#DCEBDF",
+       "fg": "#2E4A3E",
+       "img": "img/cases/ibi/lc/lk-beleza.webp",
+       "alt": "Celebre beleza",
+       "w": 44,
+       "photo": "img/cases/ibi/lc/p22.jpg",
+       "tag": "Moda e praia"
+      },
+      {
+       "area": "e",
+       "bg": "#F9DCD2",
+       "fg": "#7A0000",
+       "img": "img/cases/ibi/lc/lk-realizacoes.webp",
+       "alt": "Celebre realizações",
+       "w": 44,
+       "photo": "img/cases/ibi/lc/p26.jpg",
+       "tag": "Praticidade e serviços"
+      },
+      {
+       "area": "f",
+       "bg": "#E8E6D6",
+       "fg": "#55553A",
+       "img": "img/cases/ibi/lc/lk-culturas.webp",
+       "alt": "Celebre culturas",
+       "w": 44,
+       "photo": "img/cases/ibi/lc/p30.jpg",
+       "tag": "ESG e cultura"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Planejamento",
+     "title": "Institucionais, promocionais e sociais",
+     "text": [
+      "O planejamento estratégico de marketing organizou as campanhas em três tipos (institucionais, promocionais e sociais), com orçamento focado em resultado e um roteiro para o triênio 2025–2027.",
+      "Cada data do varejo ganhou assinatura própria, como “Mãe, amor que apaixona” e “Aconchego que faz bem”, no Dia dos Namorados."
+     ],
+     "image": "img/cases/campanhas/ibi-pecas.jpg",
+     "fx": "tilt"
+    },
+    {
+     "type": "calendar",
+     "bg": "#2E4A3E",
+     "fg": "#FBF6EA",
+     "eyebrow": "Planejamento estratégico de marketing 2025",
+     "title": "O ano inteiro em campanhas",
+     "text": "O planejamento distribuiu as campanhas ao longo do ano, cada uma com marca e paleta próprias, dentro do mesmo sistema da linha criativa.",
+     "legend": [
+      {
+       "k": "inst",
+       "label": "Institucional",
+       "color": "#FFF448"
+      },
+      {
+       "k": "promo",
+       "label": "Promocional",
+       "color": "#E29A1C"
+      }
+     ],
+     "note": "As campanhas sociais (ESG, acessibilidade, pet friendly) correm o ano todo, em paralelo ao calendário.",
+     "items": [
+      {
+       "m": 3,
+       "img": "img/cases/ibi/cal/ela-mulher.jpg",
+       "label": "Ela Mulher Atemporal · 8 de março",
+       "kind": "inst"
+      },
+      {
+       "m": 3,
+       "img": "img/cases/ibi/cal/consumidor.jpg",
+       "label": "Semana do Consumidor",
+       "kind": "inst"
+      },
+      {
+       "m": 4,
+       "img": "img/cases/ibi/cal/pascoa.jpg",
+       "label": "Páscoa Divertida",
+       "kind": "inst"
+      },
+      {
+       "m": 5,
+       "img": "img/cases/ibi/cal/mae.jpg",
+       "label": "Mãe · Amor que apaixona",
+       "kind": "promo",
+       "bg": "#345246"
+      },
+      {
+       "m": 6,
+       "img": "img/cases/ibi/cal/aconchego.jpg",
+       "label": "Aconchego que faz bem · Dia dos Namorados",
+       "kind": "inst"
+      },
+      {
+       "m": 8,
+       "img": "img/cases/ibi/cal/pai.jpg",
+       "label": "Pai pra tudo",
+       "kind": "promo",
+       "bg": "#345246"
+      },
+      {
+       "m": 8,
+       "img": "img/cases/ibi/cal/agosto.jpg",
+       "label": "Agosto Norte-Mineiro · Festas de Agosto",
+       "kind": "inst"
+      },
+      {
+       "m": 10,
+       "img": "img/cases/ibi/cal/sonhos.jpg",
+       "label": "Sonhos de Criança",
+       "kind": "inst"
+      },
+      {
+       "m": 11,
+       "img": "img/cases/ibi/cal/black.jpg",
+       "label": "Black IBI",
+       "kind": "inst"
+      },
+      {
+       "m": 12,
+       "img": "img/cases/ibi/cal/natal.jpg",
+       "label": "Natal · Energia que aproxima",
+       "kind": "promo",
+       "bg": "#345246"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(340px,28vw)",
+     "areas": [
+      "a a a t"
+     ],
+     "mcols": "1fr",
+     "mrows": "56vw auto",
+     "mareas": [
+      "a",
+      "t"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#ddd",
+       "img": "img/cases/ibi/novo/espaco-campanha.jpg",
+       "alt": "Render do Espaço Campanha com a campanha de Mães na fachada",
+       "fit": "cover"
+      },
+      {
+       "area": "t",
+       "bg": "#5B3A6B",
+       "fg": "#F6EEF8",
+       "text": {
+        "eyebrow": "Espaço Campanha",
+        "title": "Um endereço para cada promoção",
+        "body": "Ponto de trocas das campanhas promocionais, no Corredor Bocaiúva, com a campanha da vez vestindo a fachada.",
+        "size": "m",
+        "align": "center"
+       }
+      }
+     ]
+    },
+    {
+     "type": "reels",
+     "bg": "#7A1E14",
+     "fg": "#FCEDE8",
+     "eyebrow": "Vídeos das campanhas",
+     "title": "Mães e Namorados em movimento",
+     "text": "Vídeos verticais para redes e telas, com a assinatura do IBI Shopping no fim.",
+     "items": [
+      {
+       "src": "video/ibi/maes.mp4",
+       "poster": "video/ibi/maes.jpg",
+       "ratio": "9/16",
+       "label": "Mãe, amor que apaixona"
+      },
+      {
+       "src": "video/ibi/namorados.mp4",
+       "poster": "video/ibi/namorados.jpg",
+       "ratio": "9/16",
+       "label": "Seu amor, meu aconchego"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Co-branding",
+     "title": "Propostas de collab com marcas parceiras",
+     "text": "Para as campanhas de Natal e de Dia dos Pais, o shopping propôs parcerias em que a marca convidada assina a promoção junto com o IBI, com brindes, mídia e ponto de troca compartilhados.",
+     "cols": "repeat(3,1fr)",
+     "rows": "repeat(2,minmax(200px,17vw))",
+     "areas": [
+      "a b c",
+      "d e f"
+     ],
+     "mcols": "1fr",
+     "mrows": "repeat(6,56vw)",
+     "mareas": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#B8312F",
+       "img": "img/cases/ibi/novo/havaianas-p1.jpg",
+       "alt": "Proposta de collab de Natal",
+       "fit": "cover",
+       "tag": "Natal · Havaianas"
+      },
+      {
+       "area": "b",
+       "bg": "#1E4D3A",
+       "img": "img/cases/ibi/novo/havaianas-p2.jpg",
+       "alt": "O IBI te convida a colaborar",
+       "fit": "cover"
+      },
+      {
+       "area": "c",
+       "bg": "#2E8B57",
+       "img": "img/cases/ibi/novo/havaianas-p7.jpg",
+       "alt": "Vamos fazer uma linda campanha juntos",
+       "fit": "cover"
+      },
+      {
+       "area": "d",
+       "bg": "#7CC4E8",
+       "img": "img/cases/ibi/novo/pais-p1.jpg",
+       "alt": "Proposta Pai de Férias",
+       "fit": "cover",
+       "tag": "Dia dos Pais · Guaicuí e Transamérica"
+      },
+      {
+       "area": "e",
+       "bg": "#2E6B4F",
+       "img": "img/cases/ibi/novo/pais-p2.jpg",
+       "alt": "Guaicuí, I want you",
+       "fit": "cover"
+      },
+      {
+       "area": "f",
+       "bg": "#ddd",
+       "img": "img/cases/ibi/novo/pais-p7.jpg",
+       "alt": "Cartaz Pai de Férias aplicado",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(240px,20vw) minmax(240px,20vw)",
+     "areas": [
+      "k k c g",
+      "k k t t"
+     ],
+     "mrows": "52vw 56vw auto",
+     "mareas": [
+      "k k",
+      "c g",
+      "t t"
+     ],
+     "blocks": [
+      {
+       "area": "k",
+       "bg": "#2B3A33",
+       "img": "img/cases/ibi/lc/p33.jpg",
+       "alt": "Peça-chave É lugar de pet feliz",
+       "fit": "cover"
+      },
+      {
+       "area": "c",
+       "bg": "#55A868",
+       "img": "img/cases/ibi/lc/pet-cao.webp",
+       "alt": "Placa pet friendly com silhueta de cão",
+       "w": 58,
+       "anim": "bob"
+      },
+      {
+       "area": "g",
+       "bg": "#34524A",
+       "img": "img/cases/ibi/lc/pet-gato.webp",
+       "alt": "Placa pet friendly com silhueta de gato",
+       "w": 58,
+       "anim": "bob"
+      },
+      {
+       "area": "t",
+       "bg": "#FFF448",
+       "fg": "#2E4A3E",
+       "text": {
+        "eyebrow": "Campanha pet friendly",
+        "title": "É lugar de pet feliz",
+        "body": "Campanha para tornar o IBI Shopping pet friendly, com placas e peças no mesmo sistema de blocos e ícones da linha criativa.",
+        "size": "l",
+        "align": "center"
+       }
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "1fr",
+     "rows": "minmax(230px,17vw)",
+     "areas": [
+      "t"
+     ],
+     "mrows": "auto",
+     "mareas": [
+      "t"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#A35F1B",
+       "fg": "#F7EFE2",
+       "text": {
+        "eyebrow": "Parte 3",
+        "title": "IBI Front",
+        "body": "O shopping dentro da Expomontes 2025: projeto, ilustração, espaço e palco.",
+        "size": "xl",
+        "align": "center"
+       }
+      }
      ]
     },
     {
@@ -431,31 +896,430 @@
        "t": "Espaço conforto",
        "d": "Área de descanso com mobiliário de carretel e luz quente."
       }
-     ]
-    },
-    {
-     "type": "strip",
-     "title": "Do projeto ao evento",
-     "images": [
-      "img/cases/ibifront/pf-01.jpg",
-      "img/cases/ibifront/pf-03.jpg",
-      "img/cases/ibifront/pf-07.jpg",
-      "img/cases/ibifront/pf-09.jpg",
-      "img/cases/ibifront/pf-12.jpg",
-      "img/cases/ibifront/pf-17.jpg",
-      "img/cases/ibifront/pf-20.jpg",
-      "img/cases/ibifront/pf-23.jpg"
-     ]
-    },
-    {
-     "type": "split",
-     "reverse": true,
-     "eyebrow": "Identidade do espaço",
-     "title": "Eu ❤ celebrar",
-     "text": [
-      "A marca IBI Front e o conceito Eu ❤ celebrar trouxeram para a exposição referências de Montes Claros: a catedral, o mercado, as fachadas do centro e o jeito catrumano de falar."
      ],
-     "image": "img/cases/ibifront/pf-03.jpg"
+     "insta": "https://www.instagram.com/p/DMDKWWXuJT4/",
+     "instaCap": "Aftermovie · último dia"
+    },
+    {
+     "type": "board",
+     "_ill": true,
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(190px,15vw) minmax(190px,15vw) minmax(200px,17vw) minmax(130px,11vw) minmax(130px,11vw)",
+     "areas": [
+      "h h m m",
+      "h h m m",
+      "s n o w",
+      "c c e e",
+      "v v x x"
+     ],
+     "mrows": "auto 52vw 44vw 44vw 30vw 30vw 34vw 30vw",
+     "mareas": [
+      "h h",
+      "m m",
+      "s n",
+      "o w",
+      "c c",
+      "e e",
+      "v v",
+      "x x"
+     ],
+     "blocks": [
+      {
+       "area": "h",
+       "bg": "#4A230F",
+       "fg": "#F5F1DC",
+       "text": {
+        "eyebrow": "Ilustrações autorais · IBI Front",
+        "title": "O norte de Minas em selos e expressões",
+        "body": [
+         "Para o IBI Front foi desenhada uma família de ilustrações e selos tipográficos com o jeito de falar de Montes Claros: “Paixonadin por MOC”, “Catrumano desentoado”, “Do Nordiminas”, “Cria da Vila de Montes Claros das Formigas”.",
+         "As peças vestiram o espaço, a sinalização e as redes do evento."
+        ],
+        "size": "l",
+        "align": "center"
+       }
+      },
+      {
+       "area": "m",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/moc.webp",
+       "alt": "Selo Paixonadin por MOC",
+       "w": 84
+      },
+      {
+       "area": "s",
+       "bg": "#EFD9A7",
+       "img": "img/cases/ibifront/ill/sol.webp",
+       "alt": "Ilustração de sol com flor",
+       "w": 62,
+       "anim": "spin"
+      },
+      {
+       "area": "n",
+       "bg": "#E9C27A",
+       "img": "img/cases/ibifront/ill/nordiminas.webp",
+       "alt": "Selo Do Nordiminas sobre o mapa de Minas",
+       "w": 74
+      },
+      {
+       "area": "o",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/o-vo.webp",
+       "alt": "Selo Ó vó, lembrei de você",
+       "w": 80
+      },
+      {
+       "area": "w",
+       "bg": "#EFD9A7",
+       "img": "img/cases/ibifront/ill/moringa.webp",
+       "alt": "Moringa: Hoje vô beber da água que passarin não bebe",
+       "w": 44,
+       "anim": "bob"
+      },
+      {
+       "area": "c",
+       "bg": "#E9C27A",
+       "img": "img/cases/ibifront/ill/catrumano.webp",
+       "alt": "Selo Catrumano desentoado",
+       "w": 86
+      },
+      {
+       "area": "e",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/eu-celebrar.webp",
+       "alt": "Eu amo celebrar",
+       "w": 84
+      },
+      {
+       "area": "v",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/cria-da-vila.webp",
+       "alt": "Selo Cria da Vila de Montes Claros das Formigas",
+       "w": 62
+      },
+      {
+       "area": "x",
+       "bg": "#EFD9A7",
+       "img": "img/cases/ibifront/ill/ibi-celebra-expo.webp",
+       "alt": "IBI Shopping celebra a Expô com você",
+       "w": 84
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "_ill": true,
+     "cols": "repeat(4,1fr)",
+     "rows": "repeat(5,minmax(170px,14vw))",
+     "areas": [
+      "k t t i",
+      "k a a i",
+      "k a a c",
+      "p p m f",
+      "s s g g"
+     ],
+     "mrows": "auto 56vw 60vw 40vw 40vw 40vw 40vw 34vw",
+     "mareas": [
+      "t t",
+      "a a",
+      "k i",
+      "k c",
+      "p p",
+      "m f",
+      "s s",
+      "g g"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#1E6B3C",
+       "fg": "#F5F1DC",
+       "text": {
+        "eyebrow": "Montes Claros desenhada",
+        "title": "A cidade em cor chapada",
+        "body": "O Antigo Mercado Municipal, a Prefeitura, o Centro Cultural, a igreja, o casario, o mapa de Minas e as fitas das festas de agosto viraram ilustrações do espaço.",
+        "size": "m",
+        "align": "center"
+       }
+      },
+      {
+       "area": "k",
+       "bg": "#3A2A1C",
+       "img": "img/cases/ibifront/ill/catope.webp",
+       "alt": "Capacete de penas de pavão e fitas coloridas",
+       "w": 62,
+       "anim": "sway"
+      },
+      {
+       "area": "a",
+       "bg": "#CFE3E8",
+       "img": "img/cases/ibifront/ill/mercado.webp",
+       "alt": "Antigo Mercado Municipal de Montes Claros",
+       "w": 88
+      },
+      {
+       "area": "i",
+       "bg": "#EFD9A7",
+       "img": "img/cases/ibifront/ill/igreja.webp",
+       "alt": "Igreja histórica de Montes Claros",
+       "w": 70
+      },
+      {
+       "area": "c",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/centro-cultural.webp",
+       "alt": "Centro Cultural",
+       "w": 80
+      },
+      {
+       "area": "p",
+       "bg": "#E9C27A",
+       "img": "img/cases/ibifront/ill/prefeitura.webp",
+       "alt": "Prefeitura Municipal de Montes Claros",
+       "w": 66
+      },
+      {
+       "area": "m",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/mapa-mg.webp",
+       "alt": "Mapa de Minas Gerais com o norte em destaque",
+       "w": 78
+      },
+      {
+       "area": "f",
+       "bg": "#CFE3E8",
+       "img": "img/cases/ibifront/ill/formigas.webp",
+       "alt": "Formigas, símbolo de Montes Claros das Formigas",
+       "w": 64,
+       "anim": "drift"
+      },
+      {
+       "area": "s",
+       "bg": "#F5F1DC",
+       "img": "img/cases/ibifront/ill/sobrado.webp",
+       "alt": "Casario histórico",
+       "w": 62
+      },
+      {
+       "area": "g",
+       "bg": "#EFD9A7",
+       "img": "img/cases/ibifront/ill/flor-ibi.webp",
+       "alt": "Flor do novo símbolo IBI",
+       "w": 30,
+       "anim": "spin"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "_fotos": true,
+     "cols": "repeat(6,1fr)",
+     "rows": "minmax(240px,20vw) minmax(240px,20vw)",
+     "areas": [
+      "t t a b c c",
+      "t t d e c c"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "auto 64vw 96vw 64vw",
+     "mareas": [
+      "t t",
+      "a b",
+      "c c",
+      "d e"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#3A2A1C",
+       "fg": "#F7EFE2",
+       "text": {
+        "eyebrow": "IBI Front · Expomontes 2025",
+        "title": "O espaço aberto ao público",
+        "body": "Fachada, pórtico, lounge de pallets e as peças de identidade em uso, nos seis dias de feira.",
+        "size": "l",
+        "align": "center"
+       }
+      },
+      {
+       "area": "a",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/portico.jpg",
+       "alt": "Pórtico Eu amo celebrar na entrada do IBI Front",
+       "fit": "cover"
+      },
+      {
+       "area": "b",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/lounge.jpg",
+       "alt": "Lounge com pallets, violão em neon e bobinas de madeira",
+       "fit": "cover"
+      },
+      {
+       "area": "c",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/fachada.jpg",
+       "alt": "Fachada do IBI Front à noite",
+       "fit": "cover"
+      },
+      {
+       "area": "d",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/cenario.jpg",
+       "alt": "Cenário com feno, violão neon e bobinas",
+       "fit": "cover"
+      },
+      {
+       "area": "e",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/totem-ibi-celebra.jpg",
+       "alt": "Totem IBI Celebra",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "_fotos": true,
+     "cols": "repeat(5,1fr)",
+     "rows": "minmax(230px,22vw) minmax(230px,22vw)",
+     "areas": [
+      "t t a b c",
+      "d e f g c"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "auto 64vw 96vw 64vw 64vw",
+     "mareas": [
+      "t t",
+      "a b",
+      "c c",
+      "d e",
+      "f g"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#1E6B3C",
+       "fg": "#F5F1DC",
+       "text": {
+        "eyebrow": "Ilustração aplicada",
+        "title": "Do papel para a parede",
+        "body": "Os painéis ilustrados e os neons viraram cenário de foto para o público durante toda a feira.",
+        "size": "l",
+        "align": "center"
+       }
+      },
+      {
+       "area": "a",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/painel-ilustrado.jpg",
+       "alt": "Painel com as ilustrações do IBI Front",
+       "fit": "cover"
+      },
+      {
+       "area": "b",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/painel-mapa.jpg",
+       "alt": "Painel ilustrado com mapa e prédios de Montes Claros",
+       "fit": "cover"
+      },
+      {
+       "area": "c",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/portico-noite.jpg",
+       "alt": "Pórtico Eu amo celebrar à noite, com público",
+       "fit": "cover"
+      },
+      {
+       "area": "d",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/painel-mercado.jpg",
+       "alt": "Painel do Antigo Mercado Municipal",
+       "fit": "cover"
+      },
+      {
+       "area": "e",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/painel-cores.jpg",
+       "alt": "Painel em blocos de cor",
+       "fit": "cover"
+      },
+      {
+       "area": "f",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/neon-eu-celebrar.jpg",
+       "alt": "Neon Eu amo celebrar e IBI Shopping",
+       "fit": "cover"
+      },
+      {
+       "area": "g",
+       "bg": "#2A1E14",
+       "img": "img/cases/ibifront/fotos/neon-mapa.jpg",
+       "alt": "Neon com o mapa do norte de Minas",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Lambe-lambe",
+     "title": "Um mural feito de cartazes",
+     "text": "Módulo de cartazes do IBI Front pensado para colagem em sequência: as peças se repetem e se sobrepõem, misturando os símbolos da campanha (formiga, pequi, catrumano, igreja matriz) com a agenda de shows. Arte considerada inteira, inclusive o que passa da margem do cartaz.",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(300px,34vw) minmax(520px,52vw) minmax(240px,22vw)",
+     "areas": [
+      "w w w w",
+      "p p q q",
+      "m m n n"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "36vw 128vw 128vw 30vw 30vw",
+     "mareas": [
+      "w w",
+      "p p",
+      "q q",
+      "m n"
+     ],
+     "blocks": [
+      {
+       "area": "w",
+       "bg": "#5A2A0C",
+       "img": "img/cases/ibi/lambe/l42.webp",
+       "alt": "Mural lambe-lambe do IBI Front com cartazes sobrepostos",
+       "fit": "cover",
+       "tag": "Mural completo",
+       "fg": "#F3F1E8"
+      },
+      {
+       "area": "p",
+       "bg": "#E9E3D2",
+       "img": "img/cases/ibi/lambe/l49.webp",
+       "alt": "Cartaz IBI Celebra com textura de papel colado",
+       "fit": "contain",
+       "w": 86
+      },
+      {
+       "area": "q",
+       "bg": "#F3F1E8",
+       "img": "img/cases/ibi/lambe/l48.webp",
+       "alt": "Cartazes IBI Front Eu ama celebrar e IBI Celebra lado a lado",
+       "fit": "contain",
+       "w": 86
+      },
+      {
+       "area": "m",
+       "bg": "#F3F1E8",
+       "img": "img/cases/ibi/lambe/l52.webp",
+       "alt": "Grade de módulos: Cria da Vila, Eu ama celebrar, Ô vó lembrei de você, Catrumano desentoado",
+       "fit": "cover"
+      },
+      {
+       "area": "n",
+       "bg": "#FFFFFF",
+       "img": "img/cases/ibi/lambe/l50.webp",
+       "alt": "Elementos do lambe-lambe isolados",
+       "fit": "cover"
+      }
+     ]
     },
     {
      "type": "split",
@@ -467,33 +1331,247 @@
      "image": "img/cases/trade/ibifront-fotos.jpg"
     },
     {
+     "type": "reels",
+     "bg": "#3A2A1C",
+     "fg": "#F7EFE2",
+     "eyebrow": "Vinhetas oficiais de palco",
+     "title": "O palco também falava IBI",
+     "text": "Vinhetas animadas para os telões e as testeiras do palco, no mesmo sistema visual do espaço.",
+     "items": [
+      {
+       "src": "video/ibifront/v1.mp4",
+       "ratio": "1/1",
+       "label": "Vinheta para telão · 1:1",
+       "poster": "video/ibifront/v1.jpg"
+      },
+      {
+       "src": "video/ibifront/v2.mp4",
+       "ratio": "1280/1792",
+       "label": "Vinheta para telão vertical",
+       "poster": "video/ibifront/v2.jpg"
+      },
+      {
+       "src": "video/ibifront/v3.mp4",
+       "ratio": "4096/240",
+       "wide": true,
+       "label": "Testeira de palco",
+       "poster": "video/ibifront/v3.jpg"
+      },
+      {
+       "src": "video/ibifront/v4.mp4",
+       "ratio": "6912/512",
+       "wide": true,
+       "label": "Testeira de palco · formato largo",
+       "poster": "video/ibifront/v4.jpg"
+      }
+     ]
+    },
+    {
      "type": "credits",
      "items": [
       "Gustavo Elian · Coordenador de Marketing",
       "Maria Eduarda David · Estagiária de Arquitetura (projeto de ativação)"
      ]
+    },
+    {
+     "type": "band",
+     "video": "video/ibifront/v2.mp4",
+     "poster": "video/ibifront/v2.jpg",
+     "ratio": "21/7",
+     "pos": "50% 30%",
+     "bg": "#3A2A1C",
+     "label": "Motion · capacete de fitas (baianeira)"
     }
-   ]
+   ],
+   "insta": [
+    {
+     "url": "https://www.instagram.com/p/DLpqGPdO8cE/",
+     "caption": "Aftermovie · 1º dia"
+    },
+    {
+     "url": "https://www.instagram.com/p/DLvYxMou_yy/",
+     "caption": "Aftermovie · 2º dia"
+    },
+    {
+     "url": "https://www.instagram.com/p/DLxxYE5u30g/",
+     "caption": "Aftermovie · 3º dia"
+    },
+    {
+     "url": "https://www.instagram.com/p/DL0JrtZO49X/",
+     "caption": "Aftermovie · 4º dia"
+    },
+    {
+     "url": "https://www.instagram.com/p/DMBaWl1ObMN/",
+     "caption": "Aftermovie · 5º dia"
+    }
+   ],
+   "instaTitle": "Aftermovie do IBI Front",
+   "instaCredit": "Reprodução @pardalpro.mkt"
+  },
+  {
+   "id": "canais-e-mentoria",
+   "case": true,
+   "featured": false,
+   "title": "Canais no YouTube e redes",
+   "kind": "Mentoria, gestão de canais e persona",
+   "client": "AJR Mentorias de YouTube · criadores",
+   "year": "2022–2023",
+   "fronts": [
+    "social"
+   ],
+   "summary": "Mentoria e gerenciamento omnichannel de canais de criadores, gestão de persona em reality show e direção de perfis.",
+   "cover": "img/cases/campanhas/monica-capa.jpg",
+   "theme": {
+    "bg": "#F4F2F8",
+    "ink": "#1E1A2E",
+    "soft": "#5A5570",
+    "panel": "#1E1A2E",
+    "onPanel": "#F4F2F8",
+    "accent": "#FF3D57",
+    "accentInk": "#C21F3A",
+    "chip": "#E6E2F0"
+   },
+   "sections": [
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "clamp(26px,3.4vw,46px) minmax(260px,22vw)",
+     "areas": [
+      "s s s s",
+      "t t t i"
+     ],
+     "mcols": "1fr",
+     "mrows": "28px auto 50vw",
+     "mareas": [
+      "s",
+      "t",
+      "i"
+     ],
+     "blocks": [
+      {
+       "area": "s",
+       "stripes": [
+        "#FF3D57",
+        "#1E1A2E",
+        "#FFB800",
+        "#5B3FD9"
+       ]
+      },
+      {
+       "area": "t",
+       "bg": "#1E1A2E",
+       "fg": "#F4F2F8",
+       "text": {
+        "back": true,
+        "h1": true,
+        "eyebrow": "Mídias sociais e campanhas",
+        "title": "Canais no YouTube e redes",
+        "body": "Estratégia e produção para criadores no YouTube e nas plataformas verticais.",
+        "size": "xl",
+        "align": "center"
+       }
+      },
+      {
+       "area": "i",
+       "bg": "#FF3D57",
+       "img": "img/cases/campanhas/mentorias.jpg",
+       "alt": "Mentorias e gerenciamento de canais",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Mentoria e canais",
+     "title": "Conteúdo para plataformas de vídeo",
+     "text": [
+      "Como produtor e consultor na AJR Mentorias de YouTube, fiz mentoria e gerenciamento omnichannel de canais de criadores, entre eles Dra. Mônica Demian, Daniel Cady, Kamila Simioni, Thales Baião e Astrologia Luz e Sombra.",
+      "As estratégias cobriram o YouTube e as plataformas verticais: TikTok, Kwai, Shorts e Reels."
+     ],
+     "image": "img/cases/campanhas/mentorias.jpg",
+     "bg": "#2E4A3E",
+     "fg": "#FBF6EA",
+     "fx": "tilt"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Reality show",
+     "title": "Gestão de persona em A Fazenda 15",
+     "text": [
+      "Atuei como gestor de persona na participação de Kamila Simioni em A Fazenda 15, com identidade própria para as redes durante o programa."
+     ],
+     "image": "img/cases/campanhas/team-simioni.jpg",
+     "fx": "tilt"
+    },
+    {
+     "type": "insta",
+     "kicker": "Direção de fotografia, arte e imagem",
+     "title": "Kamila Simioni em A Fazenda 15",
+     "lead": "Conteúdo publicado durante o programa, com direção de fotografia, arte e imagem.",
+     "items": [
+      {
+       "url": "https://www.instagram.com/p/Cy2JHs1LlBX/"
+      },
+      {
+       "url": "https://www.instagram.com/p/CxYLe6NLkCr/"
+      },
+      {
+       "url": "https://www.instagram.com/p/Cy3bw9COXrA/"
+      },
+      {
+       "url": "https://www.instagram.com/p/Cy4wcCIOkKE/"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Gerenciamento de conteúdo",
+     "title": "Perfis que trabalham juntos",
+     "text": [
+      "Direção de arte, copywriting e marketing de influência aplicados à rotina dos perfis, com identidade consistente entre capa, destaques e publicações."
+     ],
+     "image": "img/cases/campanhas/perfis.jpg",
+     "bg": "#E29A1C",
+     "fg": "#2E4A3E",
+     "fx": "tilt"
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "YouTube",
+      "Shorts",
+      "Reels",
+      "TikTok",
+      "Kwai"
+     ],
+     "glyph": "img/cases/ibifront/ill/flor-ibi.webp",
+     "bg": "#FF3D57",
+     "fg": "#1E1A2E"
+    }
+   ],
+   "coverStyle": "photo",
+   "section": "list"
   },
   {
    "id": "agrofort",
    "case": true,
    "featured": true,
    "title": "Agrofort · Grupo Fort",
-   "kind": "Marca, embalagem e catálogo",
+   "kind": "Marca, embalagem, catálogo e frota",
    "client": "Agrofort · uma empresa do Grupo Fort",
    "year": "2025",
    "fronts": [
     "branding"
    ],
-   "summary": "Sistema de marca dos queijos de Januária aplicado a rótulos, catálogo de produtos e outdoors.",
-   "cover": "img/cases/agrofort/hero.jpg",
+   "summary": "Sistema de marca dos queijos e derivados de Januária aplicado a rótulos, embalagens, catálogo, frota e outdoor.",
+   "cover": "img/cases/agrofort/embalagens.jpg",
    "logo": "agrofort",
    "theme": {
     "bg": "#F4EDE1",
     "ink": "#2C1E14",
     "soft": "#6B5847",
-    "panel": "#2C1E14",
+    "panel": "#4A2216",
     "onPanel": "#F4EDE1",
     "accent": "#D59C37",
     "accentInk": "#8A402D",
@@ -501,68 +1579,437 @@
    },
    "sections": [
     {
-     "type": "hero",
-     "kicker": "Branding e rebranding",
-     "title": "É de Januária. De dentro do Peruaçu.",
-     "lead": "Uma marca de queijos que fala de território, afeto e sabor: cada produto tem nome de gente da terra, e tudo isso precisava caber em rótulo, catálogo e outdoor.",
-     "image": "img/cases/agrofort/hero.jpg",
-     "chips": [
-      "Agrofort",
-      "Grupo Fort",
-      "Januária/MG",
-      "Rótulos · catálogo · outdoor"
+     "type": "board",
+     "cols": "1.15fr .85fr 1fr 1fr",
+     "rows": "clamp(26px,3.4vw,46px) minmax(240px,19vw) minmax(240px,19vw) minmax(190px,15vw)",
+     "areas": [
+      "s s s s",
+      "t t f f",
+      "t t f f",
+      "t t a b"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "28px auto 78vw 44vw",
+     "mareas": [
+      "s s",
+      "t t",
+      "f f",
+      "a b"
+     ],
+     "blocks": [
+      {
+       "area": "s",
+       "stripes": [
+        "#96462F",
+        "#D69C38",
+        "#591F11",
+        "#009E64",
+        "#ECCD73",
+        "#295071"
+       ]
+      },
+      {
+       "area": "t",
+       "bg": "#591F11",
+       "fg": "#FFE8C2",
+       "text": {
+        "back": true,
+        "h1": true,
+        "eyebrow": "Branding e rebranding",
+        "title": "É de Januária. De dentro do Peruaçu.",
+        "body": "Uma marca de queijos e derivados que fala de território, afeto e sabor: cada produto tem nome de gente da terra, e tudo isso precisava funcionar no rótulo, na embalagem, no catálogo, na van e no outdoor.",
+        "seal": "img/cases/agrofort/ill/selo.webp",
+        "sealAlt": "Selo de couro com a assinatura AgroFort",
+        "size": "xl",
+        "align": "center"
+       }
+      },
+      {
+       "area": "f",
+       "bg": "#024F36",
+       "img": "img/cases/agrofort/vec/flor.svg",
+       "alt": "Flor de quatro pétalas, símbolo da AgroFort",
+       "fit": "bleed",
+       "x": 6,
+       "y": 8,
+       "w": 92,
+       "anim": "spin",
+       "eager": true
+      },
+      {
+       "area": "a",
+       "bg": "#295071",
+       "img": "img/cases/agrofort/vec/ti-chico.svg",
+       "alt": "Logo Ti Chico",
+       "w": 78,
+       "eager": true
+      },
+      {
+       "area": "b",
+       "bg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/tia-acu.svg",
+       "alt": "Logo Tia Açu",
+       "w": 80,
+       "eager": true
+      }
      ]
     },
     {
-     "type": "split",
-     "eyebrow": "Posicionamento",
-     "title": "Tradição, território, afeto e sabor",
-     "text": [
-      "A marca se apresenta pelo lugar de onde vem: Januária, no norte de Minas, à beira do Peruaçu. A comunicação usa a fala da região e trata cada queijo como um personagem com nome próprio.",
-      "A flor de quatro pétalas, em verde, ocre e terracota, assina o sistema e aparece em todas as aplicações."
+     "type": "marquee",
+     "items": [
+      "Tradição",
+      "Território",
+      "Afeto",
+      "Sabor",
+      "#DeJanu DoPeruaçu DeMinas & DasGerais"
      ],
-     "image": "img/cases/agrofort/cat-03.jpg"
+     "glyph": "img/cases/agrofort/vec/flor-linha.svg",
+     "bg": "#ECCD73",
+     "fg": "#591F11"
     },
     {
-     "type": "cards",
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(300px,26vw) minmax(220px,17vw)",
+     "areas": [
+      "r r c c",
+      "r r d h"
+     ],
+     "mrows": "84vw auto 46vw",
+     "mareas": [
+      "r r",
+      "c c",
+      "d h"
+     ],
+     "blocks": [
+      {
+       "area": "r",
+       "bg": "#009E64",
+       "img": "img/cases/agrofort/vec/rio.svg",
+       "alt": "Ícone do rio Peruaçu entre serras",
+       "fit": "bleed",
+       "x": -10,
+       "y": 4,
+       "w": 96,
+       "anim": "drift"
+      },
+      {
+       "area": "c",
+       "bg": "#FFE8C2",
+       "fg": "#591F11",
+       "pattern": "img/cases/agrofort/vec/flor-linha.svg",
+       "patSize": "150px",
+       "text": {
+        "eyebrow": "Posicionamento",
+        "title": "Tradição, território, afeto e sabor",
+        "body": [
+         "A marca se apresenta pelo lugar de onde vem: Januária, no norte de Minas, à beira do Peruaçu. A comunicação usa a fala da região e trata cada produto como um personagem com nome próprio.",
+         "O selo de couro com a assinatura AgroFort e a flor de quatro pétalas, em verde, ocre e terracota, aparecem em todas as aplicações."
+        ],
+        "size": "l",
+        "align": "center"
+       }
+      },
+      {
+       "area": "d",
+       "bg": "#024F36",
+       "img": "img/cases/agrofort/vec/de-dentro-peruacu.svg",
+       "alt": "De dentro do Peruaçu",
+       "w": 64
+      },
+      {
+       "area": "h",
+       "bg": "#96462F",
+       "img": "img/cases/agrofort/vec/dejanu.svg",
+       "alt": "#DeJanu DoPeruaçu DeMinas & DasGerais",
+       "w": 60
+      }
+     ]
+    },
+    {
+     "type": "mosaic",
+     "bg": "#024F36",
+     "fg": "#F3E6C4",
+     "eyebrow": "Sistema de ícones",
+     "title": "Ícones que nascem do território",
+     "text": "As grutas e as pinturas rupestres do Peruaçu, o rio, o mapa de Minas, o queijo e a flor da marca viraram uma família de ícones de traço único. Somados às hashtags e aos selos, eles montam os mosaicos da AgroFort e do Grupo Fort.",
+     "tiles": [
+      "img/cases/agrofort/ill/i11.jpg",
+      "img/cases/agrofort/ill/i12.jpg",
+      "img/cases/agrofort/ill/i13.jpg",
+      "img/cases/agrofort/ill/i19.jpg",
+      "img/cases/agrofort/ill/i22.jpg",
+      "img/cases/agrofort/ill/i23.jpg",
+      "img/cases/agrofort/ill/i24.jpg",
+      "img/cases/agrofort/ill/i28.jpg",
+      "img/cases/agrofort/ill/i32.jpg",
+      "img/cases/agrofort/ill/i35.jpg",
+      "img/cases/agrofort/ill/i36.jpg",
+      "img/cases/agrofort/ill/i40.jpg",
+      "img/cases/agrofort/ill/i45.jpg",
+      "img/cases/agrofort/ill/i46.jpg",
+      "img/cases/agrofort/ill/i49.jpg",
+      "img/cases/agrofort/ill/i51.jpg",
+      "img/cases/agrofort/ill/i54.jpg",
+      "img/cases/agrofort/ill/i56.jpg",
+      "img/cases/agrofort/ill/i58.jpg",
+      "img/cases/agrofort/ill/i14.jpg",
+      "img/cases/agrofort/ill/i18.jpg",
+      "img/cases/agrofort/ill/i09.jpg",
+      "img/cases/agrofort/ill/i00.jpg",
+      "img/cases/agrofort/ill/i43.jpg"
+     ]
+    },
+    {
+     "type": "board",
      "eyebrow": "Arquitetura de marca",
      "title": "Uma família com nome e sobrenome",
+     "text": "Cada produto ganhou o nome de alguém da terra e um logo próprio. Passe o mouse ou toque no bloco para ver o produto. Chica Rosa (trufado com goiabada) e Seu Firmino (parmesão fracionado) completam a linha.",
+     "cols": "repeat(4,1fr)",
+     "rows": "repeat(2,minmax(230px,22vw))",
+     "areas": [
+      "a b c d",
+      "e f g h"
+     ],
+     "mrows": "repeat(4,48vw)",
+     "mareas": [
+      "a b",
+      "c d",
+      "e f",
+      "g h"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#295071",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/ti-chico.svg",
+       "alt": "Ti Chico",
+       "w": 80,
+       "photo": "img/cases/agrofort/fotos/f0560.jpg",
+       "tag": "Maturado · 60 dias"
+      },
+      {
+       "area": "b",
+       "bg": "#009E64",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/chico-flor.svg",
+       "alt": "Chico Flor",
+       "w": 72,
+       "photo": "img/cases/agrofort/fotos/f0515.jpg",
+       "tag": "Maturado · 30 dias"
+      },
+      {
+       "area": "c",
+       "bg": "#8B402D",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/chico-velho.svg",
+       "alt": "Chico Velho",
+       "w": 78,
+       "photo": "img/cases/agrofort/fotos/f0470.jpg",
+       "tag": "Maturado · 120 dias"
+      },
+      {
+       "area": "d",
+       "bg": "#D69C38",
+       "fg": "#591F11",
+       "img": "img/cases/agrofort/vec/tia-aria.svg",
+       "alt": "Tia Ária",
+       "w": 80,
+       "photo": "img/cases/agrofort/fotos/f0454.jpg",
+       "tag": "Minas padrão"
+      },
+      {
+       "area": "e",
+       "bg": "#5F1D00",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/seu-janu.svg",
+       "alt": "Seu Janu",
+       "w": 82,
+       "photo": "img/cases/agrofort/fotos/f0500.jpg",
+       "tag": "Meia cura"
+      },
+      {
+       "area": "f",
+       "bg": "#591F11",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/dona-janu.svg",
+       "alt": "Dona Janu",
+       "w": 80,
+       "photo": "img/cases/agrofort/fotos/f0575.jpg",
+       "tag": "Pão de queijo"
+      },
+      {
+       "area": "g",
+       "bg": "#295071",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/seu-perua.svg",
+       "alt": "Seu Peruá",
+       "w": 84,
+       "photo": "img/cases/agrofort/ill/t31.jpg",
+       "tag": "Biscoito quatro queijos"
+      },
+      {
+       "area": "h",
+       "bg": "#FFE8C2",
+       "fg": "#295071",
+       "img": "img/cases/agrofort/vec/tia-acu.svg",
+       "alt": "Tia Açu",
+       "w": 82,
+       "photo": "img/cases/agrofort/ill/t33.jpg",
+       "tag": "Biscoito de nata"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Embalagens",
+     "title": "Derivados que se reconhecem de longe",
+     "text": "Uma cor por produto, o nome em destaque e a mão segurando o produto. Ícones de origem, ingredientes e preparo, o selo de qualidade e o “60% queijo” fecham a leitura.",
+     "cols": "repeat(4,1fr)",
+     "rows": "repeat(2,minmax(250px,21vw))",
+     "areas": [
+      "p p x x",
+      "p p y z"
+     ],
+     "mrows": "84vw 50vw 64vw",
+     "mareas": [
+      "p p",
+      "x x",
+      "y z"
+     ],
+     "blocks": [
+      {
+       "area": "p",
+       "bg": "#FFE8C2",
+       "fg": "#D69C38",
+       "pattern": "img/cases/agrofort/vec/flor-linha.svg",
+       "patSize": "170px",
+       "img": "img/cases/agrofort/ill/pk-trio.webp",
+       "alt": "Embalagens Seu Peruá e Dona Janu",
+       "w": 88,
+       "anim": "bob"
+      },
+      {
+       "area": "x",
+       "bg": "#591F11",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/dona-janu.svg",
+       "alt": "Dona Janu: é impossível comer um só",
+       "w": 64
+      },
+      {
+       "area": "y",
+       "bg": "#ECCD73",
+       "fg": "#591F11",
+       "img": "img/cases/agrofort/ill/pk-seu-perua.webp",
+       "alt": "Embalagem Seu Peruá",
+       "w": 46,
+       "anim": "bob",
+       "tag": "Seu Peruá"
+      },
+      {
+       "area": "z",
+       "bg": "#009E64",
+       "fg": "#FFE8C2",
+       "img": "img/cases/agrofort/ill/pk-firmino.webp",
+       "alt": "Embalagem Seu Firmino",
+       "w": 44,
+       "anim": "bob",
+       "tag": "Seu Firmino"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(250px,22vw)",
+     "areas": [
+      "o p t t"
+     ],
+     "mrows": "46vw auto",
+     "mareas": [
+      "o p",
+      "t t"
+     ],
+     "blocks": [
+      {
+       "area": "o",
+       "bg": "#ECCD73",
+       "img": "img/cases/agrofort/vec/premio-ouro.svg",
+       "alt": "Selo Prêmio Queijo Brasil, classificação ouro 2025",
+       "w": 74,
+       "anim": "sway"
+      },
+      {
+       "area": "p",
+       "bg": "#FFE8C2",
+       "img": "img/cases/agrofort/vec/premio-prata.svg",
+       "alt": "Selo Prêmio Queijo Brasil, classificação prata 2025",
+       "w": 74,
+       "anim": "sway"
+      },
+      {
+       "area": "t",
+       "bg": "#295071",
+       "fg": "#FFE8C2",
+       "text": {
+        "eyebrow": "Reconhecimento",
+        "title": "Ouro e prata no Prêmio Queijo Brasil 2025",
+        "body": "Os selos de classificação entram nas fotos de produto, nos rótulos e no backdrop da marca.",
+        "size": "l",
+        "align": "center"
+       }
+      }
+     ]
+    },
+    {
+     "type": "photos",
+     "bg": "#4A2216",
+     "fg": "#F4EDE1",
+     "eyebrow": "Fotografia de produto",
+     "title": "Madeira, palha e luz quente",
+     "text": "As fotos de produto usam madeira, palha trançada e tábuas de corte: o mesmo universo de cores da marca, do rótulo ao backdrop.",
+     "alt": "Queijos e derivados AgroFort fotografados sobre madeira",
+     "images": [
+      "img/cases/agrofort/fotos/f0454.jpg",
+      "img/cases/agrofort/fotos/f0500.jpg",
+      "img/cases/agrofort/fotos/f0470.jpg",
+      "img/cases/agrofort/fotos/f0515.jpg",
+      "img/cases/agrofort/fotos/f0560.jpg",
+      "img/cases/agrofort/fotos/f0575.jpg",
+      "img/cases/agrofort/fotos/f0545.jpg",
+      "img/cases/agrofort/fotos/f0590.jpg"
+     ]
+    },
+    {
+     "type": "swap",
+     "eyebrow": "Backdrops",
+     "title": "Um mosaico para a marca, outro para o grupo",
+     "text": "O backdrop da AgroFort reúne os produtos, as fotos e o selo de couro no centro. O do Grupo Fort põe a AgroFort ao lado de Fort Diesel, Center Fort Pátio e Minas Peças, com o mesmo sistema de blocos e ícones.",
      "items": [
       {
-       "title": "Seu Janu",
-       "kind": "Queijo meia cura",
-       "text": "Minas padrão da linha de queijos meia cura.",
-       "image": "img/cases/agrofort/cat-06.jpg"
+       "label": "AgroFort",
+       "image": "img/cases/agrofort/backdrop-agrofort.jpg",
+       "alt": "Backdrop AgroFort montado em treliça"
       },
       {
-       "title": "Chica Rosa",
-       "kind": "Queijo trufado",
-       "text": "Queijo trufado com goiabada.",
-       "image": "img/cases/agrofort/cat-10.jpg"
-      },
-      {
-       "title": "Chico Flor · Ti Chico · Chico Velho",
-       "kind": "Queijos maturados",
-       "text": "Linha de maturados, cada um com seu tempo de cura.",
-       "image": "img/cases/agrofort/cat-12.jpg"
-      },
-      {
-       "title": "Nossos derivados",
-       "kind": "Pães, biscoitos e manteiga",
-       "text": "Dona Janu, Seu Peruá, Tia Açu e a manteiga Gruta do Tatu.",
-       "image": "img/cases/agrofort/cat-16.jpg"
+       "label": "Grupo Fort",
+       "image": "img/cases/agrofort/backdrop-grupo.jpg",
+       "alt": "Backdrop Grupo Fort montado em treliça"
       }
      ]
     },
     {
      "type": "split",
-     "panel": true,
-     "eyebrow": "Embalagem",
+     "reverse": true,
+     "eyebrow": "Rótulos",
      "title": "Rótulos que se reconhecem na prateleira",
      "text": [
       "Cada queijo ganhou um rótulo circular com a flor da marca, uma cor própria e o nome em destaque. O verso concentra selo, informação nutricional e dados obrigatórios."
      ],
-     "image": "img/cases/agrofort/rot-3.jpg"
+     "image": "img/cases/agrofort/rot-3.jpg",
+     "fx": "tilt"
     },
     {
      "type": "strip",
@@ -573,61 +2020,629 @@
       "img/cases/agrofort/rot-3.jpg",
       "img/cases/agrofort/rot-4.jpg",
       "img/cases/agrofort/rot-5.jpg",
-      "img/cases/agrofort/rot-6.jpg"
+      "img/cases/agrofort/rot-6.jpg",
+      "img/cases/agrofort/seu-firmino.jpg",
+      "img/cases/agrofort/seu-perua.jpg"
      ]
     },
     {
      "type": "split",
-     "reverse": true,
      "eyebrow": "Catálogo de produtos",
      "title": "Um catálogo para vender e para contar história",
      "text": [
-      "O catálogo apresenta a marca, os parceiros, a linha de queijos e os derivados, com fotografia de produto e texto em português e inglês, e termina com o mapa e os contatos."
+      "São 23 páginas com a marca, os parceiros, a linha de queijos, o novo Seu Firmino e os derivados, com fotografia de produto, texto em português e inglês, mapa e contatos."
      ],
-     "image": "img/cases/agrofort/cat-05.jpg"
+     "image": "img/cases/agrofort/c2-05.jpg",
+     "fx": "tilt"
     },
     {
      "type": "strip",
      "title": "Páginas do catálogo",
      "images": [
-      "img/cases/agrofort/cat-01.jpg",
-      "img/cases/agrofort/cat-02.jpg",
-      "img/cases/agrofort/cat-05.jpg",
-      "img/cases/agrofort/cat-06.jpg",
-      "img/cases/agrofort/cat-10.jpg",
-      "img/cases/agrofort/cat-13.jpg",
-      "img/cases/agrofort/cat-14.jpg",
-      "img/cases/agrofort/cat-17.jpg",
-      "img/cases/agrofort/cat-20.jpg",
-      "img/cases/agrofort/cat-21.jpg",
-      "img/cases/agrofort/cat-22.jpg"
+      "img/cases/agrofort/c2-01.jpg",
+      "img/cases/agrofort/c2-02.jpg",
+      "img/cases/agrofort/c2-03.jpg",
+      "img/cases/agrofort/c2-05.jpg",
+      "img/cases/agrofort/c2-06.jpg",
+      "img/cases/agrofort/c2-11.jpg",
+      "img/cases/agrofort/c2-12.jpg",
+      "img/cases/agrofort/c2-16.jpg",
+      "img/cases/agrofort/c2-17.jpg",
+      "img/cases/agrofort/c2-18.jpg",
+      "img/cases/agrofort/c2-19.jpg",
+      "img/cases/agrofort/c2-21.jpg",
+      "img/cases/agrofort/c2-22.jpg",
+      "img/cases/agrofort/c2-23.jpg"
      ]
     },
     {
      "type": "split",
-     "panel": true,
+     "eyebrow": "Frota",
+     "title": "A marca na estrada",
+     "text": [
+      "A van leva a marca para a rua. De um lado, a origem, o selo AgroFort e a linha de queijos, pão de queijo, laticínios e derivados. Do outro, “Conheça nossos queijos” com toda a família e um QR Code."
+     ],
+     "image": "img/cases/agrofort/van.jpg",
+     "fx": "tilt",
+     "bg": "#1F7A45",
+     "fg": "#F4EDE1"
+    },
+    {
+     "type": "split",
+     "reverse": true,
      "eyebrow": "Mídia exterior",
      "title": "Outdoor",
      "text": [
       "A mesma linguagem foi levada para o outdoor: a marca, a origem e o produto em destaque, com o convite “Experimente”."
      ],
      "image": "img/cases/agrofort/out-1.jpg",
-     "wide": true
+     "fx": "tilt"
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "É de Januária",
+      "De dentro do Peruaçu",
+      "É impossível comer um só",
+      "#SomosFort"
+     ],
+     "glyph": "img/cases/agrofort/vec/flor-linha.svg",
+     "bg": "#8A402D",
+     "fg": "#F4EDE1"
     }
-   ]
+   ],
+   "coverVideo": "video/agrofort/vinheta.mp4",
+   "coverPoster": "video/agrofort/vinheta.jpg"
   },
   {
    "id": "fazenda-encantada-loja",
-   "title": "Loja Fazenda Encantada",
-   "kind": "Site com loja",
-   "client": "Fazenda Encantada · Itacambira",
+   "title": "Fazenda Encantada",
+   "kind": "Identidade visual, embalagens e loja",
+   "client": "Fazenda Encantada · Itacambira, MG",
    "fronts": [
-    "web",
-    "branding"
+    "branding",
+    "web"
    ],
-   "summary": "Site com loja para geleias, doces e laticínios feitos na fazenda.",
+   "summary": "Marca, sistema de rótulos com uma lenda por sabor, ilustrações do território e loja virtual para doces e laticínios artesanais da Serra do Espinhaço.",
    "url": "https://fazencantada.netlify.app",
-   "cover": "img/proj/fazencantada.jpg"
+   "cover": "img/cases/fazencantada/marca/mk-outdoor-arvores.jpg",
+   "case": true,
+   "year": "2026",
+   "theme": {
+    "bg": "#F0EFD5",
+    "ink": "#292305",
+    "soft": "#5E5634",
+    "panel": "#4D4107",
+    "onPanel": "#F0EFD5",
+    "accent": "#F0BC68",
+    "accentInk": "#8C2030",
+    "chip": "#E4E1C4"
+   },
+   "sections": [
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(300px,30vw)",
+     "areas": [
+      "t t t s"
+     ],
+     "mcols": "1fr",
+     "mrows": "auto 70vw",
+     "mareas": [
+      "t",
+      "s"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#F0EFD5",
+       "fg": "#292305",
+       "text": {
+        "back": true,
+        "h1": true,
+        "eyebrow": "Branding · Embalagem · Web",
+        "title": "Fazenda Encantada",
+        "body": "Identidade visual, sistema de rótulos e loja para uma fazenda de doces e laticínios artesanais em Itacambira, na Serra do Espinhaço. Cada produto ganhou nome de lenda, cor própria e uma ilustração do território.",
+        "chips": [
+         "Marca",
+         "7 rótulos de geleia",
+         "Ilustração",
+         "Manual de identidade",
+         "Loja virtual"
+        ],
+        "size": "l",
+        "align": "end"
+       }
+      },
+      {
+       "area": "s",
+       "bg": "#4D4107",
+       "img": "img/cases/fazencantada/marca/simbolo-outline-creme.png",
+       "w": 70,
+       "anim": "sway",
+       "alt": "Símbolo da Fazenda Encantada"
+      }
+     ]
+    },
+    {
+     "type": "deck",
+     "fonts": [
+      {
+       "family": "Federo",
+       "src": "fonts/brands/Federo-Regular.ttf"
+      },
+      {
+       "family": "Tektur",
+       "src": "fonts/brands/Tektur.ttf"
+      }
+     ],
+     "vars": {
+      "dk-paper": "#F0EFD5",
+      "dk-ink": "#292305",
+      "dk-accent": "#FF8C8C"
+     },
+     "slides": [
+      {
+       "k": "cover",
+       "bg": "#4D4107",
+       "fg": "#F0EFD5",
+       "logo": "img/cases/fazencantada/marca/marca-negativa.png",
+       "alt": "Fazenda Encantada",
+       "pattern": {
+        "img": "img/cases/fazencantada/marca/grafismo-macro-creme.png"
+       },
+       "caption": "Identidade visual · Itacambira, Serra do Espinhaço · 2026"
+      },
+      {
+       "k": "photo",
+       "img": "img/cases/fazencantada/marca/fz-colheita.jpg",
+       "pos": "center 40%",
+       "kicker": "Fazenda Encantada",
+       "title": [
+        "Sabores que a",
+        "terra preserva"
+       ],
+       "tail": ".",
+       "shade": 0.55,
+       "logo": "img/cases/fazencantada/marca/marca-negativa.png",
+       "logoAt": "tr"
+      },
+      {
+       "k": "manifesto",
+       "bg": "#453B06",
+       "fg": "#F0EFD5",
+       "font": "Federo",
+       "kicker": "Manifesto",
+       "pattern": "img/cases/fazencantada/marca/simbolo-outline-creme.png",
+       "text": "Na Fazenda Encantada, o alimento transcende a receita: ele é afago, relíquia e lenda. Aqui, nas alturas da Serra do Espinhaço, onde o sertão encontra o céu e a história dorme sob terra sagrada, a natureza nos presenteia com o encanto do paladar.",
+       "sign": "Sabores que a terra preserva."
+      },
+      {
+       "k": "image",
+       "img": "img/cases/fazencantada/marca/pr-simbolo.jpg",
+       "alt": "Construção do símbolo: estrela, gota e cata-vento"
+      },
+      {
+       "k": "logos",
+       "bg": "#F0EFD5",
+       "cols": 3,
+       "cells": [
+        {
+         "bg": "#F0EFD5",
+         "img": "img/cases/fazencantada/marca/marca-positiva.png",
+         "label": "Positiva",
+         "fg": "#4D4107"
+        },
+        {
+         "bg": "#4D4107",
+         "img": "img/cases/fazencantada/marca/marca-negativa.png",
+         "label": "Negativa",
+         "fg": "#F0EFD5"
+        },
+        {
+         "bg": "#8C2030",
+         "img": "img/cases/fazencantada/marca/marca-mono-branco.png",
+         "label": "Monocromática sobre cor de produto",
+         "fg": "#F0EFD5"
+        },
+        {
+         "bg": "#FFFFFF",
+         "img": "img/cases/fazencantada/marca/marca-mono-preto.png",
+         "label": "Monocromática",
+         "fg": "#292305"
+        },
+        {
+         "bg": "#E4E1C4",
+         "img": "img/cases/fazencantada/marca/simbolo-2tons.png",
+         "label": "Símbolo em dois tons",
+         "fg": "#4D4107"
+        },
+        {
+         "bg": "#453B06",
+         "img": "img/cases/fazencantada/marca/simbolo-outline-creme.png",
+         "label": "Símbolo em contorno",
+         "fg": "#F0EFD5"
+        }
+       ]
+      },
+      {
+       "k": "palette",
+       "img": "img/cases/fazencantada/marca/fz-morangos-mao.jpg",
+       "pos": "center",
+       "logo": "img/cases/fazencantada/marca/marca-negativa.png",
+       "colors": [
+        {
+         "hex": "#F0EFD5",
+         "name": "Creme do sertão",
+         "role": "60% · fundo",
+         "ink": "#292305"
+        },
+        {
+         "hex": "#4D4107",
+         "name": "Oliva",
+         "role": "30% · estrutura"
+        },
+        {
+         "hex": "#453B06",
+         "name": "Oliva profundo",
+         "role": "aberturas"
+        },
+        {
+         "hex": "#807958",
+         "name": "Barro claro",
+         "role": "segundo plano"
+        },
+        {
+         "hex": "#292305",
+         "name": "Terra",
+         "role": "texto"
+        }
+       ]
+      },
+      {
+       "k": "type",
+       "bg": "#F0EFD5",
+       "fg": "#292305",
+       "fonts": [
+        {
+         "family": "Federo",
+         "label": "Institucional · Federo",
+         "sample": "Aa",
+         "alphabet": "Fazenda Encantada · Geleia de Morango · Doce de Leite Santo Antônio",
+         "use": "Logotipo, categorias, títulos de catálogo e textos de embalagem."
+        },
+        {
+         "family": "Tektur",
+         "label": "Vernacular · Tektur",
+         "sample": "Aa",
+         "alphabet": "BEIJO DE CABOCLO · TOCHA DE ESPINHAÇO · NASCENTE DO ENCANTADO",
+         "use": "Assinatura poética de cada produto e frases do manifesto."
+        }
+       ]
+      },
+      {
+       "k": "icons",
+       "bg": "#4D4107",
+       "fg": "#F0EFD5",
+       "title": "O território vira ilustração",
+       "items": [
+        {
+         "img": "img/cases/fazencantada/marca/il-caboclo.jpg",
+         "label": "Caboclo d'água"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/il-santo.jpg",
+         "label": "Santo Antônio"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/il-cachoeira.jpg",
+         "label": "Cachoeira do Curiango"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/il-tradicao.jpg",
+         "label": "Tradição"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/il-igreja.jpg",
+         "label": "Matriz"
+        }
+       ]
+      },
+      {
+       "k": "photo",
+       "img": "img/cases/fazencantada/marca/fz-mao.jpg",
+       "pos": "center 55%",
+       "kicker": "Promessa",
+       "title": [
+        "Cada produto é um",
+        "capítulo do território"
+       ],
+       "tail": "_",
+       "shade": 0.5
+      },
+      {
+       "k": "swatches",
+       "bg": "#F0EFD5",
+       "fg": "#292305",
+       "title": "Uma cor para cada lenda",
+       "groups": [
+        {
+         "name": "Beijo de Caboclo",
+         "sub": "Morango",
+         "colors": [
+          "#8C2030",
+          "#BF5454",
+          "#FF8C8C"
+         ]
+        },
+        {
+         "name": "Tocha de Espinhaço",
+         "sub": "Morango e pimenta",
+         "colors": [
+          "#8A2D21",
+          "#D66B53",
+          "#661207"
+         ]
+        },
+        {
+         "name": "Brisa de Curiango",
+         "sub": "Morango e limão",
+         "colors": [
+          "#BF5454",
+          "#B1E070",
+          "#8C2030"
+         ]
+        },
+        {
+         "name": "Cordilheira de Ferro",
+         "sub": "Laranja",
+         "colors": [
+          "#D66B53",
+          "#8A2D21",
+          "#661207"
+         ]
+        },
+        {
+         "name": "Primavera Imperial",
+         "sub": "Mexerica",
+         "colors": [
+          "#661207",
+          "#F5917A",
+          "#8A2D21"
+         ]
+        },
+        {
+         "name": "Nascente do Encantado",
+         "sub": "Manga e maracujá",
+         "colors": [
+          "#CC8616",
+          "#F0BC68",
+          "#336699"
+         ]
+        },
+        {
+         "name": "Verão Real",
+         "sub": "Abacaxi e pimenta",
+         "colors": [
+          "#1C7A54",
+          "#248A61",
+          "#D8E037"
+         ]
+        }
+       ]
+      },
+      {
+       "k": "gallery",
+       "bg": "#F0EFD5",
+       "fg": "#292305",
+       "cols": 2,
+       "title": "Rótulos: uma lenda por sabor",
+       "items": [
+        {
+         "img": "img/cases/fazencantada/marca/pr-beijo-c.jpg"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/pr-tocha-c.jpg"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/pr-brisa-c.jpg"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/pr-cordilheira-c.jpg"
+        }
+       ]
+      },
+      {
+       "k": "gallery",
+       "bg": "#E4E1C4",
+       "fg": "#292305",
+       "cols": 2,
+       "items": [
+        {
+         "img": "img/cases/fazencantada/marca/pr-primavera-c.jpg"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/pr-nascente-c.jpg"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/pr-doce-c.jpg"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/pr-requeijao-c.jpg"
+        }
+       ]
+      },
+      {
+       "k": "gallery",
+       "bg": "#F0EFD5",
+       "fg": "#292305",
+       "cols": 5,
+       "mcols": 2,
+       "title": "Linha completa",
+       "items": [
+        {
+         "img": "img/cases/fazencantada/marca/p-geleia-morango.webp",
+         "label": "Beijo de Caboclo"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-geleia-morango-pimenta.webp",
+         "label": "Tocha de Espinhaço"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-geleia-morango-limao.webp",
+         "label": "Brisa de Curiango"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-geleia-laranja.webp",
+         "label": "Cordilheira de Ferro"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-geleia-mexerica.webp",
+         "label": "Primavera Imperial"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-geleia-abacaxi-pimenta.webp",
+         "label": "Verão Real"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-doce-de-leite.webp",
+         "label": "Doce de Leite Santo Antônio"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-requeijao.webp",
+         "label": "Requeijão Barra do Encantado"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/p-queijo-minas.webp",
+         "label": "Queijo Minas"
+        }
+       ]
+      },
+      {
+       "k": "photo",
+       "img": "img/cases/fazencantada/marca/pres-encantada.jpg",
+       "pos": "center",
+       "kicker": "Lembranças de Itacambira",
+       "title": [
+        "Presentes que",
+        "guardam o lugar"
+       ],
+       "shade": 0.55
+      },
+      {
+       "k": "duo",
+       "a": {
+        "img": "img/cases/fazencantada/marca/ev-sacolas.jpg",
+        "caption": "Sacolas de lembrança"
+       },
+       "b": {
+        "img": "img/cases/fazencantada/marca/pres-laco.jpg",
+        "caption": "Caixa de morangos"
+       }
+      },
+      {
+       "k": "image",
+       "img": "img/cases/fazencantada/marca/mk-outdoor-arvores.jpg",
+       "pos": "center 35%",
+       "caption": "Outdoor · simulação"
+      },
+      {
+       "k": "duo",
+       "a": {
+        "img": "img/cases/fazencantada/marca/mk-cartao-madeira.jpg",
+        "caption": "Cartão"
+       },
+       "b": {
+        "img": "img/cases/fazencantada/marca/mk-avental.jpg",
+        "pos": "center 35%",
+        "caption": "Avental da cozinha"
+       }
+      },
+      {
+       "k": "duo",
+       "a": {
+        "img": "img/cases/fazencantada/marca/mk-cartoes-kraft.jpg",
+        "caption": "Papelaria em kraft"
+       },
+       "b": {
+        "img": "img/cases/fazencantada/marca/mk-outdoor-serra.jpg",
+        "pos": "78% 25%",
+        "caption": "Outdoor na serra · simulação"
+       }
+      },
+      {
+       "k": "photo",
+       "img": "img/cases/fazencantada/marca/fz-donos.jpg",
+       "pos": "center 35%",
+       "kicker": "Vanusa Alves e família",
+       "title": [
+        "Quem planta,",
+        "assina"
+       ],
+       "shade": 0.5,
+       "logo": "img/cases/fazencantada/marca/marca-negativa.png"
+      },
+      {
+       "k": "end",
+       "bg": "#4D4107",
+       "fg": "#F0EFD5",
+       "logo": "img/cases/fazencantada/marca/simbolo-outline-creme.png",
+       "title": "Sabores que a terra preserva.",
+       "caption": "Fazenda Encantada · identidade visual por Gustavo Elian"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(260px,24vw)",
+     "areas": [
+      "t a a b"
+     ],
+     "mcols": "1fr",
+     "mrows": "auto 62vw 120vw",
+     "mareas": [
+      "t",
+      "a",
+      "b"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#4D4107",
+       "fg": "#F0EFD5",
+       "text": {
+        "eyebrow": "Loja virtual",
+        "title": "A marca vira loja",
+        "body": "Site com catálogo, carrinho e lembranças de Itacambira, construído sobre o mesmo sistema visual.",
+        "link": {
+         "href": "https://fazencantada.netlify.app",
+         "label": "Abrir a loja ↗"
+        },
+        "size": "m",
+        "align": "end"
+       }
+      },
+      {
+       "area": "a",
+       "bg": "#F0EFD5",
+       "img": "img/cases/fazencantada/d0.jpg",
+       "fit": "cover",
+       "pos": "top",
+       "alt": "Página inicial da loja"
+      },
+      {
+       "area": "b",
+       "bg": "#F0EFD5",
+       "img": "img/cases/fazencantada/m0.jpg",
+       "fit": "cover",
+       "pos": "top",
+       "alt": "Loja no celular"
+      }
+     ]
+    }
+   ],
+   "coverStyle": "photo"
   },
   {
    "id": "fernandes-adv",
@@ -643,15 +2658,738 @@
   },
   {
    "id": "focados",
-   "title": "FOCO · App do Colaborador",
-   "kind": "Aplicativo",
+   "case": true,
+   "title": "Grupo FOCO · Rebranding e App",
+   "kind": "Rebranding, aplicativo, painel de TV e gestão",
    "client": "Desafios FOCO 2026",
+   "year": "2026",
    "fronts": [
+    "branding",
     "web"
    ],
-   "summary": "App de desafios para colaboradores, com pontuação reconhecida pelo e-mail.",
+   "summary": "App de desafios para colaboradores, com registro de atividades, rankings ao vivo, cards de story e painel de TV para o escritório.",
    "url": "https://focados.netlify.app",
-   "cover": "img/proj/focados.jpg"
+   "cover": "img/cases/focado/sim-tv-sala.jpg",
+   "theme": {
+    "bg": "#F4F6FA",
+    "ink": "#0E2340",
+    "soft": "#55607A",
+    "panel": "#0E2340",
+    "onPanel": "#F4F6FA",
+    "accent": "#FFD400",
+    "accentInk": "#1E5BAA",
+    "chip": "#E3E9F4"
+   },
+   "sections": [
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "clamp(26px,3.4vw,46px) minmax(250px,20vw) minmax(250px,20vw) minmax(130px,10vw)",
+     "areas": [
+      "s s s s",
+      "t t p p",
+      "t t p p",
+      "a a b b"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "28px auto 120vw 26vw",
+     "mareas": [
+      "s s",
+      "t t",
+      "p p",
+      "a b"
+     ],
+     "blocks": [
+      {
+       "area": "s",
+       "stripes": [
+        "#FFD400",
+        "#A6CE3A",
+        "#2FC6E8",
+        "#F15A40",
+        "#1E73BE",
+        "#0E2340"
+       ]
+      },
+      {
+       "area": "t",
+       "bg": "#0B0F1A",
+       "fg": "#F4F6FA",
+       "text": {
+        "back": true,
+        "h1": true,
+        "eyebrow": "Branding · Web · Dev",
+        "title": "Desafios FOCO 2026",
+        "body": "Um app para os colaboradores registrarem atividades físicas e de engajamento, competirem em rankings e compartilharem a conquista, com painel de TV para o escritório e painel de gestão. São 130 dias de desafio, de 3 de agosto a 10 de dezembro.",
+        "chips": [
+         "PWA",
+         "Google Sheets + Apps Script",
+         "Painel de TV",
+         "Admin"
+        ],
+        "size": "xl",
+        "align": "center"
+       }
+      },
+      {
+       "area": "p",
+       "bg": "#FFD400",
+       "img": "img/cases/focado/app-inicio.jpg",
+       "alt": "Tela inicial do app com pontuação e colocações",
+       "round": true,
+       "w": 60,
+       "anim": "bob",
+       "eager": true
+      },
+      {
+       "area": "a",
+       "bg": "#0E2340",
+       "img": "img/cases/focado/logo-saude-branco.webp",
+       "alt": "#SaúdeemFOCO",
+       "w": 70,
+       "eager": true
+      },
+      {
+       "area": "b",
+       "bg": "#13315F",
+       "img": "img/cases/focado/logo-engaja-branco.webp",
+       "alt": "#EngajaemFOCO",
+       "w": 64,
+       "eager": true
+      }
+     ]
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "#SaúdeemFOCO",
+      "#EngajaemFOCO",
+      "#focado",
+      "130 dias",
+      "Ranking ao vivo"
+     ],
+     "glyph": "img/cases/focado/hash-amarelo.webp",
+     "bg": "#A6CE3A",
+     "fg": "#0E2340"
+    },
+    {
+     "type": "board",
+     "eyebrow": "Antes do app",
+     "title": "Rebranding Grupo FOCO",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(220px,19vw) minmax(220px,19vw)",
+     "areas": [
+      "t t m m",
+      "t t m m"
+     ],
+     "mcols": "1fr",
+     "mrows": "auto 56vw",
+     "mareas": [
+      "t",
+      "m"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#0A4380",
+       "fg": "#F4F6FA",
+       "text": {
+        "eyebrow": ".rebranding",
+        "title": "Um ecossistema, uma holding",
+        "body": [
+         "Reposicionamento com o objetivo de cristalizar o ecossistema integrado. Composto por várias marcas independentes, o Grupo FOCO passa a se centralizar em uma holding de marca própria.",
+         "O símbolo da holding, de cantos arredondados, se desdobra num ícone próprio para cada submarca, com cor e assinatura que mantêm o parentesco."
+        ],
+        "chips": [
+         "Holding",
+         "Arquitetura de marca",
+         "Submarcas",
+         "Cultura"
+        ],
+        "size": "m",
+        "align": "center"
+       }
+      },
+      {
+       "area": "m",
+       "bg": "#222",
+       "img": "img/cases/focado/rb/p02.webp",
+       "alt": "Marca Foco Group sobre fundo grafite com linhas do grafismo",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Arquitetura de marca",
+     "title": "Submarcas com DNA comum",
+     "text": "Marketing, Produtora, Academy, Health e Exclusive dividem a mesma construção tipográfica e o ponto final. Cada uma tem paleta própria, versão primária, secundária e ícone.",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(170px,13.5vw) minmax(170px,13.5vw)",
+     "areas": [
+      "a b c d",
+      "e f g h"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "repeat(4,28vw)",
+     "mareas": [
+      "a b",
+      "c d",
+      "e f",
+      "g h"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p01.webp",
+       "alt": "Abertura do rebranding",
+       "fit": "cover"
+      },
+      {
+       "area": "b",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p03.webp",
+       "alt": "Foco Marketing: marca, paleta e ícone",
+       "fit": "cover"
+      },
+      {
+       "area": "c",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p04.webp",
+       "alt": "Foco Produtora: marca, paleta e ícone",
+       "fit": "cover"
+      },
+      {
+       "area": "d",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p05.webp",
+       "alt": "Foco Academy: marca, paleta e ícone",
+       "fit": "cover"
+      },
+      {
+       "area": "e",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p06.webp",
+       "alt": "Foco Health: marca, paleta e ícone",
+       "fit": "cover"
+      },
+      {
+       "area": "f",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p07.webp",
+       "alt": "Foco Exclusive: marca, paleta e ícone",
+       "fit": "cover"
+      },
+      {
+       "area": "g",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p09.webp",
+       "alt": "FocoCast",
+       "fit": "cover"
+      },
+      {
+       "area": "h",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p12.webp",
+       "alt": "FocoX",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Cultura e grafismo",
+     "title": "Da marca para dentro de casa",
+     "text": "As hashtags de cultura (#SouFocado, #SomosFocados, #SaúdeemFOCO, #EngajaemFOCO) e o forChet levam a identidade para o dia a dia da equipe. #SaúdeemFOCO e #EngajaemFOCO dão nome aos desafios do app apresentado a seguir. O grafismo de linhas paralelas acompanha a família de ícones.",
+     "cols": "repeat(3,1fr)",
+     "rows": "minmax(200px,18vw) minmax(200px,18vw)",
+     "areas": [
+      "a b c",
+      "d e f"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "repeat(3,28vw)",
+     "mareas": [
+      "a b",
+      "c d",
+      "e f"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p08.webp",
+       "alt": "Cultura: #SouFocado e #SomosFocados",
+       "fit": "cover"
+      },
+      {
+       "area": "b",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p10.webp",
+       "alt": "#SaúdeemFOCO, #EngajaemFOCO e #manualdofocado",
+       "fit": "cover"
+      },
+      {
+       "area": "c",
+       "bg": "#0A4380",
+       "img": "img/cases/focado/rb/p11.webp",
+       "alt": "forChet",
+       "fit": "cover"
+      },
+      {
+       "area": "d",
+       "bg": "#222",
+       "img": "img/cases/focado/rb/p13.webp",
+       "alt": "Grafismo de linhas a partir do símbolo",
+       "fit": "cover"
+      },
+      {
+       "area": "e",
+       "bg": "#222",
+       "img": "img/cases/focado/rb/p15.webp",
+       "alt": "Aplicação do grafismo com a família de ícones",
+       "fit": "cover"
+      },
+      {
+       "area": "f",
+       "bg": "#fff",
+       "img": "img/cases/focado/rb/p16.webp",
+       "alt": "Família de ícones das submarcas",
+       "fit": "cover"
+      }
+     ]
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "Foco Group",
+      "Marketing",
+      "Produtora",
+      "Academy",
+      "Health",
+      "Exclusive",
+      "FocoX"
+     ],
+     "glyph": "img/cases/focado/hash-amarelo.webp",
+     "bg": "#0A4380",
+     "fg": "#F4F6FA"
+    },
+    {
+     "type": "board",
+     "eyebrow": "O app no bolso",
+     "title": "Registrar, acompanhar, comemorar",
+     "text": "Início com pontuação e colocações, feed com reações, rankings por critério e registro de atividade com foto como comprovação. Telas com dados de demonstração: nomes fictícios e retratos de banco de imagem.",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(440px,40vw)",
+     "areas": [
+      "a b c d"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "repeat(2,120vw)",
+     "mareas": [
+      "a b",
+      "c d"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#FFF3B0",
+       "img": "img/cases/focado/app-registro.jpg",
+       "alt": "Registro de atividade",
+       "round": true,
+       "w": 80,
+       "tag": "Registro",
+       "fg": "#0E2340"
+      },
+      {
+       "area": "b",
+       "bg": "#E8F3CF",
+       "img": "img/cases/focado/app-feed.jpg",
+       "alt": "Feed com reações",
+       "round": true,
+       "w": 80,
+       "tag": "Feed",
+       "fg": "#0E2340"
+      },
+      {
+       "area": "c",
+       "bg": "#DDF3FA",
+       "img": "img/cases/focado/app-ranking.jpg",
+       "alt": "Ranking com pódio",
+       "round": true,
+       "w": 80,
+       "tag": "Ranking",
+       "fg": "#0E2340"
+      },
+      {
+       "area": "d",
+       "bg": "#E3E9F4",
+       "img": "img/cases/focado/app-perfil.jpg",
+       "alt": "Perfil do colaborador",
+       "round": true,
+       "w": 80,
+       "tag": "Perfil",
+       "fg": "#0E2340"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(440px,40vw)",
+     "areas": [
+      "t a b c"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "auto 120vw 120vw",
+     "mareas": [
+      "t t",
+      "a b",
+      "c c"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#0E2340",
+       "fg": "#F4F6FA",
+       "text": {
+        "eyebrow": "Dois desafios, um app",
+        "title": "Saúde e engajamento",
+        "body": [
+         "#SaúdeemFOCO pontua cardio, musculação, yoga e esportes, com cardio e esportes pontuando pelo tempo de treino.",
+         "#EngajaemFOCO pontua a presença nas redes em categorias como Blogueiro(a), Influenciador(a), Celebridade e Especialista. Um botão troca o desafio em todas as telas."
+        ],
+        "size": "m",
+        "align": "center"
+       }
+      },
+      {
+       "area": "a",
+       "bg": "#FFD400",
+       "img": "img/cases/focado/app-ranking.jpg",
+       "alt": "Ranking #SaúdeemFOCO",
+       "round": true,
+       "w": 80
+      },
+      {
+       "area": "b",
+       "bg": "#A6CE3A",
+       "img": "img/cases/focado/app-engaja.jpg",
+       "alt": "Início #EngajaemFOCO",
+       "round": true,
+       "w": 80
+      },
+      {
+       "area": "c",
+       "bg": "#DDEFB0",
+       "img": "img/cases/focado/app-engaja-ranking.jpg",
+       "alt": "Ranking #EngajaemFOCO",
+       "round": true,
+       "w": 80
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Imagem por treino",
+     "title": "Cada treino vira uma peça com a ID do desafio",
+     "text": "A foto do registro entra num card de story 1080×1920 com logo, data, métricas e o autor, em nove modelos (foto cheia, sequência, noturno, liderança, ofensiva, números, coletiva, pódio e calendário). Gerado no próprio celular, sem editor.",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(420px,38vw)",
+     "areas": [
+      "a b c d"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "repeat(2,110vw)",
+     "mareas": [
+      "a b",
+      "c d"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/card-1.jpg",
+       "alt": "Card foto cheia com métricas do treino",
+       "round": true,
+       "w": 80,
+       "anim": "bob"
+      },
+      {
+       "area": "b",
+       "bg": "#131A2E",
+       "img": "img/cases/focado/card-5.jpg",
+       "alt": "Card ofensiva com foto de treino coletivo na pista",
+       "round": true,
+       "w": 80,
+       "anim": "bob"
+      },
+      {
+       "area": "c",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/card-2.jpg",
+       "alt": "Card de dias no desafio com foto de alongamento",
+       "round": true,
+       "w": 80,
+       "anim": "bob"
+      },
+      {
+       "area": "d",
+       "bg": "#131A2E",
+       "img": "img/cases/focado/card-4.jpg",
+       "alt": "Card liderança no ranking",
+       "round": true,
+       "w": 80,
+       "anim": "bob"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Publicação",
+     "title": "Do registro ao story em dois toques",
+     "text": "Escolhido o modelo, o app entrega a imagem pronta para o compartilhamento nativo do celular. O story publicado carrega a hashtag do desafio e leva o ranking para fora do escritório.",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(460px,40vw)",
+     "areas": [
+      "a b p p"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "120vw 120vw",
+     "mareas": [
+      "a b",
+      "p p"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#FFF3B0",
+       "fg": "#0E2340",
+       "img": "img/cases/focado/app-compartilhar.jpg",
+       "alt": "Escolha do modelo de card",
+       "round": true,
+       "w": 80,
+       "tag": "Escolher modelo"
+      },
+      {
+       "area": "b",
+       "bg": "#0B0F1A",
+       "fg": "#F4F6FA",
+       "img": "img/cases/focado/app-story-publicado.jpg",
+       "alt": "Story publicado com o card do treino",
+       "round": true,
+       "w": 80,
+       "tag": "Story publicado",
+       "anim": "bob"
+      },
+      {
+       "area": "p",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/sim-app-publicacao.jpg",
+       "alt": "Simulação: story do treino aberto no celular durante a academia",
+       "fit": "cover",
+       "pos": "center 40%"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(3,1fr)",
+     "rows": "minmax(260px,23vw) minmax(260px,23vw)",
+     "areas": [
+      "t v v",
+      "t w w"
+     ],
+     "mcols": "1fr",
+     "mrows": "auto 56vw 56vw",
+     "mareas": [
+      "t",
+      "v",
+      "w"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#FFD400",
+       "fg": "#0E2340",
+       "text": {
+        "eyebrow": "Painel de TV",
+        "title": "O ranking na parede do escritório",
+        "body": "Em tela cheia: pódio, rankings por critério, próximo evento coletivo e vinhetas alternando entre os dois desafios. As telas se atualizam sozinhas quando sai versão nova.",
+        "size": "m",
+        "align": "center"
+       }
+      },
+      {
+       "area": "v",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/tv-saude.jpg",
+       "alt": "Painel de TV #SaúdeemFOCO",
+       "fit": "cover",
+       "pos": "left top"
+      },
+      {
+       "area": "w",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/tv-engaja.jpg",
+       "alt": "Painel de TV #EngajaemFOCO",
+       "fit": "cover",
+       "pos": "left top"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "eyebrow": "Simulação de uso",
+     "title": "O desafio fora da tela do computador",
+     "text": "Montagens com fotos de banco de imagem mostram onde o FOCO vive: TV na recepção, sala de reunião, apresentação de resultados e o ranking no bolso de quem treina.",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(280px,25vw) minmax(280px,25vw)",
+     "areas": [
+      "a a b b",
+      "c c d d"
+     ],
+     "mcols": "1fr",
+     "mrows": "62vw 62vw 62vw 62vw",
+     "mareas": [
+      "a",
+      "b",
+      "c",
+      "d"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/sim-tv-sala.jpg",
+       "alt": "Simulação: painel de TV na parede da recepção",
+       "fit": "cover",
+       "tag": "Recepção",
+       "fg": "#F4F6FA"
+      },
+      {
+       "area": "b",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/sim-tv-reuniao.jpg",
+       "alt": "Simulação: painel na sala de reunião",
+       "fit": "cover",
+       "pos": "30% center",
+       "tag": "Sala de reunião",
+       "fg": "#F4F6FA"
+      },
+      {
+       "area": "c",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/sim-tv-apresentacao.jpg",
+       "alt": "Simulação: apresentação do ranking em reunião",
+       "fit": "cover",
+       "pos": "55% center",
+       "tag": "Reunião de resultados",
+       "fg": "#F4F6FA"
+      },
+      {
+       "area": "d",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/sim-app-ranking.jpg",
+       "alt": "Simulação: colaboradora mostrando o ranking no celular",
+       "fit": "cover",
+       "pos": "center 35%",
+       "tag": "No bolso",
+       "fg": "#F4F6FA"
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(380px,32vw)",
+     "areas": [
+      "a a a t"
+     ],
+     "mcols": "1fr",
+     "mrows": "64vw auto",
+     "mareas": [
+      "a",
+      "t"
+     ],
+     "blocks": [
+      {
+       "area": "a",
+       "bg": "#F4F6FA",
+       "img": "img/cases/focado/admin.jpg",
+       "alt": "Painel admin com a lista de atividades",
+       "fit": "cover",
+       "pos": "left top"
+      },
+      {
+       "area": "t",
+       "bg": "#1E5BAA",
+       "fg": "#F4F6FA",
+       "text": {
+        "eyebrow": "Gestão",
+        "title": "Admin sem planilha à vista",
+        "body": "Validar ou invalidar registros com motivo, cadastrar eventos coletivos e colaboradores, ajustar regras e modalidades, publicar avisos com imagem e o banner da TV.",
+        "size": "m",
+        "align": "center"
+       }
+      }
+     ]
+    },
+    {
+     "type": "board",
+     "cols": "repeat(4,1fr)",
+     "rows": "minmax(260px,20vw)",
+     "areas": [
+      "t t t i"
+     ],
+     "mcols": "1fr 1fr",
+     "mrows": "auto 40vw",
+     "mareas": [
+      "t t",
+      "i i"
+     ],
+     "blocks": [
+      {
+       "area": "t",
+       "bg": "#0E2340",
+       "fg": "#F4F6FA",
+       "text": {
+        "eyebrow": "Tecnologia",
+        "title": "Leve, instalável e sem mensalidade",
+        "body": "PWA que instala no celular sem loja, com dados no Google Sheets via Apps Script. O aparelho guarda o último estado e pede só o que mudou, abre sem internet e divide a leitura da planilha com o painel de TV.",
+        "link": {
+         "href": "https://focados.netlify.app",
+         "label": "Abrir o app ↗"
+        },
+        "size": "m",
+        "align": "center"
+       }
+      },
+      {
+       "area": "i",
+       "bg": "#0B0F1A",
+       "img": "img/cases/focado/app-icon.webp",
+       "alt": "Ícone do app",
+       "w": 46,
+       "anim": "sway"
+      }
+     ]
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "Registrar",
+      "Pontuar",
+      "Compartilhar",
+      "Comemorar"
+     ],
+     "glyph": "img/cases/focado/hash-amarelo.webp",
+     "bg": "#1E5BAA",
+     "fg": "#F4F6FA"
+    }
+   ],
+   "coverStyle": "photo"
   },
   {
    "id": "investiga-gazeta",
@@ -668,15 +3406,313 @@
   {
    "id": "enehisp",
    "title": "II ENEHISP",
-   "kind": "Sistema e comunicação do evento",
+   "kind": "Sistema, identidade e comunicação do evento",
    "client": "Encontro de Estudos em História Política",
    "fronts": [
     "web",
     "trade"
    ],
-   "summary": "Confirmação de apresentação, escolha de sessão e modelo de slides.",
-   "url": "https://enehisp.netlify.app",
-   "cover": "img/proj/enehisp.jpg"
+   "summary": "Da submissão ao certificado: sistema web, avaliação às cegas, cadernos, cartas, modelo de slides e redes de um encontro acadêmico com 257 trabalhos.",
+   "cover": "img/cases/enehisp/sis-index-d.jpg",
+   "case": true,
+   "year": "2026",
+   "theme": {
+    "bg": "#F7F2E8",
+    "ink": "#40341E",
+    "soft": "#6F6350",
+    "panel": "#2E2416",
+    "onPanel": "#F7F2E8",
+    "accent": "#A18B64",
+    "accentInk": "#875705",
+    "chip": "#EFE5D2"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Sistema · Identidade · Comunicação",
+     "title": "II ENEHISP",
+     "lead": "Um encontro acadêmico inteiro, do edital ao certificado. Desenhei o fluxo, construí o sistema e produzi as peças que fizeram 257 trabalhos chegarem à apresentação.",
+     "image": "img/cases/enehisp/sis-index-d.jpg",
+     "phone": "img/cases/enehisp/sis-index-m.jpg",
+     "chips": [
+      "GPEPA · PPGH/Unimontes · LAHPS/UFJF",
+      "6 a 9 de outubro de 2026",
+      "21 Simpósios Temáticos",
+      "257 trabalhos · 286 pessoas"
+     ],
+     "block": "img/cases/enehisp/hero-block.jpg"
+    },
+    {
+     "type": "split",
+     "eyebrow": "O desafio",
+     "title": "Muita gente, muitos arquivos, um prazo só",
+     "text": [
+      "O II Encontro de Estudos em História Política recebeu 257 propostas de 286 pessoas, distribuídas em 21 Simpósios Temáticos e seis sessões de comunicação livre.",
+      "Cada proposta precisava passar por avaliação às cegas, receber carta de aceite, entrar no caderno de resumos certo, confirmar horário e, depois do evento, gerar certificado e abrir caminho para o livro e os anais. Como presidente da comissão científica e responsável pelo sistema e pela comunicação, organizei esse percurso de ponta a ponta."
+     ],
+     "image": "img/cases/enehisp/slide-01.jpg"
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Sistema web",
+     "title": "Quatro módulos, uma só identidade",
+     "items": [
+      {
+       "title": "Confirmação de apresentação",
+       "kind": "Para quem apresenta",
+       "text": "A pessoa digita o código da carta de aceite, vê sessão e horário e confirma ou recusa. Quem precisa trocar escolhe uma sessão livre.",
+       "image": "img/cases/enehisp/sis-index-d.jpg"
+      },
+      {
+       "title": "Cronômetro das comunicações",
+       "kind": "Ao vivo, no dia",
+       "text": "Cada comunicador acompanha o tempo da coordenação em tempo real, com avisos sonoros aos 5 minutos, a 1 minuto e no fim.",
+       "image": "img/cases/enehisp/sis-cronometro-d.jpg"
+      },
+      {
+       "title": "Mural de avaliação",
+       "kind": "Para a coordenação",
+       "text": "A coordenação de cada Simpósio avalia as apresentações. A nota e a presença registrada no cronômetro entram nos critérios de publicação do livro e dos anais.",
+       "image": "img/cases/enehisp/sis-mural-d.jpg"
+      },
+      {
+       "title": "Painel de confirmações",
+       "kind": "Para a organização",
+       "text": "Visão interna por Simpósio Temático: quem confirmou, quem recusou e quem mudou de sessão, sem planilha paralela.",
+       "image": "img/cases/enehisp/sis-painel-d.jpg"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Percurso",
+     "title": "Do edital ao certificado",
+     "image": "img/cases/enehisp/sis-cronometro-m.jpg",
+     "items": [
+      {
+       "t": "Submissão e cadastro",
+       "d": "Cadastro mestre com 257 trabalhos e 286 pessoas, com códigos por Simpósio."
+      },
+      {
+       "t": "Avaliação às cegas",
+       "d": "Planilhas por coordenação, catálogo privado de autoria e médias automáticas."
+      },
+      {
+       "t": "Cartas de aceite",
+       "d": "Uma carta em PDF por proponente, com sessão, horário médio e link de inscrição."
+      },
+      {
+       "t": "Cadernos de resumos",
+       "d": "Um caderno por Simpósio e o caderno completo, com capa, cronograma e notas de autoria."
+      },
+      {
+       "t": "Confirmação e evento ao vivo",
+       "d": "Confirmação de horário, cronômetro das comunicações e mural de avaliação."
+      },
+      {
+       "t": "Certificados, livro e anais",
+       "d": "Certificados por e-mail e um novo ciclo de submissão para as publicações."
+      }
+     ]
+    },
+    {
+     "type": "strip",
+     "title": "Modelo de slides para quem apresenta",
+     "images": [
+      "img/cases/enehisp/slide-01.jpg",
+      "img/cases/enehisp/slide-02.jpg",
+      "img/cases/enehisp/slide-03.jpg",
+      "img/cases/enehisp/slide-04.jpg",
+      "img/cases/enehisp/slide-05.jpg",
+      "img/cases/enehisp/slide-06.jpg",
+      "img/cases/enehisp/slide-07.jpg",
+      "img/cases/enehisp/slide-08.jpg",
+      "img/cases/enehisp/slide-09.jpg",
+      "img/cases/enehisp/slide-10.jpg",
+      "img/cases/enehisp/slide-11.jpg",
+      "img/cases/enehisp/slide-12.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Identidade",
+     "title": "A digital como marca, o dourado como fio",
+     "text": [
+      "A identidade parte de uma impressão digital: cada pesquisa deixa a sua marca na história política. Dourado e marrom sobre papel claro, com a Aldo nos títulos e a LT Wave no texto.",
+      "A mesma linguagem atravessa sistema, cadernos, cartas, modelo de slides, vinhetas e redes sociais, para que cada participante reconheça o evento em qualquer ponto de contato."
+     ],
+     "image": "img/cases/enehisp/slide-12.jpg"
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Comunicação",
+     "title": "Um cronograma de redes para cada fase",
+     "text": [
+      "Para o @enehisp, planejei posts, carrosséis, stories e reels para cada etapa: chamada, tutorial de submissão, contagem regressiva, avaliação em andamento, cartas de aceite e certificados.",
+      "Ao vivo, vinhetas de abertura, encerramento e palestras deram ritmo às transmissões."
+     ],
+     "image": "img/cases/enehisp/slide-04.jpg"
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Realização: Grupo de Estudos e Pesquisa do Pensamento Autoritário · PPGH/Unimontes · LAHPS/UFJF",
+      "Sistema, identidade, cadernos e comunicação: Gustavo Elian"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "conahist",
+   "case": true,
+   "title": "XIV CONAHIST",
+   "kind": "Identidade, redes e comunicação do evento",
+   "client": "Departamento de História · Unimontes",
+   "year": "2026",
+   "fronts": [
+    "branding",
+    "social"
+   ],
+   "summary": "Três cidades, uma só história: identidade, feed, reels, camisa da comissão e materiais oficiais do Congresso Nacional de História da Unimontes.",
+   "cover": "img/cases/conahist/capa.jpg",
+   "theme": {
+    "bg": "#ECE9E2",
+    "ink": "#232845",
+    "soft": "#5E6070",
+    "panel": "#2B3157",
+    "onPanel": "#F3F0E8",
+    "accent": "#E0B321",
+    "accentInk": "#C1572A",
+    "chip": "#E2DCCD"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Identidade · Redes · Evento",
+     "title": "XIV CONAHIST",
+     "lead": "O Congresso Nacional de História da Unimontes acontece em três campi ao mesmo tempo. A comunicação precisava apresentar a nova marca do Departamento de História e fazer Montes Claros, São Francisco e Janaúba caberem numa só voz.",
+     "image": "img/cases/conahist/capa.jpg",
+     "phone": "img/cases/conahist/story-faltam-09.jpg",
+     "chips": [
+      "24 a 26 de novembro de 2026",
+      "Montes Claros · São Francisco · Janaúba",
+      "10 Simpósios Temáticos",
+      "@conahist"
+     ],
+     "block": "img/cases/conahist/hero-block.jpg"
+    },
+    {
+     "type": "split",
+     "eyebrow": "Conceito",
+     "title": "Três cidades, uma só história",
+     "text": [
+      "Cada campus ganhou um ícone tirado da sua própria cultura: a formiga de Montes Claros, o peixe do São Francisco e o sol de Janaúba. Eles se repetem em faixas que abrem e fecham cada peça, como uma régua de identidade.",
+      "As fotos das cidades entram em selos e cartões-postais, com cores quentes e o azul profundo da marca. A tipografia é a LT Wave, fonte oficial do evento."
+     ],
+     "image": "img/cases/conahist/cidade-montes-claros.jpg"
+    },
+    {
+     "type": "strip",
+     "title": "Uma cidade por post",
+     "images": [
+      "img/cases/conahist/cidade-montes-claros.jpg",
+      "img/cases/conahist/cidade-sao-francisco.jpg",
+      "img/cases/conahist/cidade-janauba.jpg",
+      "img/cases/conahist/feed-submissoes.jpg",
+      "img/cases/conahist/feed-quanto-custa.jpg",
+      "img/cases/conahist/feed-minicursos.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "reverse": true,
+     "eyebrow": "Simpósios Temáticos",
+     "title": "Um reel para cada Simpósio",
+     "text": [
+      "Cada um dos 10 Simpósios Temáticos ganhou capa e vídeo próprios, com número em destaque, tema, coordenação e foto do campus onde acontece.",
+      "No perfil, as capas formam um feed em xadrez que alterna Simpósios, cidades e chamadas, para que a grade continue legível de longe."
+     ],
+     "image": "img/cases/conahist/reels-grid.jpg"
+    },
+    {
+     "type": "reels",
+     "bg": "#2B3157",
+     "fg": "#F3F0E8",
+     "eyebrow": "Em movimento",
+     "title": "Reels e stories animados",
+     "text": "Vinheta de abertura das submissões, contagem regressiva e o reel de um dos Simpósios.",
+     "items": [
+      {
+       "src": "video/conahist/story-vinheta.mp4",
+       "poster": "video/conahist/story-vinheta.jpg",
+       "ratio": "9/16",
+       "label": "Submissões abertas"
+      },
+      {
+       "src": "video/conahist/story-contagem.mp4",
+       "poster": "video/conahist/story-contagem.jpg",
+       "ratio": "9/16",
+       "label": "Contagem regressiva"
+      },
+      {
+       "src": "video/conahist/reel-st10.mp4",
+       "poster": "video/conahist/reel-st10.jpg",
+       "ratio": "9/16",
+       "label": "Reel do ST 10"
+      }
+     ]
+    },
+    {
+     "type": "strip",
+     "title": "Seu resumo em 5 passos",
+     "images": [
+      "img/cases/conahist/resumo-01.jpg",
+      "img/cases/conahist/resumo-02.jpg",
+      "img/cases/conahist/resumo-03.jpg",
+      "img/cases/conahist/story-e-hoje.jpg",
+      "img/cases/conahist/reel-10-sts.jpg"
+     ]
+    },
+    {
+     "type": "steps",
+     "eyebrow": "Entregas",
+     "title": "Da carta-convite à camisa da comissão",
+     "image": "img/cases/conahist/story-e-hoje.jpg",
+     "items": [
+      {
+       "t": "Carta-convite e ofício",
+       "d": "Materiais oficiais para convidar palestrantes e solicitar apoio, já com a nova marca do Departamento."
+      },
+      {
+       "t": "Página do evento na Even3",
+       "d": "Conteúdo da página de inscrições, com seção de submissões e prévias de conferências e minicursos."
+      },
+      {
+       "t": "Modelo de resumo",
+       "d": "Arquivo com timbrado e regras do edital, para que os resumos cheguem formatados."
+      },
+      {
+       "t": "Cronograma do Instagram",
+       "d": "Três publicações por dia entre 18 de outubro e 6 de novembro: feed ao meio-dia, reel às 19h e story às 9h."
+      },
+      {
+       "t": "Camisa da comissão",
+       "d": "Estampa com os ícones das três cidades, entregue em vetor e com ficha técnica para a confecção."
+      }
+     ]
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Realização: Departamento de História · Unimontes",
+      "Identidade aplicada, redes e materiais do evento: Gustavo Elian"
+     ]
+    }
+   ]
   },
   {
    "id": "utopia-eventos",

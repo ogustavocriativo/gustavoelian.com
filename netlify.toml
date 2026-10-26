@@ -5,11 +5,19 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  external_node_modules = ["@resvg/resvg-js"]
+  included_files = ["public/fonts/LTWave-Light.otf", "public/fonts/LTWave-Medium.otf"]
 
 # Página de cada case: gustavoelian.com/projetos/<id>
 [[redirects]]
   from = "/projetos/*"
   to = "/projeto.html"
+  status = 200
+
+# Link de pagamento avulso: gustavoelian.com/pagar/<id>
+[[redirects]]
+  from = "/pagar/*"
+  to = "/pagar.html"
   status = 200
 
 # Proposta do cliente: gustavoelian.com/<nome-codigo>
@@ -25,6 +33,17 @@
     X-Robots-Tag = "noindex"
     Cache-Control = "no-cache"
 [[headers]]
+  for = "/pagar.html"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+[[headers]]
   for = "/proposta.html"
   [headers.values]
     X-Robots-Tag = "noindex"
+
+# Pré-lançamento: site no ar, mas fora dos buscadores até a revisão final.
+# Para liberar a indexação, apague este bloco e o public/robots.txt.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

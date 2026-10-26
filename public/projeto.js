@@ -1,6 +1,6 @@
 // Página de case: gustavoelian.com/projetos/<id>, montada a partir de data/projects.json
 const root = document.getElementById("case");
-const id = location.pathname.replace(/^\/projetos\/?/, "").replace(/\/$/, "");
+const id = new URLSearchParams(location.search).get("id") || location.pathname.replace(/^\/projetos\/?/, "").replace(/\/$/, "");
 const WA = "5538984120719";
 function h(tag, attrs = {}, ...kids) {
   const el = document.createElement(tag);
@@ -18,6 +18,8 @@ const src = (p) => "/" + p.replace(/^\//, "");
 const paras = (t) => (Array.isArray(t) ? t : [t]).map((x) => h("p", { class: "soft" }, x));
 
 const R = {
+  // publicações do Instagram dentro do case (mesmo bloco do Studio, posicionado entre as seções)
+  insta(s) { return PF.insta({ insta: s.items || [], instaTitle: s.title, instaCredit: s.credit, instaKicker: s.kicker, instaLead: s.lead }); },
   hero(s, p, data) {
     const front = data.fronts.find((f) => f.id === p.fronts[0]);
     return h("section", { class: "blk hero on-panel" }, h("div", { class: "blob" }),
@@ -28,9 +30,14 @@ const R = {
           h("h1", {}, s.title || p.title),
           h("p", { class: "lead" }, s.lead || p.summary),
           s.chips ? h("div", { class: "chips" }, ...s.chips.map((c) => h("span", { class: "chip" }, c))) : null),
-        h("div", { class: "media" },
-          h("div", { class: "shot" }, h("img", { src: src(s.image || p.cover), alt: `${p.title}: imagem principal`, fetchpriority: "high" })),
-          s.phone ? h("div", { class: "phone" }, h("img", { src: src(s.phone), alt: `${p.title} no celular` })) : null)));
+        // bloco único 4:5 (1200 × 1500 px): imagem, PNG transparente, GIF ou vídeo, com recorte e foco definidos no Studio
+        h("div", { class: `media hb${s.blockFit === "contain" ? " contain" : ""}` }, (() => {
+          const file = s.block || s.image || p.cover, alt = s.blockAlt || `${p.title}: imagem principal`;
+          const zz = String(s.blockZoom || "").split(" "), style = [s.blockPos ? `object-position:${s.blockPos}` : "", zz[0] > 1 ? `transform:scale(${zz[0]});transform-origin:${zz[1]} ${zz[2]}` : ""].filter(Boolean).join(";") || null;
+          return /\.(mp4|webm)$/i.test(file) || /video/.test(s.blockType || "")
+            ? h("video", { src: src(file), muted: "", loop: "", autoplay: "", playsinline: "", "aria-label": alt, style })
+            : h("img", { src: src(file), alt, fetchpriority: "high", style });
+        })())));
   },
   split(s) {
     return h("section", { class: `blk split reveal${s.panel ? " panel on-panel" : ""}${s.reverse ? " reverse" : ""}${s.wide ? " wide" : ""}` },
@@ -46,8 +53,9 @@ const R = {
         h("div", { class: "cb" }, h("small", {}, c.kind), h("h3", {}, c.title), h("p", {}, c.text), c.url ? h("span", { class: "go" }, "Ver no ar ↗") : null))))));
   },
   steps(s) {
-    const isPhone = /\/m0\.jpg$/.test(s.image || "");
+    const isPhone = /(\/m0|-m)\.jpg$/.test(s.image || "");
     return h("section", { class: `blk steps reveal${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" },
+      s.insta ? h("figure", { class: "img ig", style: "margin:0" }, PF.insta({ insta: [{ url: s.insta }] }).querySelector(".pf-ig")) :
       s.image ? h("figure", { class: `img${isPhone ? " phone" : ""}`, style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : h("div"),
       h("div", {}, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title),
         h("ol", {}, ...s.items.map((it, i) => h("li", {}, h("b", {}, String(i + 1).padStart(2, "0")), h("strong", {}, it.t), h("span", { class: "soft" }, it.d)))))));
@@ -68,31 +76,122 @@ const R = {
   },
 };
 
+window.CaseFX?.extend(R, h, src, { back: "/#projetos" });
+
+/* ===== blocos alimentados pelo Studio ===== */
+const GE = window.GE;
+const CH = { whatsapp: "WhatsApp", email: "E-mail", instagram: "Instagram", reuniao: "Reunião", outro: "Mensagem" };
+const dateBR = (d) => (d ? new Date(d + "T12:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).replace(".", "") : "");
+const PF = {
+  banner(pf, p) {
+    if (!pf?.banner) return null;
+    const fig = GE.framed(pf.banner, pf.bannerFrame || "laptop", pf.bannerAlt || `${p.title}: interface`);
+    const stage = pf.bannerBg ? h("div", { class: "pf-stage" + (pf.bannerPad === false ? " flush" : ""), style: `background:${pf.bannerBg}` }, fig) : fig;
+    return h("section", { class: "pf-blk pf-banner" }, h("div", { class: "wrap" }, stage));
+  },
+  metrics(pf) {
+    if (!pf?.metrics?.length) return null;
+    return h("section", { class: "pf-blk gray" }, h("div", { class: "wrap" },
+      h("div", { class: "pf-head" }, h("span", { class: "eyebrow" }, "Números"), h("h2", {}, "O que o projeto entregou")),
+      ...pf.metrics.map((s) => h("div", { class: "pf-sec" },
+        h("div", { class: "pf-sec-t" }, h("h3", {}, s.title || "Resultados"), s.note ? h("p", {}, s.note) : null),
+        h("div", { class: "pf-nums" }, ...s.items.map((it) => h("div", { class: "pf-num" },
+          h("span", { class: "v" }, it.value, it.unit ? h("small", {}, it.unit) : null), h("span", { class: "l" }, it.label),
+          it.progress != null ? h("span", { class: "pf-dots", "aria-hidden": "true" }, ...Array.from({ length: 20 }, (_, k) => h("i", { class: k < Math.round(it.progress / 5) ? "on" : "" }))) : null,
+          it.note ? h("span", { class: "n" }, it.note) : null)))))));
+  },
+  gallery(pf, p) {
+    if (!pf?.gallery?.length) return null;
+    return h("section", { class: "pf-blk" }, h("div", { class: "wrap" },
+      h("div", { class: "pf-head" }, h("span", { class: "eyebrow" }, "Galeria"), h("h2", {}, "Moodboard do projeto")),
+      h("div", { class: "pf-mood" }, ...pf.gallery.map((g) => {
+        const fr = g.frame && g.frame !== "none";
+        return h("figure", { class: `pf-tile ${g.size || "s"}${fr ? " framed" : ""}`, style: g.bg ? `background:${g.bg}` : null }, fr ? GE.framed(g.media, g.frame, g.caption || p.title) : GE.mediaEl(g.media, g.caption || p.title), g.caption ? h("figcaption", {}, g.caption) : null);
+      }))));
+  },
+  feedback(pf) {
+    if (!pf?.feedback?.length) return null;
+    return h("section", { class: "pf-blk" }, h("div", { class: "wrap" },
+      h("div", { class: "pf-head" }, h("span", { class: "eyebrow" }, "Cliente"), h("h2", {}, "Nas palavras de quem contratou")),
+      h("div", { class: "pf-quotes" }, ...pf.feedback.map((f) => {
+        const dlg = f.print ? h("dialog", { class: "pf-dlg", "aria-label": `Print da conversa com ${f.name}` }, h("img", { src: GE.media(f.print), alt: `Print da conversa original com ${f.name}`, loading: "lazy" }), h("form", { method: "dialog" }, h("button", { class: "btn", type: "submit" }, "Fechar"))) : null;
+        return h("article", { class: "pf-quote" },
+          f.highlight ? h("p", { class: "big" }, `“${f.highlight}”`) : null,
+          f.message ? h("div", { class: `pf-bubble ${f.channel}` }, f.message, h("span", { class: "t" }, dateBR(f.date))) : null,
+          h("span", { class: "pf-ch" }, `Mensagem original via ${CH[f.channel] || "mensagem"}`),
+          dlg ? h("button", { class: "pf-print", type: "button", onclick: () => dlg.showModal?.() }, "Ver print da conversa") : null, dlg,
+          h("div", { class: "pf-who" }, h("span", { class: "pf-av", "aria-hidden": "true" }, f.avatar ? h("img", { src: GE.media(f.avatar), alt: "" }) : f.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase()),
+            h("div", {}, h("strong", {}, f.name), f.role ? h("span", {}, f.role) : null)));
+      }))));
+  },
+  // publicações do Instagram com o embed oficial; o script do Instagram só carrega quando o bloco chega perto da tela
+  insta(pf) {
+    if (!pf?.insta?.length) return null;
+    const list = h("div", { class: `pf-ig n${pf.insta.length === 4 ? 2 : Math.min(pf.insta.length, 3)}` }, ...pf.insta.map((it) => h("figure", { class: "pf-ig-it" },
+      h("blockquote", { class: "instagram-media", "data-instgrm-permalink": `${it.url}?utm_source=ig_embed`, "data-instgrm-version": "14" },
+        h("a", { class: "pf-ig-fb", href: it.url, target: "_blank", rel: "noopener" }, h("span", { class: "pf-ig-logo", "aria-hidden": "true" }), h("span", {}, /\/reel\//.test(it.url) ? "Ver reel no Instagram" : "Ver publicação no Instagram"))),
+      it.caption ? h("figcaption", {}, it.caption) : null)));
+    const sec = h("section", { class: "pf-blk" }, h("div", { class: "wrap" },
+      h("div", { class: "pf-head" }, h("span", { class: "eyebrow" }, pf.instaKicker || "Instagram"), h("h2", {}, pf.instaTitle || "Publicado nas redes"), pf.instaLead ? h("p", { class: "soft", style: "max-width:40em;margin-top:8px" }, pf.instaLead) : null),
+      list, h("p", { class: "pf-ig-note soft" }, "Toque no vídeo para assistir com som.", pf.instaCredit ? h("small", { class: "pf-ig-credit" }, pf.instaCredit) : null)));
+    const load = () => {
+      if (window.instgrm) return window.instgrm.Embeds.process();
+      if (document.getElementById("ig-embed")) return;
+      const sc = document.createElement("script"); sc.id = "ig-embed"; sc.async = true; sc.src = "https://www.instagram.com/embed.js";
+      document.body.appendChild(sc);
+    };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((en) => { if (en.some((x) => x.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: "600px 0px" });
+      requestAnimationFrame(() => io.observe(list));
+    } else load();
+    return sec;
+  },
+  simpleHero(p, data) {
+    const fronts = (p.fronts || []).map((id) => data.base.fronts.find((f) => f.id === id)?.label).filter(Boolean);
+    return h("section", { class: "pf-hero" }, h("div", { class: "wrap" },
+      h("a", { class: "back", href: "/#projetos" }, "← Todos os projetos"),
+      h("h1", {}, p.title),
+      h("p", { class: "lead" }, p.summary || [p.kind, p.client].filter(Boolean).join(" · ")),
+      h("div", { class: "row" }, ...fronts.map((f) => h("span", { class: "pf-chip" }, f)), p.year ? h("span", { class: "pf-chip" }, p.year) : null,
+        p.url ? h("a", { class: "btn small", href: p.url, target: "_blank", rel: "noopener" }, "Ver no ar ↗") : null),
+      !p.pf?.banner && p.pf?.thumb ? h("div", { class: "thumb" }, GE.mediaEl(p.pf.thumb, p.title)) : null));
+  },
+};
+
 async function main() {
-  const data = await fetch("/data/projects.json").then((r) => r.json());
-  const cases = data.projects.filter((p) => p.case);
-  const p = cases.find((x) => x.id === id);
-  if (!p) {
+  const data = await GE.loadData();
+  const p = data.list.find((x) => x.id === id);
+  if (!p || !p.hasPage) {
+    if (p?.url) { location.replace(p.url); return; }
     document.title = "Projeto não encontrado · Gustavo Elian";
     root.replaceChildren(h("section", { class: "blk" }, h("div", { class: "wrap", style: "text-align:center" }, h("h1", { style: "font-size:3rem" }, "Projeto não encontrado"), h("p", { class: "soft", style: "margin:16px 0 24px" }, "Veja todos os trabalhos no portfólio."), h("a", { class: "btn", href: "/#projetos" }, "Ver portfólio"))));
     return;
   }
   const t = p.theme || {};
   for (const [k, v] of Object.entries(t)) document.documentElement.style.setProperty("--" + k, v);
+  document.documentElement.style.setProperty("--bg", "#FFFFFF");
   document.title = `${p.title} · Gustavo Elian`;
-  document.querySelector('meta[name="description"]').content = p.summary;
+  document.querySelector('meta[name="description"]').content = p.summary || p.kind || "Case do portfólio de Gustavo Elian.";
   const msg = encodeURIComponent(`Olá, Gustavo! Vi o case ${p.title} e quero orçar um projeto parecido.`);
   document.getElementById("topCta").href = `https://wa.me/${WA}?text=${msg}`;
 
-  const blocks = (p.sections || []).map((s) => R[s.type]?.(s, p, data)).filter(Boolean);
-  const i = cases.indexOf(p), nx = cases[(i + 1) % cases.length];
+  const pf = p.pf;
+  // página editada no Studio substitui a do arquivo base
+  const edited = await fetch(`/api/portfolio/${encodeURIComponent(p.id)}/page`).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const src_ = edited?.sections?.length ? edited.sections : p.sections || [];
+  const sections = src_.filter((s) => !s.hidden).map((s) => R[s.type]?.(s, p, data.base)).filter(Boolean);
+  const head = sections.length ? sections.shift() : PF.simpleHero(p, data);
+  const blocks = [head, PF.banner(pf, p), PF.metrics(pf), ...sections, PF.gallery(pf, p), PF.insta(pf?.insta?.length ? pf : p), PF.feedback(pf)].filter(Boolean);
+  const pages = data.list.filter((x) => x.hasPage);
+  const i = pages.indexOf(p), nx = pages[(i + 1) % pages.length];
   blocks.push(
     h("section", { class: "blk cta on-panel" }, h("div", { class: "wrap" },
       h("span", { class: "eyebrow" }, "Vamos conversar"),
       h("h2", {}, "Quer um projeto como este?"),
       h("p", { class: "soft", style: "max-width:34em" }, "Conte o que você precisa. Eu monto a proposta com escopo, prazo e investimento."),
       h("div", { class: "row" }, h("a", { class: "btn accent", href: `https://wa.me/${WA}?text=${msg}`, target: "_blank", rel: "noopener" }, "Pedir orçamento no WhatsApp"), h("a", { class: "btn ghost", href: "/#projetos" }, "Ver outros projetos")))),
-    h("div", { class: "wrap next" }, h("span", { class: "eyebrow" }, "Próximo case"), h("a", { href: `/projetos/${nx.id}` }, h("strong", {}, `${nx.title} →`))));
-  root.replaceChildren(...blocks);
+    nx && nx !== p ? h("div", { class: "wrap next" }, h("span", { class: "eyebrow" }, "Próximo projeto"), h("a", { href: `/projetos/${nx.id}` }, h("strong", {}, `${nx.title} →`))) : null);
+  root.replaceChildren(...blocks.filter(Boolean));
+  window.CaseFX?.run(root);
 }
-main().catch(() => root.replaceChildren(h("p", { class: "loading" }, "Não foi possível carregar o projeto. Atualize a página.")));
+main().catch((e) => { console.error(e); root.replaceChildren(h("p", { class: "loading" }, "Não foi possível carregar o projeto. Atualize a página.")); });

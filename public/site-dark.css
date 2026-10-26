@@ -1,0 +1,115 @@
+/* Proposta B do site publicado: escuro, no espírito da referência Luma.
+   Preto profundo (60) · grafites dos cartões (30) · verde-lima luminoso só no foco e na ação (10).
+   Brilhos difusos em oliva/lima, cartões de dado brancos flutuando sobre foto em P&B.
+   Tipografia mantida (LT Wave). Ativa com <html class="dark">; o Studio não usa este arquivo. */
+html.dark{
+  --bg:#0A0A0B; --card:#141416; --card-2:#1C1C1F; --line:#26262A;
+  --ink:#F1F1EC; --ink-2:#A6A79F; --ink-3:#8A8B84;
+  --accent:#C5DD63; --accent-ink:#D3EA77; --on-ink:#0A0A0B;
+  --raised:#1E1E21; --glow-1:#C5DD63; --glow-2:#56631C;
+  color-scheme:dark;
+}
+html.dark body{background:var(--bg)}
+html.dark ::selection{background:#C5DD63;color:#0A0A0B}
+
+/* brilho ambiente: duas manchas oliva/lima atrás do conteúdo, como nos cartões da referência */
+html.dark body::after{content:"";position:fixed;z-index:-1;inset:auto -20vmax -30vmax auto;width:70vmax;height:70vmax;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(197,221,99,.16),rgba(86,99,28,.10) 45%,transparent 70%);pointer-events:none}
+html.dark .glow{background:radial-gradient(closest-side,var(--glow-1),var(--glow-2) 45%,transparent 75%);opacity:.38}
+
+/* topo e menu */
+html.dark .top{background:color-mix(in srgb,#0A0A0B 82%,transparent)}
+html.dark .logo{background:var(--ink)}
+html.dark .menu{background:var(--card)}
+html.dark .menu a:hover{background:var(--card-2)}
+html.dark .top.open .menu{background:var(--card);box-shadow:0 24px 60px -20px rgba(0,0,0,.8)}
+
+/* botões: primário em gradiente oliva→lima com texto escuro; secundário grafite */
+html.dark .btn{background:var(--card-2);color:var(--ink)}
+html.dark .btn.dark{background:linear-gradient(135deg,#9DB441,#D3EA77);color:#0A0A0B;box-shadow:0 10px 40px -12px rgba(197,221,99,.55)}
+html.dark .arrow{background:var(--ink);color:#0A0A0B}
+html.dark .work:hover .arrow{background:var(--accent);color:#0A0A0B}
+html.dark .eyebrow::before{background:var(--accent);box-shadow:0 0 12px var(--accent)}
+
+/* hero: foto em P&B com glow lima por trás; cartões de dado brancos (assinatura da referência) */
+html.dark .hero h1 em,html.dark .hero h1 .h1-sub em{color:var(--accent-ink)}
+html.dark .portrait{background:#121214;box-shadow:0 0 0 1px #1E1E21}
+html.dark .datum{background:#FFFFFF;color:#0E0E10;box-shadow:0 24px 60px -20px rgba(0,0,0,.9)}
+html.dark .datum small{color:#55575E}
+html.dark .datum::after{background:#0A0A0B;box-shadow:0 0 0 3px var(--accent)}
+html.dark .datum.next i{background:#0E0E10;color:var(--accent)}
+html.dark .datum.next:hover i{background:var(--accent);color:#0E0E10}
+html.dark .marquee{border-color:var(--line)}
+html.dark .marquee li::after{color:var(--accent)}
+
+/* moodboard e cards */
+html.dark .mood-ic,html.dark .svc .ic,html.dark .need-ic{background:var(--card-2);color:var(--ink)}
+html.dark .tile{background:var(--card)}
+html.dark .work{background:var(--card)}
+html.dark .work:hover{background:var(--card-2)}
+html.dark .work .media{background:#111113}
+html.dark .work .tag{background:rgba(10,10,11,.72);color:var(--ink);backdrop-filter:blur(8px)}
+html.dark .stat{background:var(--card-2)}
+html.dark .stat.live::before{background:var(--accent);box-shadow:0 0 10px var(--accent)}
+html.dark .filters button{background:var(--card)}
+html.dark .filters button[aria-selected=true]{background:var(--ink);color:#0A0A0B}
+html.dark .filters button[aria-selected=true] span{color:#0A0A0B}
+html.dark .work.locked{background:#101012;box-shadow:inset 0 0 0 1px var(--line);color:var(--ink)}
+html.dark .work.locked .media{background:radial-gradient(circle at 70% 40%,rgba(197,221,99,.25),transparent 60%),#0D0D0F}
+html.dark .work.locked .arrow{background:var(--card-2);color:var(--ink)}
+
+/* números: estilo painel da referência, pontos acesos em lima */
+html.dark .num{background:var(--card)}
+html.dark .dots i{background:#2A2A2F}
+html.dark .dots i.on{background:var(--accent);box-shadow:0 0 6px rgba(197,221,99,.6)}
+
+/* depoimentos */
+html.dark .quote{background:var(--card)}
+html.dark .bubble{background:var(--card-2);color:var(--ink)}
+html.dark .bubble.whatsapp{background:#1F2B16;color:#E6F0D2}
+html.dark .print-btn{background:var(--card-2);color:var(--ink)}
+html.dark dialog.print,html.dark dialog.print form{background:#141416;color:var(--ink)}
+
+/* lista, serviços, processo, sobre */
+html.dark .xp-list,html.dark .xp-list li{border-color:var(--line)}
+html.dark .xp .f,html.dark .xp .go{background:var(--card-2)}
+html.dark .xp.link:hover{background:var(--card)}
+html.dark .xp.link:hover .go{background:var(--accent);color:#0A0A0B}
+html.dark .svc{background:var(--card)}
+html.dark .node .pin{background:var(--card)}
+html.dark .node.key .pin{background:linear-gradient(135deg,#9DB441,#D3EA77);color:#0A0A0B}
+html.dark .node.key .pin b{color:#2E3A0E}
+html.dark .flow::before{background:repeating-linear-gradient(90deg,#4A4B46 0 4px,transparent 4px 9px)}
+html.dark .node::before{background:#0A0A0B;box-shadow:0 0 0 2px var(--accent)}
+@media (max-width:760px){html.dark .flow::before{background:repeating-linear-gradient(180deg,#4A4B46 0 4px,transparent 4px 9px)}}
+html.dark .about .photo{background:var(--card)}
+html.dark .about .photo figcaption{background:rgba(10,10,11,.78);color:var(--ink);backdrop-filter:blur(8px)}
+html.dark .about .txt,html.dark .trail .it{background:var(--card)}
+html.dark .trail .it small{color:var(--accent-ink)}
+html.dark .years{border-color:var(--line)}
+
+/* contato: cartão escuro com glow lima à direita (CTA da referência) */
+html.dark .cta-card{background:linear-gradient(110deg,#151517 45%,#20250F 100%)}
+html.dark .cta-card .glow{opacity:.55;width:640px;height:520px;right:-160px;top:-120px}
+html.dark .cta-card h2 em{color:var(--accent-ink)}
+html.dark .ch{border-color:#2C2C30}
+html.dark .foot .olab{background:var(--ink-3)}
+
+/* barra fixa e pop-up */
+html.dark .dock{background:#1A1A1D;box-shadow:0 18px 40px -12px rgba(0,0,0,.9),0 0 0 1px #26262A}
+html.dark .dock a{color:var(--ink)}
+html.dark .dock a.wa{background:linear-gradient(135deg,#9DB441,#D3EA77);color:#0A0A0B}
+html.dark .need{background:linear-gradient(180deg,rgba(10,10,11,.55) 0%,rgba(10,10,11,.82) 45%,rgba(14,16,8,.96) 100%)}
+html.dark .need::before{background:radial-gradient(closest-side,rgba(197,221,99,.28),transparent)}
+html.dark .need-card{background:#141416;box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 0 1px #26262A}
+html.dark .need-x{background:var(--card-2);color:var(--ink)}
+html.dark .need-o{background:var(--card-2);color:var(--ink)}
+html.dark .need-o:hover,html.dark .need-o:focus-visible{background:var(--ink);color:#0A0A0B}
+html.dark .need-o:hover .need-ic,html.dark .need-o:focus-visible .need-ic{background:#0A0A0B;color:var(--ink)}
+html.dark .need-o:last-child{background:linear-gradient(135deg,#9DB441,#D3EA77);color:#0A0A0B}
+html.dark .need-o:last-child .need-ic{background:rgba(10,10,11,.15);color:#0A0A0B}
+html.dark .need-bar{background:var(--card)}
+html.dark .need-bar button{background:var(--ink);color:#0A0A0B}
+
+html.dark .need-ic.sm{background:var(--card-2)}
+html.dark :focus-visible{outline-color:var(--accent)}

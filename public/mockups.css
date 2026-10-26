@@ -1,0 +1,23 @@
+/* Molduras de mockup em CSS puro (sem imagens): aplicadas automaticamente ao que é enviado no Studio.
+   Uso: <figure class="mk mk-laptop"><div class="mk-screen"><img …></div></figure>
+   Tipos: mk-none · mk-browser · mk-laptop · mk-tablet · mk-phone */
+.mk{position:relative;margin:0;width:100%;--mk-body:#16171A;--mk-edge:#2A2C31}
+.mk-screen{position:relative;overflow:hidden;background:#EDEEF0}
+.mk-screen>img,.mk-screen>video{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}
+
+.mk-none .mk-screen{border-radius:inherit}
+.mk-none .mk-screen>img,.mk-none .mk-screen>video{height:auto;object-fit:contain}
+
+.mk-browser .mk-screen{border-radius:14px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 24px 48px -24px rgba(15,20,30,.28);padding-top:28px;background:#fff}
+.mk-browser .mk-screen::before{content:"";position:absolute;left:14px;top:10px;width:8px;height:8px;border-radius:50%;background:#E3E4E8;box-shadow:13px 0 0 #E3E4E8,26px 0 0 #E3E4E8}
+.mk-browser .mk-screen>img,.mk-browser .mk-screen>video{height:auto;aspect-ratio:16/10}
+
+.mk-laptop{padding:0 6% 3.2%}
+.mk-laptop .mk-screen{aspect-ratio:16/10;border:clamp(5px,1.1vw,11px) solid var(--mk-body);border-bottom-width:clamp(8px,1.8vw,18px);border-radius:clamp(10px,1.6vw,18px) clamp(10px,1.6vw,18px) 4px 4px;box-shadow:0 0 0 1px var(--mk-edge)}
+.mk-laptop::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3.4%;min-height:8px;border-radius:2px 2px 14px 14px/2px 2px 60% 60%;background:linear-gradient(#D7D9DE,#A9ADB5);box-shadow:0 18px 30px -16px rgba(0,0,0,.35)}
+
+.mk-tablet .mk-screen{aspect-ratio:4/3;border:clamp(8px,1.4vw,14px) solid var(--mk-body);border-radius:clamp(18px,2.6vw,30px);box-shadow:0 0 0 1px var(--mk-edge),0 30px 50px -28px rgba(0,0,0,.35)}
+
+.mk-phone{max-width:340px;margin-inline:auto}
+.mk-phone .mk-screen{aspect-ratio:9/19.5;border:clamp(7px,1vw,10px) solid var(--mk-body);border-radius:clamp(30px,4.4vw,46px);box-shadow:0 0 0 1px var(--mk-edge),0 30px 50px -26px rgba(0,0,0,.4)}
+.mk-phone .mk-screen::before{content:"";position:absolute;z-index:1;top:10px;left:50%;transform:translateX(-50%);width:30%;height:22px;border-radius:999px;background:var(--mk-body)}

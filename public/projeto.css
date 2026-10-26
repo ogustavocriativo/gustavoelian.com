@@ -120,7 +120,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.1)}
 .cta h2{font-size:clamp(2.25rem,5.6vw,4.25rem);max-width:14em}
 .cta .row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 .cta .btn.ghost{color:var(--onPanel)}
-.next{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:28px 0}
+.next{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:28px}
 .next a{text-decoration:none}
 .next strong{display:block;font-size:clamp(1.5rem,3vw,2.25rem);letter-spacing:-.02em}
 .foot{padding:28px 0 calc(28px + env(safe-area-inset-bottom));color:var(--soft);font-size:.875rem}
@@ -131,4 +131,113 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.1)}
 @media (prefers-reduced-motion:no-preference){
   .reveal{animation:rise .7s cubic-bezier(.2,.8,.2,1) both;animation-timeline:view();animation-range:entry 0% entry 35%}
   @keyframes rise{from{transform:translateY(40px)}to{transform:none}}
+}
+
+/* ===== Sistema branco + blocos alimentados pelo Studio (banner, números, galeria, depoimentos) ===== */
+@font-face{font-family:"LT Wave";src:url(/fonts/LTWave-Light.woff2) format("woff2");font-weight:300;font-display:swap}
+body{background:#FFFFFF}
+.top{background:color-mix(in srgb,#fff 88%,transparent)}
+.pf-blk{margin:var(--gut);padding:clamp(32px,6vw,80px) 0;border-radius:var(--r)}
+.pf-blk.gray{background:#F4F4F5}
+.pf-blk h2{font-size:clamp(2rem,4.4vw,3.5rem);font-weight:300;letter-spacing:-.035em}
+.pf-head{display:flex;flex-direction:column;gap:12px;margin-bottom:clamp(24px,4vw,40px);max-width:760px}
+.pf-head p{color:#55575E;font-size:1.125rem;font-weight:300}
+.pf-banner .mk{max-width:1100px;margin-inline:auto}
+.pf-banner .mk-phone{max-width:320px}
+.pf-banner .mk-none .mk-screen{border-radius:22px}
+.pf-sec+.pf-sec{margin-top:clamp(28px,4vw,48px)}
+.pf-sec-t{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.pf-sec-t h3{font-size:1.375rem;font-weight:400;letter-spacing:-.02em}
+.pf-sec-t p{color:#55575E;font-size:.9375rem}
+.pf-nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.pf-num{display:flex;flex-direction:column;gap:8px;padding:22px;border-radius:20px;background:#fff;min-width:0}
+.pf-blk:not(.gray) .pf-num{background:#F4F4F5}
+.pf-num .v{font-weight:300;font-size:clamp(2.5rem,6vw,3.75rem);letter-spacing:-.045em;line-height:.95;color:#0E0E10}
+.pf-num .v small{font-size:.4em;letter-spacing:0;color:#55575E;margin-left:4px}
+.pf-num .l{font-size:.9375rem;color:#0E0E10}
+.pf-num .n{font-size:.8125rem;color:#6B6E76}
+.pf-dots{display:grid;grid-template-columns:repeat(20,1fr);gap:4px}
+.pf-dots i{aspect-ratio:1;border-radius:50%;background:#D9DAE0}
+.pf-dots i.on{background:var(--accent,#2F5FD0)}
+.pf-mood{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:clamp(110px,13vw,190px);grid-auto-flow:dense;gap:6px}
+.pf-tile{position:relative;overflow:hidden;border-radius:12px;background:#F4F4F5;margin:0}
+.pf-tile.s{grid-column:span 2}.pf-tile.wide{grid-column:span 4}.pf-tile.tall{grid-column:span 2;grid-row:span 2}.pf-tile.l{grid-column:span 3;grid-row:span 2}
+.pf-tile>img,.pf-tile>video{width:100%;height:100%;object-fit:cover}
+.pf-tile.framed{display:grid;place-items:center;padding:6%}
+.pf-tile.framed .mk-phone{height:100%;width:auto;aspect-ratio:9/19.5}
+.pf-tile.framed .mk-phone .mk-screen{height:100%}
+.pf-tile figcaption{position:absolute;left:8px;bottom:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.92);font-size:.75rem;font-weight:500}
+@media (max-width:640px){.pf-mood{grid-template-columns:repeat(2,1fr);grid-auto-rows:40vw;gap:5px}.pf-tile.s{grid-column:span 1}.pf-tile.wide,.pf-tile.l{grid-column:span 2}.pf-tile.tall{grid-column:span 1}}
+.pf-quotes{display:grid;grid-auto-flow:column;grid-auto-columns:min(88%,600px);gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.pf-quotes::-webkit-scrollbar{display:none}
+.pf-quote{scroll-snap-align:start;display:flex;flex-direction:column;gap:18px;padding:clamp(22px,3vw,34px);border-radius:24px;background:#F4F4F5;min-width:0}
+.pf-quote .big{font-weight:300;font-size:clamp(1.5rem,3vw,2.125rem);line-height:1.15;letter-spacing:-.025em}
+.pf-bubble{position:relative;align-self:flex-start;max-width:100%;padding:12px 14px 22px;border-radius:18px 18px 18px 4px;background:#fff;font-size:.9375rem;line-height:1.5;white-space:pre-line;overflow-wrap:anywhere}
+.pf-bubble.whatsapp{background:#E7F8DE}
+.pf-bubble .t{position:absolute;right:12px;bottom:6px;font-size:.6875rem;color:#6B6E76}
+.pf-ch{font-size:.8125rem;color:#6B6E76}
+.pf-who{display:flex;align-items:center;gap:12px;margin-top:auto}
+.pf-av{flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#E6E6EA;display:grid;place-items:center;font-size:.875rem;font-weight:500}
+.pf-av img{width:100%;height:100%;object-fit:cover}
+.pf-who strong{display:block;font-weight:500}.pf-who span{font-size:.8125rem;color:#55575E}
+.pf-print{align-self:flex-start;min-height:44px;padding:8px 14px;border-radius:999px;border:0;background:#fff;cursor:pointer;font:inherit;font-size:.8125rem;font-weight:500}
+dialog.pf-dlg{border:0;padding:0;border-radius:20px;max-width:min(420px,92vw);max-height:90dvh}
+dialog.pf-dlg::backdrop{background:rgba(10,10,12,.6)}
+dialog.pf-dlg img{width:100%;height:auto}
+dialog.pf-dlg form{position:sticky;bottom:0;padding:10px;background:#fff;text-align:center}
+/* página simples (projeto criado no painel) */
+.pf-hero{padding:clamp(32px,6vw,72px) 0 clamp(16px,3vw,28px)}
+.pf-hero .back{font-size:.875rem;color:#55575E;text-decoration:none}
+.pf-hero h1{font-size:clamp(2.75rem,8vw,6rem);font-weight:300;letter-spacing:-.04em;margin:18px 0 16px}
+.pf-hero .lead{font-size:clamp(1.0625rem,1.8vw,1.3125rem);font-weight:300;color:#55575E;max-width:36em}
+.pf-hero .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
+.pf-chip{padding:8px 14px;border-radius:999px;background:#F4F4F5;font-size:.8125rem}
+
+.pf-hero .thumb{margin-top:clamp(24px,4vw,40px);border-radius:24px;overflow:hidden;background:#F4F4F5}
+.pf-hero .thumb>img,.pf-hero .thumb>video{width:100%;height:auto}
+#case{min-height:100dvh}
+
+.pf-stage{border-radius:28px;padding:clamp(24px,6vw,72px) clamp(16px,6vw,80px)}
+.pf-stage.flush{padding:0;overflow:hidden}
+.pf-stage .mk-none .mk-screen{border-radius:16px}
+/* lista numerada mais enxuta (pedido: diminuir texto) */
+.steps li span{font-size:1rem;line-height:1.5}
+@media (max-width:860px){
+  .steps h2{font-size:clamp(1.75rem,7vw,2.25rem);margin:10px 0 20px}
+  .steps ol{gap:16px}
+  .steps li{grid-template-columns:32px 1fr;gap:2px 10px}
+  .steps li b{font-size:.8125rem;padding-top:3px}
+  .steps li strong{font-size:1.0625rem}
+  .steps li span{font-size:.9375rem}
+}
+/* 4 cartões: grade 2×2, sem cartão órfão */
+@media (min-width:861px){.cards .grid:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,1fr)}}
+.blk + .credits{margin-top:clamp(32px,5vw,64px)}
+@media (max-width:860px){.steps .img.phone{max-width:240px}}
+@media (max-width:860px){.steps .img:not(.phone){max-width:320px;margin-inline:auto}}
+
+/* abertura do projeto: bloco único 4:5 (exportar em 1200 × 1500 px) */
+.hero .media.hb{align-self:stretch;display:flex;align-items:flex-end}
+.hero .media.hb > img,.hero .media.hb > video{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 50%;border-radius:22px 22px 0 0;box-shadow:0 -10px 50px rgba(0,0,0,.25);background:color-mix(in srgb,var(--onPanel) 6%,transparent)}
+.hero .media.hb.contain > img,.hero .media.hb.contain > video{object-fit:contain;background:none;box-shadow:none;border-radius:0}
+@media (max-width:860px){.hero .media.hb > img,.hero .media.hb > video{aspect-ratio:4/5;max-height:72vh}}
+
+/* publicações do Instagram: grid de 1 a 3 colunas (8pt), embed oficial com largura controlada; carrossel no celular */
+.pf-ig{display:grid;gap:16px;align-items:start}
+.pf-ig.n1{grid-template-columns:minmax(0,420px)}
+.pf-ig.n2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:880px}
+.pf-ig.n3{display:flex;flex-wrap:wrap;justify-content:center}
+.pf-ig.n3>.pf-ig-it{flex:0 0 calc((100% - 32px)/3)}
+.pf-ig-it{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pf-ig-it figcaption{font-size:14px;color:var(--ink-2);padding:0 4px}
+.pf-ig .instagram-media,.pf-ig iframe{min-width:0!important;width:100%!important;max-width:100%!important;margin:0!important;border-radius:16px!important;border:0!important;box-shadow:0 0 0 1px rgba(127,127,127,.28)!important;background:transparent!important}
+.pf-ig-fb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;aspect-ratio:4/5;padding:24px;text-align:center;color:var(--ink);text-decoration:none;font-weight:500;background:rgba(127,127,127,.07);border-radius:16px;box-shadow:inset 0 0 0 1px rgba(127,127,127,.28)}
+.pf-ig-logo{width:40px;height:40px;border-radius:12px;background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%)}
+.pf-ig-note{margin-top:16px;font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.pf-ig-credit{font-size:12px;color:var(--ink-3);letter-spacing:.02em}
+@media (max-width:760px){
+  .pf-ig.n2,.pf-ig.n3{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(86%,360px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;max-width:none}
+  .pf-ig.n3>.pf-ig-it{flex:none}
+  .pf-ig::-webkit-scrollbar{display:none}
+  .pf-ig-it{scroll-snap-align:start}
 }

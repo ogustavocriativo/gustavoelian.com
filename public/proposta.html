@@ -4,14 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Proposta · Gustavo Elian</title>
+<meta name="description" content="Escopo, prazo e investimento. Escolha a condição e aprove online.">
+<meta property="og:title" content="Sua proposta está pronta · Gustavo Elian">
+<meta property="og:description" content="Escopo, prazo e investimento. Escolha a condição e aprove online.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gustavo Elian">
+<meta property="og:image" content="https://gustavoelian.com/img/og-proposta.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/proposta.css">
+<link rel="stylesheet" href="/theme.css">
+<link rel="stylesheet" href="/proposta-dark.css">
+<script>try{var q=location.search,t=localStorage.getItem("ge_tema");if(/[?&]tema=claro/.test(q)){t="claro";localStorage.setItem("ge_tema",t)}else if(/[?&]tema=escuro/.test(q)){t="escuro";localStorage.setItem("ge_tema",t)}if(t!=="claro")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}</script>
+
 </head>
 <body>
 <header class="top">
   <div class="wrap">
     <a class="logo" href="/" aria-label="Gustavo Elian, portfólio"></a>
-    <a class="btn ghost small" id="topPdf" href="#" download>Baixar PDF</a>
+    <div class="top-r"><button class="theme-sw" type="button" aria-label="Versão escura" aria-pressed="true"><span class="tr"><span class="kn"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></span></span></button><a class="btn ghost small" id="topPdf" href="#" download>Baixar PDF</a></div>
   </div>
 </header>
 <main id="app" class="wrap" aria-live="polite">
@@ -19,6 +34,7 @@
 </main>
 <footer class="foot"><div class="wrap" id="foot"></div></footer>
 <div id="toast" role="status" hidden></div>
+<script src="/theme.js" defer></script>
 <script src="/proposta.js" type="module"></script>
 </body>
 </html>

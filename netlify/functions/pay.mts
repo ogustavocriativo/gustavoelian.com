@@ -1,6 +1,7 @@
 // Pagamentos: Pix (BR Code estático gerado a partir da chave do emissor) e cartão/Apple Pay (Stripe Checkout, quando configurado).
 import type { Config, Context } from "@netlify/functions";
 import QRCode from "qrcode";
+import { markChargePaid } from "../lib/charges.mts";
 import { addEvent, brl, fail, getQuote, getSettings, getState, json, patchState, priceOf } from "../lib/core.mts";
 
 function tlv(id: string, value: string) { return id + String(value.length).padStart(2, "0") + value; }
@@ -50,8 +51,14 @@ export default async (req: Request, context: Context) => {
     if (evt.type === "checkout.session.completed") {
       const s = evt.data.object;
       const slug = s.metadata?.slug;
-      if (slug) {
-        await patchState(slug, { paidAt: new Date().toISOString(), payment: { method: "stripe", amount: s.amount_total / 100, sessionId: s.id } });
+      // cobrança avulsa por link (/pagar/<id>)
+      if (s.metadata?.charge) await markChargePaid(String(s.metadata.charge), { amount: s.amount_total / 100, method: "cartao", note: "Stripe", ref: s.id });
+      else if (slug) {
+        const cur = await getState(slug);
+        const amount = s.amount_total / 100;
+        const payments = [...(cur.payments || []), { id: s.id, amount, date: new Date().toISOString().slice(0, 10), method: "cartao", note: "Stripe", at: new Date().toISOString() }];
+        const paidTotal = payments.reduce((t: number, p: any) => t + Number(p.amount || 0), 0);
+        await patchState(slug, { paidAt: new Date().toISOString(), payment: { method: "stripe", amount, sessionId: s.id }, payments, paidTotal });
         await addEvent(slug, { type: "paid", method: "cartão", total: s.amount_total / 100 });
       }
     }

@@ -105,3 +105,5 @@ textarea{min-height:110px;resize:vertical}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom));z-index:50;background:var(--invert);color:var(--invert-fg);padding:12px 18px;border-radius:12px;max-width:calc(100% - 32px)}
 .wa-float{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:20;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 @media (max-width:600px){.item{grid-template-columns:1fr}.item .price,.item .dl{text-align:left}}
+.demo-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:16px 0 0;padding:12px 16px;border-radius:14px;background:#C5DD63;color:#0A0A0B;font-size:.875rem;line-height:1.45}
+.demo-bar button{margin-left:auto;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(10,10,11,.25);background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer}

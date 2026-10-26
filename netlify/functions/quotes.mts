@@ -32,7 +32,7 @@ function clean(input: any, prev: any = {}) {
     notes: str(input.notes),
     projectIds: (input.projectIds || []).map(String).slice(0, 12),
     attachments: (input.attachments || prev.attachments || []).map((a: any) => ({ ...a, showToClient: a.showToClient !== false })),
-    contract: { enabled: input.contract?.enabled !== false, text: str(input.contract?.text, 20000) },
+    contract: { enabled: input.contract?.enabled !== false, text: str(input.contract?.text, 20000), extra: str(input.contract?.extra, 4000) },
     published: !!input.published,
   };
 }
@@ -47,8 +47,9 @@ export default async (req: Request, context: Context) => {
       const list = await Promise.all(blobs.map(async (b) => {
         const q: any = await quotes().get(b.key, { type: "json" });
         if (!q) return null;
-        const st = await getState(q.slug);
-        return { slug: q.slug, client: q.client, title: q.title, updatedAt: q.updatedAt, createdAt: q.createdAt, published: q.published, total: (q.items || []).reduce((s: number, i: any) => s + Number(i.price || 0), 0), state: st };
+        // estado sem os campos pesados (assinatura e texto do contrato ficam só no detalhe)
+        const { signatureImage, contractText, ...st } = await getState(q.slug);
+        return { slug: q.slug, client: q.client, title: q.title, category: q.category, date: q.date, validDays: q.validDays, updatedAt: q.updatedAt, createdAt: q.createdAt, published: q.published, total: (q.items || []).reduce((s: number, i: any) => s + Number(i.price || 0), 0), state: st };
       }));
       return json((list.filter(Boolean) as any[]).sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1)));
     }
