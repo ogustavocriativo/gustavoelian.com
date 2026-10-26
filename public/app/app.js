@@ -415,8 +415,25 @@ async function renderEditor(slug) {
   const drawFiles = () => filesBox.replaceChildren(...(q.attachments || []).map((a) => h("div", { class: "file" },
     h("span", {}, a.fromClient ? `Do cliente: ${a.name}` : a.name),
     h("label", { class: "check", style: "padding:0" }, h("input", { type: "checkbox", checked: a.showToClient, onchange: (e) => { a.showToClient = e.target.checked; markDirty(); } }), h("small", {}, "Visível")),
+    h("button", { class: "btn sm", type: "button", "aria-label": `Renomear ${a.name}`, onclick: () => renameFile(a), title: "Renomear" }, icon("pen")),
     h("a", { class: "btn sm", href: `/api/quotes/${q.slug}/files/${a.id}`, target: "_blank" }, "Abrir"),
     h("button", { class: "btn sm danger", type: "button", "aria-label": `Remover ${a.name}`, onclick: async () => { await api(`/api/quotes/${q.slug}/files/${a.id}`, { method: "DELETE" }); q.attachments = q.attachments.filter((x) => x.id !== a.id); drawFiles(); toast("Arquivo removido"); } }, icon("trash")))));
+  // renomear arquivo: o nome novo aparece para o cliente e no download (a extensão é mantida)
+  const renameFile = (a) => sheet("Renomear arquivo", (close) => {
+    const ext = (a.name.match(/\.[A-Za-z0-9]{1,6}$/) || [""])[0];
+    const inpt = h("input", { class: "in", id: "fileName", value: ext ? a.name.slice(0, -ext.length) : a.name, autocomplete: "off" });
+    const err = h("p", { class: "err", role: "alert" });
+    const go = h("button", { class: "btn primary block", type: "button", onclick: async () => {
+      const name = inpt.value.trim();
+      if (!name) { err.textContent = "Informe um nome."; inpt.focus(); return; }
+      go.disabled = true;
+      try { const m = await api(`/api/quotes/${q.slug}/files/${a.id}`, { method: "PATCH", body: { name: name + ext } }); a.name = m.name; drawFiles(); close(); toast("Arquivo renomeado"); }
+      catch (x) { err.textContent = x.message; go.disabled = false; }
+    } }, "Salvar nome");
+    inpt.addEventListener("keydown", (e) => { if (e.key === "Enter") go.click(); });
+    setTimeout(() => inpt.select(), 80);
+    return [h("label", { class: "f", for: "fileName" }, h("span", {}, ext ? `Nome do arquivo (${ext} é mantido)` : "Nome do arquivo"), inpt), err, go];
+  });
   const fileInput = h("input", { type: "file", multiple: true, accept: "image/*,application/pdf,.ai,.svg,.zip", hidden: true, onchange: async (e) => {
     if (!q.slug) { const r = await save({ silent: true }); if (!r) return; }
     for (const f of e.target.files) {
@@ -440,8 +457,34 @@ async function renderEditor(slug) {
     h("details", {}, h("summary", { class: "hint" }, "Substituir o contrato inteiro (avançado)"), field("Texto próprio deste cliente", ctText)));
 
   const linkBox = h("div");
-  const drawLink = () => linkBox.replaceChildren(q.slug ? h("div", { class: "linkbox" }, h("code", {}, `${location.host}/${q.slug}`),
-    h("button", { class: "ibtn", type: "button", "aria-label": "Copiar link", onclick: () => copy(`${location.origin}/${q.slug}`) }, icon("copy"))) : h("p", { class: "hint" }, "O link nasce ao salvar: nome do cliente + código curto."));
+  const drawLink = () => linkBox.replaceChildren(...(q.slug ? [h("div", { class: "linkbox" }, h("code", {}, `${location.host}/${q.slug}`),
+    h("button", { class: "ibtn", type: "button", "aria-label": "Editar link", onclick: () => editLink() }, icon("pen")),
+    h("button", { class: "ibtn", type: "button", "aria-label": "Copiar link", onclick: () => copy(`${location.origin}/${q.slug}`) }, icon("copy"))),
+    q.previousSlugs?.length ? h("p", { class: "hint" }, `Links antigos que continuam funcionando: ${q.previousSlugs.map((x) => "/" + x).join(", ")}`) : null] : [h("p", { class: "hint" }, "O link nasce ao salvar: nome do cliente + código curto.")]));
+  // trocar o link: o endereço antigo continua abrindo a proposta
+  const editLink = () => sheet("Editar link da proposta", (close) => {
+    const toSlug = (v) => v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+    const prev = h("code", {}, `${location.host}/${q.slug}`);
+    const inpt = h("input", { class: "in", id: "slugIn", value: q.slug, autocomplete: "off", autocapitalize: "off", spellcheck: "false", "aria-describedby": "slugHint",
+      oninput: () => { prev.textContent = `${location.host}/${toSlug(inpt.value) || "…"}`; } });
+    const err = h("p", { class: "err", role: "alert" });
+    const go = h("button", { class: "btn primary block", type: "button", onclick: async () => {
+      const v = toSlug(inpt.value);
+      if (v.length < 3) { err.textContent = "Use pelo menos 3 letras ou números."; inpt.focus(); return; }
+      if (v === q.slug) { close(); return; }
+      if (dirty && !(await save({ silent: true }))) return;
+      go.disabled = true; go.textContent = "Trocando…";
+      try {
+        q = await api(`/api/quotes/${q.slug}/rename`, { method: "POST", body: { slug: v } });
+        slug = q.slug; history.replaceState(null, "", `#/q/${q.slug}`); drawLink(); close(); toast("Link atualizado"); haptic();
+      } catch (x) { err.textContent = x.message; go.disabled = false; go.textContent = "Salvar novo link"; }
+    } }, "Salvar novo link");
+    inpt.addEventListener("keydown", (e) => { if (e.key === "Enter") go.click(); });
+    return [h("label", { class: "f", for: "slugIn" }, h("span", {}, "Endereço depois de gustavoelian.com/"), inpt),
+      h("div", { class: "linkbox" }, prev), err,
+      h("p", { class: "hint", id: "slugHint" }, "Use letras, números e hífen. O link antigo continua abrindo esta proposta, então quem já recebeu não perde o acesso."),
+      go];
+  });
   const secPub = card("Link do cliente",
     h("label", { class: "switch" }, "Link ativo (o cliente pode abrir)", h("input", { type: "checkbox", role: "switch", checked: !!q.published, onchange: (e) => { q.published = e.target.checked; markDirty(); } })),
     linkBox, slug ? h("button", { class: "btn danger", type: "button", onclick: () => confirmSheet("Excluir proposta?", "Apaga a proposta, os arquivos e o histórico. Não dá para desfazer.", "Excluir", async () => { await api(`/api/quotes/${q.slug}`, { method: "DELETE" }); dirty = false; toast("Proposta excluída"); location.hash = "#/propostas"; }) }, icon("trash"), "Excluir proposta") : null);

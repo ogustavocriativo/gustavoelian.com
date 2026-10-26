@@ -267,6 +267,7 @@ function questions() {
 
 async function load() {
   const r = await fetch(`/api/p/${slug}${location.search}`);
+  if (r.status === 410) { const m = await r.json().catch(() => ({})); if (m.moved) { location.replace(`/${m.moved}${location.search}${location.hash}`); return; } }
   if (!r.ok) {
     document.title = "Proposta não encontrada · Gustavo Elian";
     app.replaceChildren(h("section", { class: "blk hero" }, h("h1", {}, "Proposta não encontrada"), h("p", { class: "lead" }, "Confira o link recebido ou fale comigo."),

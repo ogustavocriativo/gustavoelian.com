@@ -1,6 +1,6 @@
 // Página do cliente: leitura da proposta e interações (seleção, comentário, aprovação/assinatura, aviso de pagamento).
 import type { Config, Context } from "@netlify/functions";
-import { addEvent, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
+import { addEvent, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
 import { buildContract, paymentLabel } from "../lib/contract.mts";
 import { googleReady, sendContractToDrive } from "../lib/google.mts";
 
@@ -64,6 +64,7 @@ export default async (req: Request, context: Context) => {
   const { slug, action } = context.params;
   if (slug === "demonstracao") return demo(req, action);
   const q = await getQuote(slug);
+  if (!q) { const to = await aliasOf(slug); if (to) return json({ moved: to }, 410); }
   const admin = await isAdmin(context);
   if (!q || (!q.published && !admin)) return fail("Proposta não encontrada", 404);
   const settings = await getSettings();

@@ -97,6 +97,13 @@ export async function getQuote(slug: string): Promise<Quote | null> {
   if (!SLUG_RE.test(slug)) return null;
   return (await quotes().get(`quotes/${slug}`, { type: "json" })) as Quote | null;
 }
+/* Links trocados: o endereço antigo continua levando à proposta (aliases → <antigo> = { to: <novo> }). */
+export const aliases = () => store("aliases");
+export async function aliasOf(slug: string): Promise<string | null> {
+  if (!SLUG_RE.test(slug)) return null;
+  const a: any = await aliases().get(slug, { type: "json" });
+  return a?.to || null;
+}
 export async function getState(slug: string) {
   return ((await states().get(slug, { type: "json" })) as Record<string, any>) || {};
 }

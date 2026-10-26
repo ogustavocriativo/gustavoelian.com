@@ -7,7 +7,7 @@ import { Resvg } from "@resvg/resvg-js";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs";
-import { getQuote } from "../lib/core.mts";
+import { aliasOf, getQuote } from "../lib/core.mts";
 import { LOGO_LIGHT } from "../lib/og-logo.mts";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
@@ -23,7 +23,8 @@ function fontFiles() {
 
 async function info(slug: string, para: string | null) {
   if (slug === "demonstracao") return { name: cap(first(para || "Marina")), title: "Identidade visual e site", demo: true };
-  const q: any = await getQuote(slug);
+  let q: any = await getQuote(slug);
+  if (!q) { const to = await aliasOf(slug); if (to) q = await getQuote(to); }
   if (!q || !q.published) return null;
   return { name: cap(first(q.client?.name)), title: String(q.title || "Proposta").slice(0, 70), demo: false };
 }

@@ -38,6 +38,19 @@ export default async (req: Request, context: Context) => {
     await quotes().setJSON(`quotes/${slug}`, next);
     return json(meta, 201);
   }
+  // Renomear o arquivo (o nome aparece na página do cliente e no download); a extensão original é mantida
+  if (req.method === "PATCH" && fid) {
+    const body = await req.json().catch(() => ({}));
+    const meta = (q.attachments || []).find((a: any) => a.id === fid);
+    if (!meta) return fail("Arquivo não encontrado", 404);
+    const ext = (meta.name.match(/\.[A-Za-z0-9]{1,6}$/) || [""])[0];
+    let name = String(body.name || "").replace(/[\/\\:*?"<>|\u0000-\u001f]/g, "").trim().slice(0, 120);
+    if (!name) return fail("Informe um nome");
+    if (ext && !name.toLowerCase().endsWith(ext.toLowerCase())) name += ext;
+    const attachments = (q.attachments || []).map((a: any) => (a.id === fid ? { ...a, name } : a));
+    await quotes().setJSON(`quotes/${slug}`, { ...q, attachments, updatedAt: new Date().toISOString() });
+    return json({ ...meta, name });
+  }
   if (req.method === "DELETE" && fid) {
     await files().delete(`${slug}/${fid}`);
     const next = { ...q, attachments: (q.attachments || []).filter((a: any) => a.id !== fid), updatedAt: new Date().toISOString() };
