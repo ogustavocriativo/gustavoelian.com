@@ -547,13 +547,24 @@ async function renderContracts() {
   loading("Contratos");
   const [list, settings] = await Promise.all([api("/api/quotes"), getSettings()]);
   const items = list.filter((q) => q.state?.approvedAt).sort((a, b) => (a.state.approvedAt < b.state.approvedAt ? 1 : -1));
-  let filter = "ativos";
+  let filter = sessionStorage.getItem("ge_ct_filter") || "ativos";
   const box = h("div", { class: "list" });
-  const draw = () => {
+  let hist = null;
+  const draw = async () => {
+    try { sessionStorage.setItem("ge_ct_filter", filter); } catch {}
+    if (filter === "anteriores") {
+      if (!hist) { box.replaceChildren(h("div", { class: "skel" })); hist = await api("/api/historico").catch(() => []); }
+      const sum = hist.filter((r) => r.kind === "contrato" && r.status !== "cancelado").reduce((a, r) => a + Number(r.value || 0), 0);
+      box.replaceChildren(
+        h("a", { class: "btn primary block", href: "#/historico/novo" }, icon("plus"), "Cadastrar cliente ou contrato anterior"),
+        h("p", { class: "hint", style: "margin:4px 2px 0" }, hist.length ? `${hist.length} registro(s) · ${brl(sum)} em contratos anteriores. Ficam fora dos totais atuais e entram no painel financeiro.` : "Cadastre aqui clientes e contratos de antes do Studio. Eles não entram nos totais de agora, mas ficam guardados para o painel financeiro."),
+        ...hist.map((r) => histCard(r)));
+      return;
+    }
     const sel = items.filter((q) => { const st = q.state.work?.stage || "aprovado"; return filter === "todos" || (filter === "ativos" ? st !== "concluido" : st === "concluido"); });
     box.replaceChildren(...(sel.length ? sel.map((q) => contractCard(q)) : [emptyState(items.length ? "Nada neste filtro." : "Quando um cliente aprovar e assinar, o contrato aparece aqui.")]));
   };
-  const chips = h("div", { class: "chips", role: "group", "aria-label": "Filtrar contratos" }, ...[["ativos", "Em andamento"], ["concluidos", "Concluídos"], ["todos", "Todos"]].map(([id, l]) =>
+  const chips = h("div", { class: "chips", role: "group", "aria-label": "Filtrar contratos" }, ...[["ativos", "Em andamento"], ["concluidos", "Concluídos"], ["todos", "Todos"], ["anteriores", "Anteriores"]].map(([id, l]) =>
     h("button", { type: "button", class: "chip", "aria-pressed": String(id === filter), onclick: (e) => { filter = id; chips.querySelectorAll(".chip").forEach((b) => b.setAttribute("aria-pressed", "false")); e.currentTarget.setAttribute("aria-pressed", "true"); draw(); } }, l)));
   draw();
   const contracted = items.reduce((s, q) => s + totalOf(q), 0), received = items.reduce((s, q) => s + paidOf(q), 0);
@@ -563,6 +574,92 @@ async function renderContracts() {
       h("div", { class: "prog-l" }, h("span", {}, brl(received)), h("span", {}, brl(contracted)))),
     chips, h("div", { style: "height:6px" }), box);
 }
+function histCard(r) {
+  const year = (r.start || r.end || "").slice(0, 4);
+  const paid = (r.payments || []).reduce((a, p) => a + Number(p.amount || 0), 0);
+  return h("a", { class: "glass card", href: `#/historico/${r.id}`, style: "display:block;text-decoration:none;color:inherit" },
+    h("div", { style: "display:flex;gap:12px;align-items:center" }, avatar(r.client?.name),
+      h("div", { style: "flex:1;min-width:0" }, h("strong", { style: "display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" }, r.client?.name),
+        h("div", { class: "faint", style: "font-size:var(--t-sm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" }, r.kind === "cliente" ? (r.client?.company || "Cliente") : [r.title || "Contrato", year].filter(Boolean).join(" · "))),
+      h("span", { class: "pill" }, r.kind === "cliente" ? "Cliente" : r.status === "cancelado" ? "Cancelado" : r.status === "andamento" ? "Em andamento" : "Anterior")),
+    r.kind === "contrato" && r.value ? h("div", { class: "prog-l", style: "margin-top:10px" }, h("span", {}, paid ? `Recebido ${brl(paid)}` : "Sem recebimentos lançados"), h("b", {}, brl(r.value))) : null);
+}
+
+/* ================= clientes e contratos anteriores ================= */
+async function renderHistory(id) {
+  loading(id ? "Contrato anterior" : "Novo registro");
+  const r = id ? await api(`/api/historico/${id}`) : { kind: "contrato", client: { name: "", company: "", doc: "", email: "", phone: "", city: "" }, title: "", category: "", value: 0, start: "", end: "", status: "concluido", payments: [], notes: "", files: [] };
+  let dirty = false; const touch = () => { dirty = true; };
+  window.onbeforeunload = () => (dirty ? true : null);
+  const fld = (label, el, hint) => h("label", { class: "f" }, h("span", {}, label), el, hint ? h("small", { class: "hint" }, hint) : null);
+  const inp = (obj, key, attrs = {}, tag = "input") => { const el = h(tag, { class: "in", ...attrs }); el.value = obj[key] ?? ""; el.addEventListener("input", () => { obj[key] = el.value; touch(); }); return el; };
+  const money = (obj, key, label) => { const el = h("input", { class: "in", inputmode: "decimal", placeholder: "0,00", "aria-label": label }); el.value = obj[key] ? fmtMoneyInput(obj[key]) : ""; el.addEventListener("input", () => { obj[key] = parseMoney(el.value); touch(); drawSum(); }); el.addEventListener("blur", () => { el.value = obj[key] ? fmtMoneyInput(obj[key]) : ""; }); return el; };
+
+  // tipo: contrato completo ou só o cadastro do cliente
+  const contractBox = h("div", { class: "stack" });
+  const kindSeg = h("div", { class: "seg", role: "group", "aria-label": "Tipo de registro" }, ...[["contrato", "Contrato anterior"], ["cliente", "Só o cliente"]].map(([k, l]) =>
+    h("button", { type: "button", class: r.kind === k ? "on" : "", "aria-pressed": String(r.kind === k), onclick: (e) => { r.kind = k; kindSeg.querySelectorAll("button").forEach((b) => { const on = b === e.currentTarget; b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); }); contractBox.hidden = k !== "contrato"; touch(); } }, l)));
+
+  const sumEl = h("div", { class: "prog-l" });
+  const drawSum = () => { const paid = (r.payments || []).reduce((a, p) => a + Number(p.amount || 0), 0); sumEl.replaceChildren(h("span", {}, `Recebido ${brl(paid)}`), h("b", {}, r.value ? `de ${brl(r.value)}` : "")); };
+  const payBox = h("div", { class: "stack" });
+  const drawPays = () => { payBox.replaceChildren(...r.payments.map((p, i) => h("div", { class: "pf-sec" },
+    h("div", { class: "pf-sec-h" }, h("strong", {}, `Recebimento ${i + 1}`), h("button", { class: "ibtn sm", type: "button", "aria-label": "Remover recebimento", onclick: () => { r.payments.splice(i, 1); touch(); drawPays(); } }, icon("trash"))),
+    h("div", { class: "r2" }, fld("Valor (R$)", money(p, "amount", "Valor do recebimento")), fld("Data", inp(p, "date", { type: "date" }))),
+    fld("Forma", (() => { const sel = h("select", { class: "in", onchange: (e) => { p.method = e.target.value; touch(); } }, ...Object.entries(METHODS).map(([k, v]) => h("option", { value: k, selected: p.method === k }, v))); return sel; })()))),
+    h("button", { class: "btn block", type: "button", onclick: () => { r.payments.push({ date: r.end || r.start || today(), amount: 0, method: "pix", note: "" }); touch(); drawPays(); } }, icon("plus"), "Adicionar recebimento"));
+    drawSum(); };
+  drawPays();
+  const fronts = h("select", { class: "in", onchange: (e) => { r.category = e.target.value; touch(); } }, h("option", { value: "" }, "Escolha"), ...(catalog.fronts || []).map((f) => h("option", { value: f.id, selected: r.category === f.id }, f.label)));
+  const statusSel = h("select", { class: "in", onchange: (e) => { r.status = e.target.value; touch(); } }, ...[["concluido", "Concluído"], ["andamento", "Em andamento (fora do Studio)"], ["cancelado", "Cancelado"]].map(([k, l]) => h("option", { value: k, selected: r.status === k }, l)));
+  contractBox.append(
+    h("section", { class: "form-card glass" }, h("h2", {}, "Contrato"),
+      fld("Projeto ou serviço", inp(r, "title", { placeholder: "Ex.: Identidade visual e site" })),
+      h("div", { class: "r2" }, fld("Frente", fronts), fld("Situação", statusSel)),
+      fld("Valor total do contrato (R$)", money(r, "value", "Valor total")),
+      h("div", { class: "r2" }, fld("Início", inp(r, "start", { type: "date" })), fld("Término", inp(r, "end", { type: "date" })))),
+    h("section", { class: "form-card glass" }, h("h2", {}, "Recebimentos"), h("p", { class: "hint" }, "Lance o que já foi pago, com data. Servirá para o painel financeiro por mês e por ano."), sumEl, payBox));
+  contractBox.hidden = r.kind !== "contrato";
+
+  const filesBox = h("div", { class: "stack" });
+  const drawFiles = () => filesBox.replaceChildren(...(r.files || []).map((f) => h("div", { class: "file" }, h("span", {}, f.name),
+    h("a", { class: "btn sm", href: `/api/historico/${r.id}/arquivo/${f.id}`, target: "_blank" }, "Abrir"),
+    h("button", { class: "btn sm danger", type: "button", "aria-label": `Remover ${f.name}`, onclick: async () => { try { Object.assign(r, await api(`/api/historico/${r.id}/arquivo/${f.id}`, { method: "DELETE" })); drawFiles(); } catch (x) { toast(x.message); } } }, icon("trash")))),
+    ...(r.id ? [] : [h("p", { class: "hint" }, "Salve o registro para anexar o contrato em PDF.")]));
+  const fileIn = h("input", { type: "file", accept: "application/pdf,image/*", multiple: true, hidden: true, onchange: async (e) => {
+    for (const f of e.target.files) { const fd = new FormData(); fd.append("file", f); try { Object.assign(r, await api(`/api/historico/${r.id}/arquivo`, { method: "POST", body: fd })); toast(`${f.name} anexado`); } catch (x) { toast(`${f.name}: ${x.message}`); } }
+    e.target.value = ""; drawFiles();
+  } });
+  drawFiles();
+
+  const saveBtn = h("button", { class: "btn primary block", type: "button", onclick: async () => {
+    if (!r.client.name.trim()) { toast("Informe o nome do cliente"); return; }
+    saveBtn.disabled = true;
+    try {
+      const saved = r.id ? await api(`/api/historico/${r.id}`, { method: "PUT", body: r }) : await api("/api/historico", { method: "POST", body: r });
+      dirty = false; window.onbeforeunload = null; toast("Registro salvo"); haptic();
+      if (!r.id) { location.replace(`#/historico/${saved.id}`); return; }
+      Object.assign(r, saved);
+    } catch (x) { toast(x.message); } finally { saveBtn.disabled = false; }
+  } }, icon("check"), "Salvar");
+
+  shell({ title: id ? r.client.name : "Cliente ou contrato anterior", eyebrow: "Histórico · fora dos totais", back: "#/contratos", compact: true, nav: false },
+    h("div", { class: "stack pf-edit" },
+      h("section", { class: "form-card glass" }, h("h2", {}, "Tipo"), kindSeg,
+        h("p", { class: "hint" }, "Registros anteriores ao Studio não entram em Contratos, Financeiro nem no Início. Ficam guardados para o painel financeiro.")),
+      h("section", { class: "form-card glass" }, h("h2", {}, "Cliente"),
+        fld("Nome *", inp(r.client, "name", { autocomplete: "off" })), fld("Empresa ou marca", inp(r.client, "company")),
+        h("div", { class: "r2" }, fld("CPF ou CNPJ", inp(r.client, "doc", { inputmode: "numeric" })), fld("Cidade", inp(r.client, "city", { placeholder: "Ex.: Montes Claros/MG" }))),
+        h("div", { class: "r2" }, fld("WhatsApp", inp(r.client, "phone", { type: "tel", inputmode: "tel" })), fld("E-mail", inp(r.client, "email", { type: "email", inputmode: "email" })))),
+      contractBox,
+      h("section", { class: "form-card glass" }, h("h2", {}, "Anotações e arquivos"),
+        fld("Anotações", inp(r, "notes", { rows: 4, placeholder: "Como chegou, o que foi entregue, observações" }, "textarea")),
+        filesBox, r.id ? h("button", { class: "btn block", type: "button", onclick: () => fileIn.click() }, icon("plus"), "Anexar contrato ou arquivos") : null, fileIn),
+      saveBtn,
+      r.id ? h("button", { class: "btn danger block", type: "button", onclick: () => confirmSheet("Excluir este registro?", "O registro e os arquivos anexados são apagados.", "Excluir", async () => { await api(`/api/historico/${r.id}`, { method: "DELETE" }); dirty = false; window.onbeforeunload = null; toast("Registro excluído"); location.hash = "#/contratos"; }) }, icon("trash"), "Excluir registro") : null,
+      h("div", { class: "gap24" })));
+}
+
 function contractCard(q) {
   const tot = totalOf(q), paid = paidOf(q), pc = tot ? Math.min(100, (paid / tot) * 100) : 0;
   const stage = q.state.work?.stage || "aprovado";
@@ -1620,6 +1717,8 @@ async function route() {
     if (r === "/portfolio/moodboard") return await renderMoodboard();
     if ((m = r.match(/^\/portfolio\/([a-z0-9-]+)\/pagina$/))) return await renderPageEdit(m[1]);
     if (r === "/editor") return renderCanvasList();
+    if (r === "/historico/novo") return await renderHistory(null);
+    if ((m = r.match(/^\/historico\/([a-z0-9]+)$/))) return await renderHistory(m[1]);
     if ((m = r.match(/^\/editor\/([a-z0-9-]+)$/))) return renderCanvas(m[1]);
     if ((m = r.match(/^\/portfolio\/([a-z0-9-]+)$/))) return await renderPortfolioEdit(m[1]);
     if ((m = r.match(/^\/c\/([a-z0-9-]+)$/))) return await renderContract(m[1]);

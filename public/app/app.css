@@ -474,3 +474,5 @@ select.in{min-width:0;max-width:100%;text-overflow:ellipsis}
   .r2{grid-template-columns:minmax(0,1fr)}
   .nav a{font-size:.6875rem}
 }
+/* filtros no celular: quebram linha em vez de esconder a última opção */
+@media (max-width:480px){.chips{flex-wrap:wrap;overflow:visible;margin:0;padding:12px 0 4px;gap:8px}}

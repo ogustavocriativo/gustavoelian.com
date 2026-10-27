@@ -496,3 +496,21 @@ html:not(.dark) .need-again b,html:not(.dark) .need-again svg{color:#D3EA77}
   .quote{gap:14px}
   html.dark .work .tag{background:rgba(20,20,22,.5);color:#F1F1EC;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
 }
+
+/* rodapé: direitos e ol@b na mesma linha; espaço para a barra fixa de atalhos não cobrir o rodapé */
+.foot{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+@media (max-width:600px){
+  .foot .wrap{flex-wrap:nowrap;gap:12px;font-size:.6875rem}
+  .foot .wrap>span{min-width:0}
+  .foot .olab{width:78px;flex:none}
+  .dock{width:calc(100% - 24px);justify-content:stretch}
+  .dock a{flex:1;justify-content:center;padding:0 12px}
+}
+/* ritmo vertical único entre seções: depois do letreiro a seção ganha o mesmo respiro que entre seções */
+#moodboard[hidden]+#projetos{padding-top:clamp(40px,7vw,88px)!important}
+@media (max-width:600px){
+  .sec{padding-block:48px}
+  .marquee{padding-block:12px}
+  .marquee li{font-size:1.5rem;gap:28px}
+  .marquee ul{gap:28px}
+}

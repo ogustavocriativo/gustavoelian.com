@@ -273,7 +273,8 @@
   const dock = document.getElementById("dock");
   if ("IntersectionObserver" in window) {
     let pastHero = false, atContact = false;
-    const upd = () => dock.classList.toggle("show", pastHero && !atContact);
+    // barra de atalhos fica fixa na base depois da abertura (inclusive no contato e no rodapé)
+    const upd = () => dock.classList.toggle("show", pastHero);
     new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; upd(); }).observe(document.querySelector(".hero"));
     new IntersectionObserver(([e]) => { atContact = e.isIntersecting; upd(); }).observe(document.getElementById("contato"));
   }
