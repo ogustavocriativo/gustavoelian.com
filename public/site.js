@@ -282,7 +282,7 @@
 
   /* Sobre: fotos em rolagem automática (troca a cada 4 s, pausa ao passar o mouse; sem animação para quem pediu menos movimento) */
   function aboutSlides(photos) {
-    const fig = document.querySelector("#sobre .photo"), cap = document.getElementById("aboutCap");
+    const fig = document.querySelector("#palco .photo"), cap = document.getElementById("aboutCap");
     if (!fig) return;
     const imgs = photos.map((p, i) => { const el = mediaEl(p.media, p.caption || "Gustavo Elian em apresentação"); el.classList.add("sl"); if (i === 0) el.classList.add("on"); if (el.tagName === "IMG") { el.loading = i ? "lazy" : "eager"; el.decoding = "async"; } return el; });
     let i = 0, t = null;

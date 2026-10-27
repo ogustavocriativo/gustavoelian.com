@@ -476,3 +476,26 @@ select.in{min-width:0;max-width:100%;text-overflow:ellipsis}
 }
 /* filtros no celular: quebram linha em vez de esconder a última opção */
 @media (max-width:480px){.chips{flex-wrap:wrap;overflow:visible;margin:0;padding:12px 0 4px;gap:8px}}
+/* barra Salvar: encostada na borda inferior no celular (não flutua sobre os campos)
+   e some enquanto se digita; o status curto fica legível sem cobrir o conteúdo */
+@media (max-width:600px){
+  .pf-bar{bottom:0;margin:0 -16px;border-radius:20px 20px 0 0;border-width:1px 0 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px -16px rgba(0,0,0,.25)}
+  .pf-bar .btn{min-height:44px;padding-inline:20px}
+  .pf-state{font-size:.8125rem;line-height:1.3;min-width:0}
+}
+@media (pointer:coarse){
+  body.typing .pf-bar,body.typing .fab{transform:translateY(140%);opacity:0;pointer-events:none}
+  body.typing .nav{transform:translate(-50%,140%);opacity:0;pointer-events:none}
+  body.typing #toast{bottom:auto;top:calc(12px + env(safe-area-inset-top))}
+  .pf-bar,.fab{transition:transform .2s var(--ease),opacity .2s}
+}
+
+/* celular: menu encostado no rodapé (barra de abas fixa, sem flutuar) e "+" no cabeçalho */
+@media (max-width:600px){
+  .nav{left:0;right:0;transform:none;width:100%;bottom:0;border-radius:22px 22px 0 0;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-width:1px 0 0}
+  .nav a{min-height:52px;justify-content:center}
+  .fab.fab-top{position:static;flex:none;width:44px;height:44px;box-shadow:0 8px 20px -8px var(--accent)}
+  .fab.fab-top svg{width:22px;height:22px}
+  #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
+}
+@media (max-width:600px) and (pointer:coarse){ body.typing .nav{transform:translateY(110%)} }

@@ -1,5 +1,5 @@
 // Service worker mínimo: permite instalar o app; dados sempre vêm da rede.
-const SHELL = "ge-studio-v14";
+const SHELL = "ge-studio-v16";
 const FILES = ["/app/", "/app/app.js", "/app/app.css", "/mockups.css", "/app/manifest.webmanifest", "/app/icon-192.png"];
 self.addEventListener("install", (e) => e.waitUntil(caches.open(SHELL).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())));
 self.addEventListener("activate", (e) => e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== SHELL).map((k) => caches.delete(k)))).then(() => self.clients.claim())));

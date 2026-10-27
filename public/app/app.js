@@ -125,7 +125,10 @@ function shell({ title, eyebrow, back, actions = [], nav = true, compact = false
     back ? h("a", { class: "ibtn", href: back, "aria-label": "Voltar" }, icon("back")) : null,
     h("div", { class: "title" }, eyebrow ? h("div", { class: "eyebrow" }, eyebrow) : null, h("h1", {}, title)),
     ...actions));
-  root.replaceChildren(header, h("main", { class: "wrap view" }, ...content), ...(nav ? [navBar()] : []), ...(fab ? [fab] : []));
+  // celular: o botão "+" vai para o cabeçalho, ao lado das ações, em vez de flutuar sobre a lista
+  const fabTop = fab && matchMedia("(max-width:600px)").matches;
+  if (fabTop) { fab.classList.add("fab-top"); header.firstChild.append(fab); }
+  root.replaceChildren(header, h("main", { class: "wrap view" }, ...content), ...(nav ? [navBar()] : []), ...(fab && !fabTop ? [fab] : []));
   window.scrollTo(0, 0);
 }
 function navBar() {
@@ -1732,3 +1735,11 @@ async function route() {
 window.addEventListener("hashchange", route);
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/app/sw.js").catch(() => {});
 route();
+
+// Celular: enquanto o teclado está aberto, barras e botões flutuantes saem do caminho do campo
+(() => {
+  const isField = (el) => el && (el.matches?.("textarea,select,[contenteditable=true]") || (el.tagName === "INPUT" && !/^(button|submit|checkbox|radio|file|range|color)$/i.test(el.type)));
+  let t;
+  document.addEventListener("focusin", (e) => { if (isField(e.target)) { clearTimeout(t); document.body.classList.add("typing"); } });
+  document.addEventListener("focusout", () => { clearTimeout(t); t = setTimeout(() => { if (!isField(document.activeElement)) document.body.classList.remove("typing"); }, 120); });
+})();

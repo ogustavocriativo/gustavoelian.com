@@ -442,13 +442,13 @@ html:not(.dark) .need-again b,html:not(.dark) .need-again svg{color:#D3EA77}
 }
 /* Sobre: foto menor e rolagem automática */
 @media (min-width:861px){#sobre .about{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}}
-#sobre .about .photo .sl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);opacity:0;transition:opacity .9s ease}
-#sobre .about .photo .sl.on{opacity:1}
+#palco .photo .sl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);opacity:0;transition:opacity .9s ease}
+#palco .photo .sl.on{opacity:1}
 .sl-dots{position:absolute;top:16px;right:16px;display:flex;gap:6px;z-index:2}
 .sl-dots button{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
 .sl-dots button::before{content:"";width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 0 1px rgba(0,0,0,.15);transition:width .3s ease}
 .sl-dots button[aria-selected=true]::before{width:20px;border-radius:999px;background:#fff}
-@media (prefers-reduced-motion:reduce){#sobre .about .photo .sl{transition:none}}
+@media (prefers-reduced-motion:reduce){#palco .photo .sl{transition:none}}
 /* Doutorado: próxima etapa (aprovado, aguardando publicação), sem link */
 .datum.soon{cursor:default}
 .datum.soon i{animation:soon-tilt 3.2s ease-in-out infinite}
@@ -514,3 +514,10 @@ html:not(.dark) .need-again b,html:not(.dark) .need-again svg{color:#D3EA77}
   .marquee li{font-size:1.5rem;gap:28px}
   .marquee ul{gap:28px}
 }
+
+/* Sobre sem foto: o texto ocupa a largura toda; as fotos ganham seção própria (No palco), antes do contato */
+#sobre .about{grid-template-columns:1fr!important}
+#palco .photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;background:var(--card);aspect-ratio:16/9;max-height:72vh;min-height:0;width:100%}
+#palco .photo>img:not(.sl){position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+#palco .photo figcaption{position:absolute;z-index:1;background:rgba(255,255,255,.94);color:#0A0A0B;font-size:var(--t-xs);left:16px;right:16px;bottom:16px;padding:12px 16px;border-radius:12px;line-height:1.45;width:max-content;max-width:calc(100% - 32px)}
+@media (max-width:600px){#palco .photo{aspect-ratio:4/5;max-height:none}#palco .photo figcaption{left:12px;bottom:12px;max-width:calc(100% - 24px)}}
