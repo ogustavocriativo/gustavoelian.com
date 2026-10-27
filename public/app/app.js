@@ -460,7 +460,7 @@ async function renderEditor(slug) {
   const drawLink = () => linkBox.replaceChildren(...(q.slug ? [h("div", { class: "linkbox" }, h("code", {}, `${location.host}/${q.slug}`),
     h("button", { class: "ibtn", type: "button", "aria-label": "Editar link", onclick: () => editLink() }, icon("pen")),
     h("button", { class: "ibtn", type: "button", "aria-label": "Copiar link", onclick: () => copy(`${location.origin}/${q.slug}`) }, icon("copy"))),
-    q.previousSlugs?.length ? h("p", { class: "hint" }, `Links antigos que continuam funcionando: ${q.previousSlugs.map((x) => "/" + x).join(", ")}`) : null] : [h("p", { class: "hint" }, "O link nasce ao salvar: nome do cliente + código curto.")]));
+    q.previousSlugs?.length ? h("p", { class: "hint" }, `Links antigos que continuam funcionando: ${q.previousSlugs.map((x) => "/" + x).join(", ")}`) : null].filter(Boolean) : [h("p", { class: "hint" }, "O link nasce ao salvar: nome do cliente + código curto.")]));
   // trocar o link: o endereço antigo continua abrindo a proposta
   const editLink = () => sheet("Editar link da proposta", (close) => {
     const toSlug = (v) => v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
