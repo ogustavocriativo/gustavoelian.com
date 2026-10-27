@@ -1119,7 +1119,7 @@ async function pfUpload(id, kind, f, maxW, focus) {
 /* Moodboard da página inicial: montado do zero com imagens, GIFs e vídeos curtos. */
 async function renderMoodboard() {
   loading("Moodboard");
-  const [mb, srv] = await Promise.all([api("/api/moodboard"), api("/api/portfolio?all=1")]);
+  const [mb, srv] = await Promise.all([api(`/api/moodboard?fresh=${Date.now()}`), api("/api/portfolio?all=1")]);
   let tiles = (mb.tiles || []).map((t) => ({ ...t })), dirty = false, saving = false;
   const projects = [...new Map([...catalog.projects.map((p) => [p.id, p.title]), ...Object.entries(srv.items || {}).filter(([, e]) => e.title).map(([k, e]) => [k, e.title])]).entries()].sort((a, b) => a[1].localeCompare(b[1]));
   const status = h("span", { class: "pf-state", role: "status" }, tiles.length ? `${tiles.length} peças no site` : "Moodboard vazio: a seção fica oculta no site");
@@ -1445,7 +1445,7 @@ const SITE_DEFAULT = {
 };
 async function renderSiteContent() {
   loading("Sobre e trajetória");
-  const got = await fetch("/api/site-content", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const got = await fetch(`/api/site-content?fresh=${Date.now()}`, { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   const c = JSON.parse(JSON.stringify(got && got.about ? got : SITE_DEFAULT));
   if (!c.hero?.title) c.hero = JSON.parse(JSON.stringify(SITE_DEFAULT.hero));
   while (c.hero.cards.length < 3) c.hero.cards.push({ ...SITE_DEFAULT.hero.cards[c.hero.cards.length] });
@@ -1551,7 +1551,7 @@ const pgHex = (v) => { if (/^#[0-9a-f]{6}$/i.test(v)) return v; if (/^#[0-9a-f]{
 async function renderPageEdit(id) {
   loading("Página do projeto");
   const base = catalog.projects.find((x) => x.id === id) || {};
-  const got = await api(`/api/portfolio/${id}/page`).catch(() => null);
+  const got = await api(`/api/portfolio/${id}/page?fresh=${Date.now()}`).catch(() => null);
   const baseNewer = base.updatedAt && got?.updatedAt && base.updatedAt > got.updatedAt;
   let secs = JSON.parse(JSON.stringify(got?.sections?.length && !baseNewer ? got.sections : base.sections || []));
   const fromBase = !got?.sections?.length || !!baseNewer;

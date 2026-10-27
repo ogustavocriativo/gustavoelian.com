@@ -16,6 +16,10 @@ const media = () => store("media");
 const KINDS = ["thumb", "banner", "avatar", "print", "gallery", "page", "mood"];
 const dropMedia = (keys: string[]) => Promise.all(keys.map((m) => media().delete(m).catch(() => {})));
 
+// textos e listas públicas: a borda guarda por 1 min e serve a cópia anterior enquanto atualiza,
+// em vez de acordar a função a cada visita
+const PUBLIC_JSON = { "cache-control": "public, max-age=20", "netlify-cdn-cache-control": "public, durable, s-maxage=60, stale-while-revalidate=86400" };
+
 export default async (req: Request, context: Context) => {
   const url = new URL(req.url);
   const { id, key } = context.params;
@@ -27,6 +31,8 @@ export default async (req: Request, context: Context) => {
     return new Response(r.data, { headers: {
       "content-type": String(r.metadata?.type || "application/octet-stream"),
       "cache-control": "public, max-age=31536000, immutable", "x-content-type-options": "nosniff",
+      // cache durável na borda: cada arquivo sai da função uma única vez (a chave muda a cada envio)
+      "netlify-cdn-cache-control": "public, durable, s-maxage=31536000, immutable",
     } });
   }
 
@@ -35,7 +41,7 @@ export default async (req: Request, context: Context) => {
   // moodboard da página inicial (GET público, PUT admin; arquivos que saem da lista são apagados)
   if (url.pathname === "/api/moodboard") {
     const cur: any = (await data().get("mood", { type: "json" })) || { tiles: [] };
-    if (req.method === "GET") return json(cur, 200, { "cache-control": "public, max-age=20, s-maxage=30, stale-while-revalidate=300" });
+    if (req.method === "GET") return json(cur, 200, admin ? {} : PUBLIC_JSON);
     if (!admin) return fail("Faça login", 401);
     if (req.method !== "PUT") return fail("Método não permitido", 405);
     const body = await req.json().catch(() => null);
@@ -49,7 +55,7 @@ export default async (req: Request, context: Context) => {
 
   // textos de Sobre e Trajetória
   if (url.pathname === "/api/site-content") {
-    if (req.method === "GET") return json((await data().get("site", { type: "json" })) || null, 200, { "cache-control": "public, max-age=20, s-maxage=30, stale-while-revalidate=300" });
+    if (req.method === "GET") return json((await data().get("site", { type: "json" })) || null, 200, admin ? {} : PUBLIC_JSON);
     if (!admin) return fail("Faça login", 401);
     if (req.method !== "PUT") return fail("Método não permitido", 405);
     const body = await req.json().catch(() => null);
@@ -69,7 +75,7 @@ export default async (req: Request, context: Context) => {
         const v = full ? e : publicEntry(e);
         if (v) items[b.key.slice(2)] = v;
       }));
-      return json({ order: (order as any)?.ids || [], items }, 200, full ? {} : { "cache-control": "public, max-age=20, s-maxage=30, stale-while-revalidate=300" });
+      return json({ order: (order as any)?.ids || [], items }, 200, url.searchParams.has("all") ? {} : PUBLIC_JSON);
     }
     if (!admin) return fail("Faça login", 401);
     const body = await req.json().catch(() => null);
@@ -99,7 +105,7 @@ export default async (req: Request, context: Context) => {
     if (req.method === "GET") {
       const e: any = await data().get(`p/${id}`, { type: "json" });
       if (e?.hidden && !admin) return fail("Projeto não encontrado", 404);
-      return json((await data().get(pk, { type: "json" })) || null, 200, admin ? {} : { "cache-control": "public, max-age=20, s-maxage=30, stale-while-revalidate=300" });
+      return json((await data().get(pk, { type: "json" })) || null, 200, admin ? {} : PUBLIC_JSON);
     }
     if (!admin) return fail("Faça login", 401);
     if (req.method === "DELETE") { const prev: any = await data().get(pk, { type: "json" }); await data().delete(pk); await dropMedia(mediaKeys(prev)); return json({ ok: true }); }

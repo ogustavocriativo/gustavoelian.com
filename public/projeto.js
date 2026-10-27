@@ -186,7 +186,7 @@ async function main() {
   const pf = p.pf;
   // página editada no Studio substitui a do arquivo base
   const EDIT = new URLSearchParams(location.search).has("editar");
-  const edited = await fetch(`/api/portfolio/${encodeURIComponent(p.id)}/page`, EDIT ? { cache: "no-store" } : {}).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const edited = await fetch(`/api/portfolio/${encodeURIComponent(p.id)}/page${EDIT ? `?fresh=${Date.now()}` : ""}`, EDIT ? { cache: "no-store" } : {}).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   // vale a versão mais recente: a editada no Studio ou a do arquivo base (quando o base foi atualizado depois)
   const baseNewer = p.updatedAt && edited?.updatedAt && p.updatedAt > edited.updatedAt;
   let src_ = edited?.sections?.length && !baseNewer ? edited.sections : p.sections || [];
