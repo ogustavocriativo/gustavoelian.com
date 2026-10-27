@@ -301,11 +301,9 @@ window.CaseFX = (() => {
       const t = vis[(Math.random() * vis.length) | 0];
       t.classList.remove("flip"); void t.offsetWidth; t.classList.add("flip");
     }, 1400) : 0;
-    const vids = all(".reels video");
-    vids.forEach((v) => { v.muted = true; });
-    const vio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause(); }), { threshold: 0.25 });
-    vids.forEach((v) => vio.observe(v));
-    cleanup = () => { vio.disconnect(); io.disconnect(); removeEventListener("scroll", onScroll); clearInterval(iv); };
+    // todos os vídeos da página (vinhetas, faixas, capas) passam pelo mesmo controle de reprodução do site
+    all("video:not([controls])").forEach((v) => window.GE?.watchVideo ? window.GE.watchVideo(v) : (v.muted = true, v.play().catch(() => {})));
+    cleanup = () => { io.disconnect(); removeEventListener("scroll", onScroll); clearInterval(iv); };
   }
   return { extend, run };
 })();

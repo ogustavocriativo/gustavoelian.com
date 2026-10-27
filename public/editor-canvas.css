@@ -66,3 +66,15 @@ html.dark .edc-add button{color:#D3EA77}
 .edc-toast{position:fixed;left:50%;bottom:24px;z-index:2147483002;transform:translate(-50%,8px);opacity:0;padding:10px 16px;border-radius:999px;background:#C5DD63;color:#0A0A0B;font-size:14px;transition:.2s;pointer-events:none;max-width:calc(100vw - 32px);text-align:center}
 .edc-toast.on{opacity:1;transform:translate(-50%,0)}
 .top{top:56px!important}
+
+/* celular: barra enxuta, Salvar sempre visível; ferramentas de seção roláveis e com alvos de 40px */
+.edc .edc-more{display:none}
+@media (max-width:640px){
+  .edc-bar{gap:6px}
+  .edc-bar strong,.edc-st,.edc .edc-wide{display:none}
+  .edc .edc-more{display:inline-flex}
+  .edc-bar button{padding:9px 12px}
+  .edc-tools{left:8px;right:8px;max-width:none;justify-content:flex-start}
+  .edc-tools button{min-height:40px;min-width:40px}
+  .edc-lbl{display:none}
+}

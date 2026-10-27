@@ -146,7 +146,8 @@ button{font:inherit;color:inherit}
 .work .meta i{font-style:normal;color:var(--ink-3)}
 .work h3{font-size:var(--t-xl);font-weight:400;letter-spacing:-.03em}
 .work p{color:var(--ink-2);font-size:var(--t-sm);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.work .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+.work .foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding:12px 0 0}
+.work .body{flex:1}
 .work:hover .arrow{transform:rotate(-45deg)}
 .stat{display:inline-flex;align-items:baseline;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;font-size:var(--t-xs);color:var(--ink-2);max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stat b{font-family:var(--font-display);font-weight:400;font-size:var(--t-md);color:var(--ink)}
@@ -456,3 +457,42 @@ html:not(.dark) .need-again b,html:not(.dark) .need-again svg{color:#D3EA77}
 @media (prefers-reduced-motion:reduce){.datum.soon i{animation:none}}
 /* aprovado: selo de conquista, ícone de check estático */
 .datum.soon.ok i{animation:none}
+
+/* ===== Ajustes de celular (revisão 26/10): ritmo mais compacto, cartões menores, filtro em largura total ===== */
+.who>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.who strong,.pf-who strong{line-height:1.2}
+.who span,.pf-who span{line-height:1.35}
+@media (max-width:600px){
+  /* abertura: blocos de texto mais próximos (proximidade: um bloco de leitura só) */
+  .hero{padding-block:16px 32px}
+  .hero-copy{gap:12px}
+  .hero h1 .h1-sub{margin-top:6px}
+  .hand{font-size:1.0625rem;margin-top:2px}
+  .hero .lead.sm{font-size:1rem;line-height:1.5}
+  .ctas{flex-wrap:nowrap;gap:8px;margin-top:4px}
+  .ctas .btn{flex:1 1 auto;min-height:48px;padding-inline:16px;font-size:.9375rem;justify-content:center;white-space:nowrap}
+  /* cartões sobre a foto: mesmo lugar, bem menores e com a mesma proporção */
+  .portrait .datum{transform:scale(.7)}
+  .portrait .datum.d1{transform-origin:top left}
+  .portrait .datum.d2{transform-origin:right center}
+  .portrait .datum.d3{transform-origin:bottom left}
+  .portrait .datum.next:hover{transform:scale(.7)}
+  /* projetos: texto de apoio menor, sem a fileira de filtros (o filtro fica no botão em largura total) */
+  .sec-head{gap:10px;margin-bottom:20px}
+  .sec-head p{font-size:1rem;line-height:1.5}
+  #projetos .filters{display:none}
+  .need-again{display:flex;width:100%;justify-content:center;margin:0 0 16px;min-height:52px;padding:0 16px;
+    background:rgba(20,20,22,.74)!important;border:1px solid rgba(255,255,255,.14);
+    -webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 28px -14px rgba(0,0,0,.45)}
+  .need-again span{white-space:normal;text-align:center}
+  /* cards de projeto: selo menor em vidro e rodapé mais perto do texto */
+  .work .tag{left:12px;top:12px;padding:4px 10px;font-size:.6875rem;background:rgba(255,255,255,.55);color:#0E0E10;
+    -webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+  .work .body{gap:4px;padding:12px 10px 10px}
+  .work h3{font-size:1.375rem}
+  .work .foot{padding-top:8px}
+  .work .arrow{width:44px;height:44px}
+  /* depoimentos: nome e cargo juntos */
+  .quote{gap:14px}
+  html.dark .work .tag{background:rgba(20,20,22,.5);color:#F1F1EC;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+}

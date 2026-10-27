@@ -22,8 +22,28 @@
   const isVid = (m) => /^video\//.test(m?.type || "");
 
   /* vídeos só tocam quando aparecem na tela (economia de bateria e dados) */
-  const vidIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { const v = e.target; if (e.isIntersecting && !RM) v.play().catch(() => {}); else v.pause(); }), { rootMargin: "120px" }) : null;
-  const watchVideo = (v) => { v.muted = true; v.playsInline = true; if (vidIO) vidIO.observe(v); return v; };
+  /* Vídeos que tocam sozinhos ao aparecer na tela. O navegador do celular às vezes recusa o play()
+     (vídeo ainda carregando, economia de bateria, muitos vídeos ao mesmo tempo); por isso cada vídeo
+     visível e parado ganha nova tentativa quando carrega, quando a rolagem para e no primeiro toque. */
+  const seen = new Set();
+  const tryPlay = (v) => { if (RM || !seen.has(v) || !v.paused || !v.isConnected) return; v.muted = true; const p = v.play(); if (p) p.catch(() => {}); };
+  const retryAll = () => seen.forEach(tryPlay);
+  const vidIO = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => {
+    const v = e.target;
+    if (e.isIntersecting) { seen.add(v); if (v.preload === "none") v.preload = "metadata"; tryPlay(v); }
+    else { seen.delete(v); if (!v.paused) v.pause(); }
+  }), { rootMargin: "80px 0px", threshold: 0.15 }) : null;
+  let rt; addEventListener("scroll", () => { clearTimeout(rt); rt = setTimeout(retryAll, 180); }, { passive: true });
+  ["touchstart", "pointerdown", "keydown"].forEach((ev) => addEventListener(ev, retryAll, { passive: true }));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) retryAll(); });
+  const watchVideo = (v) => {
+    if (!v || v.dataset.watched) return v;
+    v.dataset.watched = "1"; v.muted = true; v.defaultMuted = true; v.playsInline = true; v.loop = true;
+    v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.removeAttribute("autoplay");
+    ["loadeddata", "canplay"].forEach((ev) => v.addEventListener(ev, () => tryPlay(v)));
+    if (vidIO) vidIO.observe(v); else if (!RM) v.play?.().catch(() => {});
+    return v;
+  };
   const focusStyle = (m) => (m?.fx != null ? `object-position:${m.fx}% ${m.fy}%` + (m.z > 1 ? `;transform:scale(${m.z});transform-origin:${m.ox}% ${m.oy}%` : "") : null);
   const mediaEl = (m, alt, cls) => isVid(m)
     ? watchVideo(h("video", { class: cls, style: focusStyle(m), src: media(m), muted: true, loop: true, playsinline: true, preload: "metadata", "aria-label": alt || null }))

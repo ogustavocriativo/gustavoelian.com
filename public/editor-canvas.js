@@ -42,16 +42,22 @@
     S = prev; try { sessionStorage.setItem(KEY, JSON.stringify({ sections: S })); } catch {} setDirty(true); refresh();
   });
   const saveBtn = btn("Salvar", save, "edc-main");
+  const discard = () => confirmIn("Descartar as alterações não salvas?", "Descartar", () => { try { sessionStorage.removeItem(KEY); } catch {} refresh(); });
+  const restore = () => confirmIn("Voltar à versão original do arquivo base? As edições salvas desta página são apagadas.", "Restaurar", async () => {
+    await fetch(`/api/portfolio/${E.id}/page`, { method: "DELETE" }); try { sessionStorage.removeItem(KEY); } catch {} refresh();
+  });
+  const view = () => window.open(`/projetos/${E.id}`, "_blank");
+  // no celular as ações secundárias vão para "Mais"; Desfazer e Salvar ficam sempre à vista
+  const more = btn("Mais", () => panel("Mais ações", [h("div", { class: "edc-tpls" },
+    h("button", { type: "button", class: "edc-tpl", onclick: () => { closePanel(); discard(); } }, h("strong", {}, "Descartar rascunho"), h("span", {}, "Volta ao que está salvo")),
+    h("button", { type: "button", class: "edc-tpl", onclick: () => { closePanel(); restore(); } }, h("strong", {}, "Restaurar original"), h("span", {}, "Apaga as edições salvas desta página")),
+    h("button", { type: "button", class: "edc-tpl", onclick: () => { closePanel(); view(); } }, h("strong", {}, "Ver página no site"), h("span", {}, "Abre em outra aba")))]), "edc-more");
   const bar = h("div", { class: "edc-bar" },
     h("span", { class: "edc-dot", "aria-hidden": "true" }), h("strong", {}, "Editor visual"), status,
     h("span", { class: "edc-sp" }),
     undoBtn,
-    btn("Descartar", () => confirmIn("Descartar as alterações não salvas?", "Descartar", () => { try { sessionStorage.removeItem(KEY); } catch {} refresh(); })),
-    btn("Restaurar original", () => confirmIn("Voltar à versão original do arquivo base? As edições salvas desta página são apagadas.", "Restaurar", async () => {
-      await fetch(`/api/portfolio/${E.id}/page`, { method: "DELETE" }); try { sessionStorage.removeItem(KEY); } catch {} refresh();
-    })),
-    btn("Ver página", () => window.open(`/projetos/${E.id}`, "_blank")),
-    saveBtn);
+    btn("Descartar", discard, "edc-wide"), btn("Restaurar original", restore, "edc-wide"), btn("Ver página", view, "edc-wide"),
+    more, saveBtn);
   UI.append(bar);
   setDirty(!!E.dirty);
   async function save() {
