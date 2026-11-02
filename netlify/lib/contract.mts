@@ -32,7 +32,8 @@ export function buildContract(q: Quote, settings: any, signer: any, sel: any) {
     servicos: items.map((i: any, n: number) => `(${n + 1}) ${i.title}${i.deadline ? `, prazo de ${i.deadline}` : ""}`).join("; "),
     valor: brl(pay.total),
     pagamento: pay.text,
-    prazo: items.map((i: any) => i.deadline).filter(Boolean).join("; "),
+    // prazos iguais viram um só ("7 dias úteis"); diferentes vêm numerados como os serviços
+    prazo: (() => { const ds = items.map((i: any) => String(i.deadline || "").trim()); const set = [...new Set(ds.filter(Boolean))]; return set.length <= 1 ? (set[0] || "") : ds.map((d: string, n: number) => (d ? `(${n + 1}) ${d}` : "")).filter(Boolean).join("; "); })(),
     data: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }),
     proposta: q.slug,
   };

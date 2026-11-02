@@ -185,8 +185,9 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
   // número do contrato no topo, alinhado ao logo
   d.right(`Contrato nº ${q.slug}`, A4[1] - 50, "med", 8.5, C.soft);
   d.label("Contrato de prestação de serviços", 6);
-  d.text(q.client?.company || q.client?.name || "", { font: "bold", size: 24, lh: 30 });
-  if (q.title) d.text(q.title, { font: "light", size: 13, color: C.soft, gap: 14 });
+  d.text(q.client?.name || q.client?.company || "", { font: "bold", size: 24, lh: 30 });
+  const sub = [q.client?.company && q.client.company !== q.client?.name ? q.client.company : "", q.title].filter(Boolean).join(" · ");
+  if (sub) d.text(sub, { font: "light", size: 13, color: C.soft, gap: 14 });
 
   // cartão-resumo com os atalhos clicáveis
   const top = d.y, h = 104;
@@ -211,7 +212,7 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
   for (const line of lines) {
     const t = line.trim();
     if (!t) { d.y -= 4; continue; }
-    if (/^\d{1,2}\. [A-ZÀ-Ú][A-ZÀ-Ú ,()º.\/0-9-]{3,}$/.test(t) && t === t.toUpperCase()) {
+    if (/^\d{1,2}\. [A-ZÀ-Ú][A-ZÀ-Ú ,º.\/0-9-]{3,}( \([^)]*\))?$/.test(t) && t.replace(/\([^)]*\)/g, "") === t.replace(/\([^)]*\)/g, "").toUpperCase()) {
       d.ensure(40); d.y -= 8;
       d.text(t, { font: "med", size: 10.5, color: C.accent, lh: 16, gap: 2 });
     } else if (/^(CONTRATANTE|CONTRATADO):/.test(t)) {
@@ -228,8 +229,8 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
   if (st.signatureImage) {
     const raw = Buffer.from(st.signatureImage.split(",")[1], "base64");
     const img = st.signatureImage.startsWith("data:image/jpeg") ? await d.doc.embedJpg(raw) : await d.doc.embedPng(raw);
-    const iw = Math.min(170, half), ih = Math.min(60, (iw * img.height) / img.width);
-    d.page.drawImage(img, { x: M, y: sy - ih, width: (ih * img.width) / img.height, height: ih });
+    const ih = Math.min(52, (Math.min(170, half) * img.height) / img.width), iw = Math.min(170, (ih * img.width) / img.height);
+    d.page.drawImage(img, { x: M, y: sy - 8 - ih, width: iw, height: ih });
   }
   const sig = (x: number, name: string, role: string, note: string) => {
     d.page.drawLine({ start: { x, y: sy - 66 }, end: { x: x + half, y: sy - 66 }, thickness: 0.6, color: C.ink });
@@ -252,20 +253,21 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
     ["E-mail confirmado por código", st.signer?.emailVerifiedAt ? `Sim · ${fmtDateTime(st.signer.emailVerifiedAt)}` : "Não"],
   ];
   for (let i = 0; i < rows.length; i += 2) {
-    d.ensure(30); const y0 = d.y;
+    d.ensure(44); const y0 = d.y; let used = 1;
     for (const [j, [k, v]] of [rows[i], rows[i + 1]].filter(Boolean).entries()) {
       const x = M + j * (half + 24);
       d.page.drawText(k, { x, y: y0 - 8, size: 7.5, font: d.f.med, color: C.soft });
-      const val = d.wrap(String(v || "—"), d.f.reg, 9, half)[0];
-      d.page.drawText(val, { x, y: y0 - 21, size: 9, font: d.f.reg, color: C.ink });
+      const vl = d.wrap(String(v || "—"), d.f.reg, 9, half).slice(0, 3); used = Math.max(used, vl.length);
+      vl.forEach((ln: string, n: number) => d.page.drawText(ln, { x, y: y0 - 21 - n * 11.5, size: 9, font: d.f.reg, color: C.ink }));
     }
-    d.y = y0 - 32;
+    d.y = y0 - 20 - used * 11.5;
   }
   const am: any[] = st.amendments || [];
   d.text(am.length ? "Condição de pagamento original" : "Condição de pagamento", { font: "med", size: 7.5, color: C.soft, lh: 11 });
   d.text(am.length ? am[0].prev.text || "—" : st.paymentText || "—", { size: 9, lh: 12.5, gap: 6 });
   d.text("Navegador", { font: "med", size: 7.5, color: C.soft, lh: 11 });
-  d.text(st.signer?.userAgent || "—", { size: 8, color: C.soft, lh: 11, gap: 6 });
+  d.text(String(st.signer?.userAgent || "—").slice(0, 150), { size: 8, color: C.soft, lh: 11, gap: 6 });
+  d.ensure(40);
   d.text("Código de integridade do texto aceito (SHA-256)", { font: "med", size: 7.5, color: C.soft, lh: 11 });
   d.text(st.contractHash || "—", { size: 8.5, lh: 12, gap: 14 });
 

@@ -1,6 +1,6 @@
 // PDF da proposta no formato vertical 9:16 (810 × 1440 pt), na ID atual de @gustavoelian.
 // Estrutura estratégica: Capa → Apresentação → Serviços → Trabalhos que comprovam → Condições → Bônus → Próximos passos.
-import { PDFDocument, PDFName, PDFString, rgb, type PDFFont, type PDFImage, type PDFPage, type RGB } from "pdf-lib";
+import { PDFDocument, PDFName, PDFString, clip, endPath, popGraphicsState, pushGraphicsState, rectangle, rgb, type PDFFont, type PDFImage, type PDFPage, type RGB } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import QRCode from "qrcode";
 import * as A from "./assets.mts";
@@ -211,11 +211,16 @@ export async function buildProposalPdf(q: any, s: any, st: any, origin: string, 
         const bw = gw - 24, bh = imgH - 12, ratio = im.width / im.height, boxR = bw / bh;
         const dw = ratio > boxR ? bh * ratio : bw, dh = ratio > boxR ? bh : bw / ratio;
         p.page.drawRectangle({ x: x + 12, y: H - y0 - 12 - bh, width: bw, height: bh, color: C.ice });
+        // a imagem é maior que o quadro: recorta no quadro para não vazar para fora do card
+        p.page.pushOperators(pushGraphicsState(), rectangle(x + 12, H - y0 - 12 - bh, bw, bh), clip(), endPath());
         p.page.drawImage(im, { x: x + 12 - (dw - bw) / 2, y: H - y0 - 12 - dh, width: dw, height: dh });
+        p.page.pushOperators(popGraphicsState());
       }
       else p.rrect(x + 12, y0 + 12, gw - 24, imgH - 12, 12, { fill: C.ice });
       let y = y0 + imgH + 16;
-      p.spaced(pr.kind || "", x + 20, y, 9.5, C.accentInk, 3); y += 24;
+      const kindMax = gw - 40; let kind = String(pr.kind || "").toUpperCase();
+      while (kind.length > 3 && p.f.med.widthOfTextAtSize(kind, 9.5) + kind.length * 3 > kindMax) kind = kind.slice(0, -2).trimEnd() + "…";
+      p.spaced(kind, x + 20, y, 9.5, C.accentInk, 3); y += 24;
       y += p.text(pr.title, x + 20, y, { size: 19, font: "bold", w: gw - 40, lh: 23 }) + 8;
       const sm = p.wrap(pr.summary || "", p.f.light, 13, gw - 40).slice(0, 3);
       p.text(sm.join(" ") + (p.wrap(pr.summary || "", p.f.light, 13, gw - 40).length > 3 ? "…" : ""), x + 20, y, { size: 13, font: "light", color: C.soft, w: gw - 40, lh: 18.5 });
@@ -252,7 +257,7 @@ export async function buildProposalPdf(q: any, s: any, st: any, origin: string, 
       p.spaced(tag, M + cardW - tw - 10, top - 5, 10, C.white, 1.6);
     }
     let y = top + 26;
-    y += p.text(`| ${k.name}`, M + pad, y, { size: 20, font: "med", color: fg, w: innerW }) + 6;
+    y += p.text(`| ${String(k.name || "").trim() || "Pacote completo"}`, M + pad, y, { size: 20, font: "med", color: fg, w: innerW }) + 6;
     const nums = items.map((i: any, n: number) => (k.itemIds || []).includes(i.id) ? String(n + 1).padStart(2, "0") : null).filter(Boolean);
     p.text(`Serviços ${nums.join(", ").replace(/, ([^,]*)$/, " e $1")}`, M + pad, y, { size: 13, font: "reg", color: sub }); y += 22;
     if (pr.full > pr.cash) {
