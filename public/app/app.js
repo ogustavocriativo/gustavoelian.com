@@ -91,13 +91,18 @@ function statusOf(q) {
 }
 /* plano de recebimento de um contrato: entrada + saldo (à vista) ou valor cheio (cartão) */
 function planOf(q, pct) {
-  const s = q.state || {}, tot = totalOf(q), paid = paidOf(q);
+  const s = q.state || {}, tot = totalOf(q), paid = paidOf(q), t = s.terms;
   if (!s.approvedAt) return [];
-  if (s.selection?.method === "cartao") return [{ label: "Cartão de crédito", amount: tot, due: s.approvedAt.slice(0, 10), done: paid >= tot - 0.01 }];
-  const entry = Math.round(tot * pct) / 100;
+  // condições combinadas depois da assinatura (aditivo): parcelas próprias, cartão ou entrada diferente
+  if (t?.parcels?.length) { let acc = 0; return t.parcels.map((p) => { acc += Number(p.amount); return { label: p.label, amount: Number(p.amount), due: p.due || "", done: paid >= acc - 0.01 }; }); }
+  const method = t ? (t.method === "cartao" ? "cartao" : "avista") : s.selection?.method;
+  if (method === "cartao") return [{ label: "Cartão de crédito", amount: tot, due: s.approvedAt.slice(0, 10), done: paid >= tot - 0.01 }];
+  const ep = t?.entryPct ?? pct;
+  if (ep >= 100) return [{ label: "Pagamento único", amount: tot, due: s.approvedAt.slice(0, 10), done: paid >= tot - 0.01 }];
+  const entry = Math.round(tot * ep) / 100;
   return [
-    { label: `Entrada (${pct}%)`, amount: entry, due: s.approvedAt.slice(0, 10), done: paid >= entry - 0.01 },
-    { label: `Saldo na entrega (${100 - pct}%)`, amount: tot - entry, due: s.work?.dueDate || "", done: paid >= tot - 0.01 },
+    { label: `Entrada (${ep}%)`, amount: entry, due: s.approvedAt.slice(0, 10), done: paid >= entry - 0.01 },
+    { label: `Saldo na entrega (${100 - ep}%)`, amount: tot - entry, due: s.work?.dueDate || "", done: paid >= tot - 0.01 },
   ];
 }
 const evText = (e) => ({
@@ -113,6 +118,11 @@ const evText = (e) => ({
   "email-sent": e.what === "entrega" ? "Entrega final enviada por e-mail" : `Proposta enviada por e-mail para ${e.to || "o cliente"}`,
   "email-error": "E-mail da entrega não saiu",
   delivery: e.certificate ? `Entrega final gerada · certificado ${e.certificate}` : "Entrega final gerada · certificado aguarda quitação",
+  terms: `Condição de pagamento alterada · ${e.text || ""}`,
+  "payment-edit": `Recebimento editado · ${brl(e.total)}`,
+  "payment-delete": `Recebimento excluído · ${brl(e.total)}`,
+  "receipt-import": "Comprovante importado pelo Studio",
+  previa: e.message || "Prévia",
   drive: "Contrato salvo no Drive e enviado por e-mail",
   "drive-error": `Contrato não foi para o Drive: ${e.message || "erro"}`,
 }[e.type] || e.type);
@@ -140,7 +150,7 @@ function navBar() {
     item("#/propostas", "Propostas", "doc", on("#/propostas", "#/q/", "#/novo")),
     item("#/contratos", "Contratos", "pen", on("#/contratos", "#/c/")),
     item("#/financeiro", "Financeiro", "wallet", on("#/financeiro")),
-    item("#/servicos", "Serviços", "grid", on("#/servicos")));
+    item("#/servicos", "Serviços", "grid", on("#/servicos", "#/previas")));
 }
 function headerActions() {
   const bell = h("a", { class: "ibtn", href: "#/atividade", "aria-label": "Atividade dos clientes" }, icon("bell"));
@@ -251,9 +261,126 @@ async function renderHome() {
   const recent = evs.filter((e) => e.type !== "view").slice(0, 4);
   shell({ title: `${hello}, Gustavo`, eyebrow: now.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }), actions: headerActions(), fab: fabNew() },
     hero, h("div", { style: "height:10px" }), tiles,
+    h("a", { class: "todo glass", href: "#/previas", style: "margin-top:10px" }, h("span", { class: "ic" }, icon("eye")), h("div", {}, h("p", {}, "Prévias para clientes"), h("small", {}, "Suba um .zip e mande o link de visualização e aprovação")), h("span", { class: "go" }, icon("chev"))),
     secH("Precisa de você"), todoBox,
     secH("Atividade recente", h("a", { href: "#/atividade" }, "Ver tudo")),
     recent.length ? h("div", { class: "glass card" }, ...recent.map((e) => evRow(e, true))) : emptyState("As interações dos clientes aparecem aqui."));
+}
+
+/* ================= prévias (zip → link de visualização e aprovação) ================= */
+const PREV_STATUS = { aguardando: ["Aguardando cliente", "info"], aprovado: ["Aprovado", "ok"], ajustes: ["Pediu ajustes", "warn"] };
+const previewLink = (id) => `${location.origin}/v/${id}/`;
+const mb = (n) => (n / 1048576).toFixed(n > 1048576 * 10 ? 0 : 1).replace(".", ",") + " MB";
+let fflatePromise = null;
+function loadFflate() {
+  if (window.fflate) return Promise.resolve(window.fflate);
+  return (fflatePromise ||= new Promise((ok, no) => {
+    const s = h("script", { src: "/app/vendor/fflate.js", onload: () => ok(window.fflate), onerror: () => { fflatePromise = null; no(new Error("Não consegui carregar o leitor de .zip")); } });
+    document.head.append(s);
+  }));
+}
+const PREV_MAX_FILE = 4.4 * 1048576, PREV_MAX_TOTAL = 80 * 1048576;
+/** Lê o .zip no próprio aparelho, descarta lixo de Mac/Windows e remove a pasta-raiz comum. */
+async function readZip(file) {
+  const fl = await loadFflate();
+  const data = new Uint8Array(await file.arrayBuffer());
+  const raw = fl.unzipSync(data, { filter: (f) => !/(^|\/)(__MACOSX|\.git|node_modules)(\/|$)|(^|\/)(\.DS_Store|Thumbs\.db)$/.test(f.name) && !f.name.endsWith("/") });
+  let names = Object.keys(raw).filter((n) => !n.includes("..") && raw[n].length);
+  if (!names.length) throw new Error("O .zip está vazio");
+  const first = names[0].split("/")[0];
+  const strip = names.every((n) => n.includes("/") && n.split("/")[0] === first) ? first + "/" : "";
+  const files = names.map((n) => ({ path: n.slice(strip.length), bytes: raw[n] }));
+  const big = files.filter((f) => f.bytes.length > PREV_MAX_FILE);
+  if (big.length) throw new Error(`Arquivo(s) acima de 4,4 MB: ${big.slice(0, 3).map((f) => f.path.split("/").pop() + " (" + mb(f.bytes.length) + ")").join(", ")}. Comprima as imagens/vídeos e tente de novo.`);
+  const total = files.reduce((t, f) => t + f.bytes.length, 0);
+  if (total > PREV_MAX_TOTAL) throw new Error(`O pacote tem ${mb(total)}. O limite é ${mb(PREV_MAX_TOTAL)}.`);
+  if (!files.some((f) => /\.html?$/i.test(f.path))) throw new Error("Não achei nenhum .html no pacote. Envie o build do site (com index.html).");
+  return files;
+}
+const MIME = { html: "text/html", css: "text/css", js: "text/javascript", json: "application/json", svg: "image/svg+xml", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", gif: "image/gif", woff2: "font/woff2", woff: "font/woff", mp4: "video/mp4" };
+async function uploadVersion(id, version, files, note, onProgress) {
+  let done = 0, i = 0;
+  const worker = async () => {
+    while (i < files.length) {
+      const f = files[i++];
+      for (let tryN = 0; ; tryN++) {
+        const r = await fetch(`/api/previews/${id}/files?v=${version}&path=${encodeURIComponent(f.path)}`, { method: "PUT", credentials: "same-origin", headers: { "content-type": MIME[f.path.split(".").pop().toLowerCase()] || "application/octet-stream" }, body: f.bytes });
+        if (r.ok) break;
+        if (tryN >= 2 || r.status < 500) throw new Error((await r.json().catch(() => ({}))).error || "Falha no envio");
+      }
+      onProgress(++done, files.length);
+    }
+  };
+  await Promise.all(Array.from({ length: 4 }, worker));
+  const entry = files.find((f) => /^index\.html?$/i.test(f.path))?.path || files.find((f) => /(^|\/)index\.html?$/i.test(f.path))?.path || files.find((f) => /\.html?$/i.test(f.path)).path;
+  return api(`/api/previews/${id}/publish`, { method: "POST", body: { v: version, entry, note, files: files.map((f) => ({ path: f.path, size: f.bytes.length, type: "" })) } });
+}
+function shareRow(p) {
+  const link = previewLink(p.id);
+  const msg = `Oi${p.client ? ", " + p.client.split(" ")[0] : ""}! Segue o link para você ver${p.title ? " " + p.title : " o projeto"} e aprovar ou pedir ajustes direto por lá:\n${link}`;
+  return h("div", { class: "btns grid2" },
+    h("button", { class: "btn", type: "button", onclick: () => copy(link) }, icon("copy"), "Copiar link"),
+    h("a", { class: "btn primary", href: `https://wa.me/?text=${encodeURIComponent(msg)}`, target: "_blank", rel: "noopener" }, icon("wa"), "WhatsApp"));
+}
+/** Escolhe o .zip, mostra progresso e publica. `p` = prévia existente (nova versão) ou null (cria antes). */
+function zipSheet(p, onDone) {
+  sheet(p ? `Nova versão de ${p.title}` : "Nova prévia", (close) => {
+    const err = h("p", { class: "err", role: "alert" });
+    const title = h("input", { class: "in", value: p?.title || "", placeholder: "Ex.: Sistema do Lucas", maxlength: 120 });
+    const client = h("input", { class: "in", value: p?.client || "", placeholder: "Nome do cliente", maxlength: 120 });
+    const quote = h("select", { class: "in", "aria-label": "Proposta vinculada" }, h("option", { value: "" }, "Sem proposta vinculada"));
+    const note = h("input", { class: "in", placeholder: "O que mudou (opcional)", maxlength: 300 });
+    const file = h("input", { class: "in", type: "file", accept: ".zip,application/zip,application/x-zip-compressed", "aria-label": "Arquivo .zip do projeto" });
+    const bar = h("div", { class: "prog", role: "progressbar", "aria-valuemin": "0", "aria-valuemax": "100", hidden: true }, h("i", { style: "width:0%" }));
+    const status = h("p", { class: "hint", "aria-live": "polite" });
+    const go = h("button", { class: "btn primary block", type: "submit" }, p ? "Enviar nova versão" : "Criar e gerar link");
+    if (!p) api("/api/quotes").then((l) => l.filter((q) => q.state?.approvedAt || q.published).forEach((q) => quote.append(h("option", { value: q.slug }, q.client.name + " · " + (q.title || q.slug))))).catch(() => {});
+    const f = (label, el) => h("label", { class: "f" }, h("span", {}, label), el);
+    return h("form", { class: "stack", onsubmit: async (e) => {
+      e.preventDefault(); err.textContent = "";
+      if (!file.files[0]) { err.textContent = "Escolha o arquivo .zip."; return; }
+      if (!p && !title.value.trim()) { err.textContent = "Dê um nome para a prévia."; title.focus(); return; }
+      go.disabled = true; bar.hidden = false;
+      try {
+        status.textContent = "Lendo o .zip…";
+        const files = await readZip(file.files[0]);
+        let id = p?.id, version = 1;
+        if (p) version = Math.max(0, ...p.versions.map((v) => v.v)) + 1;
+        else { const c = await api("/api/previews", { method: "POST", body: { title: title.value, client: client.value, quoteSlug: quote.value } }); id = c.id; }
+        const res = await uploadVersion(id, version, files, note.value, (n, t) => { bar.firstChild.style.width = Math.round((n / t) * 100) + "%"; bar.setAttribute("aria-valuenow", String(Math.round((n / t) * 100))); status.textContent = `Enviando ${n} de ${t} arquivos…`; });
+        close(); toast("Prévia publicada"); haptic(); onDone(res);
+      } catch (x) { err.textContent = x.message; status.textContent = ""; bar.hidden = true; go.disabled = false; }
+    } },
+      p ? null : f("Nome da prévia", title), p ? null : f("Cliente", client), p ? null : f("Proposta (opcional)", quote),
+      f("Arquivo .zip do projeto", file), p ? f("O que mudou", note) : null,
+      h("p", { class: "hint" }, "O .zip precisa ter o site já pronto (com index.html). Cada arquivo pode ter até 4,4 MB e o pacote até 80 MB."),
+      bar, status, err, go);
+  });
+}
+function previewCard(p, redraw) {
+  const [lab, cls] = PREV_STATUS[p.status] || PREV_STATUS.aguardando;
+  const last = p.feedback[p.feedback.length - 1];
+  return h("section", { class: "glass card", style: "display:grid;gap:12px" },
+    h("div", { style: "display:flex;gap:10px;align-items:flex-start;justify-content:space-between" },
+      h("div", { style: "min-width:0;flex:1" }, h("strong", { style: "display:block;font-weight:500;overflow-wrap:anywhere" }, p.title),
+        h("div", { class: "faint", style: "font-size:var(--t-sm)" }, [p.client, p.active ? `v${p.active}` : "sem arquivos", p.active ? when(p.versions.find((v) => v.v === p.active)?.at) : ""].filter(Boolean).join(" · "))),
+      h("span", { class: "pill " + cls }, lab)),
+    last ? h("div", { class: "glass", style: "padding:10px 12px;border-radius:12px" }, h("small", { class: "faint" }, `${last.name} · ${last.kind === "aprovado" ? "aprovou" : "pediu ajustes"} · ${when(last.at)}`), last.message ? h("p", { style: "margin:4px 0 0;overflow-wrap:anywhere;white-space:pre-wrap" }, last.message) : null) : null,
+    p.active ? shareRow(p) : null,
+    h("div", { class: "btns grid2" },
+      p.active ? h("a", { class: "btn", href: previewLink(p.id), target: "_blank", rel: "noopener" }, icon("eye"), "Abrir") : null,
+      h("button", { class: "btn", type: "button", onclick: () => zipSheet(p, redraw) }, icon("plus"), "Nova versão"),
+      p.quoteSlug ? h("a", { class: "btn", href: `#/c/${p.quoteSlug}` }, icon("doc"), "Contrato") : null,
+      h("button", { class: "btn danger", type: "button", onclick: () => confirmSheet("Apagar prévia?", "O link deixa de funcionar e os arquivos são removidos.", "Apagar", async () => { await api(`/api/previews/${p.id}`, { method: "DELETE" }); toast("Prévia apagada"); redraw(); }) }, icon("trash"), "Apagar")));
+}
+async function renderPreviews() {
+  loading("Prévias");
+  const list = await api("/api/previews");
+  const redraw = () => renderPreviews();
+  shell({ title: "Prévias", back: "#/", actions: headerActions() },
+    h("button", { class: "btn primary block", type: "button", onclick: () => zipSheet(null, redraw) }, icon("plus"), "Nova prévia a partir de um .zip"),
+    h("p", { class: "hint", style: "margin:2px 2px 6px" }, "Sobe o projeto aqui e manda o link. O cliente vê no navegador e aprova ou pede ajustes pela barra no rodapé. Sem deploy e sem gastar crédito do Netlify."),
+    ...(list.length ? list.map((p) => previewCard(p, redraw)) : [emptyState("Nenhuma prévia ainda. Suba o .zip do projeto para gerar o primeiro link.")]));
 }
 
 /* ================= propostas ================= */
@@ -708,11 +835,16 @@ async function renderContract(slug) {
       h("div", { class: "btns" }, h("a", { class: "btn sm", href: `/api/quotes/${slug}/files/${notice.fileId}`, target: "_blank" }, "Ver"), h("button", { class: "btn sm primary", type: "button", onclick: () => paymentSheet(slug, plan.find((p) => !p.done)?.amount || rest, notice.fileId) }, "Confirmar"))) : null,
     h("div", {}, ...plan.map((p) => h("div", { class: "plan" }, h("span", {}, p.label, " ", h("span", { class: "pill " + (p.done ? "ok" : "") }, p.done ? "Recebido" : "Pendente")), h("small", {}, p.due ? `Vencimento ${dateBR(p.due)}` : "Vence na entrega · defina o prazo"), h("span", { class: "v" }, brl(p.amount))))),
     (s.payments || []).length ? h("div", {}, ...[...s.payments].reverse().map((p) => h("div", { class: "ledger" },
-      h("span", { class: "ic" }, icon("check")), h("div", {}, h("span", {}, METHODS[p.method] || p.method), h("small", {}, `${dateBR(p.date)}${p.note ? " · " + p.note : ""}`)),
+      h("span", { class: "ic" }, icon("check")), h("div", {}, h("span", {}, METHODS[p.method] || p.method), h("small", {}, `${dateBR(p.date)}${p.note ? " · " + p.note : ""}`), p.receiptId ? h("a", { class: "faint", style: "font-size:var(--t-sm)", href: `/api/quotes/${slug}/files/${p.receiptId}`, target: "_blank", rel: "noopener" }, "Ver comprovante") : null),
       h("span", { class: "v" }, brl(p.amount)),
+      h("button", { class: "ibtn", type: "button", style: "width:36px;height:36px", "aria-label": `Editar recebimento de ${brl(p.amount)}`, onclick: () => paymentSheet(slug, p.amount, null, p) }, icon("pen")),
       h("button", { class: "ibtn", type: "button", style: "width:36px;height:36px", "aria-label": `Excluir recebimento de ${brl(p.amount)}`, onclick: () => confirmSheet("Excluir recebimento?", `${brl(p.amount)} em ${dateBR(p.date)} sai do histórico.`, "Excluir", async () => { await api(`/api/quotes/${slug}/ledger/${p.id}`, { method: "DELETE" }); toast("Recebimento excluído"); renderContract(slug); }) }, icon("trash"))))) : h("p", { class: "hint" }, "Nenhum recebimento registrado."),
     h("button", { class: "btn primary", type: "button", onclick: () => paymentSheet(slug, plan.find((p) => !p.done)?.amount || rest) }, icon("plus"), "Registrar recebimento"));
 
+  const termsCard = h("section", { class: "form-card glass" }, h("h2", {}, "Condição de pagamento"),
+    h("p", { class: "hint" }, s.paymentText || "—"),
+    ...(s.amendments || []).map((a) => h("div", { class: "plan" }, h("span", {}, `Aditivo ${a.n} · ${dateBR(a.at)}`, " ", h("span", { class: "pill" }, a.channel)), h("small", {}, a.reason), h("small", { class: "hash" }, "SHA-256 ", a.hash.slice(0, 16) + "…", a.driveUrl ? " · " : "", a.driveUrl ? h("a", { href: a.driveUrl, target: "_blank", rel: "noopener" }, "no Drive") : null))),
+    h("button", { class: "btn block", type: "button", onclick: () => termsSheet(slug, s, rest) }, icon("pen"), "Alterar forma, valor ou parcelas"));
   const sg = s.signer || {};
   const docCard = h("section", { class: "form-card glass" }, h("h2", {}, "Contrato assinado"),
     h("dl", { class: "kv" }, h("dt", {}, "Assinante"), h("dd", {}, sg.name || "—"), h("dt", {}, "Documento"), h("dd", {}, sg.doc || "—"), h("dt", {}, "E-mail"), h("dd", {}, sg.email || "—"), h("dt", {}, "Quando"), h("dd", {}, new Date(s.approvedAt).toLocaleString("pt-BR")), h("dt", {}, "IP"), h("dd", {}, sg.ip || "—")),
@@ -732,7 +864,7 @@ async function renderContract(slug) {
     } }, icon("box"), s.drive ? "Gerar de novo no Drive" : "Salvar contrato no Drive e enviar por e-mail"));
 
   shell({ title: q0.client?.name || "Contrato", eyebrow: q0.title || "Contrato", back: "#/contratos", compact: true, nav: false },
-    hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, workCard, payCard, deliveryCard(slug, q0, s, rest), docCard),
+    hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, workCard, termsCard, payCard, deliveryCard(slug, q0, s, rest), docCard),
     secH("Linha do tempo"), h("div", { class: "glass card" }, ...events.map((e) => evRow(e))), h("div", { class: "gap24" }));
 }
 /* Entrega final: certificado de cessão, integridade dos arquivos, licenças, acessos e recomendações de conformidade. */
@@ -777,21 +909,62 @@ async function deliverySheet(slug, prev) {
       } catch (x) { err.textContent = x.message; b.disabled = false; b.textContent = "Gerar entrega"; }
     } }, icon("check"), "Gerar entrega")]);
 }
-function paymentSheet(slug, suggested, receiptId) {
-  const amount = h("input", { class: "in money", inputmode: "decimal", value: fmtMoneyInput(suggested), "aria-label": "Valor recebido" });
-  const date = h("input", { class: "in", type: "date", value: today(), "aria-label": "Data" });
-  const method = h("select", { class: "in", "aria-label": "Forma de pagamento" }, ...Object.entries(METHODS).map(([k, v]) => h("option", { value: k }, v)));
-  const note = h("input", { class: "in", placeholder: "Ex.: entrada, parcela 2/3", "aria-label": "Observação" });
+function paymentSheet(slug, suggested, receiptId, existing) {
+  const amount = h("input", { class: "in money", inputmode: "decimal", value: fmtMoneyInput(existing ? existing.amount : suggested), "aria-label": "Valor recebido" });
+  const date = h("input", { class: "in", type: "date", value: existing?.date || today(), "aria-label": "Data" });
+  const method = h("select", { class: "in", "aria-label": "Forma de pagamento" }, ...Object.entries(METHODS).map(([k, v]) => h("option", { value: k, selected: existing?.method === k }, v)));
+  const note = h("input", { class: "in", placeholder: "Ex.: entrada, parcela 2/3", "aria-label": "Observação", value: existing?.note || "" });
+  const file = h("input", { class: "in", type: "file", accept: "image/*,application/pdf", "aria-label": "Comprovante" });
   const err = h("p", { class: "err", role: "alert" });
-  sheet(receiptId ? "Confirmar comprovante" : "Registrar recebimento", (close) => [
+  sheet(existing ? "Editar recebimento" : receiptId ? "Confirmar comprovante" : "Registrar recebimento", (close) => [
     h("label", { class: "f" }, h("span", {}, "Valor (R$)"), amount),
     h("div", { class: "r2" }, h("label", { class: "f" }, h("span", {}, "Data"), date), h("label", { class: "f" }, h("span", {}, "Forma"), method)),
-    h("label", { class: "f" }, h("span", {}, "Observação"), note), err,
+    h("label", { class: "f" }, h("span", {}, "Observação"), note),
+    receiptId ? null : h("label", { class: "f" }, h("span", {}, existing?.receiptId ? "Trocar comprovante (opcional)" : "Comprovante enviado pelo cliente (foto ou PDF, até 4 MB)"), file),
+    h("p", { class: "hint" }, "O comprovante fica só com você e é copiado para a pasta do cliente no Drive (Comprovantes)."), err,
     h("button", { class: "btn primary block", type: "button", onclick: async (e) => {
-      e.currentTarget.disabled = true;
-      try { await api(`/api/quotes/${slug}/ledger`, { method: "POST", body: { amount: parseMoney(amount.value), date: date.value, method: method.value, note: note.value, receiptId } }); haptic(); toast("Recebimento registrado"); close(); renderContract(slug); }
-      catch (x) { err.textContent = x.message; e.currentTarget.disabled = false; }
-    } }, icon("check"), "Salvar recebimento")]);
+      const b = e.currentTarget; b.disabled = true; err.textContent = "";
+      try {
+        let rid = receiptId || existing?.receiptId || null;
+        if (file.files?.[0]) {
+          if (file.files[0].size > 4 * 1024 * 1024) throw new Error("Arquivo acima de 4 MB. Tire um print menor ou comprima.");
+          const fd = new FormData(); fd.append("file", file.files[0]); fd.append("receipt", "1");
+          rid = (await api(`/api/quotes/${slug}/files`, { method: "POST", body: fd })).id;
+        }
+        const body = { amount: parseMoney(amount.value), date: date.value, method: method.value, note: note.value, receiptId: rid };
+        if (existing) await api(`/api/quotes/${slug}/ledger/${existing.id}`, { method: "PATCH", body });
+        else await api(`/api/quotes/${slug}/ledger`, { method: "POST", body });
+        haptic(); toast(existing ? "Recebimento atualizado" : "Recebimento registrado"); close(); renderContract(slug);
+      } catch (x) { err.textContent = x.message; b.disabled = false; }
+    } }, icon("check"), existing ? "Salvar alterações" : "Salvar recebimento")]);
+}
+/* Condições de pagamento combinadas depois da assinatura (por WhatsApp, e-mail, pessoalmente): vira um aditivo no contrato. */
+function termsSheet(slug, s, rest) {
+  const t = s.terms || {};
+  const kind = h("select", { class: "in", "aria-label": "Forma combinada" }, ...[["avista", "À vista, com entrada e saldo"], ["cartao", "Cartão de crédito"], ["parcelas", "Parcelas combinadas (datas e valores)"]].map(([k, v]) => h("option", { value: k, selected: (t.method || (s.selection?.method === "cartao" ? "cartao" : "avista")) === k }, v)));
+  const total = h("input", { class: "in money", inputmode: "decimal", value: fmtMoneyInput(s.total), "aria-label": "Valor total" });
+  const pct = h("input", { class: "in", inputmode: "numeric", value: String(t.entryPct ?? 60), "aria-label": "Percentual de entrada" });
+  const nx = h("input", { class: "in", inputmode: "numeric", value: String(t.installments || 1), "aria-label": "Número de parcelas no cartão" });
+  const par = h("textarea", { class: "in", rows: 4, placeholder: "Uma por linha: nome; valor; data\nEntrada; 3.000,00; 2026-11-05\nSaldo; 2.000,00; 2026-12-05", "aria-label": "Parcelas" });
+  par.value = (t.parcels || []).map((p) => `${p.label}; ${fmtMoneyInput(p.amount)}; ${p.due || ""}`).join("\n");
+  const channel = h("select", { class: "in", "aria-label": "Onde foi combinado" }, ...[["whatsapp", "WhatsApp"], ["email", "E-mail"], ["presencial", "Pessoalmente"], ["telefone", "Telefone"], ["outro", "Outro"]].map(([k, v]) => h("option", { value: k }, v)));
+  const reason = h("input", { class: "in", placeholder: "Ex.: cliente pediu para pagar 50% hoje e 50% na entrega", "aria-label": "O que foi combinado" });
+  const fPct = h("label", { class: "f" }, h("span", {}, "Entrada (%)"), pct), fNx = h("label", { class: "f" }, h("span", {}, "Parcelas no cartão (até 12)"), nx), fPar = h("label", { class: "f" }, h("span", {}, "Parcelas (soma precisa fechar com o total)"), par);
+  const sync = () => { fPct.hidden = kind.value !== "avista"; fNx.hidden = kind.value !== "cartao"; fPar.hidden = kind.value !== "parcelas"; };
+  kind.addEventListener("change", sync); sync();
+  const err = h("p", { class: "err", role: "alert" });
+  sheet("Condição de pagamento", (close) => [
+    h("p", { class: "hint" }, "O contrato assinado não é reescrito. A mudança entra como aditivo, com data, motivo e código de integridade, e uma cópia vai para a pasta do cliente no Drive."),
+    h("label", { class: "f" }, h("span", {}, "Forma"), kind), h("label", { class: "f" }, h("span", {}, "Valor total (R$)"), total), fPct, fNx, fPar,
+    h("div", { class: "r2" }, h("label", { class: "f" }, h("span", {}, "Combinado por"), channel), h("label", { class: "f" }, h("span", {}, "Motivo"), reason)), err,
+    h("button", { class: "btn primary block", type: "button", onclick: async (e) => {
+      const b = e.currentTarget; b.disabled = true; err.textContent = "";
+      try {
+        const parcels = par.value.split("\n").map((l) => l.trim()).filter(Boolean).map((l) => { const [label, amount, due] = l.split(";").map((x) => x.trim()); return { label, amount: parseMoney(amount), due: due || "" }; });
+        const r = await api(`/api/quotes/${slug}/terms`, { method: "PUT", body: { method: kind.value, total: parseMoney(total.value), entryPct: Number(pct.value), installments: Number(nx.value), parcels, channel: channel.value, reason: reason.value } });
+        haptic(); close(); toast(r.driveSaved ? "Aditivo salvo e copiado no Drive" : r.driveError ? "Aditivo salvo. Drive: " + r.driveError : "Aditivo salvo"); renderContract(slug);
+      } catch (x) { err.textContent = x.message; b.disabled = false; }
+    } }, icon("check"), "Registrar aditivo")]);
 }
 
 /* ================= financeiro ================= */
@@ -1712,6 +1885,7 @@ async function route() {
     if (r === "/novo") return await renderEditor(null);
     if (r === "/contratos") return await renderContracts();
     if (r === "/financeiro") return await renderFinance();
+    if (r === "/previas") return await renderPreviews();
     if (r === "/servicos") return await renderServices();
     if (r === "/atividade" || r === "/inbox") return await renderInbox();
     if (r === "/ajustes") return await renderSettings();

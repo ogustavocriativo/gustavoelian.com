@@ -1,6 +1,6 @@
 # gustavoelian.com: portfólio, app de orçamentos e propostas interativas
 
-Projeto pronto para o Netlify, testado localmente e ainda **não publicado**.
+Site publicado no Netlify. Nada vai ao ar sem o comando explícito de deploy.
 
 ## O que tem aqui
 
@@ -55,3 +55,12 @@ npm i -g netlify-cli
 netlify dev
 ```
 Crie um arquivo `.env` com `ADMIN_PASSWORD` e `SESSION_SECRET`.
+
+
+## Novidades (nov/2026)
+
+- **Condição de pagamento após o aceite**: no contrato, "Alterar forma, valor ou parcelas" gera um aditivo (data, canal, motivo, De/Para e código SHA-256 encadeado). O contrato original nunca é alterado; o PDF do contrato ganha a seção "Aditivos".
+- **Recebimentos**: lançar, editar e excluir (com registro), anexar comprovante recebido por WhatsApp (guardado também no Drive, subpasta Comprovantes).
+- **Assinatura**: quando o Apps Script está ligado, o cliente confirma o e-mail com um código de 6 dígitos antes de assinar (entra no registro de auditoria).
+- **Prévias** (`#/previas` no Studio): sobe um .zip do projeto, gera o link `/v/<código>/` e o cliente vê e aprova ou pede ajustes por uma barra no rodapé. Sem deploy. Limites: 4,4 MB por arquivo, 80 MB por pacote. Cada envio vira uma nova versão.
+- **Apps Script**: reimplante uma nova versão (Implantar > Gerenciar implantações > Editar > Nova versão) para ativar as ações `amendment` e `file`.

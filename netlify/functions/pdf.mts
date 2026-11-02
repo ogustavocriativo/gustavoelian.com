@@ -249,6 +249,7 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
     ["Nome", st.signer?.name], ["CPF/CNPJ", st.signer?.doc], ["E-mail", st.signer?.email], ["WhatsApp", st.signer?.phone || "—"],
     ["Endereço", st.signer?.address || "—"], ["Data e hora", fmtDateTime(st.approvedAt) + " (Brasília)"],
     ["Endereço IP", (st.signer?.ip || "—") + (st.signer?.city ? ` · ${st.signer.city}` : "")], ["Proposta", `${origin}/${q.slug}`],
+    ["E-mail confirmado por código", st.signer?.emailVerifiedAt ? `Sim · ${fmtDateTime(st.signer.emailVerifiedAt)}` : "Não"],
   ];
   for (let i = 0; i < rows.length; i += 2) {
     d.ensure(30); const y0 = d.y;
@@ -260,12 +261,28 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
     }
     d.y = y0 - 32;
   }
-  d.text("Condição de pagamento", { font: "med", size: 7.5, color: C.soft, lh: 11 });
-  d.text(st.paymentText || "—", { size: 9, lh: 12.5, gap: 6 });
+  const am: any[] = st.amendments || [];
+  d.text(am.length ? "Condição de pagamento original" : "Condição de pagamento", { font: "med", size: 7.5, color: C.soft, lh: 11 });
+  d.text(am.length ? am[0].prev.text || "—" : st.paymentText || "—", { size: 9, lh: 12.5, gap: 6 });
   d.text("Navegador", { font: "med", size: 7.5, color: C.soft, lh: 11 });
   d.text(st.signer?.userAgent || "—", { size: 8, color: C.soft, lh: 11, gap: 6 });
   d.text("Código de integridade do texto aceito (SHA-256)", { font: "med", size: 7.5, color: C.soft, lh: 11 });
   d.text(st.contractHash || "—", { size: 8.5, lh: 12, gap: 14 });
+
+  // aditivos: condições de pagamento combinadas depois da assinatura, encadeadas ao código de integridade do contrato
+  if (am.length) {
+    d.ensure(120); d.rule(16);
+    d.label("Aditivos de condição de pagamento", 10);
+    d.text("O texto acima permanece como foi assinado. Os aditivos abaixo registram o que as partes combinaram depois, em ordem, cada um ligado ao código do anterior.", { size: 8.5, color: C.soft, lh: 12, gap: 8 });
+    for (const a of am) {
+      d.ensure(110);
+      d.text(`Aditivo ${a.n} · ${fmtDateTime(a.at)} (Brasília) · combinado por ${a.channel}`, { font: "med", size: 9.5, lh: 13 });
+      d.text(`Motivo: ${a.reason}`, { size: 9, lh: 12.5 });
+      d.text(`De: ${a.prev.text || "—"} (${brl(a.prev.total)})`, { size: 9, lh: 12.5, color: C.soft });
+      d.text(`Para: ${a.next.text} (${brl(a.next.total)})`, { size: 9, lh: 12.5 });
+      d.text(`Código do aditivo (SHA-256): ${a.hash}`, { size: 7.5, color: C.soft, lh: 10.5, gap: 10 });
+    }
+  }
 
   d.doc.setTitle(`Contrato ${q.client?.company || q.client?.name || ""} · ${s.issuer.name}`); d.doc.setAuthor(s.issuer.name);
   d.doc.setSubject(`Contrato vinculado à proposta ${q.slug}`);

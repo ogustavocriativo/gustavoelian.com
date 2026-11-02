@@ -40,6 +40,8 @@ function doPost(e) {
     if (body.action === "ping") return out_({ ok: true, user: Session.getEffectiveUser().getEmail() });
     if (body.action === "email") return out_(sendEmail_(body));
     if (body.action === "contract") return out_(contract_(body));
+    if (body.action === "amendment") return out_(amendment_(body));
+    if (body.action === "file") return out_(file_(body));
     return out_({ ok: false, error: "Ação desconhecida" });
   } catch (err) {
     return out_({ ok: false, error: String(err && err.message || err) });
@@ -88,7 +90,7 @@ function contract_(b) {
     "Nome: " + (s.name || ""),
     "CPF/CNPJ: " + (s.doc || ""),
     "Endereço: " + (s.address || ""),
-    "E-mail: " + (s.email || ""),
+    "E-mail: " + (s.email || "") + (s.emailVerifiedAt ? " (confirmado por código em " + s.emailVerifiedAt + ")" : " (sem confirmação por código)"),
     "Assinado em: " + (b.approvedAt || ""),
     "IP: " + (s.ip || "") + (s.city ? " · " + s.city : ""),
     "Código de integridade do texto (SHA-256): " + (b.hash || ""),
@@ -109,6 +111,45 @@ function contract_(b) {
         htmlBody: layout_("Contrato assinado", "<p>Olá" + (s.name ? ", " + esc_(s.name.split(" ")[0]) : "") + "!</p><p>Segue em anexo a cópia do contrato assinado. O próximo passo é o pagamento da entrada, pelo mesmo link da proposta.</p>", b.link ? { href: b.link, label: "Abrir a proposta" } : null) });
   }
   return { ok: true, docUrl: doc.getUrl(), pdfUrl: pdf.getUrl(), pdfId: pdf.getId(), folderUrl: folder.getUrl() };
+}
+
+/* ---------- aditivo de condição de pagamento: Doc + PDF na pasta Contrato do cliente ---------- */
+function amendment_(b) {
+  var clientName = clean_(b.client || "Cliente");
+  var folder = folderPath_(ROOT_PATH.concat([clientName, "Contrato"]));
+  var title = String(new Date().toISOString()).slice(0, 10) + " · " + clientName + " · Aditivo " + b.n;
+  var doc = DocumentApp.create(title);
+  var body = doc.getBody();
+  body.setMarginTop(56).setMarginBottom(56).setMarginLeft(64).setMarginRight(64);
+  body.appendParagraph("Aditivo " + b.n + " · condição de pagamento").setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  var p = b.prev || {}, n = b.next || {}, s = b.signer || {};
+  [
+    "Contratante: " + (s.name || "") + (s.doc ? " · " + s.doc : ""),
+    "Combinado em: " + (b.at || "") + " · por " + (b.channel || ""),
+    "Motivo: " + (b.reason || ""),
+    "",
+    "Condição anterior: " + (p.text || "") + " (R$ " + Number(p.total || 0).toFixed(2).replace(".", ",") + ")",
+    "Nova condição: " + (n.text || "") + " (R$ " + Number(n.total || 0).toFixed(2).replace(".", ",") + ")",
+    "",
+    "As demais cláusulas do contrato assinado permanecem inalteradas.",
+    "Código do aditivo (SHA-256): " + (b.hash || ""),
+    "Código do contrato a que se liga (SHA-256): " + (b.contractHash || ""),
+    "Proposta: " + (b.link || "")
+  ].forEach(function (t) { body.appendParagraph(t); });
+  doc.saveAndClose();
+  var docFile = DriveApp.getFileById(doc.getId());
+  docFile.moveTo(folder);
+  var pdf = folder.createFile(docFile.getAs("application/pdf").setName(title + ".pdf"));
+  return { ok: true, docUrl: doc.getUrl(), pdfUrl: pdf.getUrl(), pdfId: pdf.getId(), folderUrl: folder.getUrl() };
+}
+
+/* ---------- arquivo avulso (comprovantes etc.) em uma subpasta do cliente ---------- */
+function file_(b) {
+  var clientName = clean_(b.client || "Cliente");
+  var folder = folderPath_(ROOT_PATH.concat([clientName, clean_(b.sub || "Arquivos")]));
+  var blob = Utilities.newBlob(Utilities.base64Decode(String(b.data || "")), b.mime || "application/octet-stream", clean_(b.name || "arquivo"));
+  var f = folder.createFile(blob);
+  return { ok: true, url: f.getUrl(), id: f.getId(), folderUrl: folder.getUrl() };
 }
 
 /* ---------- utilidades ---------- */

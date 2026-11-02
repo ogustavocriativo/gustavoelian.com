@@ -1,6 +1,7 @@
 // Anexos: upload/remoção pelo admin; leitura pelo cliente quando o anexo está visível.
 import type { Config, Context } from "@netlify/functions";
-import { fail, files, getQuote, isAdmin, json, quotes, uid } from "../lib/core.mts";
+import { addEvent, fail, files, getQuote, isAdmin, json, quotes, uid } from "../lib/core.mts";
+import { callGoogle, googleReady } from "../lib/google.mts";
 
 const MAX = 4 * 1024 * 1024; // limite de corpo das functions (~4,5 MB)
 
@@ -33,9 +34,19 @@ export default async (req: Request, context: Context) => {
     if (file.size > MAX) return fail("Arquivo acima de 4 MB. Comprima ou envie um link.");
     const id = uid();
     await files().set(`${slug}/${id}`, await file.arrayBuffer());
-    const meta = { id, name: file.name, type: file.type, size: file.size, showToClient: true, uploadedAt: new Date().toISOString() };
+    // comprovante importado pelo próprio Studio: fica privado (o cliente não vê) e uma cópia vai para a pasta do cliente no Drive
+    const receipt = form.get("receipt") === "1";
+    const meta: any = { id, name: file.name, type: file.type, size: file.size, showToClient: !receipt, uploadedAt: new Date().toISOString() };
+    if (receipt) meta.kind = "comprovante";
     const next = { ...q, attachments: [...(q.attachments || []), meta], updatedAt: new Date().toISOString() };
     await quotes().setJSON(`quotes/${slug}`, next);
+    if (receipt) {
+      await addEvent(slug, { type: "receipt-import", fileName: file.name });
+      if (googleReady()) {
+        const data = Buffer.from(await file.arrayBuffer()).toString("base64");
+        context.waitUntil(callGoogle("file", { client: q.client?.company || q.client?.name || slug, sub: "Comprovantes", name: `${new Date().toISOString().slice(0, 10)} · ${file.name}`, mime: file.type || "application/octet-stream", data }, 45000).catch(() => {}));
+      }
+    }
     return json(meta, 201);
   }
   // Renomear o arquivo (o nome aparece na página do cliente e no download); a extensão original é mantida

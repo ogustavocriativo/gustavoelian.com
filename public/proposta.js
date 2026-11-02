@@ -170,6 +170,19 @@ function signaturePad() {
   return wrap;
 }
 
+/* Confirmação do e-mail por código (só aparece quando o envio por Gmail está ligado) */
+function otpField(getForm, err) {
+  const code = h("input", { id: "code", name: "code", type: "text", inputmode: "numeric", autocomplete: "one-time-code", maxlength: "6", required: true, placeholder: "000000" });
+  const msg = h("small", { class: "hint" }, "Enviamos um código de 6 números para o seu e-mail para confirmar que é você quem assina.");
+  const btn = h("button", { class: "btn", type: "button", onclick: async () => {
+    const fd = getForm(); err.textContent = "";
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(fd.get("email") || ""))) { err.textContent = "Preencha o e-mail antes de pedir o código."; return; }
+    btn.disabled = true; btn.textContent = "Enviando…";
+    try { await post("otp", { email: fd.get("email"), name: fd.get("name") }); msg.textContent = "Código enviado. Confira a caixa de entrada e o spam."; btn.textContent = "Reenviar código"; setTimeout(() => { btn.disabled = false; }, 30000); }
+    catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "Enviar código para o meu e-mail"; }
+  } }, "Enviar código para o meu e-mail");
+  return h("div", { class: "stack" }, h("label", { class: "f", for: "code" }, "Código recebido por e-mail *", code), btn, msg);
+}
 function approve() {
   const s = D.state;
   if (s.approvedAt) {
@@ -187,7 +200,7 @@ function approve() {
     if (!fd.get("accept")) { err.textContent = "Para aprovar, marque que leu e aceita os termos."; return; }
     const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Registrando…";
     try {
-      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad.getData() });
+      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad.getData(), code: fd.get("code") });
       if (D.demo) { try { sessionStorage.setItem("ge_demo", JSON.stringify({ selection: sel, approvedAt: new Date().toISOString(), signer: { name: fd.get("name") } })); } catch {} }
       await load(); toast("Proposta aprovada. Obrigado!"); location.hash = "#pagamento";
     } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "Aprovar proposta"; }
@@ -197,6 +210,7 @@ function approve() {
     D.quote.contractEnabled ? inp("address", "Endereço completo, com cidade *", "text", { autocomplete: "street-address" }) : null,
     D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), h("div", { class: "contract", id: "contractText", tabindex: "0" }, D.contractPreview)] : null,
     D.quote.contractEnabled ? pad : null,
+    D.otp ? otpField(() => new FormData(form), err) : null,
     h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
     err, h("button", { class: "btn primary", type: "submit" }, "Aprovar proposta"));
   return h("section", { class: "blk", id: "aprovar" }, h("span", { class: "eyebrow" }, "Aprovação"), h("h2", {}, D.quote.contractEnabled ? "Aprovar e assinar" : "Aprovar proposta"),

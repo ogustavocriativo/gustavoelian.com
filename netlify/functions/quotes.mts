@@ -3,7 +3,7 @@ import type { Config, Context } from "@netlify/functions";
 import { aliases, aliasOf, fail, files, getQuote, getState, isAdmin, json, listEvents, quotes, shortCode, slugify, states, events, store, SLUG_RE } from "../lib/core.mts";
 
 // endereços que pertencem ao site e não podem virar link de proposta
-const RESERVED = new Set(["demonstracao", "acompanhar", "certificado", "projeto", "projetos", "proposta", "pagar", "index", "app", "api", "img", "fonts", "video", "data", "assets", "admin", "studio"]);
+const RESERVED = new Set(["demonstracao", "acompanhar", "certificado", "projeto", "projetos", "proposta", "pagar", "index", "app", "api", "img", "fonts", "video", "data", "assets", "admin", "studio", "v", "previa"]);
 
 function clean(input: any, prev: any = {}) {
   const num = (v: any) => (v === "" || v === null || v === undefined ? 0 : Number(String(v).replace(/\./g, "").replace(",", ".")) || Number(v) || 0);

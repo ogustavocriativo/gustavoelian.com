@@ -2,7 +2,7 @@
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
 import { buildContract, paymentLabel } from "../lib/contract.mts";
-import { googleReady, sendContractToDrive } from "../lib/google.mts";
+import { callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
 
 function publicView(q: any) {
   return {
@@ -84,6 +84,7 @@ export default async (req: Request, context: Context) => {
       state: { selection: state.selection || null, approvedAt: state.approvedAt || null, signer: state.signer ? { name: state.signer.name } : null, paidAt: state.paidAt || null, paymentNotice: state.paymentNotice || null },
       issuer: settings.issuer,
       payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key, card: !!Netlify.env.get("STRIPE_SECRET_KEY") },
+      otp: googleReady(),
       contractPreview,
       preview: admin && !q.published,
     });
@@ -130,6 +131,26 @@ export default async (req: Request, context: Context) => {
     return json({ ok: true, event: ev });
   }
 
+  /* Código de confirmação enviado ao e-mail de quem vai assinar: prova que a pessoa controla o e-mail informado
+     (reforça o aceite eletrônico, Lei 14.063/2020). Só é exigido quando o envio por Gmail está ligado. */
+  if (action === "otp") {
+    const st = await getState(slug);
+    if (st.approvedAt) return fail("Esta proposta já foi aprovada", 409);
+    if (!googleReady()) return json({ ok: true, skipped: true });
+    const email = clip(body.email, 160).toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("Digite um e-mail válido");
+    if (st.otp && Date.now() - Date.parse(st.otp.sentAt) < 30_000) return fail("Aguarde meio minuto para pedir outro código", 429);
+    const code = String(100000 + (crypto.getRandomValues(new Uint32Array(1))[0] % 900000));
+    const r = await callGoogle("email", {
+      to: email, subject: `${code} é o seu código para assinar`, title: "Código de confirmação",
+      html: `<p>Olá${body.name ? ", " + firstName(body.name) : ""}!</p><p>Use este código para confirmar o seu e-mail e assinar a proposta${q.title ? ` de <b>${esc(q.title)}</b>` : ""}:</p><p style="font-size:34px;letter-spacing:.3em;margin:18px 0"><b>${code}</b></p><p>Ele vale por 10 minutos. Se não foi você, ignore esta mensagem.</p>`,
+    }, 20000);
+    if (!r?.ok) return fail("Não consegui enviar o código agora. Tente de novo em instantes ou fale comigo pelo WhatsApp.", 502);
+    await patchState(slug, { otp: { email, hash: await sha256(`${slug}|${email}|${code}`), exp: Date.now() + 10 * 60_000, tries: 0, sentAt: new Date().toISOString() } });
+    await addEvent(slug, { type: "otp-sent" });
+    return json({ ok: true });
+  }
+
   if (action === "approve") {
     const st = await getState(slug);
     if (st.approvedAt) return fail("Esta proposta já foi aprovada", 409);
@@ -139,18 +160,30 @@ export default async (req: Request, context: Context) => {
     if (!body.accept) return fail("É preciso aceitar os termos");
     const sig = String(body.signature || "");
     if (sig && (!/^data:image\/(png|jpeg);base64,/.test(sig) || sig.length > 300_000)) return fail("Assinatura inválida");
+    let emailVerifiedAt: string | null = null;
+    if (googleReady()) {
+      const o = st.otp, code = clip(body.code, 8).replace(/\D/g, "");
+      if (!o || !code) return fail("Digite o código que enviamos para o seu e-mail");
+      if (o.tries >= 5 || Date.now() > o.exp) return fail("Esse código expirou. Peça um novo.", 410);
+      if (o.email !== signer.email.toLowerCase() || o.hash !== (await sha256(`${slug}|${o.email}|${code}`))) {
+        await patchState(slug, { otp: { ...o, tries: o.tries + 1 } });
+        return fail("Código incorreto. Confira o e-mail e tente de novo.", 422);
+      }
+      emailVerifiedAt = new Date().toISOString();
+    }
     const sel = st.selection || { packageId: null, itemIds: (q.items || []).map((i: any) => i.id), method: "avista" };
     const contract = q.contract?.enabled !== false ? buildContract(q, settings, signer, sel) : "";
     const pay = paymentLabel(q, settings, sel);
     const acceptance = {
       approvedAt: new Date().toISOString(),
-      signer: { ...signer, ip: context.ip, userAgent: clip(req.headers.get("user-agent"), 300), city: context.geo?.city || "" },
+      signer: { ...signer, emailVerifiedAt, ip: context.ip, userAgent: clip(req.headers.get("user-agent"), 300), city: context.geo?.city || "" },
       selection: sel,
       total: pay.total,
       paymentText: pay.text,
       contractText: contract,
       contractHash: contract ? await sha256(contract) : "",
       signatureImage: sig || null,
+      otp: null,
     };
     await patchState(slug, acceptance);
     await addEvent(slug, { type: "approve", name: signer.name, total: pay.total, method: sel.method });
