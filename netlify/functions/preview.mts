@@ -54,7 +54,11 @@ function withOg(html: string, origin: string, key: string, m: any) {
   const img = `${origin}/api/previa/${key}/capa?v=${hash(`${m.coverAt || ""}${m.logoAt || ""}${m.updatedAt || ""}${m.client}${m.title}`)}`;
   const tags = `<meta property="og:type" content="website"><meta property="og:title" content="${xesc(title)}"><meta property="og:description" content="${xesc(desc)}"><meta property="og:image" content="${xesc(img)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="${xesc(`${origin}/v/${key}/`)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${xesc(title)}"><meta name="twitter:description" content="${xesc(desc)}"><meta name="twitter:image" content="${xesc(img)}">`;
   html = html.replace(/<meta\s+[^>]*(?:property|name)\s*=\s*["'](?:og:[^"']*|twitter:[^"']*)["'][^>]*>/gi, "");
-  return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, (h) => h + tags) : tags + html;
+  // atenção: "<header>" também começa com "<head"; só vale a tag <head> de verdade
+  const meta = `<meta charset="utf-8">` + tags;
+  if (/<head(\s[^>]*)?>/i.test(html)) return html.replace(/<head(\s[^>]*)?>/i, (h) => h + meta);
+  if (/<html(\s[^>]*)?>/i.test(html)) return html.replace(/<html(\s[^>]*)?>/i, (h) => h + "<head>" + meta + "</head>");
+  return "<!doctype html><head>" + meta + "</head>" + html;
 }
 
 export default async (req: Request, context: Context) => {
