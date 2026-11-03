@@ -25,9 +25,31 @@ export async function getMeta(id: string) {
   if (!ID_RE.test(id)) return null;
   return (await previewStore().get(`meta/${id}`, { type: "json" })) as any;
 }
+/** Link amigável: "lucas-rocha-sistema-de-advocacia". Aceita também o código antigo. */
+export const slugOf = (s: string) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60).replace(/-+$/, "");
+export const SLUG_OK = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+export async function resolveMeta(key: string) {
+  const k = String(key || "").toLowerCase();
+  if (!k) return null;
+  const id = (await previewStore().get(`slug/${k}`, { type: "text" })) as string | null;
+  return id ? await getMeta(id) : await getMeta(k);
+}
+/** Devolve um slug livre (acrescenta -2, -3… se já existir). */
+async function freeSlug(base: string, selfId = "") {
+  const S = previewStore();
+  const b = slugOf(base) || "previa";
+  for (let n = 1; n < 50; n++) {
+    const cand = n === 1 ? b : `${b.slice(0, 56)}-${n}`;
+    if (ID_RE.test(cand) && (await getMeta(cand))) continue;
+    const cur = (await S.get(`slug/${cand}`, { type: "text" })) as string | null;
+    if (!cur || cur === selfId) return cand;
+  }
+  return `${b.slice(0, 45)}-${Date.now().toString(36)}`;
+}
+export const suggestSlug = (client: string, title: string) => slugOf([client, title].filter(Boolean).join(" "));
 const summary = (m: any) => {
   const act = (m.versions || []).find((x: any) => x.v === m.active);
-  return { id: m.id, title: m.title, client: m.client, quoteSlug: m.quoteSlug || "", createdAt: m.createdAt, updatedAt: m.updatedAt, active: m.active || 0,
+  return { id: m.id, slug: m.slug || m.id, title: m.title, client: m.client, quoteSlug: m.quoteSlug || "", createdAt: m.createdAt, updatedAt: m.updatedAt, active: m.active || 0,
     versions: (m.versions || []).map((x: any) => ({ v: x.v, at: x.at, note: x.note, count: x.files.length, size: x.files.reduce((t: number, f: any) => t + f.size, 0), entry: x.entry })),
     status: m.status || "aguardando", feedback: (m.feedback || []).slice(-10), expiresAt: m.expiresAt || "", views: m.views || 0, lastViewAt: m.lastViewAt || "", entry: act?.entry || "" };
 };
@@ -52,8 +74,13 @@ export default async (req: Request, context: Context) => {
       if (quoteSlug && !(await getQuote(quoteSlug))) return fail("Proposta não encontrada");
       const nid = shortCode(10);
       const at = new Date().toISOString();
-      const m = { id: nid, title, client: str(b?.client, 120), quoteSlug, createdAt: at, updatedAt: at, active: 0, versions: [], status: "aguardando", feedback: [] };
+      const client = str(b?.client, 120);
+      const wanted = slugOf(b?.slug || "");
+      if (b?.slug && (!wanted || !SLUG_OK.test(wanted) || wanted.length < 3)) return fail("Use de 3 a 60 letras, números ou hífens no link");
+      const slug = await freeSlug(wanted || suggestSlug(client, title), nid);
+      const m = { id: nid, slug, slugs: [slug], title, client, quoteSlug, createdAt: at, updatedAt: at, active: 0, versions: [], status: "aguardando", feedback: [] };
       await S.setJSON(`meta/${nid}`, m);
+      await S.set(`slug/${slug}`, nid);
       return json(summary(m), 201);
     }
     return fail("Método não permitido", 405);
@@ -100,6 +127,14 @@ export default async (req: Request, context: Context) => {
     if (b.client !== undefined) next.client = str(b.client, 120);
     if (b.quoteSlug !== undefined) { const qs = str(b.quoteSlug, 60); if (qs && !(await getQuote(qs))) return fail("Proposta não encontrada"); next.quoteSlug = qs; }
     if (b.active !== undefined) { if (!(m.versions || []).some((x: any) => x.v === Number(b.active))) return fail("Versão inexistente"); next.active = Number(b.active); }
+    if (b.slug !== undefined && slugOf(b.slug) !== (m.slug || "")) {
+      const want = slugOf(b.slug);
+      if (!SLUG_OK.test(want) || want.length < 3) return fail("Use de 3 a 60 letras, números ou hífens no link");
+      const cur = (await S.get(`slug/${want}`, { type: "text" })) as string | null;
+      if ((cur && cur !== id) || (ID_RE.test(want) && want !== id && (await getMeta(want)))) return fail("Esse link já está em uso por outra prévia. Escolha outro.");
+      await S.set(`slug/${want}`, id);
+      next.slug = want; next.slugs = [...new Set([...(m.slugs || []), want])]; // links antigos continuam funcionando
+    }
     if (b.expiresAt !== undefined) next.expiresAt = str(b.expiresAt, 20);
     if (b.status !== undefined && ["aguardando", "aprovado", "ajustes"].includes(b.status)) next.status = b.status;
     await S.setJSON(`meta/${id}`, next);
@@ -108,6 +143,7 @@ export default async (req: Request, context: Context) => {
   if (req.method === "DELETE") {
     const { blobs } = await S.list({ prefix: `file/${id}/` });
     await Promise.all(blobs.map((x) => S.delete(x.key)));
+    for (const sl of new Set([...(m.slugs || []), m.slug].filter(Boolean))) if (((await S.get(`slug/${sl}`, { type: "text" })) as string | null) === id) await S.delete(`slug/${sl}`);
     await S.delete(`meta/${id}`);
     return json({ ok: true });
   }

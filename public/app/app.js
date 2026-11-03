@@ -269,7 +269,9 @@ async function renderHome() {
 
 /* ================= prévias (zip → link de visualização e aprovação) ================= */
 const PREV_STATUS = { aguardando: ["Aguardando cliente", "info"], aprovado: ["Aprovado", "ok"], ajustes: ["Pediu ajustes", "warn"] };
-const previewLink = (id) => `${location.origin}/v/${id}/`;
+const previewLink = (p) => `${location.origin}/v/${typeof p === "string" ? p : p.slug || p.id}/`;
+const slugify2 = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60).replace(/-+$/, "");
+const slugFrom = (client, title) => slugify2([client, title].filter(Boolean).join(" "));
 const mb = (n) => (n / 1048576).toFixed(n > 1048576 * 10 ? 0 : 1).replace(".", ",") + " MB";
 let fflatePromise = null;
 function loadFflate() {
@@ -316,7 +318,7 @@ async function uploadVersion(id, version, files, note, onProgress) {
   return api(`/api/previews/${id}/publish`, { method: "POST", body: { v: version, entry, note, files: files.map((f) => ({ path: f.path, size: f.bytes.length, type: "" })) } });
 }
 function shareRow(p) {
-  const link = previewLink(p.id);
+  const link = previewLink(p);
   const msg = `Oi${p.client ? ", " + p.client.split(" ")[0] : ""}! Segue o link para você ver${p.title ? " " + p.title : " o projeto"} e aprovar ou pedir ajustes direto por lá:\n${link}`;
   return h("div", { class: "btns grid2" },
     h("button", { class: "btn", type: "button", onclick: () => copy(link) }, icon("copy"), "Copiar link"),
@@ -326,8 +328,15 @@ function shareRow(p) {
 function zipSheet(p, onDone) {
   sheet(p ? `Nova versão de ${p.title}` : "Nova prévia", (close) => {
     const err = h("p", { class: "err", role: "alert" });
-    const title = h("input", { class: "in", value: p?.title || "", placeholder: "Ex.: Sistema do Lucas", maxlength: 120 });
+    const title = h("input", { class: "in", value: p?.title || "", placeholder: "Ex.: Sistema de advocacia", maxlength: 120 });
     const client = h("input", { class: "in", value: p?.client || "", placeholder: "Nome do cliente", maxlength: 120 });
+    const slug = h("input", { class: "in", placeholder: "lucas-rocha-sistema", maxlength: 60, autocapitalize: "none", spellcheck: "false", "aria-label": "Final do link" });
+    let slugTouched = false;
+    const linkHint = h("p", { class: "hint", style: "word-break:break-all" });
+    const upd = () => { linkHint.textContent = `${location.host}/v/${slugify2(slug.value) || "…"}/`; };
+    slug.addEventListener("input", () => { slugTouched = true; upd(); });
+    const auto = () => { if (!slugTouched) { slug.value = slugFrom(client.value, title.value); upd(); } };
+    title.addEventListener("input", auto); client.addEventListener("input", auto); upd();
     const quote = h("select", { class: "in", "aria-label": "Proposta vinculada" }, h("option", { value: "" }, "Sem proposta vinculada"));
     const note = h("input", { class: "in", placeholder: "O que mudou (opcional)", maxlength: 300 });
     const file = h("input", { class: "in", type: "file", accept: ".zip,application/zip,application/x-zip-compressed", "aria-label": "Arquivo .zip do projeto" });
@@ -346,15 +355,34 @@ function zipSheet(p, onDone) {
         const files = await readZip(file.files[0]);
         let id = p?.id, version = 1;
         if (p) version = Math.max(0, ...p.versions.map((v) => v.v)) + 1;
-        else { const c = await api("/api/previews", { method: "POST", body: { title: title.value, client: client.value, quoteSlug: quote.value } }); id = c.id; }
+        else { const c = await api("/api/previews", { method: "POST", body: { title: title.value, client: client.value, quoteSlug: quote.value, slug: slugify2(slug.value) } }); id = c.id; }
         const res = await uploadVersion(id, version, files, note.value, (n, t) => { bar.firstChild.style.width = Math.round((n / t) * 100) + "%"; bar.setAttribute("aria-valuenow", String(Math.round((n / t) * 100))); status.textContent = `Enviando ${n} de ${t} arquivos…`; });
         close(); toast("Prévia publicada"); haptic(); onDone(res);
       } catch (x) { err.textContent = x.message; status.textContent = ""; bar.hidden = true; go.disabled = false; }
     } },
-      p ? null : f("Nome da prévia", title), p ? null : f("Cliente", client), p ? null : f("Proposta (opcional)", quote),
+      p ? null : f("Nome da prévia (o que o cliente vai ver)", title), p ? null : f("Cliente", client), p ? null : f("Link da prévia", slug), p ? null : linkHint, p ? null : f("Proposta (opcional)", quote),
       f("Arquivo .zip do projeto", file), p ? f("O que mudou", note) : null,
       h("p", { class: "hint" }, "O .zip precisa ter o site já pronto (com index.html). Cada arquivo pode ter até 4,4 MB e o pacote até 80 MB."),
       bar, status, err, go);
+  });
+}
+function slugSheet(p, redraw) {
+  sheet("Personalizar o link", (close) => {
+    const err = h("p", { class: "err", role: "alert" });
+    const input = h("input", { class: "in", value: p.slug || p.id, maxlength: 60, autocapitalize: "none", spellcheck: "false", "aria-label": "Final do link" });
+    const shown = h("p", { class: "hint", style: "word-break:break-all" });
+    const upd = () => { shown.textContent = `${location.host}/v/${slugify2(input.value) || "…"}/`; };
+    input.addEventListener("input", upd); upd();
+    const sug = [...new Set([slugFrom(p.client, p.title), slugify2(p.client)].filter((x) => x && x.length >= 3))].slice(0, 3);
+    return h("form", { class: "stack", onsubmit: async (e) => {
+      e.preventDefault(); err.textContent = "";
+      try { await api(`/api/previews/${p.id}`, { method: "PATCH", body: { slug: slugify2(input.value) } }); close(); toast("Link atualizado. O anterior continua funcionando."); redraw(); }
+      catch (x) { err.textContent = x.message; }
+    } },
+      h("label", { class: "f" }, h("span", {}, "Final do link"), input), shown,
+      sug.length ? h("div", { class: "chips", role: "group", "aria-label": "Sugestões" }, ...sug.map((x) => h("button", { type: "button", class: "chip", onclick: () => { input.value = x; upd(); } }, x))) : null,
+      h("p", { class: "hint" }, "Dica: nome do cliente + o que está sendo visto. Links já enviados continuam abrindo."), err,
+      h("button", { class: "btn primary block", type: "submit" }, "Salvar link"));
   });
 }
 function previewCard(p, redraw) {
@@ -366,9 +394,12 @@ function previewCard(p, redraw) {
         h("div", { class: "faint", style: "font-size:var(--t-sm)" }, [p.client, p.active ? `v${p.active}` : "sem arquivos", p.active ? when(p.versions.find((v) => v.v === p.active)?.at) : ""].filter(Boolean).join(" · "))),
       h("span", { class: "pill " + cls }, lab)),
     last ? h("div", { class: "glass", style: "padding:10px 12px;border-radius:12px" }, h("small", { class: "faint" }, `${last.name} · ${last.kind === "aprovado" ? "aprovou" : "pediu ajustes"} · ${when(last.at)}`), last.message ? h("p", { style: "margin:4px 0 0;overflow-wrap:anywhere;white-space:pre-wrap" }, last.message) : null) : null,
+    h("div", { class: "glass", style: "padding:10px 12px;border-radius:12px;display:flex;gap:8px;align-items:center;justify-content:space-between" },
+      h("code", { style: "font-size:var(--t-sm);overflow-wrap:anywhere;min-width:0" }, previewLink(p).replace(/^https?:\/\//, "")),
+      h("button", { class: "btn", type: "button", style: "flex:none", onclick: () => slugSheet(p, redraw) }, icon("pen"), "Editar")),
     p.active ? shareRow(p) : null,
     h("div", { class: "btns grid2" },
-      p.active ? h("a", { class: "btn", href: previewLink(p.id), target: "_blank", rel: "noopener" }, icon("eye"), "Abrir") : null,
+      p.active ? h("a", { class: "btn", href: previewLink(p), target: "_blank", rel: "noopener" }, icon("eye"), "Abrir") : null,
       h("button", { class: "btn", type: "button", onclick: () => zipSheet(p, redraw) }, icon("plus"), "Nova versão"),
       p.quoteSlug ? h("a", { class: "btn", href: `#/c/${p.quoteSlug}` }, icon("doc"), "Contrato") : null,
       h("button", { class: "btn danger", type: "button", onclick: () => confirmSheet("Apagar prévia?", "O link deixa de funcionar e os arquivos são removidos.", "Apagar", async () => { await api(`/api/previews/${p.id}`, { method: "DELETE" }); toast("Prévia apagada"); redraw(); }) }, icon("trash"), "Apagar")));

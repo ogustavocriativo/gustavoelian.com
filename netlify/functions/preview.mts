@@ -5,7 +5,7 @@
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, fail, getSettings, json } from "../lib/core.mts";
 import { callGoogle, esc, googleReady } from "../lib/google.mts";
-import { cleanPath, fileKey, getMeta, previewStore } from "./previews.mts";
+import { cleanPath, fileKey, previewStore, resolveMeta } from "./previews.mts";
 
 const TYPES: Record<string, string> = {
   html: "text/html; charset=utf-8", htm: "text/html; charset=utf-8", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", mjs: "text/javascript; charset=utf-8",
@@ -45,8 +45,9 @@ if(document.body)add();else document.addEventListener('DOMContentLoaded',add)})(
 
 export default async (req: Request, context: Context) => {
   const url = new URL(req.url);
-  const id = context.params.id;
-  const m = await getMeta(id);
+  const key = context.params.id;       // o que veio na URL: link amigável ou código antigo
+  const m = await resolveMeta(key);
+  const id = m?.id || key;
 
   // ---- retorno do cliente ----
   if (url.pathname.startsWith("/api/previa/")) {
@@ -81,9 +82,9 @@ export default async (req: Request, context: Context) => {
   const ver = (m.versions || []).find((x: any) => x.v === m.active);
   if (!ver) return gone("Prévia ainda sem arquivos.");
 
-  const base = `/v/${id}/`;
+  const base = `/v/${key}/`;
   const rest = decodeURIComponent(url.pathname.slice(base.length - 1)).replace(/^\/+/, "");
-  if (url.pathname === `/v/${id}`) return Response.redirect(new URL(base + url.search, url.origin).toString(), 302);
+  if (url.pathname === `/v/${key}`) return Response.redirect(new URL(base + url.search, url.origin).toString(), 302);
 
   let path = cleanPath(rest) || ver.entry;
   const has = (p: string) => ver.files.some((f: any) => f.path === p);
