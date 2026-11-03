@@ -9,6 +9,8 @@ import path from "node:path";
 import fs from "node:fs";
 import { aliasOf, getQuote, store } from "../lib/core.mts";
 import { LOGO_LIGHT } from "../lib/og-logo.mts";
+import { CARD_V, renderCard } from "../lib/og-card.mts";
+import { previewStore } from "./previews.mts";
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
 const first = (n: string) => String(n || "").trim().split(/\s+/)[0].slice(0, 16);
@@ -58,14 +60,16 @@ export default async (req: Request, context: Context) => {
   const para = url.searchParams.get("para");
   const i = await info(slug, para);
   if (!i) return new Response(JSON.stringify({ error: "Não encontrado" }), { status: 404, headers: { "content-type": "application/json", "cache-control": "no-store" } });
-  const v = ver(i);
+  // logo do cliente (enviada no Studio): muda o desenho e entra na versão da imagem
+  const logo = !i.demo ? await previewStore().get(`quote-logo/${slug}`, { type: "arrayBuffer" }).catch(() => null) : null;
+  const v = ver(i) + (logo ? "-l" + logo.byteLength.toString(36) + CARD_V : "");
   if (url.pathname.endsWith("/image")) {
     // 1º acesso desenha e guarda; os seguintes saem prontos (do cache da CDN ou do armazenamento)
     const key = `${i.demo ? "demo-" + v : slug + "-" + v}.png`;
     const og = store("og-images");
     const saved = await og.get(key, { type: "arrayBuffer" }).catch(() => null);
     if (saved) return new Response(saved as ArrayBuffer, { headers: CDN_IMG });
-    const png = new Resvg(svg(i.name, i.title), { font: { fontFiles: fontFiles(), loadSystemFonts: false, defaultFontFamily: "LT Wave" }, fitTo: { mode: "width", value: 1200 } }).render().asPng();
+    const png = logo ? renderCard({ kicker: i.name, headline: "Sua proposta está pronta.", sub: i.title, cta: "Abrir proposta", logo }) : new Resvg(svg(i.name, i.title), { font: { fontFiles: fontFiles(), loadSystemFonts: false, defaultFontFamily: "LT Wave" }, fitTo: { mode: "width", value: 1200 } }).render().asPng();
     await og.set(key, png).catch(() => {});
     return new Response(png, { headers: CDN_IMG });
   }

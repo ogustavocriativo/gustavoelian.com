@@ -1,10 +1,13 @@
 // Prévias (público): serve o projeto enviado pelo Studio em /v/<código>/ e recebe a aprovação do cliente.
 //   GET  /v/:id            → redireciona para /v/:id/
 //   GET  /v/:id/*          → arquivo da versão ativa (HTML ganha a barra "Aprovar / Pedir ajustes")
+//   GET  /api/previa/:id/capa → imagem 1200×630 para a prévia de link (WhatsApp)
 //   POST /api/previa/:id/feedback { kind: "aprovado"|"ajustes", name, message }
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, fail, getSettings, json } from "../lib/core.mts";
 import { callGoogle, esc, googleReady } from "../lib/google.mts";
+import { CARD_V, hash, esc as xesc, renderCard, sniff } from "../lib/og-card.mts";
+import { store } from "../lib/core.mts";
 import { cleanPath, fileKey, previewStore, resolveMeta } from "./previews.mts";
 
 const TYPES: Record<string, string> = {
@@ -43,11 +46,39 @@ function add(){document.body.appendChild(host);document.body.style.paddingBottom
 if(document.body)add();else document.addEventListener('DOMContentLoaded',add)})();</script>`;
 }
 
+/** Troca as metatags de compartilhamento do projeto pelas da prévia ("<Cliente>, sua prévia está pronta para aprovação"). */
+function withOg(html: string, origin: string, key: string, m: any) {
+  const who = m.client || "Gustavo Elian";
+  const title = `${who}, sua prévia está pronta para aprovação`;
+  const desc = `${m.title}. Abra o link, veja o projeto e aprove ou peça ajustes.`;
+  const img = `${origin}/api/previa/${key}/capa?v=${hash(`${m.coverAt || ""}${m.logoAt || ""}${m.updatedAt || ""}${m.client}${m.title}`)}`;
+  const tags = `<meta property="og:type" content="website"><meta property="og:title" content="${xesc(title)}"><meta property="og:description" content="${xesc(desc)}"><meta property="og:image" content="${xesc(img)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="${xesc(`${origin}/v/${key}/`)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${xesc(title)}"><meta name="twitter:description" content="${xesc(desc)}"><meta name="twitter:image" content="${xesc(img)}">`;
+  html = html.replace(/<meta\s+[^>]*(?:property|name)\s*=\s*["'](?:og:[^"']*|twitter:[^"']*)["'][^>]*>/gi, "");
+  return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, (h) => h + tags) : tags + html;
+}
+
 export default async (req: Request, context: Context) => {
   const url = new URL(req.url);
   const key = context.params.id;       // o que veio na URL: link amigável ou código antigo
   const m = await resolveMeta(key);
   const id = m?.id || key;
+
+  // ---- capa para WhatsApp: a enviada pelo Studio ou, na falta dela, um cartão com a logo do cliente ----
+  if (url.pathname.endsWith("/capa")) {
+    if (!m) return new Response("Não encontrado", { status: 404 });
+    const S = previewStore();
+    const IMG = { "cache-control": "public, max-age=3600", "netlify-cdn-cache-control": "public, durable, s-maxage=31536000, immutable", "x-robots-tag": "noindex" };
+    const cover = m.coverAt ? await S.get(`cover/${id}`, { type: "arrayBuffer" }) : null;
+    if (cover) return new Response(cover, { headers: { "content-type": `image/${sniff(new Uint8Array(cover)) || "png"}`, ...IMG } });
+    const logo = (m.logoAt ? await S.get(`logo/${id}`, { type: "arrayBuffer" }) : null) || (m.quoteSlug ? await S.get(`quote-logo/${m.quoteSlug}`, { type: "arrayBuffer" }) : null);
+    const ck = `prev-${id}-${hash(`${m.client}|${m.title}|${m.logoAt || ""}|${logo ? logo.byteLength : 0}|${CARD_V}`)}.png`;
+    const og = store("og-images");
+    const saved = await og.get(ck, { type: "arrayBuffer" }).catch(() => null);
+    if (saved) return new Response(saved as ArrayBuffer, { headers: { "content-type": "image/png", ...IMG } });
+    const png = renderCard({ kicker: m.client || "Gustavo Elian", headline: "Sua prévia está pronta para aprovação.", sub: m.title, cta: "Ver e aprovar", logo });
+    await og.set(ck, png).catch(() => {});
+    return new Response(png, { headers: { "content-type": "image/png", ...IMG } });
+  }
 
   // ---- retorno do cliente ----
   if (url.pathname.startsWith("/api/previa/")) {
@@ -102,6 +133,7 @@ export default async (req: Request, context: Context) => {
   if (type.startsWith("text/html")) {
     let html = new TextDecoder().decode(blob);
     html = rewrite(html, base);
+    html = withOg(html, url.origin, key, m);
     const tag = bar(id, m.title, m.status || "aguardando");
     html = /<\/body>/i.test(html) ? html.replace(/<\/body>/i, () => tag + "</body>") : html + tag;
     headers["cache-control"] = "no-store";
@@ -116,6 +148,6 @@ export default async (req: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: ["/v/:id", "/v/:id/*", "/api/previa/:id/feedback"],
+  path: ["/v/:id", "/v/:id/*", "/api/previa/:id/feedback", "/api/previa/:id/capa"],
   rateLimit: { windowLimit: 600, windowSize: 60, aggregateBy: ["ip", "domain"] },
 };

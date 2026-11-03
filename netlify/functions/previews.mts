@@ -6,8 +6,10 @@
 //   PUT    /api/previews/:id/files?v=&path= envia um arquivo (corpo binário, até 4,4 MB)
 //   POST   /api/previews/:id/publish        { v, entry, note, files:[{path,size,type}] } ativa a versão
 //   PATCH  /api/previews/:id                { title, client, quoteSlug, active, expiresAt }
+//   PUT/DELETE /api/previews/:id/cover|logo imagem de capa (WhatsApp) / logo do cliente (PNG, JPG ou WebP até 1,5 MB)
 //   DELETE /api/previews/:id                apaga a prévia e os arquivos
 import type { Config, Context } from "@netlify/functions";
+import { sniff } from "../lib/og-card.mts";
 import { addEvent, fail, getQuote, isAdmin, json, shortCode, store } from "../lib/core.mts";
 
 export const previewStore = () => store("previews");
@@ -51,7 +53,7 @@ const summary = (m: any) => {
   const act = (m.versions || []).find((x: any) => x.v === m.active);
   return { id: m.id, slug: m.slug || m.id, title: m.title, client: m.client, quoteSlug: m.quoteSlug || "", createdAt: m.createdAt, updatedAt: m.updatedAt, active: m.active || 0,
     versions: (m.versions || []).map((x: any) => ({ v: x.v, at: x.at, note: x.note, count: x.files.length, size: x.files.reduce((t: number, f: any) => t + f.size, 0), entry: x.entry })),
-    status: m.status || "aguardando", feedback: (m.feedback || []).slice(-10), expiresAt: m.expiresAt || "", views: m.views || 0, lastViewAt: m.lastViewAt || "", entry: act?.entry || "" };
+    status: m.status || "aguardando", hasCover: !!m.coverAt, hasLogo: !!m.logoAt, feedback: (m.feedback || []).slice(-10), expiresAt: m.expiresAt || "", views: m.views || 0, lastViewAt: m.lastViewAt || "", entry: act?.entry || "" };
 };
 
 export default async (req: Request, context: Context) => {
@@ -88,6 +90,28 @@ export default async (req: Request, context: Context) => {
 
   const m = await getMeta(id);
   if (!m) return fail("Prévia não encontrada", 404);
+
+  if (url.pathname.endsWith("/cover") || url.pathname.endsWith("/logo")) {
+    const kind = url.pathname.endsWith("/cover") ? "cover" : "logo";
+    const flag = kind === "cover" ? "coverAt" : "logoAt";
+    if (req.method === "DELETE") {
+      await S.delete(`${kind}/${id}`);
+      const next = { ...m }; delete next[flag];
+      await S.setJSON(`meta/${id}`, next);
+      return json(summary(next));
+    }
+    if (req.method !== "PUT") return fail("Método não permitido", 405);
+    const buf = await req.arrayBuffer();
+    if (!buf.byteLength) return fail("Imagem vazia");
+    if (buf.byteLength > 1.5 * 1024 * 1024) return fail("Imagem acima de 1,5 MB", 413);
+    if (!sniff(new Uint8Array(buf))) return fail("Use uma imagem PNG, JPG ou WebP");
+    await S.set(`${kind}/${id}`, buf);
+    const next = { ...m, [flag]: new Date().toISOString() };
+    await S.setJSON(`meta/${id}`, next);
+    // a logo também vale para a proposta ligada, se ela ainda não tiver uma
+    if (kind === "logo" && m.quoteSlug && !(await S.getMetadata(`quote-logo/${m.quoteSlug}`))) await S.set(`quote-logo/${m.quoteSlug}`, buf);
+    return json(summary(next));
+  }
 
   if (url.pathname.endsWith("/files")) {
     if (req.method !== "PUT") return fail("Método não permitido", 405);
@@ -142,7 +166,7 @@ export default async (req: Request, context: Context) => {
   }
   if (req.method === "DELETE") {
     const { blobs } = await S.list({ prefix: `file/${id}/` });
-    await Promise.all(blobs.map((x) => S.delete(x.key)));
+    await Promise.all([...blobs.map((x) => S.delete(x.key)), S.delete(`cover/${id}`), S.delete(`logo/${id}`)]);
     for (const sl of new Set([...(m.slugs || []), m.slug].filter(Boolean))) if (((await S.get(`slug/${sl}`, { type: "text" })) as string | null) === id) await S.delete(`slug/${sl}`);
     await S.delete(`meta/${id}`);
     return json({ ok: true });
@@ -150,4 +174,4 @@ export default async (req: Request, context: Context) => {
   return fail("Método não permitido", 405);
 };
 
-export const config: Config = { path: ["/api/previews", "/api/previews/:id", "/api/previews/:id/files", "/api/previews/:id/publish"] };
+export const config: Config = { path: ["/api/previews", "/api/previews/:id", "/api/previews/:id/files", "/api/previews/:id/publish", "/api/previews/:id/cover", "/api/previews/:id/logo"] };

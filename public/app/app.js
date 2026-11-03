@@ -317,6 +317,91 @@ async function uploadVersion(id, version, files, note, onProgress) {
   const entry = files.find((f) => /^index\.html?$/i.test(f.path))?.path || files.find((f) => /(^|\/)index\.html?$/i.test(f.path))?.path || files.find((f) => /\.html?$/i.test(f.path)).path;
   return api(`/api/previews/${id}/publish`, { method: "POST", body: { v: version, entry, note, files: files.map((f) => ({ path: f.path, size: f.bytes.length, type: "" })) } });
 }
+
+/* ---- capa do link (WhatsApp): logo do cliente e imagem de capa ---- */
+const IMG_EXT = /\.(png|jpe?g|webp|svg)$/i;
+const blobOf = (f) => new Blob([f.bytes], { type: MIME[f.path.split(".").pop().toLowerCase()] || "application/octet-stream" });
+function pickLogo(files) {
+  const bad = /branc|white|light|negativ|invert|favicon|sprite/i;
+  const rank = (f) => { const n = f.path.split("/").pop(); const d = f.path.split("/").length;
+    return [/logo|marca|brand/i.test(n) ? 0 : /(apple-touch-icon|android-chrome-512|icon-512)/i.test(n) ? 1 : 9, bad.test(n) ? 1 : 0, d, /\.png$/i.test(n) ? 0 : /\.svg$/i.test(n) ? 1 : 2, f.path.length]; };
+  const c = files.filter((f) => IMG_EXT.test(f.path) && rank(f)[0] < 9 && f.bytes.length < 4 * 1048576);
+  c.sort((a, b) => { const x = rank(a), y = rank(b); for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] - y[i]; return 0; });
+  return c[0] || null;
+}
+/** Capa pronta dentro do zip: capa.png, og.jpg, preview.png… (de preferência na raiz). */
+function pickCover(files) {
+  const c = files.filter((f) => /^(capa|cover|og|og-image|share|whatsapp|preview)\.(png|jpe?g|webp)$/i.test(f.path.split("/").pop()));
+  c.sort((a, b) => a.path.split("/").length - b.path.split("/").length);
+  return c[0] || null;
+}
+async function normImg(file, { max = 700, w, h: hh, fit = "contain", type = "image/png", q = 0.86 } = {}) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(new Error("Não consegui abrir essa imagem")); i.src = url; });
+    const iw = img.naturalWidth || 512, ih = img.naturalHeight || 512;
+    const c = document.createElement("canvas"), x = c.getContext("2d");
+    if (w && hh) { // capa: recorta para 1200×630
+      c.width = w; c.height = hh; x.fillStyle = "#fff"; x.fillRect(0, 0, w, hh);
+      const k = Math.max(w / iw, hh / ih); x.drawImage(img, (w - iw * k) / 2, (hh - ih * k) / 2, iw * k, ih * k);
+    } else {
+      const k = file.type === "image/svg+xml" ? max / Math.max(iw, ih) : Math.min(1, max / Math.max(iw, ih));
+      c.width = Math.max(1, Math.round(iw * k)); c.height = Math.max(1, Math.round(ih * k)); x.drawImage(img, 0, 0, c.width, c.height);
+    }
+    return await new Promise((ok, no) => c.toBlob((b) => (b ? ok(b) : no(new Error("Falha ao preparar a imagem"))), type, q));
+  } finally { URL.revokeObjectURL(url); }
+}
+async function putImage(url, blob) {
+  const r = await fetch(url, { method: "PUT", credentials: "same-origin", headers: { "content-type": blob.type || "image/png" }, body: blob });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "Não consegui enviar a imagem");
+}
+const asLogo = (f) => normImg(f, { max: 700, type: "image/png" });
+const asCover = (f) => (/^image\/(png|jpeg|webp)$/.test(f.type) && f.size <= 1.2 * 1048576 ? Promise.resolve(f) : normImg(f, { w: 1200, h: 630, type: "image/jpeg" }));
+/** Depois de publicar: manda para o servidor a capa (se o zip trouxe) e a logo do cliente (achada no zip). */
+async function attachCover(id, files, p) {
+  const out = { cover: false, logo: false };
+  const cv = pickCover(files);
+  if (cv) { try { await putImage(`/api/previews/${id}/cover`, await asCover(blobOf(cv))); out.cover = true; } catch {} }
+  if (!p?.hasLogo) { const lg = pickLogo(files); if (lg) { try { await putImage(`/api/previews/${id}/logo`, await asLogo(blobOf(lg))); out.logo = true; } catch {} } }
+  return out;
+}
+function pickImage(onFile) {
+  const i = h("input", { type: "file", accept: "image/png,image/jpeg,image/webp,image/svg+xml", hidden: true, onchange: () => { if (i.files[0]) onFile(i.files[0]); i.remove(); } });
+  document.body.append(i); i.click();
+}
+/** Mostra como o link aparece no WhatsApp e deixa trocar logo/capa. `cfg` = { img(), upLogo(file), upCover?(file), rmLogo?, rmCover?, hasLogo, hasCover, note } */
+function coverSheet(title, cfg, redraw) {
+  sheet(title, (close) => {
+    const pic = h("img", { alt: "Como o link aparece no WhatsApp", style: "width:100%;aspect-ratio:1200/630;border-radius:14px;background:#111;object-fit:cover" });
+    const err = h("p", { class: "err", role: "alert" });
+    const load = async () => { pic.removeAttribute("src"); pic.src = await cfg.img(); };
+    load().catch(() => {});
+    const run = (fn, ok) => async () => { err.textContent = ""; try { await fn(); toast(ok); await load(); redraw?.(); } catch (x) { err.textContent = x.message; } };
+    const choose = (conv, up, ok) => () => pickImage(async (f) => { err.textContent = ""; try { await up(await conv(f)); toast(ok); await load(); redraw?.(); } catch (x) { err.textContent = x.message; } });
+    return h("div", { class: "stack" }, pic, h("p", { class: "hint" }, cfg.note),
+      h("div", { class: "btns grid2" },
+        h("button", { class: "btn primary", type: "button", onclick: choose(asLogo, cfg.upLogo, "Logo atualizada") }, icon("plus"), cfg.hasLogo ? "Trocar logo do cliente" : "Enviar logo do cliente"),
+        cfg.upCover ? h("button", { class: "btn", type: "button", onclick: choose(asCover, cfg.upCover, "Capa atualizada") }, icon("plus"), "Enviar capa pronta") : null,
+        cfg.hasLogo && cfg.rmLogo ? h("button", { class: "btn", type: "button", onclick: run(cfg.rmLogo, "Logo removida") }, icon("trash"), "Remover logo") : null,
+        cfg.hasCover && cfg.rmCover ? h("button", { class: "btn", type: "button", onclick: run(cfg.rmCover, "Voltou para a capa automática") }, icon("trash"), "Usar capa automática") : null),
+      err, h("button", { class: "btn block", type: "button", onclick: close }, "Fechar"));
+  });
+}
+const prevCoverSheet = (p, redraw) => coverSheet("Capa do link no WhatsApp", {
+  img: async () => `/api/previa/${p.slug || p.id}/capa?v=${Date.now()}`, hasLogo: p.hasLogo, hasCover: p.hasCover,
+  upLogo: (b) => putImage(`/api/previews/${p.id}/logo`, b).then(() => { p.hasLogo = true; }), upCover: (b) => putImage(`/api/previews/${p.id}/cover`, b).then(() => { p.hasCover = true; }),
+  rmLogo: () => api(`/api/previews/${p.id}/logo`, { method: "DELETE" }).then(() => { p.hasLogo = false; }), rmCover: () => api(`/api/previews/${p.id}/cover`, { method: "DELETE" }).then(() => { p.hasCover = false; }),
+  note: "É assim que o link chega no WhatsApp: “" + (p.client || "Cliente") + ", sua prévia está pronta para aprovação”. A logo entra sozinha quando o .zip tem um arquivo logo.png/svg. Para uma capa sua, ponha capa.png (1200×630) na raiz do .zip.",
+}, redraw);
+const quoteCoverSheet = async (q) => {
+  let has = false;
+  try { has = (await api(`/api/client-logo/${q.slug}`)).has; } catch {}
+  coverSheet("Capa do link da proposta", {
+    img: async () => (await fetch(`/api/og/${q.slug}`, { cache: "no-store" }).then((r) => r.json())).image,
+    get hasLogo() { return has; }, upLogo: (b) => putImage(`/api/client-logo/${q.slug}`, b).then(() => { has = true; }), rmLogo: () => api(`/api/client-logo/${q.slug}`, { method: "DELETE" }).then(() => { has = false; }),
+    note: "Quando você mandar o link da proposta, o WhatsApp mostra “" + (q.client?.name || "Cliente") + ", sua proposta está pronta” com a logo do cliente.",
+  });
+};
 function shareRow(p) {
   const link = previewLink(p);
   const msg = `Oi${p.client ? ", " + p.client.split(" ")[0] : ""}! Segue o link para você ver${p.title ? " " + p.title : " o projeto"} e aprovar ou pedir ajustes direto por lá:\n${link}`;
@@ -357,12 +442,15 @@ function zipSheet(p, onDone) {
         if (p) version = Math.max(0, ...p.versions.map((v) => v.v)) + 1;
         else { const c = await api("/api/previews", { method: "POST", body: { title: title.value, client: client.value, quoteSlug: quote.value, slug: slugify2(slug.value) } }); id = c.id; }
         const res = await uploadVersion(id, version, files, note.value, (n, t) => { bar.firstChild.style.width = Math.round((n / t) * 100) + "%"; bar.setAttribute("aria-valuenow", String(Math.round((n / t) * 100))); status.textContent = `Enviando ${n} de ${t} arquivos…`; });
-        close(); toast("Prévia publicada"); haptic(); onDone(res);
+        status.textContent = "Montando a capa do link…";
+        const got = await attachCover(id, files, p || res);
+        close(); toast(got.cover ? "Prévia publicada com a capa do .zip" : got.logo ? "Prévia publicada com a logo do cliente" : "Prévia publicada"); haptic(); onDone(res);
       } catch (x) { err.textContent = x.message; status.textContent = ""; bar.hidden = true; go.disabled = false; }
     } },
       p ? null : f("Nome da prévia (o que o cliente vai ver)", title), p ? null : f("Cliente", client), p ? null : f("Link da prévia", slug), p ? null : linkHint, p ? null : f("Proposta (opcional)", quote),
       f("Arquivo .zip do projeto", file), p ? f("O que mudou", note) : null,
       h("p", { class: "hint" }, "O .zip precisa ter o site já pronto (com index.html). Cada arquivo pode ter até 4,4 MB e o pacote até 80 MB."),
+      h("p", { class: "hint" }, "Capa do WhatsApp: se o .zip tiver um logo.png (ou .svg), ela sai com a logo do cliente. Se tiver capa.png (1200×630) na raiz, usa essa imagem."),
       bar, status, err, go);
   });
 }
@@ -401,6 +489,7 @@ function previewCard(p, redraw) {
     h("div", { class: "btns grid2" },
       p.active ? h("a", { class: "btn", href: previewLink(p), target: "_blank", rel: "noopener" }, icon("eye"), "Abrir") : null,
       h("button", { class: "btn", type: "button", onclick: () => zipSheet(p, redraw) }, icon("plus"), "Nova versão"),
+      h("button", { class: "btn", type: "button", onclick: () => prevCoverSheet(p, redraw) }, icon("eye"), "Capa do link"),
       p.quoteSlug ? h("a", { class: "btn", href: `#/c/${p.quoteSlug}` }, icon("doc"), "Contrato") : null,
       h("button", { class: "btn danger", type: "button", onclick: () => confirmSheet("Apagar prévia?", "O link deixa de funcionar e os arquivos são removidos.", "Apagar", async () => { await api(`/api/previews/${p.id}`, { method: "DELETE" }); toast("Prévia apagada"); redraw(); }) }, icon("trash"), "Apagar")));
 }
@@ -461,6 +550,7 @@ async function renderProposalDetail(slug) {
     h("a", { class: "btn primary", href: `#/q/${slug}` }, icon("pen"), "Editar"),
     h("button", { class: "btn", type: "button", onclick: () => shareQuote(full) }, icon("send"), "Enviar"),
     h("a", { class: "btn", href: `/${slug}`, target: "_blank", rel: "noopener" }, icon("eye"), "Ver página"),
+    h("button", { class: "btn", type: "button", onclick: () => quoteCoverSheet(q) }, icon("send"), "Capa do link"),
     h("a", { class: "btn", href: `/api/pdf/${slug}/orcamento?download`, target: "_blank" }, icon("pdf"), "PDF"));
   shell({ title: q.client?.name || "Proposta", eyebrow: "Proposta", back: "#/propostas", compact: true, nav: false },
     hero, actions,

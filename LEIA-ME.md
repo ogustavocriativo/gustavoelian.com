@@ -59,6 +59,11 @@ Crie um arquivo `.env` com `ADMIN_PASSWORD` e `SESSION_SECRET`.
 
 ## Novidades (nov/2026)
 
+**Capa do link no WhatsApp (prévias e propostas).** Todo link de prévia (`/v/...`) e de proposta sai com uma capa 1200×630: "<Cliente>, sua prévia está pronta para aprovação" / "sua proposta está pronta", com a logo do cliente num quadro branco.
+- Prévia: ao publicar o .zip, o Studio procura um `logo.png`/`logo.svg` (ou `apple-touch-icon`) e envia sozinho. Para uma capa totalmente sua, ponha `capa.png` (ou `og.jpg`) na raiz do .zip; ela vale no lugar da automática.
+- Prévia ou proposta já existente: botão "Capa do link" (mostra como aparece e deixa trocar a logo / enviar capa pronta / voltar ao automático).
+- Se não houver logo, a capa sai só com o nome do cliente. O WhatsApp guarda a imagem em cache: link já enviado antes pode continuar com a imagem antiga.
+
 - **Condição de pagamento após o aceite**: no contrato, "Alterar forma, valor ou parcelas" gera um aditivo (data, canal, motivo, De/Para e código SHA-256 encadeado). O contrato original nunca é alterado; o PDF do contrato ganha a seção "Aditivos".
 - **Recebimentos**: lançar, editar e excluir (com registro), anexar comprovante recebido por WhatsApp (guardado também no Drive, subpasta Comprovantes).
 - **Assinatura**: quando o Apps Script está ligado, o cliente confirma o e-mail com um código de 6 dígitos antes de assinar (entra no registro de auditoria).

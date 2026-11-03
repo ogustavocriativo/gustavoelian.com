@@ -1,6 +1,6 @@
 // Metatags da prévia de link por proposta: troca título, descrição e imagem genéricos
 // pelos da proposta (ex.: "Júlia, sua proposta está pronta"). Só atua nos links de proposta.
-const RESERVED = new Set(["acompanhar", "certificado", "projeto", "proposta", "index", "app", "api", "img", "fonts", "video", "data"]);
+const RESERVED = new Set(["acompanhar", "certificado", "projeto", "proposta", "index", "app", "api", "img", "fonts", "video", "data", "v", "previa"]);
 
 export default async (req: Request, context: any) => {
   const url = new URL(req.url);
