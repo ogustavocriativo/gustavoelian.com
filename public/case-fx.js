@@ -259,6 +259,144 @@ window.CaseFX = (() => {
           style: [`--bg:${d.bg || "var(--dk-paper,#F2EFE6)"}`, `--fg:${d.fg || "var(--dk-ink,#222)"}`, d.font ? `--dk-font:"${d.font}"` : ""].join(";"),
         }, ...(SL[d.k] || SL.image)(d).filter(Boolean)))));
     };
+
+    /* Lâminas: visualizador do deck (16:9), com lâminas em vídeo que tocam só quando estão em cena.
+       s.slides: [{ img } | { video, poster }], s.label opcional por lâmina */
+    R.slides = (s) => {
+      const list = s.slides || [];
+      let cur = 0;
+      const stage = h("div", { class: "dv-stage", tabindex: "0", role: "group", "aria-roledescription": "apresentação", "aria-label": s.title || "Lâminas" });
+      const count = h("span", { class: "dv-count", "aria-live": "polite" });
+      const thumbs = list.map((d, i) => h("button", { type: "button", class: "dv-th", "aria-label": `Lâmina ${i + 1}${d.video ? " (em movimento)" : ""}`, onclick: () => go(i) },
+        h("img", { src: src(d.poster || d.img), alt: "", loading: "lazy" }), d.video ? h("i", { "aria-hidden": "true" }, "▶") : null));
+      const rail = h("div", { class: "dv-rail" }, ...thumbs);
+      const el = (d, i) => d.video
+        ? h("video", { src: src(d.video), poster: d.poster ? src(d.poster) : null, muted: "", loop: "", playsinline: "", preload: "none", "aria-label": d.label || `Lâmina ${i + 1} em movimento` })
+        : h("img", { src: src(d.img), alt: d.label || `Lâmina ${i + 1}`, loading: i < 2 ? "eager" : "lazy", decoding: "async" });
+      const slides = list.map((d, i) => h("figure", { class: "dv-sl" + (i ? "" : " on"), "aria-hidden": i ? "true" : "false" }, el(d, i)));
+      stage.append(...slides);
+      const vis = { on: false };
+      function sync() {
+        slides.forEach((f, i) => {
+          const on = i === cur; f.classList.toggle("on", on); f.setAttribute("aria-hidden", String(!on));
+          const v = f.querySelector("video"); if (v) { if (on && vis.on) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause(); }
+        });
+        thumbs.forEach((t, i) => t.setAttribute("aria-current", String(i === cur)));
+        count.textContent = `${String(cur + 1).padStart(2, "0")} / ${list.length}`;
+        const t = thumbs[cur]; if (t && rail.scrollWidth > rail.clientWidth) rail.scrollTo({ left: t.offsetLeft - rail.clientWidth / 2 + t.clientWidth / 2, behavior: "smooth" });
+        // pré-carrega a próxima
+        const nx = slides[cur + 1]?.querySelector("img"); if (nx) nx.loading = "eager";
+      }
+      function go(i) { cur = (i + list.length) % list.length; sync(); }
+      stage.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") { e.preventDefault(); go(cur + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); go(cur - 1); } });
+      let x0 = null;
+      stage.addEventListener("pointerdown", (e) => { x0 = e.clientX; });
+      stage.addEventListener("pointerup", (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); else if (e.pointerType === "mouse") go(cur + (e.offsetX > stage.clientWidth / 2 ? 1 : -1)); });
+      if ("IntersectionObserver" in window) new IntersectionObserver((es) => { vis.on = es[0].isIntersecting; sync(); }, { threshold: 0.35 }).observe(stage);
+      sync();
+      return h("section", { class: "blk deckv" + (s.panel ? " panel on-panel" : "") }, h("div", { class: "wrap" }, head(s),
+        h("div", { class: "dv-frame" }, stage,
+          h("div", { class: "dv-bar" },
+            h("button", { type: "button", class: "dv-nav", "aria-label": "Lâmina anterior", onclick: () => go(cur - 1) }, "←"), count,
+            h("button", { type: "button", class: "dv-nav", "aria-label": "Próxima lâmina", onclick: () => go(cur + 1) }, "→"))),
+        rail));
+    };
+
+    /* Demonstração do sistema "Briefing relâmpago": tela do moderador (telão) + celular do aluno.
+       Simulado no navegador: nada é enviado a servidor. */
+    R.talkDemo = (s) => {
+      const P = s.pedidos || [];
+      const seed = s.seed || [];
+      const answers = [];
+      const ini = (n) => n.trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+      // ---------- telão ----------
+      const num = h("b", { class: "td-num" }, "0");
+      const chips = h("div", { class: "td-chips", "aria-label": "Quem já respondeu" });
+      const drawn = h("div", { class: "td-drawn", "aria-live": "polite" });
+      const clock = h("span", { class: "td-clock" });
+      const tick = () => { clock.textContent = "Ao vivo · " + new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); };
+      tick(); setInterval(tick, 30000);
+      function add(a) {
+        answers.push(a); num.textContent = String(answers.length);
+        const c = h("span", { class: "td-chip" + (a.me ? " me" : ""), title: a.name }, ini(a.name)); chips.append(c);
+        requestAnimationFrame(() => c.classList.add("in"));
+      }
+      function sortear() {
+        if (answers.length < 3) { drawn.replaceChildren(h("p", { class: "td-hint" }, "Espere chegar pelo menos 3 respostas.")); return; }
+        const pool = [...answers]; const pick = [];
+        while (pick.length < 3) pick.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+        [...chips.children].forEach((c) => c.classList.toggle("hit", pick.some((p) => ini(p.name) === c.textContent)));
+        drawn.replaceChildren(...pick.map((a, i) => h("article", { class: "td-card", style: `--i:${i}` },
+          h("small", {}, `${i + 1}º sorteado · 1 minuto`), h("strong", {}, a.name), h("em", {}, `“${a.pedido}”`), h("p", {}, a.text))));
+      }
+      function planilha() {
+        const rows = [["Nome", "Pedido do cliente", "Problema real e estratégia"], ...answers.map((a) => [a.name, a.pedido, a.text])];
+        const csv = "﻿" + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(";")).join("\n");
+        const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+        const a = h("a", { href: url, download: "briefing-relampago-demo.csv" }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+      function novaTurma() { answers.length = 0; num.textContent = "0"; chips.replaceChildren(); drawn.replaceChildren(); started = false; startSeed(); phoneReset(); }
+      const tv = h("div", { class: "td-tv", role: "group", "aria-label": "Tela do moderador (telão)" },
+        h("div", { class: "td-tv-top" }, h("span", { class: "td-logo" }, "TALKS"), clock),
+        h("div", { class: "td-tv-main" },
+          s.qr ? h("img", { class: "td-qr", src: src(s.qr), alt: "QR code que abre a tela do aluno", width: 140, height: 140 }) : null,
+          h("div", { class: "td-tv-copy" }, h("small", {}, "Agora é com vocês · aponte a câmera"), h("h3", {}, "Briefing ", h("i", {}, "relâmpago")), h("span", { class: "td-url" }, s.url || "talkspp.gustavoelian.com")),
+          h("div", { class: "td-count" }, h("small", {}, "Respostas"), num)),
+        chips,
+        h("div", { class: "td-actions" },
+          h("button", { type: "button", class: "td-btn pri", onclick: sortear }, "Sortear 3 respostas"),
+          h("button", { type: "button", class: "td-btn", onclick: planilha }, "Baixar planilha"),
+          h("button", { type: "button", class: "td-btn", onclick: novaTurma }, "Nova turma")),
+        drawn);
+      // ---------- celular do aluno ----------
+      const scr = h("div", { class: "td-scr" });
+      let pedido = "";
+      function phoneReset() {
+        pedido = "";
+        const name = h("input", { class: "td-in", placeholder: "Como você quer aparecer no telão", maxlength: 40, "aria-label": "Seu nome", autocomplete: "off" });
+        const card = h("div", { class: "td-q", "aria-live": "polite" }, h("span", { class: "td-qm" }, "?"));
+        const ans = h("textarea", { class: "td-in", rows: 4, maxlength: 400, placeholder: "Qual é o problema real? E a sua estratégia?", "aria-label": "Sua resposta", hidden: true });
+        const err = h("p", { class: "td-err", role: "alert" });
+        const btn = h("button", { type: "button", class: "td-go" }, "Sortear meu problema");
+        btn.onclick = () => {
+          err.textContent = "";
+          if (!pedido) {
+            if (name.value.trim().length < 2) { err.textContent = "Digite seu nome."; name.focus(); return; }
+            const it = P[Math.floor(Math.random() * P.length)] || { pedido: "Faz um post aí", cliente: "Uma clínica" };
+            pedido = it.pedido;
+            card.classList.add("open");
+            card.replaceChildren(h("small", {}, it.cliente || "O cliente pediu"), h("strong", {}, `“${it.pedido}”`), it.dica ? h("span", {}, it.dica) : null);
+            ans.hidden = false; ans.focus(); btn.textContent = "Enviar para o telão";
+            return;
+          }
+          if (ans.value.trim().length < 8) { err.textContent = "Escreva o problema real e a estratégia."; ans.focus(); return; }
+          add({ name: name.value.trim(), pedido, text: ans.value.trim(), me: true });
+          scr.replaceChildren(top(), h("div", { class: "td-ok" }, h("strong", {}, "Resposta enviada!"), h("p", {}, "Fique atento ao telão: três respostas serão sorteadas para apresentar em 1 minuto.")),
+            h("button", { type: "button", class: "td-again", onclick: phoneReset }, "Responder de novo"), foot());
+        };
+        scr.replaceChildren(top(), h("p", { class: "td-lead" }, "Você recebe um pedido de cliente. Seu trabalho: chegar no problema real e propor uma estratégia."),
+          h("label", { class: "td-lb" }, "Seu nome", name), card, ans, err, btn, foot());
+      }
+      const top = () => h("div", { class: "td-ph-top" }, h("span", { class: "td-logo" }, "TALKS"), h("h4", {}, "Briefing ", h("i", {}, "relâmpago")));
+      const foot = () => h("div", { class: "td-ph-foot" }, h("span", {}, "@gustavoelian"), h("span", {}, s.brand || "Publicidade e Propaganda · Afya"));
+      phoneReset();
+      const phone = h("div", { class: "td-phone", id: "aluno", role: "group", "aria-label": "Tela do aluno (celular)" }, h("span", { class: "td-notch", "aria-hidden": "true" }), scr);
+      // respostas simuladas chegam quando o bloco aparece
+      let started = false, timer = null;
+      function startSeed() {
+        clearTimeout(timer);
+        let i = 0;
+        const next = () => { if (i >= seed.length) return; add(seed[i++]); timer = setTimeout(next, 900 + Math.random() * 1400); };
+        if (started) return; started = true; timer = setTimeout(next, 600);
+      }
+      const sec = h("section", { class: "blk tdemo panel on-panel" }, h("div", { class: "wrap" }, head(s),
+        h("div", { class: "td-grid" },
+          h("figure", { class: "td-col" }, tv, h("figcaption", {}, "Moderador · telão")),
+          h("figure", { class: "td-col ph" }, phone, h("figcaption", {}, "Aluno · celular"))),
+        s.note ? h("p", { class: "td-note" }, s.note) : null));
+      if ("IntersectionObserver" in window) { const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { io.disconnect(); startSeed(); } }, { threshold: 0.25 }); requestAnimationFrame(() => io.observe(sec)); } else startSeed();
+      return sec;
+    };
     return R;
   }
 

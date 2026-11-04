@@ -3699,6 +3699,389 @@
    "coverBg": "#EDEAE3"
   },
   {
+   "id": "talks-pp",
+   "case": true,
+   "title": "Talks PP · Atendimento & Planejamento Hoje",
+   "kind": "Talk, deck animado e sistema de aula interativa",
+   "client": "Publicidade e Propaganda · Afya Montes Claros",
+   "year": "2026",
+   "fronts": [
+    "web",
+    "trade"
+   ],
+   "summary": "Uma talk sobre a distância entre o pedido do cliente e o problema real, com deck animado e um sistema próprio para a turma resolver briefings ao vivo, do celular para o telão.",
+   "cover": "img/cases/talkpp/capa.jpg",
+   "coverVideo": "video/talkpp/animacao-profissionais.mp4",
+   "coverPoster": "video/talkpp/animacao-profissionais.jpg",
+   "theme": {
+    "bg": "#FFFFFF",
+    "ink": "#1D1D1F",
+    "soft": "#5E5E66",
+    "panel": "#4E0A7E",
+    "onPanel": "#FFFFFF",
+    "accent": "#57ECA2",
+    "accentInk": "#C2086A",
+    "chip": "#F7E4EF"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Talk · Deck · Sistema",
+     "title": "O pedido não é o problema",
+     "lead": "Convidado como egresso para a disciplina de Atendimento e Planejamento Publicitários, levei à turma do 2º período de Publicidade e Propaganda da Afya uma talk sobre como chegar no problema real por trás de cada pedido. A aula terminou com a turma resolvendo briefings ao vivo, do celular para o telão.",
+     "block": "img/cases/talkpp/hero-block.jpg",
+     "chips": [
+      "19 de outubro de 2026",
+      "Afya · Montes Claros",
+      "45 lâminas, 2 em movimento",
+      "Briefing relâmpago ao vivo"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "A tese",
+     "title": "Todo cliente chega com um pedido. E é aí que está o problema.",
+     "text": [
+      "“Faz um post aí”, “quero um logo novo”, “tô precisando de um site”. O pedido é sintoma. O trabalho do atendimento e do planejamento é perguntar até achar a causa: quem não lembra da marca, a venda que se perde fora do horário comercial, o cliente que a empresa ainda não conhece.",
+      "A talk passou pela história do planejamento, pelo caso do milkshake (40% das vendas pela manhã, para quem tinha um longo trajeto até o trabalho) e por um método em cinco passos: escutar, diagnosticar, decidir, criar e medir."
+     ],
+     "image": "img/cases/talkpp/slide-40porcento.jpg"
+    },
+    {
+     "type": "slides",
+     "eyebrow": "O deck",
+     "title": "As lâminas da talk",
+     "text": "Passe as lâminas com as setas, arrastando ou pelo teclado. As duas lâminas em movimento tocam quando entram em cena: o panorama das atuações do profissional de mídias sociais e o duplo diamante.",
+     "slides": [
+      {
+       "img": "img/cases/talkpp/slides/01.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/02.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/03.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/04.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/05.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/06.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/07.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/08.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/09.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/10.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/11.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/12.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/13.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/14.webp"
+      },
+      {
+       "video": "video/talkpp/animacao-profissionais.mp4",
+       "poster": "video/talkpp/animacao-profissionais.jpg",
+       "label": "Um só nome, mais de doze atuações: lâmina em movimento"
+      },
+      {
+       "img": "img/cases/talkpp/slides/16.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/17.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/18.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/19.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/20.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/21.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/22.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/23.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/24.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/25.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/26.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/27.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/28.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/29.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/30.webp"
+      },
+      {
+       "video": "video/talkpp/duplo-diamante.mp4",
+       "poster": "video/talkpp/duplo-diamante.jpg",
+       "label": "Duplo diamante: lâmina em movimento"
+      },
+      {
+       "img": "img/cases/talkpp/slides/32.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/33.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/34.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/35.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/36.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/37.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/38.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/39.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/40.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/41.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/42.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/43.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/46.webp"
+      },
+      {
+       "img": "img/cases/talkpp/slides/47.webp"
+      }
+     ]
+    },
+    {
+     "type": "reels",
+     "eyebrow": "Em movimento",
+     "title": "Lâminas animadas",
+     "text": "Animações feitas para a talk e o corte para o feed.",
+     "items": [
+      {
+       "src": "video/talkpp/animacao-profissionais.mp4",
+       "poster": "video/talkpp/animacao-profissionais.jpg",
+       "ratio": "16/9",
+       "label": "Um só nome, mais de doze atuações",
+       "wide": true
+      },
+      {
+       "src": "video/talkpp/duplo-diamante.mp4",
+       "poster": "video/talkpp/duplo-diamante.jpg",
+       "ratio": "16/9",
+       "label": "Duplo diamante: do pedido ao resultado"
+      },
+      {
+       "src": "video/talkpp/profissoes-4x5.mp4",
+       "poster": "video/talkpp/profissoes-4x5.jpg",
+       "ratio": "4/5",
+       "label": "Versão para o feed (4:5)"
+      }
+     ]
+    },
+    {
+     "type": "talkDemo",
+     "eyebrow": "Sistema da aula",
+     "title": "Briefing relâmpago",
+     "text": [
+      "Criei um sistema só para a aula. O telão mostra um QR code; cada aluno abre no celular, sorteia um pedido de cliente e responde qual é o problema real e a estratégia. As respostas chegam ao telão em tempo real, o moderador sorteia três para apresentar em um minuto e baixa tudo numa planilha.",
+      "Experimente: preencha o celular ao lado e veja sua resposta entrar no telão."
+     ],
+     "qr": "img/cases/talkpp/qr-aluno.svg",
+     "url": "talkspp.gustavoelian.com",
+     "brand": "Publicidade e Propaganda · Afya",
+     "note": "Demonstração simulada neste navegador: nada é enviado nem guardado. Na aula, o sistema rodou com servidor próprio, com respostas em tempo real e exportação em planilha.",
+     "pedidos": [
+      {
+       "cliente": "Uma clínica odontológica",
+       "pedido": "Faz um post aí",
+       "dica": "Pergunte: como os últimos clientes chegaram até a empresa?"
+      },
+      {
+       "cliente": "Uma marca de cosméticos",
+       "pedido": "Faz um logo novo pra mim",
+       "dica": "Pergunte: por quanto você quer vender daqui a um ano?"
+      },
+      {
+       "cliente": "Uma loja de material de construção",
+       "pedido": "Tô precisando de um site",
+       "dica": "Pergunte: o que acontece com quem te procura depois das 23h?"
+      },
+      {
+       "cliente": "Uma hamburgueria",
+       "pedido": "Elabore um conteúdo que vai viralizar",
+       "dica": "Pergunte: quem é a pessoa que mais compra na sua empresa?"
+      },
+      {
+       "cliente": "Um escritório de advocacia",
+       "pedido": "Quero aparecer mais no Instagram",
+       "dica": "Pergunte: o que um cliente precisa saber antes de te ligar?"
+      }
+     ],
+     "seed": [
+      {
+       "name": "Ana Oliveira",
+       "pedido": "Faz um post aí",
+       "text": "O problema é lembrança de marca: ninguém lembra da clínica na hora de marcar. Estratégia: conteúdo recorrente de bairro e indicação com cupom para pacientes."
+      },
+      {
+       "name": "Bruno Otávio",
+       "pedido": "Tô precisando de um site",
+       "text": "Ele perde venda à noite. Antes do site, um catálogo no WhatsApp com resposta automática e orçamento até o dia seguinte."
+      },
+      {
+       "name": "Carla Oliveira",
+       "pedido": "Faz um logo novo pra mim",
+       "text": "A marca atual não sustenta o preço dos produtos novos. Estratégia: reposicionar a linha premium com embalagem própria antes de mexer no logo."
+      },
+      {
+       "name": "Davi Oliveira",
+       "pedido": "Elabore um conteúdo que vai viralizar",
+       "text": "A hamburgueria não sabe quem compra. Pesquisa rápida no balcão e conteúdo para o público do almoço, que já é o que mais vende."
+      },
+      {
+       "name": "Eduarda Freitas",
+       "pedido": "Quero aparecer mais no Instagram",
+       "text": "O problema é confiança. Perguntas frequentes em vídeo curto e agenda de consulta inicial pelo link da bio."
+      },
+      {
+       "name": "Gabriel Oliveira",
+       "pedido": "Faz um post aí",
+       "text": "Os pacientes chegam por indicação. Estratégia: programa de indicação e avaliações no Google."
+      },
+      {
+       "name": "Isadora Fonseca",
+       "pedido": "Tô precisando de um site",
+       "text": "Fora do horário ninguém atende. Página simples com orçamento e retorno garantido em 1 dia útil."
+      },
+      {
+       "name": "João Otávio",
+       "pedido": "Elabore um conteúdo que vai viralizar",
+       "text": "Viralizar não é objetivo. Meta: dobrar pedidos no delivery de terça e quarta com combos para esses dias."
+      },
+      {
+       "name": "Karen Oliveira",
+       "pedido": "Faz um logo novo pra mim",
+       "text": "Antes do logo, definir para quem é a linha nova e quanto ela custa. Depois, uma submarca."
+      },
+      {
+       "name": "Lucas Oliveira",
+       "pedido": "Quero aparecer mais no Instagram",
+       "text": "O cliente não entende o serviço. Série de posts explicando os três casos mais comuns, com chamada para a consulta."
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "eyebrow": "Como funcionou",
+     "title": "Do QR code ao telão em dez minutos",
+     "image": "img/cases/talkpp/app-aluno.jpg",
+     "items": [
+      {
+       "t": "QR code no telão",
+       "d": "A lâmina de abertura da dinâmica leva direto à tela do aluno, sem baixar aplicativo."
+      },
+      {
+       "t": "Um pedido por aluno",
+       "d": "Cada pessoa sorteia um pedido de cliente real, do tipo que chega toda semana numa agência."
+      },
+      {
+       "t": "Problema real e estratégia",
+       "d": "A resposta precisa dizer o que está por trás do pedido e o que fazer a respeito."
+      },
+      {
+       "t": "Sorteio de três respostas",
+       "d": "O moderador sorteia três para apresentar em um minuto, com a turma comentando."
+      },
+      {
+       "t": "Planilha no fim",
+       "d": "Todas as respostas saem numa planilha para o professor continuar a discussão em sala."
+      }
+     ]
+    },
+    {
+     "type": "photos",
+     "eyebrow": "Na sala",
+     "title": "Sala B10, 19 de outubro",
+     "text": "Fotos da talk com a turma do 2º período.",
+     "alt": "Gustavo Elian durante a talk na Afya Montes Claros",
+     "images": [
+      "img/cases/talkpp/retrato.jpg",
+      "img/cases/talkpp/turma-escuta.jpg",
+      "img/cases/talkpp/duplo-diamante.jpg",
+      "img/cases/talkpp/pedido-cliente.jpg",
+      "img/cases/talkpp/telao.jpg",
+      "img/cases/talkpp/voz-consumidor.jpg",
+      "img/cases/talkpp/gesto.jpg",
+      "img/cases/talkpp/casos-reais.jpg",
+      "img/cases/talkpp/agrofort.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "reverse": true,
+     "eyebrow": "Fechamento",
+     "title": "É sempre uma honra voltar pra casa",
+     "text": [
+      "Me formei nessa mesma graduação e conduzi o live go de marca e naming quando a Afya chegou ao antigo UNIFIPMoc. Voltar como palestrante, a convite do Prof. Gustavo Souza, fechou um ciclo.",
+      "Seu valor não está no produto que você entrega. Está na pergunta que você faz antes."
+     ],
+     "image": "img/cases/talkpp/turma.jpg"
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Talk, roteiro, deck, animações e sistema: Gustavo Elian",
+      "A convite do Prof. Gustavo Souza · Atendimento e Planejamento Publicitários",
+      "Publicidade e Propaganda · Afya Centro Universitário Montes Claros"
+     ]
+    }
+   ]
+  },
+  {
    "id": "utopia-eventos",
    "title": "Utopia Eventos",
    "kind": "Produção de eventos",
