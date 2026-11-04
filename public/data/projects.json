@@ -3747,7 +3747,7 @@
       "“Faz um post aí”, “quero um logo novo”, “tô precisando de um site”. O pedido é sintoma. O trabalho do atendimento e do planejamento é perguntar até achar a causa: quem não lembra da marca, a venda que se perde fora do horário comercial, o cliente que a empresa ainda não conhece.",
       "A talk passou pela história do planejamento, pelo caso do milkshake (40% das vendas pela manhã, para quem tinha um longo trajeto até o trabalho) e por um método em cinco passos: escutar, diagnosticar, decidir, criar e medir."
      ],
-     "image": "img/cases/talkpp/casos-reais.jpg"
+     "image": "img/cases/talkpp/tese.jpg"
     },
     {
      "type": "slides",
@@ -3900,7 +3900,7 @@
      "type": "reels",
      "eyebrow": "Em movimento",
      "title": "Lâminas animadas",
-     "text": "Animações feitas para a talk e o corte para o feed.",
+     "text": "As duas animações feitas para a talk.",
      "items": [
       {
        "src": "video/talkpp/animacao-profissionais.mp4",
@@ -3915,14 +3915,6 @@
        "ratio": "16/9",
        "label": "Duplo diamante: do pedido ao resultado",
        "wide": true
-      },
-      {
-       "src": "video/talkpp/profissoes-4x5.mp4",
-       "poster": "video/talkpp/profissoes-4x5.jpg",
-       "ratio": "4/5",
-       "label": "Versão para o feed (4:5)",
-       "wide": false,
-       "narrow": true
       }
      ],
      "stack": true
@@ -4066,19 +4058,19 @@
      "type": "photos",
      "eyebrow": "Na sala",
      "title": "Sala B10, 19 de outubro",
-     "text": "Fotos da talk com a turma do 2º período.",
+     "text": "Fotos e vídeos da talk com a turma do 2º período.",
      "alt": "Gustavo Elian durante a talk na Afya Montes Claros",
      "images": [
-      "img/cases/talkpp/retrato.jpg",
+      "video/talkpp/sala-4992.mp4",
+      "img/cases/talkpp/alunos-1.jpg",
+      "img/cases/talkpp/alunos-2.jpg",
       "img/cases/talkpp/turma-escuta.jpg",
-      "img/cases/talkpp/duplo-diamante.jpg",
-      "img/cases/talkpp/pedido-cliente.jpg",
-      "img/cases/talkpp/telao.jpg",
-      "img/cases/talkpp/voz-consumidor.jpg",
-      "img/cases/talkpp/gesto.jpg",
-      "img/cases/talkpp/explica.jpg",
-      "img/cases/talkpp/agrofort.jpg"
-     ]
+      "img/cases/talkpp/alunos-3.jpg",
+      "video/talkpp/sala-5129.mp4",
+      "img/cases/talkpp/roda.jpg",
+      "img/cases/talkpp/plateia.jpg"
+     ],
+     "compact": true
     },
     {
      "type": "split",

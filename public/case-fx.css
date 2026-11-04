@@ -540,3 +540,28 @@
 .td-ph-foot{align-items:center}
 .td-ph-foot img{height:14px;width:auto;display:block;opacity:.95}
 .td-phone{background:var(--td-bg)}
+/* telão no layout do sistema publicado */
+.td-tv{gap:22px}
+.td-tv-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);align-items:start}
+.td-tv-left{display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0}
+.td-kick{font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;opacity:.65}
+.td-tv-id{display:flex;align-items:center;gap:clamp(12px,2vw,20px);min-width:0}
+.td-tv-copy h3{font-size:clamp(1.5rem,3.2vw,2.6rem)}
+.td-tv-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;min-width:0}
+.td-tv-right .td-count{text-align:right;display:block}
+.td-tv-right .td-chips{display:grid;grid-template-columns:repeat(6,minmax(0,40px));gap:8px;justify-content:end;min-height:0}
+.td-tv-right .td-chip{min-width:0;width:40px;padding:0}
+.td-actions{align-items:center}
+.td-actions .td-clock{margin-left:auto}
+.td-empty{font-size:.875rem;opacity:.6}
+/* marca sem distorção: a imagem mantém a proporção */
+.td-brand{align-items:flex-start}
+.td-brand img,.td-ph-foot img,.td-logo-img{width:auto!important;max-width:100%;object-fit:contain;flex:none}
+.td-ph-foot{justify-content:space-between}
+@media (max-width:900px){.td-tv-grid{grid-template-columns:1fr}.td-tv-right{align-items:flex-start}.td-tv-right .td-count{text-align:left}.td-tv-right .td-chips{justify-content:start}}
+@media (max-width:480px){.td-tv-right .td-chips{grid-template-columns:repeat(6,minmax(0,1fr))}.td-tv-right .td-chip{width:auto}.td-actions .td-clock{margin-left:0;width:100%}}
+/* fotos e vídeos compactos */
+.photos.compact .ph-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1.4vw,16px)}
+.photos.compact figure{margin:0;border-radius:clamp(12px,1.6vw,18px);overflow:hidden;aspect-ratio:4/5;background:#0002}
+.photos.compact img,.photos.compact video{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:640px){.photos.compact .ph-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

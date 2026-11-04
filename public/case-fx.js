@@ -103,9 +103,15 @@ window.CaseFX = (() => {
       const cols = [[], [], []];
       s.images.forEach((im, i) => cols[i % 3].push(im));
       const speed = [0.05, -0.05, 0.09];
+      const media = (im) => /\.(mp4|webm)$/i.test(im)
+        ? h("video", { src: src(im), poster: src(im.replace(/\.(mp4|webm)$/i, ".jpg")), muted: "", loop: "", autoplay: "", playsinline: "", preload: "metadata", "aria-label": s.alt || "Vídeo" })
+        : h("img", { src: src(im), alt: s.alt || "Fotografia de produto", loading: "lazy" });
+      // compacto: grade de miniaturas (fotos e vídeos curtos, sem áudio)
+      if (s.compact) return h("section", { class: "blk photos compact" }, h("div", { class: "wrap" }, head(s),
+        h("div", { class: "ph-grid" }, ...s.images.map((im) => h("figure", {}, media(im))))));
       return h("section", { class: "blk photos" }, h("div", { class: "wrap" }, head(s),
         h("div", { class: "ph-cols" }, ...cols.map((c, ci) => h("div", { class: "ph-col", "data-par": String(speed[ci]) },
-          ...c.map((im) => h("figure", {}, h("img", { src: src(im), alt: s.alt || "Fotografia de produto", loading: "lazy" }))))))));
+          ...c.map((im) => h("figure", {}, media(im))))))));
     };
 
     R.swap = (s) => {
@@ -318,7 +324,7 @@ window.CaseFX = (() => {
       const tick = () => { clock.textContent = "Ao vivo · " + new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); };
       tick(); setInterval(tick, 30000);
       function add(a) {
-        answers.push(a); num.textContent = String(answers.length);
+        answers.push(a); num.textContent = String(answers.length); empty.hidden = true;
         const c = h("span", { class: "td-chip" + (a.me ? " me" : ""), title: a.name }, ini(a.name)); chips.append(c);
         requestAnimationFrame(() => c.classList.add("in"));
       }
@@ -336,19 +342,25 @@ window.CaseFX = (() => {
         const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
         const a = h("a", { href: url, download: "briefing-relampago-demo.csv" }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
-      function novaTurma() { answers.length = 0; num.textContent = "0"; chips.replaceChildren(); drawn.replaceChildren(); started = false; startSeed(); phoneReset(); }
+      function novaTurma() { answers.length = 0; num.textContent = "0"; empty.hidden = false; chips.replaceChildren(); drawn.replaceChildren(); started = false; startSeed(); phoneReset(); }
+      const empty = h("p", { class: "td-empty" }, "As respostas aparecem aqui assim que os alunos enviarem.");
       const tv = h("div", { class: "td-tv", role: "group", "aria-label": "Tela do moderador (telão)" },
-        h("div", { class: "td-tv-top" }, logo(), clock),
-        h("div", { class: "td-tv-main" },
-          s.qr ? h("img", { class: "td-qr", src: src(s.qr), alt: "QR code que abre a tela do aluno", width: 140, height: 140 }) : null,
-          h("div", { class: "td-tv-copy" }, h("small", {}, "Agora é com vocês · aponte a câmera"), h("h3", {}, "Briefing ", h("i", {}, "relâmpago")), h("span", { class: "td-url" }, s.url || "talkspp.gustavoelian.com")),
-          h("div", { class: "td-count" }, h("small", {}, "Respostas"), num)),
-        chips,
+        h("div", { class: "td-tv-grid" },
+          h("div", { class: "td-tv-left" },
+            logo(),
+            h("small", { class: "td-kick" }, "Agora é com vocês · aponte a câmera"),
+            h("div", { class: "td-tv-id" },
+              s.qr ? h("img", { class: "td-qr", src: src(s.qr), alt: "QR code que abre a tela do aluno", width: 132, height: 132 }) : null,
+              h("div", { class: "td-tv-copy" }, h("h3", {}, "Briefing ", h("i", {}, "relâmpago")), h("span", { class: "td-url" }, s.url || "talkspp.gustavoelian.com")))),
+          h("div", { class: "td-tv-right" },
+            h("div", { class: "td-count" }, h("small", {}, "Respostas"), num),
+            chips)),
         h("div", { class: "td-actions" },
           h("button", { type: "button", class: "td-btn pri", onclick: sortear }, "Sortear 3 respostas"),
           h("button", { type: "button", class: "td-btn", onclick: planilha }, "Baixar planilha"),
-          h("button", { type: "button", class: "td-btn", onclick: novaTurma }, "Nova turma")),
-        drawn);
+          h("button", { type: "button", class: "td-btn", onclick: novaTurma }, "Nova turma"),
+          clock),
+        drawn.childElementCount ? drawn : drawn, empty);
       // ---------- celular do aluno ----------
       const scr = h("div", { class: "td-scr" });
       let pedido = "";
