@@ -42,7 +42,7 @@ export function cleanEntry(input: any, custom = false) {
   const i = input || {};
   const out: any = {
     hidden: i.hidden === true,
-    section: ["creative", "list"].includes(i.section) ? i.section : undefined, // vitrine: projetos criativos (cards) ou lista de experiência (tópicos)
+    section: ["creative", "list", "academia"].includes(i.section) ? i.section : undefined, // vitrine: projetos criativos (cards) ou lista de experiência (tópicos)
     topicOnly: i.topicOnly === true,
     // interesses do visitante que este projeto atende (pop-up "o que você precisa?")
     needs: Array.isArray(i.needs) ? i.needs.filter((n: any) => ["reposicionar", "criar-marca", "site", "sistema"].includes(n)).slice(0, 4) : undefined, // na lista: só o tópico, sem página própria

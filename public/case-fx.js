@@ -122,8 +122,8 @@ window.CaseFX = (() => {
     };
 
     // Vinhetas: vídeos mudos em loop, tocam só quando estão na tela
-    R.reels = (s) => h("section", { class: "blk reels" }, h("div", { class: "wrap" }, head(s),
-      h("div", { class: "rl-grid" }, ...s.items.map((v, i) => h("figure", { class: `rl${v.wide ? " wide" : ""}`, style: `--i:${i};--ar:${v.ratio || "16/9"}`, "data-fx": "" },
+    R.reels = (s) => h("section", { class: `blk reels${s.stack ? " stack" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("div", { class: "rl-grid" }, ...s.items.map((v, i) => h("figure", { class: `rl${v.wide ? " wide" : ""}${v.narrow ? " narrow" : ""}`, style: `--i:${i};--ar:${v.ratio || "16/9"}`, "data-fx": "" },
         h("div", { class: "rl-box" }, h("video", { src: src(v.src), poster: v.poster ? src(v.poster) : null, muted: "", loop: "", playsinline: "", preload: "metadata", "aria-label": v.label || "Vinheta" })),
         v.label ? h("figcaption", {}, v.label) : null)))));
 
@@ -308,6 +308,7 @@ window.CaseFX = (() => {
       const P = s.pedidos || [];
       const seed = s.seed || [];
       const answers = [];
+      const logo = () => s.logo ? h("span", { class: "td-brand" }, h("img", { src: src(s.logo), alt: s.logoAlt || "Talks", class: "td-logo-img" }), s.logoSub ? h("small", {}, s.logoSub) : null) : h("span", { class: "td-logo" }, "TALKS");
       const ini = (n) => n.trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
       // ---------- telão ----------
       const num = h("b", { class: "td-num" }, "0");
@@ -337,7 +338,7 @@ window.CaseFX = (() => {
       }
       function novaTurma() { answers.length = 0; num.textContent = "0"; chips.replaceChildren(); drawn.replaceChildren(); started = false; startSeed(); phoneReset(); }
       const tv = h("div", { class: "td-tv", role: "group", "aria-label": "Tela do moderador (telão)" },
-        h("div", { class: "td-tv-top" }, h("span", { class: "td-logo" }, "TALKS"), clock),
+        h("div", { class: "td-tv-top" }, logo(), clock),
         h("div", { class: "td-tv-main" },
           s.qr ? h("img", { class: "td-qr", src: src(s.qr), alt: "QR code que abre a tela do aluno", width: 140, height: 140 }) : null,
           h("div", { class: "td-tv-copy" }, h("small", {}, "Agora é com vocês · aponte a câmera"), h("h3", {}, "Briefing ", h("i", {}, "relâmpago")), h("span", { class: "td-url" }, s.url || "talkspp.gustavoelian.com")),
@@ -377,8 +378,8 @@ window.CaseFX = (() => {
         scr.replaceChildren(top(), h("p", { class: "td-lead" }, "Você recebe um pedido de cliente. Seu trabalho: chegar no problema real e propor uma estratégia."),
           h("label", { class: "td-lb" }, "Seu nome", name), card, ans, err, btn, foot());
       }
-      const top = () => h("div", { class: "td-ph-top" }, h("span", { class: "td-logo" }, "TALKS"), h("h4", {}, "Briefing ", h("i", {}, "relâmpago")));
-      const foot = () => h("div", { class: "td-ph-foot" }, h("span", {}, "@gustavoelian"), h("span", {}, s.brand || "Publicidade e Propaganda · Afya"));
+      const top = () => h("div", { class: "td-ph-top" }, logo(), h("h4", {}, "Briefing ", h("i", {}, "relâmpago")));
+      const foot = () => h("div", { class: "td-ph-foot" }, ...(s.footer?.length ? s.footer.map((f) => h("img", { src: src(f.img), alt: f.alt || "", style: f.h ? `height:${f.h}px` : null })) : [h("span", {}, "@gustavoelian"), h("span", {}, s.brand || "")]));
       phoneReset();
       const phone = h("div", { class: "td-phone", id: "aluno", role: "group", "aria-label": "Tela do aluno (celular)" }, h("span", { class: "td-notch", "aria-hidden": "true" }), scr);
       // respostas simuladas chegam quando o bloco aparece

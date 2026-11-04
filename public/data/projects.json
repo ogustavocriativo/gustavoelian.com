@@ -3543,7 +3543,8 @@
       "Sistema, identidade, cadernos e comunicação: Gustavo Elian"
      ]
     }
-   ]
+   ],
+   "section": "academia"
   },
   {
    "id": "conahist",
@@ -3696,12 +3697,13 @@
    "coverVideo": "video/conahist/capa-cidades.mp4",
    "coverPoster": "video/conahist/capa-cidades.jpg",
    "coverFit": "contain",
-   "coverBg": "#EDEAE3"
+   "coverBg": "#EDEAE3",
+   "section": "academia"
   },
   {
    "id": "talks-pp",
    "case": true,
-   "title": "Talks PP · Atendimento & Planejamento Hoje",
+   "title": "Talks PP",
    "kind": "Talk, deck animado e sistema de aula interativa",
    "client": "Publicidade e Propaganda · Afya Montes Claros",
    "year": "2026",
@@ -3712,7 +3714,7 @@
    "summary": "Uma talk sobre a distância entre o pedido do cliente e o problema real, com deck animado e um sistema próprio para a turma resolver briefings ao vivo, do celular para o telão.",
    "cover": "img/cases/talkpp/capa.jpg",
    "coverVideo": "video/talkpp/animacao-profissionais.mp4",
-   "coverPoster": "video/talkpp/animacao-profissionais.jpg",
+   "coverPoster": "img/cases/talkpp/capa.jpg",
    "theme": {
     "bg": "#FFFFFF",
     "ink": "#1D1D1F",
@@ -3745,7 +3747,7 @@
       "“Faz um post aí”, “quero um logo novo”, “tô precisando de um site”. O pedido é sintoma. O trabalho do atendimento e do planejamento é perguntar até achar a causa: quem não lembra da marca, a venda que se perde fora do horário comercial, o cliente que a empresa ainda não conhece.",
       "A talk passou pela história do planejamento, pelo caso do milkshake (40% das vendas pela manhã, para quem tinha um longo trajeto até o trabalho) e por um método em cinco passos: escutar, diagnosticar, decidir, criar e medir."
      ],
-     "image": "img/cases/talkpp/slide-40porcento.jpg"
+     "image": "img/cases/talkpp/casos-reais.jpg"
     },
     {
      "type": "slides",
@@ -3911,15 +3913,19 @@
        "src": "video/talkpp/duplo-diamante.mp4",
        "poster": "video/talkpp/duplo-diamante.jpg",
        "ratio": "16/9",
-       "label": "Duplo diamante: do pedido ao resultado"
+       "label": "Duplo diamante: do pedido ao resultado",
+       "wide": true
       },
       {
        "src": "video/talkpp/profissoes-4x5.mp4",
        "poster": "video/talkpp/profissoes-4x5.jpg",
        "ratio": "4/5",
-       "label": "Versão para o feed (4:5)"
+       "label": "Versão para o feed (4:5)",
+       "wide": false,
+       "narrow": true
       }
-     ]
+     ],
+     "stack": true
     },
     {
      "type": "talkDemo",
@@ -4011,6 +4017,21 @@
        "pedido": "Quero aparecer mais no Instagram",
        "text": "O cliente não entende o serviço. Série de posts explicando os três casos mais comuns, com chamada para a consulta."
       }
+     ],
+     "logo": "img/cases/talkpp/talks-logo.png",
+     "logoAlt": "Talks",
+     "logoSub": "Atendimento & Planejamento Hoje",
+     "footer": [
+      {
+       "img": "img/cases/talkpp/foot-gustavo.png",
+       "alt": "@gustavoelian",
+       "h": 15
+      },
+      {
+       "img": "img/cases/talkpp/foot-afya.png",
+       "alt": "Publicidade e Propaganda · Afya",
+       "h": 20
+      }
      ]
     },
     {
@@ -4055,7 +4076,7 @@
       "img/cases/talkpp/telao.jpg",
       "img/cases/talkpp/voz-consumidor.jpg",
       "img/cases/talkpp/gesto.jpg",
-      "img/cases/talkpp/casos-reais.jpg",
+      "img/cases/talkpp/explica.jpg",
       "img/cases/talkpp/agrofort.jpg"
      ]
     },
@@ -4079,7 +4100,8 @@
       "Publicidade e Propaganda · Afya Centro Universitário Montes Claros"
      ]
     }
-   ]
+   ],
+   "section": "academia"
   },
   {
    "id": "utopia-eventos",

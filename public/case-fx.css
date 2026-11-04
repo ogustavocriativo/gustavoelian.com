@@ -527,3 +527,16 @@
 @media (max-width:900px){.td-grid{grid-template-columns:1fr}.td-tv-main{grid-template-columns:auto 1fr}.td-count{grid-column:1/-1;text-align:left;display:flex;align-items:baseline;gap:12px}.td-drawn{grid-template-columns:1fr}}
 @media (max-width:480px){.td-qr{width:84px}.td-tv{border-width:6px}}
 @media (prefers-reduced-motion:reduce){.td-chip,.td-card,.td-q.open,.td-ok{transition:none;animation:none}}
+/* reels empilhados em largura total */
+.reels.stack .rl-grid,.reels.stack .rl-grid:has(> :nth-child(3):last-child){display:grid;grid-template-columns:1fr;max-width:none;overflow:visible;margin-inline:0;padding-inline:0;gap:clamp(20px,3vw,40px)}
+.reels.stack .rl{flex:none}
+.reels.stack .rl.narrow{width:100%;max-width:520px;justify-self:center}
+/* marca real do sistema */
+.tdemo{--td-bg:#1A1A1A}
+.td-brand{display:flex;flex-direction:column;gap:4px;min-width:0}
+.td-logo-img{height:28px;width:auto;display:block}
+.td-brand small{font-size:.5625rem;font-weight:700;font-style:italic;letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.td-ph-top .td-logo-img{height:30px}
+.td-ph-foot{align-items:center}
+.td-ph-foot img{height:14px;width:auto;display:block;opacity:.95}
+.td-phone{background:var(--td-bg)}
