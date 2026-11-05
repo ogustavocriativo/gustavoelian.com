@@ -17,7 +17,7 @@ const first = (n: string) => String(n || "").trim().split(/\s+/)[0].slice(0, 16)
 const cap = (s: string) => s ? s.charAt(0).toLocaleUpperCase("pt-BR") + s.slice(1) : s;
 
 function fontFiles() {
-  const here = path.dirname(fileURLToPath(import.meta.url));
+  const here = (() => { try { return path.dirname(fileURLToPath(import.meta.url)); } catch { return "."; } })(); // no Cloudflare as fontes vêm da memória
   const tries = [path.join(process.cwd(), "public/fonts"), path.join(here, "../../public/fonts"), path.join(here, "public/fonts")];
   const dir = tries.find((d) => fs.existsSync(path.join(d, "LTWave-Light.otf"))) || tries[0];
   return ["LTWave-Light.otf", "LTWave-Medium.otf"].map((f) => path.join(dir, f));

@@ -8,7 +8,7 @@ import { LOGO_LIGHT } from "./og-logo.mts";
 export const esc = (s: string) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
 
 export function fontFiles() {
-  const here = path.dirname(fileURLToPath(import.meta.url));
+  const here = (() => { try { return path.dirname(fileURLToPath(import.meta.url)); } catch { return "."; } })(); // no Cloudflare as fontes vêm da memória
   const tries = [path.join(process.cwd(), "public/fonts"), path.join(here, "../../public/fonts"), path.join(here, "public/fonts")];
   const dir = tries.find((d) => fs.existsSync(path.join(d, "LTWave-Light.otf"))) || tries[0];
   return ["LTWave-Light.otf", "LTWave-Medium.otf"].map((f) => path.join(dir, f));
