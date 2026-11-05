@@ -83,7 +83,7 @@ export default async (req: Request, context: Context) => {
       quote: publicView(q),
       state: { selection: state.selection || null, approvedAt: state.approvedAt || null, signer: state.signer ? { name: state.signer.name } : null, paidAt: state.paidAt || null, paymentNotice: state.paymentNotice || null },
       issuer: settings.issuer,
-      payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key, card: !!Netlify.env.get("STRIPE_SECRET_KEY") },
+      payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key, card: !!Netlify.env.get("INFINITEPAY_HANDLE") || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: Netlify.env.get("INFINITEPAY_HANDLE") ? "infinitepay" : "stripe" },
       otp: googleReady(),
       contractPreview,
       preview: admin && !q.published,

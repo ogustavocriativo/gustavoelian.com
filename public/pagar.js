@@ -31,6 +31,7 @@ async function main() {
   const q = new URLSearchParams(location.search);
   if (c.status === "paga") return paid(c, q.get("pagamento") === "ok");
   if (q.get("pagamento") === "ok") return paid(c, true); // webhook ainda processando
+  if (q.get("pagamento") === "pendente") setTimeout(() => toast("Ainda não recebemos a confirmação do pagamento. Se você pagou, ela chega em instantes."), 300);
   if (q.get("pagamento") === "cancelado") setTimeout(() => toast("Pagamento no cartão cancelado. Você pode tentar de novo ou usar Pix."), 300);
 
   const methods = [c.pix && "pix", c.card && "cartao"].filter(Boolean);
@@ -60,7 +61,7 @@ async function main() {
         c.cardFeePct > 0 ? h("div", { class: "pg-row" }, h("span", {}, "No cartão"), h("b", {}, c.cardAmountLabel)) : null,
         c.cardFeePct > 0 ? h("p", { class: "pg-note" }, `Inclui a taxa da operadora (${String(c.cardFeePct).replace(".", ",")}%). No Pix o valor é ${c.amountLabel}.`) : null,
         c.installments > 1 ? h("p", { class: "pg-note" }, `Parcele em até ${c.installments}x na próxima tela.`) : null,
-        go, h("p", { class: "pg-note" }, "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
+        go, h("p", { class: "pg-note" }, c.provider === "infinitepay" ? "Cartão em até 12x ou Pix, na página segura da InfinitePay." : "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
     }
   }
   app.replaceChildren(h("div", { class: "pg-card" }, head, seg, pane),
