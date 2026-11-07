@@ -2409,6 +2409,62 @@
      "ratio": "4/3"
     },
     {
+     "type": "lineup",
+     "panel": true,
+     "eyebrow": "Programação oficial",
+     "title": "Duas noites de shows no Parque de Exposições",
+     "text": "As festas dos dias 29 e 30 de abril reuniram DJs e atrações nacionais e regionais, sempre a partir das 22h.",
+     "nights": [
+      {
+       "label": "Primeiro dia",
+       "date": "29 de abril · 22h",
+       "where": "Parque de Exposições · Montes Claros",
+       "artists": [
+        "Escobar",
+        "Nicolas Blinc",
+        "Rex",
+        "Vita",
+        "Yan"
+       ],
+       "photos": [
+        {
+         "img": "img/cases/jia/palco-sab-01.jpg",
+         "alt": "DJ no palco na primeira noite"
+        },
+        {
+         "img": "img/cases/jia/palco-sab-02.jpg",
+         "alt": "Vista do palco para o público na primeira noite"
+        }
+       ]
+      },
+      {
+       "label": "Segundo dia",
+       "date": "30 de abril · 22h",
+       "where": "Parque de Exposições · Montes Claros",
+       "artists": [
+        "UJ",
+        "Sambacana",
+        "Dushy DJ",
+        "Gil Mendes DJ",
+        "DJ Bea",
+        "The Olivers"
+       ],
+       "photos": [
+        {
+         "img": "img/cases/jia/palco-dom-01.jpg",
+         "alt": "DJ Bea no palco",
+         "cap": "DJ Bea"
+        },
+        {
+         "img": "img/cases/jia/palco-dom-02.jpg",
+         "alt": "Show no palco com o telão de Gil Mendes",
+         "cap": "Gil Mendes DJ"
+        }
+       ]
+      }
+     ]
+    },
+    {
      "type": "photos",
      "compact": true,
      "cols": 3,

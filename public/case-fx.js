@@ -351,6 +351,16 @@ window.CaseFX = (() => {
         s.note ? h("p", { class: "br-note" }, s.note) : null));
     };
 
+    // Programação: uma coluna por noite, com fotos do palco, data, local e atrações
+    R.lineup = (s) => h("section", { class: `blk lineup${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("div", { class: "lu-grid" }, ...s.nights.map((n) => h("article", { class: "lu" },
+        n.photos?.length ? h("div", { class: `lu-ph n${Math.min(n.photos.length, 2)}` }, ...n.photos.slice(0, 2).map((p) => h("figure", {}, h("img", { src: src(p.img || p), alt: p.alt || "", loading: "lazy" }), p.cap ? h("figcaption", {}, p.cap) : null))) : null,
+        h("div", { class: "lu-b" },
+          h("small", {}, n.label),
+          h("h3", {}, n.date),
+          h("p", { class: "lu-w" }, n.where),
+          h("ul", { class: "lu-a" }, ...n.artists.map((a) => h("li", {}, a)))))))));
+
     // Organograma: grupos de cargos com nomes
     R.org = (s) => h("section", { class: `blk org${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", {}, g.title),
