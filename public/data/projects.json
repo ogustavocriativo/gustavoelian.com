@@ -2074,6 +2074,304 @@
    "coverPoster": "video/agrofort/vinheta.jpg"
   },
   {
+   "id": "jia",
+   "title": "JIA 2023",
+   "kind": "Identidade, ativações e produção executiva",
+   "client": "Jogos InterAtléticas · Utopia Eventos",
+   "fronts": [
+    "trade",
+    "branding"
+   ],
+   "summary": "Jogos InterAtléticas do Norte de Minas: identidade do evento, ativações com as marcas das atléticas, QG de kits no Montes Claros Shopping e produção executiva de quatro dias de jogos e três noites de festa.",
+   "cover": "video/jia/capa.jpg",
+   "coverVideo": "video/jia/capa.mp4",
+   "coverPoster": "video/jia/capa.jpg",
+   "case": true,
+   "year": "2023",
+   "theme": {
+    "bg": "#F3EFE6",
+    "ink": "#1E1E1E",
+    "soft": "#5A5750",
+    "panel": "#1C1B19",
+    "onPanel": "#F5F2EA",
+    "accent": "#FFB400",
+    "accentInk": "#0B7A80",
+    "chip": "#E7E1D3"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Identidade · Ativações · Produção executiva",
+     "title": "JIA 2023",
+     "lead": "Os Jogos InterAtléticas reuniram as atléticas universitárias do Norte de Minas em quatro dias de quadra e três noites de festa. Criei a identidade do evento, as ativações com as marcas das atléticas e conduzi a produção executiva, do pré-teaser à premiação.",
+     "chips": [
+      "28 de abril a 1º de maio de 2023",
+      "Montes Claros · MG",
+      "Apresentação: Montes Claros Shopping",
+      "Realização: Utopia Eventos"
+     ],
+     "block": "img/cases/jia/hero-01.jpg",
+     "blockAlt": "Atleta beija o troféu do JIA na noite de premiação"
+    },
+    {
+     "type": "split",
+     "eyebrow": "A ideia",
+     "title": "O Nordiminas vai pegar fogo",
+     "text": [
+      "A identidade parte de uma chama: a rivalidade saudável das atléticas acesa em quatro dias de jogos. O JIA ganhou letra própria, faixa de datas e a assinatura “Origine experiências extraordinárias”.",
+      "Em volta da marca, um vocabulário do Norte de Minas virou figurinha, painel e post: pequi, catopê, “uai é uai” e o orgulho de ser do Nordiminas."
+     ],
+     "image": "img/cases/jia/ideia.jpg"
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "Sou do Nordiminas e tô no JIA",
+      "Nordiminas tá pegando fogo",
+      "Aqui nós rói pequi e pula catopê",
+      "Uai, é uai e tudo aqui é trem",
+      "Eita povo bonito, eita mata bunita",
+      "Treinando pro JIA",
+      "Origine experiências extraordinárias"
+     ],
+     "glyph": "img/cases/jia/chama.png",
+     "pxs": 60
+    },
+    {
+     "type": "mosaic",
+     "eyebrow": "Figurinhas e assinaturas",
+     "title": "Um vocabulário que a galera repetia",
+     "text": "Figurinhas para stories, adesivos e painéis: frases do jeito que o público fala, nas cores da chama.",
+     "tiles": [
+      "img/cases/jia/st-01.jpg",
+      "img/cases/jia/st-02.jpg",
+      "img/cases/jia/st-03.jpg",
+      "img/cases/jia/st-04.jpg",
+      "img/cases/jia/st-05.jpg",
+      "img/cases/jia/st-06.jpg",
+      "img/cases/jia/st-07.jpg",
+      "img/cases/jia/st-08.jpg",
+      "img/cases/jia/st-09.jpg",
+      "img/cases/jia/st-10.jpg",
+      "img/cases/jia/st-11.jpg",
+      "img/cases/jia/st-12.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Antes do JIA",
+     "title": "Dois eventos preparatórios esquentaram as atléticas",
+     "text": [
+      "O Torneio de Verão, de beach tennis, e o Torneio de Outono, de beach volley, funcionaram como pré-teaser: colocaram as atléticas em quadra meses antes e apresentaram a chama ao público.",
+      "Para eles desenhei troféu em forma de chama e medalhas por categoria, já na linguagem que o JIA levaria para a premiação final."
+     ],
+     "image": "img/cases/jia/preteaser.jpg",
+     "reverse": true
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Credenciamento",
+     "title": "QG de kits no Montes Claros Shopping",
+     "text": [
+      "O Montes Claros Shopping, marca que apresentou o evento, recebeu o QG de retirada de kits: atletas e público trocavam o ingresso pelo kit dentro do shopping, levando movimento para o parceiro antes mesmo da abertura.",
+      "No kit, credenciais e pulseiras personalizadas, com a identidade do JIA e a cor de cada acesso. Nas festas, viraram parte do figurino: todo mundo exibia o cordão no pescoço."
+     ],
+     "image": "img/cases/jia/cred-01.jpg"
+    },
+    {
+     "type": "logos",
+     "eyebrow": "Atléticas participantes",
+     "title": "Cada atlética com a sua marca",
+     "text": "As associações atléticas das faculdades de Montes Claros que disputaram os jogos e levaram suas bandeiras para as festas.",
+     "items": [
+      {
+       "img": "img/cases/jia/aaa/alcooteia.webp",
+       "name": "Alcooteia",
+       "sub": "Direito · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/tributaria.webp",
+       "name": "Tributária",
+       "sub": "Ciências Contábeis · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/sharks.webp",
+       "name": "Sharks",
+       "sub": "Economia · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/tormenta.webp",
+       "name": "Tormenta",
+       "sub": "História e Geografia · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/corvus.webp",
+       "name": "Corvus",
+       "sub": "Letras · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/tigrao.webp",
+       "name": "Tigrão",
+       "sub": "Direito · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/odonto-funorte.webp",
+       "name": "AAAOF",
+       "sub": "Odontologia · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/poseidon.webp",
+       "name": "Poseidon",
+       "sub": "Psicologia · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/corujao.webp",
+       "name": "Corujão",
+       "sub": "Engenharias · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/pirata.webp",
+       "name": "Pirata",
+       "sub": "Direito · FASA"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Parte festiva",
+     "title": "Três noites, a cenografia das atléticas",
+     "text": [
+      "Nas festas de sábado, domingo e segunda, a decoração foi pensada para virar foto: um painel colorido com as frases do evento, o inflável do JIA na entrada e paredes inteiras com as bandeiras de cada atlética.",
+      "Cada torcida tinha o seu canto para posar, com copo personalizado na mão e cordão no pescoço. As marcas das atléticas dividiam o espaço com a do evento, e não disputavam com ela."
+     ],
+     "image": "img/cases/jia/festas-05.jpg"
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "eyebrow": "Decoração e ativações",
+     "title": "Painéis, bandeiras e copos personalizados",
+     "alt": "Decoração e ativações nas festas do JIA",
+     "images": [
+      "img/cases/jia/decor-01.jpg",
+      "img/cases/jia/decor-02.jpg",
+      "img/cases/jia/decor-03.jpg",
+      "img/cases/jia/decor-04.jpg",
+      "img/cases/jia/decor-05.jpg",
+      "img/cases/jia/decor-06.jpg",
+      "img/cases/jia/decor-07.jpg",
+      "img/cases/jia/decor-08.jpg",
+      "img/cases/jia/decor-09.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "eyebrow": "As noites",
+     "title": "Sábado, domingo e segunda",
+     "alt": "Festas do JIA 2023",
+     "images": [
+      "img/cases/jia/festas-01.jpg",
+      "img/cases/jia/festas-02.jpg",
+      "img/cases/jia/festas-04.jpg",
+      "img/cases/jia/festas-05.jpg",
+      "img/cases/jia/festas-06.jpg",
+      "img/cases/jia/festas-08.jpg",
+      "img/cases/jia/festas-09.jpg",
+      "img/cases/jia/festas-10.jpg",
+      "img/cases/jia/festas-11.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Parte esportiva",
+     "title": "Quatro dias de quadra",
+     "text": [
+      "Handebol, futsal e vôlei distribuídos em ginásios da cidade, com tabela, arbitragem e torcida organizada por atlética.",
+      "A produção executiva cuidou do que não aparece na foto: agenda dos ginásios, fornecedores, credenciamento, logística entre quadras e festas e a premiação no palco da última noite."
+     ],
+     "image": "img/cases/jia/jogos-12.jpg",
+     "reverse": true
+    },
+    {
+     "type": "photos",
+     "eyebrow": "Nas quadras",
+     "title": "Handebol, futsal e vôlei",
+     "alt": "Jogos do JIA 2023",
+     "images": [
+      "img/cases/jia/jogos-01.jpg",
+      "img/cases/jia/jogos-02.jpg",
+      "img/cases/jia/jogos-03.jpg",
+      "img/cases/jia/jogos-04.jpg",
+      "img/cases/jia/jogos-05.jpg",
+      "img/cases/jia/jogos-07.jpg",
+      "img/cases/jia/jogos-08.jpg",
+      "img/cases/jia/jogos-09.jpg",
+      "img/cases/jia/jogos-10.jpg",
+      "img/cases/jia/jogos-11.jpg",
+      "img/cases/jia/volei-01.jpg",
+      "img/cases/jia/volei-02.jpg",
+      "img/cases/jia/volei-03.jpg",
+      "img/cases/jia/volei-04.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Premiação",
+     "title": "A chama na mão de quem venceu",
+     "text": [
+      "Troféus e medalhas fecharam o ciclo que começou nos torneios de verão e outono. Na última noite, cada atlética campeã subiu ao palco com o troféu do JIA."
+     ],
+     "image": "img/cases/jia/festas-07.jpg",
+     "reverse": true
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Produção executiva",
+     "title": "Do pré-teaser à premiação",
+     "image": "img/cases/jia/jogos-06.jpg",
+     "items": [
+      {
+       "t": "Identidade e linguagem",
+       "d": "Marca do JIA, assinatura e vocabulário de figurinhas e frases."
+      },
+      {
+       "t": "Dois eventos preparatórios",
+       "d": "Torneio de Verão (beach tennis) e Torneio de Outono (beach volley), com troféus e medalhas próprios."
+      },
+      {
+       "t": "QG de kits",
+       "d": "Retirada de kits no Montes Claros Shopping, marca que apresentou o evento."
+      },
+      {
+       "t": "Credenciais e pulseiras",
+       "d": "Acessos personalizados com a identidade do JIA."
+      },
+      {
+       "t": "Jogos e festas",
+       "d": "Quatro dias de quadra e três noites com cenografia das atléticas."
+      },
+      {
+       "t": "Premiação",
+       "d": "Troféus e medalhas entregues no palco da última noite."
+      }
+     ]
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Realização: Utopia Eventos · Apresentação: Montes Claros Shopping",
+      "Identidade do evento, ativações e produção executiva: Gustavo Elian",
+      "Fotos: Ventus (cobertura oficial do JIA 2023)"
+     ]
+    }
+   ]
+  },
+  {
    "id": "fazenda-encantada-loja",
    "title": "Fazenda Encantada",
    "kind": "Identidade visual, embalagens e loja",

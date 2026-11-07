@@ -715,3 +715,17 @@
 .split .img.rot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.1s ease}
 .split .img.rot img.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.split .img.rot img{transition:none}}
+/* grade compacta com colunas definidas no case (s.cols) */
+@media (min-width:861px){.photos.compact .ph-grid[style*="--cols"]{grid-template-columns:repeat(var(--cols),minmax(0,1fr))}}
+.photos.compact .ph-grid[style*="--cols"] figure{aspect-ratio:3/2}
+/* parede de logos */
+.lg-grid{list-style:none;margin:clamp(20px,3vw,36px) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1.6vw,18px)}
+.lg{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:clamp(14px,2vw,22px) 12px;border-radius:20px;background:var(--chip);min-width:0}
+.on-panel .lg{background:color-mix(in srgb,var(--onPanel) 7%,transparent)}
+.lg-fig{width:100%;aspect-ratio:1;display:grid;place-items:center;margin-bottom:6px}
+.lg-fig img{max-width:82%;max-height:82%;object-fit:contain;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.lg:hover .lg-fig img{transform:scale(1.06) rotate(-2deg)}
+.lg b{font-size:.9375rem;font-weight:500;line-height:1.25}
+.lg small{font-size:.75rem;opacity:.7;line-height:1.3}
+@media (max-width:860px){.lg-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){.lg:hover .lg-fig img{transform:none}}

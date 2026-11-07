@@ -111,7 +111,7 @@ window.CaseFX = (() => {
         : h("img", { src: src(im), alt: s.alt || "Fotografia de produto", loading: "lazy" });
       // compacto: grade de miniaturas (fotos e vídeos curtos, sem áudio)
       if (s.compact) return h("section", { class: "blk photos compact" }, h("div", { class: "wrap" }, head(s),
-        h("div", { class: "ph-grid" }, ...s.images.map((im) => h("figure", {}, media(im))))));
+        h("div", { class: "ph-grid", style: s.cols ? `--cols:${s.cols}` : null }, ...s.images.map((im) => h("figure", {}, media(im))))));
       return h("section", { class: "blk photos" }, h("div", { class: "wrap" }, head(s),
         h("div", { class: "ph-cols" }, ...cols.map((c, ci) => h("div", { class: "ph-col", "data-par": String(speed[ci]) },
           ...c.map((im) => h("figure", {}, media(im))))))));
@@ -313,6 +313,12 @@ window.CaseFX = (() => {
 
     /* Demonstração do sistema "Briefing relâmpago": tela do moderador (telão) + celular do aluno.
        Simulado no navegador: nada é enviado a servidor. */
+    // Parede de logos (ex.: atléticas participantes): logo + nome + vínculo, em grade
+    R.logos = (s) => h("section", { class: `blk logos${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("ul", { class: "lg-grid" }, ...s.items.map((it, i) => h("li", { class: "lg", style: `--i:${i}`, "data-fx": "" },
+        h("span", { class: "lg-fig" }, h("img", { src: src(it.img), alt: `${it.name}${it.sub ? " · " + it.sub : ""}`, loading: "lazy" })),
+        h("b", {}, it.name), it.sub ? h("small", {}, it.sub) : null)))));
+
     // Demonstração do sistema do II ENEHISP (arquivo próprio: /enehisp-demo.js)
     R.enehispDemo = (s) => (window.EnehispDemo ? window.EnehispDemo(s, h, src) : null);
 
