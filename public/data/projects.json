@@ -3908,6 +3908,185 @@
    "coverVideo": "video/aaapp/capa.mp4"
   },
   {
+   "id": "guaicui-turismo",
+   "case": true,
+   "title": "Guaicuí Turismo",
+   "kind": "Rebranding e comunicação",
+   "client": "Guaicuí Turismo",
+   "year": "2026",
+   "fronts": [
+    "branding"
+   ],
+   "summary": "Rebranding UP Front 2026 da Guaicuí Turismo: nova linha criativa #Vai com Guaicuí, quatro eixos de negócio (Trip, Câmbio, Wedding e Corp), fachada, redes e campanhas como Fly & Ski.",
+   "cover": "img/cases/guaicui/p36.webp",
+   "theme": {
+    "bg": "#F5F2EA",
+    "ink": "#24251A",
+    "soft": "#5D5C4A",
+    "panel": "#5B5A35",
+    "onPanel": "#F5F2EA",
+    "accent": "#C9452C",
+    "accentInk": "#A63A23",
+    "chip": "#E9E5D4"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "variant": "poster",
+     "kicker": "Rebranding · Comunicação · UP Front 2026",
+     "title": "Guaicuí Turismo",
+     "titleAccent": "Turismo",
+     "lead": "A Guaicuí entrou em 2026 com uma nova fase: marca redesenhada, uma linha criativa própria e o portfólio organizado em quatro eixos. O projeto UP Front levou o rebranding da fachada às redes e às campanhas de venda.",
+     "block": "img/cases/guaicui/fachada.webp",
+     "blockPos": "50% 40%",
+     "blockAlt": "Fachada da loja Guaicuí com a nova marca",
+     "chips": [
+      "UP Front 2026",
+      "Agência de turismo",
+      "Trip · Câmbio · Wedding · Corp"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Nova linha criativa",
+     "title": "#Vai com Guaicuí",
+     "text": [
+      "Turismo agora é TRIP: moderno, adaptado e cada vez mais personalizado. A nova linha criativa coloca o viajante no centro, com malas, passaporte e destino, e assina tudo com “#Vai com Guaicuí”.",
+      "Destinos, transfer, burocracias e experiência: deixe tudo com a gente."
+     ],
+     "image": "img/cases/guaicui/p05.webp",
+     "ratio": "16/9"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Propósito",
+     "title": "Transformar as jornadas de viagem",
+     "text": [
+      "“Existimos para transformar as jornadas de viagem, oferecendo um portfólio diversificado e inovador para impulsionar o sucesso das operações por meio de processos facilitados e adaptabilidade às necessidades e demandas.”",
+      "Valores: excelência e pioneirismo, resolução, foco nas pessoas, qualidade de segurança e personalização."
+     ],
+     "image": "img/cases/guaicui/p04.webp",
+     "ratio": "16/9"
+    },
+    {
+     "type": "slides",
+     "eyebrow": "Arquitetura de marca",
+     "title": "Uma marca, quatro eixos",
+     "text": "O portfólio foi reorganizado em submarcas com a mesma assinatura: Guaicuí Trip para viagens, Câmbio para produtos financeiros do viajante, Wedding para casamentos e lua de mel, e Corp para eventos corporativos.",
+     "slides": [
+      {
+       "img": "img/cases/guaicui/p06.webp"
+      },
+      {
+       "img": "img/cases/guaicui/p11.webp"
+      },
+      {
+       "img": "img/cases/guaicui/p12.webp"
+      },
+      {
+       "img": "img/cases/guaicui/p13.webp"
+      }
+     ]
+    },
+    {
+     "type": "slides",
+     "eyebrow": "Eixos comerciais · Trip",
+     "title": "Destinos no mundo, na América Latina e no Brasil",
+     "text": "Cada frente de destinos ganhou uma lâmina com a mesma régua visual: do Fly & Ski e da Europa à Patagônia, ao Atacama, aos Lençóis Maranhenses e à Estrada Real.",
+     "slides": [
+      {
+       "img": "img/cases/guaicui/p07.webp"
+      },
+      {
+       "img": "img/cases/guaicui/p08.webp"
+      },
+      {
+       "img": "img/cases/guaicui/p09.webp"
+      },
+      {
+       "img": "img/cases/guaicui/p10.webp"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "A marca vira lugar",
+     "title": "Fachada nova, mesma linguagem",
+     "text": [
+      "Na loja, o verde-oliva da marca ocupa a fachada inteira, com o logo em destaque e as vitrines repetindo #Somos e os quatro eixos: Trip, Câmbio, Wedding e Corp."
+     ],
+     "image": "img/cases/guaicui/fachada.webp",
+     "ratio": "900/1125"
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 5,
+     "ratio": "4/5",
+     "eyebrow": "Campanha",
+     "title": "Guaicuí Fly & Ski",
+     "text": "Campanha de esqui com o Club Med na França, Itália e Suíça: capa com 20% off e um card por resort, todos com o mesmo selo, bandeira do país e condição de parcelamento.",
+     "alt": "Peça da campanha Guaicuí Fly & Ski",
+     "images": [
+      "img/cases/guaicui/flyski/f01.webp",
+      "img/cases/guaicui/flyski/f02.webp",
+      "img/cases/guaicui/flyski/f03.webp",
+      "img/cases/guaicui/flyski/f04.webp",
+      "img/cases/guaicui/flyski/f05.webp",
+      "img/cases/guaicui/flyski/f06.webp",
+      "img/cases/guaicui/flyski/f07.webp",
+      "img/cases/guaicui/flyski/f08.webp",
+      "img/cases/guaicui/flyski/f09.webp",
+      "img/cases/guaicui/flyski/f10.webp"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Redes",
+     "title": "Juntos #SomosGuaicuí",
+     "text": [
+      "A equipe virou a cara da marca: a capa “Juntos #SomosGuaicuí” apresenta os quatro eixos com os consultores, cada um no seu fundo de cor, e foi aplicada no LinkedIn, no Instagram e nos canais da agência."
+     ],
+     "image": "img/cases/guaicui/p31.webp",
+     "ratio": "16/9"
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "UP Front 2026",
+     "title": "Do contrato ao crachá",
+     "image": "img/cases/guaicui/p01.webp",
+     "items": [
+      {
+       "t": "Identidade",
+       "d": "Marca, submarcas dos quatro eixos e nova linha criativa #Vai com Guaicuí."
+      },
+      {
+       "t": "Pontos de contato",
+       "d": "Fachada, crachá, presentes, novo layout de contratos e assinaturas."
+      },
+      {
+       "t": "Comunicação",
+       "d": "LinkedIn, Instagram, canal único de comunicação interna e calendário de campanhas."
+      },
+      {
+       "t": "Cultura",
+       "d": "Guaicuí Academy e manual de processos para a nova fase da agência."
+      }
+     ]
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Guaicuí Turismo · Rebranding UP Front 2026",
+      "Comunicação e rebranding: Gustavo Elian"
+     ]
+    }
+   ]
+  },
+  {
    "id": "fazenda-encantada-loja",
    "title": "Fazenda Encantada",
    "kind": "Identidade visual, embalagens e loja",
