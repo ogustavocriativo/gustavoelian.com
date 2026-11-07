@@ -3917,7 +3917,7 @@
    "fronts": [
     "branding"
    ],
-   "summary": "Rebranding UP Front 2026 da Guaicuí Turismo: nova linha criativa #Vai com Guaicuí, quatro eixos de negócio (Trip, Câmbio, Wedding e Corp), fachada, redes e campanhas como Fly & Ski.",
+   "summary": "Rebranding UP Front 2026 da Guaicuí Turismo: nova linha criativa #Vai com Guaicuí, quatro eixos de negócio, fachada, redes e campanhas de verão, Férias de Campeão, Fly & Ski e Copa do Mundo 2026.",
    "cover": "img/cases/guaicui/p36.webp",
    "theme": {
     "bg": "#F5F2EA",
@@ -3954,7 +3954,7 @@
       "Turismo agora é TRIP: moderno, adaptado e cada vez mais personalizado. A nova linha criativa coloca o viajante no centro, com malas, passaporte e destino, e assina tudo com “#Vai com Guaicuí”.",
       "Destinos, transfer, burocracias e experiência: deixe tudo com a gente."
      ],
-     "image": "img/cases/guaicui/p05.webp",
+     "image": "img/cases/guaicui/camp/linha-criativa.webp",
      "ratio": "16/9"
     },
     {
@@ -4022,9 +4022,106 @@
     {
      "type": "photos",
      "compact": true,
+     "cols": 2,
+     "ratio": "16/9",
+     "eyebrow": "Institucional · Equipe",
+     "title": "Sua próxima viagem começa por aqui",
+     "text": "Banners da campanha institucional UP Front 2026: cada consultora na sua cor da marca, com passaporte, mala e destinos ao redor.",
+     "alt": "Banner institucional da Guaicuí com consultoras",
+     "images": [
+      "img/cases/guaicui/camp/proxima-1.webp",
+      "img/cases/guaicui/camp/proxima-2.webp",
+      "img/cases/guaicui/camp/proxima-3.webp",
+      "img/cases/guaicui/camp/proxima-4.webp"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Redes",
+     "title": "Juntos #SomosGuaicuí",
+     "text": [
+      "A equipe virou a cara da marca: a capa “Juntos #SomosGuaicuí” apresenta os quatro eixos com os consultores, cada um no seu fundo de cor, e foi aplicada no LinkedIn, no Instagram e nos canais da agência."
+     ],
+     "image": "img/cases/guaicui/p31.webp",
+     "ratio": "16/9"
+    },
+    {
+     "type": "photos",
+     "compact": true,
      "cols": 5,
      "ratio": "4/5",
-     "eyebrow": "Campanha",
+     "eyebrow": "Trip · Brasil",
+     "title": "2026 + verão pede resort",
+     "text": "A campanha de verão abriu com “#Vai com a Guaicuí, seja qual for o destino” e seguiu em carrossel pelos resorts da carteira: Cana Brava, Transamerica Comandatuba, Club Med Rio das Pedras e Trancoso, e a rede Carmel no Ceará. Cada card leva a cidade numa etiqueta e a marca do resort.",
+     "alt": "Campanha de verão da Guaicuí",
+     "images": [
+      "img/cases/guaicui/camp/vai-2026.webp",
+      "img/cases/guaicui/camp/verao-resort.webp",
+      "img/cases/guaicui/camp/r-canabrava.webp",
+      "img/cases/guaicui/camp/r-comandatuba.webp",
+      "img/cases/guaicui/camp/r-riodaspedras.webp",
+      "img/cases/guaicui/camp/r-trancoso.webp",
+      "img/cases/guaicui/camp/r-carmel-charme.webp",
+      "img/cases/guaicui/camp/r-carmel-taiba.webp",
+      "img/cases/guaicui/camp/r-carmel-cumbuco.webp"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "contain": true,
+     "cols": 5,
+     "ratio": "9/16",
+     "eyebrow": "Trip · Bahia",
+     "title": "Bahianidades 2026",
+     "text": "Campanha dos pacotes rodoviários para a Bahia: textura de papel, tipografia em marrom e o selo Bahianidades 2026, do Cana Brava ao Carnabeach no Tororomba.",
+     "alt": "Campanha Bahianidades 2026",
+     "images": [
+      "img/cases/guaicui/camp/bahia-1.webp",
+      "img/cases/guaicui/camp/bahia-canabrava.webp",
+      "img/cases/guaicui/camp/canabrava-2026.webp",
+      "img/cases/guaicui/camp/carnabeach.webp",
+      "img/cases/guaicui/camp/familia-praia.webp"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 4,
+     "ratio": "4/5",
+     "eyebrow": "Trip · Ofertas",
+     "title": "O casal pelo preço de um",
+     "text": "Ofertas de feriado com Transamerica Comandatuba e Club Med: título fixo, datas e preço em destaque, e o pacote rodoviário exclusivo da Guaicuí.",
+     "alt": "Ofertas O casal pelo preço de um",
+     "images": [
+      "img/cases/guaicui/camp/casal-comanda-1.webp",
+      "img/cases/guaicui/camp/casal-comanda-2.webp",
+      "img/cases/guaicui/camp/casal-clubmed.webp",
+      "img/cases/guaicui/camp/comanda-rodoviario.webp"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "9/16",
+     "eyebrow": "Trip · Família",
+     "title": "Férias de Campeão",
+     "text": "Pacotes Club Med com a PSG Academy Brasil nos resorts Lake Paradise e Rio das Pedras: aulas no pacote, datas de janeiro e preço em destaque, assinados “#Com a Guaicuí”.",
+     "alt": "Campanha Férias de Campeão",
+     "images": [
+      "img/cases/guaicui/camp/psg-1.webp",
+      "img/cases/guaicui/camp/psg-2.webp",
+      "img/cases/guaicui/camp/psg-3.webp"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 5,
+     "ratio": "4/5",
+     "eyebrow": "Trip · Mundo",
      "title": "Guaicuí Fly & Ski",
      "text": "Campanha de esqui com o Club Med na França, Itália e Suíça: capa com 20% off e um card por resort, todos com o mesmo selo, bandeira do país e condição de parcelamento.",
      "alt": "Peça da campanha Guaicuí Fly & Ski",
@@ -4042,15 +4139,53 @@
      ]
     },
     {
-     "type": "split",
-     "reverse": true,
-     "eyebrow": "Redes",
-     "title": "Juntos #SomosGuaicuí",
-     "text": [
-      "A equipe virou a cara da marca: a capa “Juntos #SomosGuaicuí” apresenta os quatro eixos com os consultores, cada um no seu fundo de cor, e foi aplicada no LinkedIn, no Instagram e nos canais da agência."
+     "type": "photos",
+     "compact": true,
+     "cols": 5,
+     "ratio": "9/16",
+     "eyebrow": "Trip · Eventos esportivos",
+     "title": "Copa do Mundo 2026",
+     "text": "Pacotes para os jogos do Brasil na fase de grupos nos EUA: uma peça-mãe e um story por jogo (Nova York, Filadélfia e Miami), cada cidade com a sua cor, sob a assinatura “We are G TRIP”.",
+     "alt": "Campanha Copa do Mundo 2026 da Guaicuí",
+     "images": [
+      "img/cases/guaicui/camp/copa-feed.webp",
+      "img/cases/guaicui/camp/copa-story.webp",
+      "img/cases/guaicui/camp/copa-ny.webp",
+      "img/cases/guaicui/camp/copa-phi.webp",
+      "img/cases/guaicui/camp/copa-mia.webp"
      ],
-     "image": "img/cases/guaicui/p31.webp",
-     "ratio": "16/9"
+     "contain": true
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "contain": true,
+     "cols": 3,
+     "ratio": "9/16",
+     "eyebrow": "Trip · Eventos esportivos",
+     "title": "Fórmula 1 e MotoGP",
+     "text": "Pacotes com hotel, ingresso e transfer para o Grande Prêmio de São Paulo e o MotoGP Brasil 2026, assinados “#Vai com Guaicuí”.",
+     "alt": "Campanhas de F1 e MotoGP da Guaicuí",
+     "images": [
+      "img/cases/guaicui/camp/f1-feed.webp",
+      "img/cases/guaicui/camp/f1-story.webp",
+      "img/cases/guaicui/camp/motogp.webp"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "contain": true,
+     "cols": 2,
+     "ratio": "2/3",
+     "eyebrow": "Câmbio · Wedding",
+     "title": "Os outros eixos em campanha",
+     "text": "No Câmbio, peças de oportunidade com a cotação em destaque e a loja no IBI Shopping, em parceria com o Banco Daycoval. No Wedding, a papelaria Guaicuí Wedding chega até a noiva no dia do casamento.",
+     "alt": "Campanha de Câmbio e entrega Guaicuí Wedding",
+     "images": [
+      "img/cases/guaicui/camp/cambio.webp",
+      "img/cases/guaicui/camp/wedding.webp"
+     ]
     },
     {
      "type": "steps",
