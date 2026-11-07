@@ -288,6 +288,19 @@
   mb.addEventListener("click", () => { const o = top.classList.toggle("open"); mb.setAttribute("aria-expanded", String(o)); mb.textContent = o ? "Fechar" : "Menu"; });
   document.querySelectorAll("#menu a").forEach((a) => a.addEventListener("click", () => { top.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); mb.textContent = "Menu"; }));
   addEventListener("keydown", (e) => { if (e.key === "Escape" && top.classList.contains("open")) mb.click(); });
+  /* menu: marca a seção visível (ordem do menu = ordem da página) */
+  (() => {
+    const links = [...document.querySelectorAll('#menu a[href^="#"]')], map = new Map();
+    links.forEach((a) => { const s = document.querySelector(a.getAttribute("href")); if (s) map.set(s, a); });
+    if (!("IntersectionObserver" in window) || !map.size) return;
+    const vis = new Set();
+    const set = () => {
+      const cur = [...map.keys()].filter((s) => vis.has(s)).sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top)[0];
+      links.forEach((a) => { const on = cur && map.get(cur) === a; a.classList.toggle("is-on", !!on); on ? a.setAttribute("aria-current", "location") : a.removeAttribute("aria-current"); });
+    };
+    const io = new IntersectionObserver((es) => { es.forEach((e) => (e.isIntersecting ? vis.add(e.target) : vis.delete(e.target))); set(); }, { rootMargin: "-40% 0px -55% 0px" });
+    map.forEach((_, s) => io.observe(s));
+  })();
   const hv = document.getElementById("ctaVideo");
   if (!RM && !navigator.connection?.saveData) watchVideo(hv);
   const dock = document.getElementById("dock");
