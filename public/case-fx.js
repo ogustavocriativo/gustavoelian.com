@@ -45,7 +45,9 @@ window.CaseFX = (() => {
         t.link ? h("a", { class: "btn bk-btn", href: t.link.href, target: "_blank", rel: "noopener" }, t.link.label) : null) : null;
       const photoAttrs = b.photo ? { tabindex: "0", role: "button", "aria-label": `${b.alt || b.tag || "Bloco"}: alternar para a foto do produto`,
         onclick: (e) => e.currentTarget.classList.toggle("on"), onkeydown: keyToggle } : {};
-      return h("div", { class: `bk${b.photo ? " has-photo" : ""}${b.pattern ? " pat" : ""}`, style: st.join(";"), "data-fx": "", ...photoAttrs },
+      const linkAttrs = b.href ? { href: b.href, target: "_blank", rel: "noopener", "aria-label": `${b.cta || "Abrir"}: ${b.alt || ""}` } : {};
+      return h(b.href ? "a" : "div", { class: `bk${b.photo ? " has-photo" : ""}${b.pattern ? " pat" : ""}${b.href ? " bk-link" : ""}`, style: st.join(";"), "data-fx": "", ...photoAttrs, ...linkAttrs },
+        b.href ? h("span", { class: "bk-cta" }, b.cta || "Abrir ↗") : null,
         b.stripes ? stripes(b.stripes === true ? undefined : b.stripes) : null,
         art,
         b.photo ? h("img", { class: "bk-photo", src: src(b.photo), alt: "", loading: "lazy" }) : null,

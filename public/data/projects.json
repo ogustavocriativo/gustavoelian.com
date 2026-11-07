@@ -3537,17 +3537,6 @@
      },
      "slides": [
       {
-       "k": "cover",
-       "bg": "#4D4107",
-       "fg": "#F0EFD5",
-       "logo": "img/cases/fazencantada/marca/marca-negativa.png",
-       "alt": "Fazenda Encantada",
-       "pattern": {
-        "img": "img/cases/fazencantada/marca/grafismo-macro-creme.png"
-       },
-       "caption": "Identidade visual · Itacambira, Serra do Espinhaço · 2026"
-      },
-      {
        "k": "photo",
        "img": "img/cases/fazencantada/marca/fz-colheita.jpg",
        "pos": "center 40%",
@@ -3654,42 +3643,6 @@
        ]
       },
       {
-       "k": "icons",
-       "bg": "#E4E1C4",
-       "fg": "#292305",
-       "title": "Ícones do mapa de Itacambira",
-       "items": [
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-serra.svg",
-         "label": "Serra"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-mirante.svg",
-         "label": "Mirante"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-lapa.svg",
-         "label": "Lapa"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-poco.svg",
-         "label": "Poço"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-garoa.svg",
-         "label": "Garoa"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-folia.svg",
-         "label": "Folia"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/svg/mapa-artesanato.svg",
-         "label": "Artesanato"
-        }
-       ]
-      },
-      {
        "k": "photo",
        "img": "img/cases/fazencantada/marca/fz-mao.jpg",
        "pos": "center 55%",
@@ -3773,115 +3726,6 @@
        ]
       },
       {
-       "k": "gallery",
-       "bg": "#F0EFD5",
-       "fg": "#292305",
-       "cols": 2,
-       "title": "Rótulos: uma lenda por sabor",
-       "items": [
-        {
-         "img": "img/cases/fazencantada/marca/pr-beijo-c.jpg"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/pr-tocha-c.jpg"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/pr-brisa-c.jpg"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/pr-cordilheira-c.jpg"
-        }
-       ]
-      },
-      {
-       "k": "gallery",
-       "bg": "#E4E1C4",
-       "fg": "#292305",
-       "cols": 2,
-       "items": [
-        {
-         "img": "img/cases/fazencantada/marca/pr-primavera-c.jpg"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/pr-nascente-c.jpg"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/pr-doce-c.jpg"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/pr-requeijao-c.jpg"
-        }
-       ]
-      },
-      {
-       "k": "gallery",
-       "bg": "#F0EFD5",
-       "fg": "#292305",
-       "cols": 5,
-       "mcols": 2,
-       "title": "Linha completa",
-       "items": [
-        {
-         "img": "img/cases/fazencantada/marca/p-geleia-morango.webp",
-         "label": "Beijo de Caboclo"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-geleia-morango-pimenta.webp",
-         "label": "Tocha de Espinhaço"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-geleia-morango-limao.webp",
-         "label": "Brisa de Curiango"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-geleia-laranja.webp",
-         "label": "Cordilheira de Ferro"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-geleia-mexerica.webp",
-         "label": "Primavera Imperial"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-geleia-abacaxi-pimenta.webp",
-         "label": "Verão Real"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-doce-de-leite.webp",
-         "label": "Doce de Leite Santo Antônio"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-requeijao.webp",
-         "label": "Requeijão Barra do Encantado"
-        },
-        {
-         "img": "img/cases/fazencantada/marca/p-queijo-minas.webp",
-         "label": "Queijo Minas"
-        }
-       ]
-      },
-      {
-       "k": "photo",
-       "img": "img/cases/fazencantada/marca/pres-encantada.jpg",
-       "pos": "center",
-       "kicker": "Lembranças de Itacambira",
-       "title": [
-        "Presentes que",
-        "guardam o lugar"
-       ],
-       "shade": 0.55
-      },
-      {
-       "k": "duo",
-       "a": {
-        "img": "img/cases/fazencantada/marca/ev-sacolas.jpg",
-        "caption": "Sacolas de lembrança"
-       },
-       "b": {
-        "img": "img/cases/fazencantada/marca/pres-laco.jpg",
-        "caption": "Caixa de morangos"
-       }
-      },
-      {
        "k": "photo",
        "img": "img/cases/fazencantada/marca/fz-donos.jpg",
        "pos": "center 35%",
@@ -3892,14 +3736,6 @@
        ],
        "shade": 0.5,
        "logo": "img/cases/fazencantada/marca/marca-negativa.png"
-      },
-      {
-       "k": "end",
-       "bg": "#4D4107",
-       "fg": "#F0EFD5",
-       "logo": "img/cases/fazencantada/marca/simbolo-outline-creme.png",
-       "title": "Sabores que a terra preserva.",
-       "caption": "Fazenda Encantada · identidade visual por Gustavo Elian"
       }
      ]
     },
@@ -4114,7 +3950,9 @@
        "img": "img/cases/fazencantada/loja/fe-m-00.webp",
        "fit": "cover",
        "pos": "top",
-       "alt": "Loja no celular"
+       "alt": "Loja no celular",
+       "href": "https://fazendaencantada.store",
+       "cta": "Visite a loja ↗"
       }
      ]
     },
