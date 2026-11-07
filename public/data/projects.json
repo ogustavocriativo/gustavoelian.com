@@ -2074,6 +2074,86 @@
    "coverPoster": "video/agrofort/vinheta.jpg"
   },
   {
+   "id": "papo-calcinha",
+   "case": true,
+   "title": "Papo Calcinha",
+   "kind": "Evento · palestra com Kamila Simioni",
+   "client": "Kamila Simioni",
+   "year": "",
+   "fronts": [
+    "trade"
+   ],
+   "summary": "Palestra-espetáculo de Kamila Simioni para um teatro lotado de mulheres: identidade do evento, cenografia em vermelho e preto e experiência do público.",
+   "cover": "img/cases/papo/palco.jpg",
+   "theme": {
+    "bg": "#F6F1EF",
+    "ink": "#1B1514",
+    "soft": "#5E5352",
+    "panel": "#140E0E",
+    "onPanel": "#F7EFEC",
+    "accent": "#E3261B",
+    "accentInk": "#B81B12",
+    "chip": "#EFE3DF"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "variant": "poster",
+     "kicker": "Evento · Palestra",
+     "title": "Papo Calcinha",
+     "titleAccent": "Calcinha",
+     "lead": "Uma noite de conversa franca entre Kamila Simioni e um teatro lotado de mulheres: a pergunta na tela era “O que é ser uma mulher realizada?”.",
+     "block": "img/cases/papo/palco.jpg",
+     "blockPos": "52% 50%",
+     "blockAlt": "Kamila Simioni no palco do Papo Calcinha"
+    },
+    {
+     "type": "split",
+     "eyebrow": "A marca",
+     "title": "Papo Calcinha com Kamila Simioni",
+     "text": [
+      "Tipografia vermelha forte, a assinatura manuscrita de Kamila e o ponto final como marca de quem fala sem rodeio.",
+      "No palco, o cartaz da marca dividia a mesa com a taça e o jarro: cenário de conversa, não de palestra."
+     ],
+     "image": "img/cases/papo/kamila-cartaz.jpg",
+     "ratio": "4/5"
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 2,
+     "ratio": "3/4",
+     "eyebrow": "Casa cheia",
+     "title": "Do palco para a plateia",
+     "text": "A plateia vestida de preto, celulares acesos e a tela com as perguntas da noite.",
+     "alt": "Plateia do Papo Calcinha",
+     "images": [
+      "img/cases/papo/plateia-palco.jpg",
+      "img/cases/papo/palco-costas.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 2,
+     "ratio": "3/2",
+     "eyebrow": "A noite",
+     "title": "Conversa, riso e aplauso",
+     "alt": "Papo Calcinha",
+     "images": [
+      "img/cases/papo/kamila-perfil.jpg",
+      "img/cases/papo/plateia.jpg"
+     ]
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Papo Calcinha com Kamila Simioni"
+     ]
+    }
+   ]
+  },
+  {
    "id": "jia",
    "title": "JIA 2023",
    "kind": "Identidade, ativações e produção executiva",
@@ -2121,8 +2201,8 @@
        "label": "atléticas em quadra"
       },
       {
-       "value": "4",
-       "label": "dias de jogos"
+       "value": "9",
+       "label": "modalidades"
       },
       {
        "value": "3",
@@ -2527,7 +2607,7 @@
      "eyebrow": "Parte esportiva",
      "title": "4 dias de quadra",
      "text": [
-      "Handebol, futsal, vôlei e basquete distribuídos em ginásios da cidade, com tabela, arbitragem e torcida organizada por atlética.",
+      "Nove modalidades (handebol, futsal, vôlei, natação, atletismo, basquete, tênis de mesa, peteca e xadrez) distribuídas em ginásios da cidade, com tabela, arbitragem e torcida organizada por atlética.",
       "A produção executiva cuidou do que não aparece na foto: agenda dos ginásios, fornecedores, credenciamento, logística entre quadras e festas e a premiação no palco da última noite."
      ],
      "image": "img/cases/jia/jogos-12.jpg",
@@ -2537,8 +2617,8 @@
     {
      "type": "lineup",
      "eyebrow": "Modalidades",
-     "title": "Quatro modalidades, quatro ginásios",
-     "text": "Os jogos das séries Pequi e Catopê foram distribuídos entre ginásios da cidade, com tabela, arbitragem e torcida de cada atlética.",
+     "title": "Nove modalidades em quatro dias",
+     "text": "Handebol, futsal, vôlei, natação, atletismo, basquete, tênis de mesa, peteca e xadrez, com jogos distribuídos entre ginásios e espaços da cidade e a torcida de cada atlética.",
      "nights": [
       {
        "icon": "handebol",
@@ -2603,6 +2683,29 @@
          "alt": "Jogo de basquete feminino"
         }
        ]
+      }
+     ],
+     "extraTitle": "Também na disputa",
+     "extra": [
+      {
+       "icon": "natacao",
+       "name": "Natação"
+      },
+      {
+       "icon": "atletismo",
+       "name": "Atletismo"
+      },
+      {
+       "icon": "tenismesa",
+       "name": "Tênis de mesa"
+      },
+      {
+       "icon": "peteca",
+       "name": "Peteca"
+      },
+      {
+       "icon": "xadrez",
+       "name": "Xadrez"
       }
      ]
     },

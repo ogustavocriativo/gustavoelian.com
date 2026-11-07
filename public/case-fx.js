@@ -377,10 +377,12 @@ window.CaseFX = (() => {
       xadrez: '<circle class="f" cx="32" cy="15" r="6.5"/><path class="f" d="M25 49 Q27 35 32 25 Q37 35 39 49 Z"/><path d="M20 53 H44 M26 25 H38"/>',
       festa: '<circle class="f" cx="32" cy="23" r="5.5"/><path d="M4 7 Q32 15 60 7 M32 31 Q22 27 18 21 M32 31 Q42 27 46 21 M32 31 Q32 38 32 43 M32 43 Q26 50 22 57 M32 43 Q38 50 42 57"/><path class="f" d="M10 9 l3 7 l3 -6 Z M22 12 l3 7 l3 -6 Z M36 12 l3 7 l3 -7 Z M48 10 l3 6 l3 -7 Z"/>',
       praia: '<circle class="f" cx="16" cy="33" r="5.5"/><circle class="f" cx="7" cy="17" r="5"/><path d="M22 37 Q35 41 47 35 M20 31 Q14 26 11 22 M47 35 Q53 30 58 24 M47 35 Q53 38 59 37 M4 55 H60"/>',
+      tenismesa: '<circle class="f" cx="22" cy="12" r="5.5"/><circle class="f" cx="52" cy="14" r="3.5"/><circle class="f" cx="45" cy="27" r="6"/><path d="M23 20 Q24 30 25 38 M24 24 Q32 27 40 27 M24 24 Q17 28 13 34 M25 38 Q31 45 34 55 M25 38 Q19 46 15 55 M45 33 V40"/>',
+      peteca: '<circle class="f" cx="26" cy="18" r="5.5"/><circle class="f" cx="46" cy="14" r="4"/><path d="M27 26 Q34 21 40 18 M27 26 Q26 35 27 43 M27 28 Q20 31 16 36 M27 43 Q33 49 36 57 M27 43 Q21 50 17 57 M46 10 L42 3 M46 10 L47 2 M46 10 L51 4"/>',
       bandeira: '<circle class="f" cx="22" cy="17" r="5.5"/><path d="M22 25 Q23 34 23 42 M23 42 Q19 49 16 57 M23 42 Q28 49 31 57 M22 28 Q30 25 37 20 M38 5 V44"/><path class="f" d="M38 5 L57 11 L38 18 Z"/>'
     };
     const PICT_BG = ["#7CC6A4", "#F2B84B", "#A27BC0", "#EE8A72", "#6FB1E0"];
-    const PICT_COLOR = { atletismo: 3, natacao: 4, futsal: 0, volei: 1, handebol: 3, basquete: 1, xadrez: 2, festa: 1, praia: 4, bandeira: 0 };
+    const PICT_COLOR = { tenismesa: 3, peteca: 2, atletismo: 3, natacao: 4, futsal: 0, volei: 1, handebol: 3, basquete: 1, xadrez: 2, festa: 1, praia: 4, bandeira: 0 };
     const BLOBS = ["M12 32C8 16 22 5 38 8 54 11 62 26 56 41 50 56 32 61 20 54 9 48 14 41 12 32Z", "M9 28C11 13 27 4 42 9 57 14 60 33 53 46 45 59 24 60 15 50 6 41 8 36 9 28Z", "M14 22C20 9 38 4 50 13 61 22 58 42 47 52 35 62 17 57 10 45 5 35 9 31 14 22Z"];
     const pict = (name) => {
       if (!PICT[name]) return "";
@@ -398,7 +400,9 @@ window.CaseFX = (() => {
           h("small", {}, n.label),
           h("h3", {}, n.date),
           h("p", { class: "lu-w" }, n.where),
-          n.artists?.length ? h("ul", { class: "lu-a" }, ...n.artists.map((a) => h("li", {}, a))) : null))))));
+          n.artists?.length ? h("ul", { class: "lu-a" }, ...n.artists.map((a) => h("li", {}, a))) : null)))),
+      s.extra?.length ? h("div", { class: "lu-x" }, s.extraTitle ? h("p", { class: "lu-xt" }, s.extraTitle) : null,
+        h("ul", {}, ...s.extra.map((x) => h("li", {}, h("span", { class: "lu-xi", "aria-hidden": "true", html: pict(x.icon) }), h("b", {}, x.name))))) : null));
 
 
     // Organograma: grupos de cargos com nomes

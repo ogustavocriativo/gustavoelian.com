@@ -917,3 +917,10 @@
   .photos.compact figcaption{position:static;margin-top:6px;padding:0;background:none;color:inherit;backdrop-filter:none;-webkit-backdrop-filter:none;font-size:.75rem;opacity:.8}
   .photos.compact figure:has(figcaption){overflow:visible}
 }
+.lu-x{margin-top:var(--s-head,32px)}
+.lu-xt{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--accentInk);margin-bottom:14px}
+.lu-x ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1.6vw,18px)}
+.lu-x li{display:flex;flex-direction:column;align-items:center;gap:10px;padding:clamp(18px,2.4vw,28px) 12px;border-radius:22px;background:var(--chip);text-align:center}
+.lu-xi{width:72px;height:72px;display:block}
+.lu-x b{font-size:1.0625rem;font-weight:600}
+@media (max-width:760px){.lu-x ul{grid-template-columns:repeat(2,minmax(0,1fr))}.lu-x li:last-child{grid-column:1/-1}}
