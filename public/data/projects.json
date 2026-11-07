@@ -2178,6 +2178,231 @@
    "coverPoster": "video/agrofort/vinheta.jpg"
   },
   {
+   "id": "ise-training-trancoso",
+   "case": true,
+   "title": "Ise Training in Trancoso",
+   "kind": "Produção criativa e executiva · Parcerias e patrocínios",
+   "client": "Ise Training · Trancoso, BA",
+   "year": "2025",
+   "fronts": [
+    "trade"
+   ],
+   "summary": "Produção criativa e executiva, parcerias e patrocínios de uma imersão esportiva e social só de mulheres em Trancoso: treino no campo de golfe, praia, gastronomia e marcas parceiras em quatro dias.",
+   "cover": "img/cases/ise/backdrop.webp",
+   "theme": {
+    "bg": "#F7F4EE",
+    "ink": "#1F1A2E",
+    "soft": "#5C5670",
+    "panel": "#5A3EB5",
+    "onPanel": "#FFFFFF",
+    "accent": "#E58A2A",
+    "accentInk": "#4A2E9E",
+    "chip": "#ECE6F6"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "variant": "poster",
+     "kicker": "Produção criativa e executiva · Parcerias e patrocínios",
+     "title": "Ise Training in Trancoso",
+     "titleAccent": "in Trancoso",
+     "titleLogo": "img/cases/ise/logo-branco.webp",
+     "lead": "Uma imersão só de mulheres no sul da Bahia: treino funcional no campo de golfe, praia, piscina e gastronomia, com marcas parceiras em cada momento. Assinei a produção criativa e executiva e a gestão de parcerias e patrocínios, da identidade do evento ao último transfer.",
+     "block": "img/cases/ise/backdrop.webp",
+     "blockPos": "50% 40%",
+     "blockAlt": "Participantes no backdrop do Ise Training com as marcas parceiras",
+     "chips": [
+      "22 a 25 de agosto de 2025",
+      "Trancoso · BA",
+      "Imersão só de mulheres"
+     ],
+     "stats": [
+      {
+       "value": "4",
+       "label": "dias de imersão"
+      },
+      {
+       "value": "9",
+       "label": "marcas envolvidas"
+      },
+      {
+       "value": "1",
+       "label": "treino no campo de golfe"
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "O evento",
+     "title": "Treino de manhã, Trancoso o resto do dia",
+     "text": [
+      "O Ise Training saiu da academia e foi para Trancoso, um dos vilarejos mais charmosos do sul da Bahia. A proposta juntou esporte e convivência: treinar juntas, descansar juntas e viver o destino com programação pensada do café da manhã ao jantar.",
+      "O grupo embarcou em Montes Claros e passou quatro dias entre o hotel-boutique, a praia, o Quadrado e o Terravista Golf Club."
+     ],
+     "image": "img/cases/ise/praia.webp",
+     "ratio": "1179/623"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Identidade",
+     "title": "A igrejinha do Quadrado, um coração e um halter",
+     "text": [
+      "A marca do evento desenha a igreja de São João Batista, cartão-postal do Quadrado, entre dois coqueiros, com o coração e o halter do Ise Training no centro. Embaixo, as faixas em verde, laranja, azul e roxo viraram a régua de cor de todas as peças.",
+      "O mesmo sistema foi para o backdrop, as camisetas, o guia da viagem e as redes."
+     ],
+     "image": "img/cases/ise/costas.webp",
+     "imagePos": "50% 30%"
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Diário de viagem",
+     "title": "Quatro dias de programação",
+     "image": "img/cases/ise/treino.webp",
+     "items": [
+      {
+       "t": "22 de agosto · Chegada",
+       "d": "Check-in no Aysú Trancoso Boutique Hotel, chá da tarde e sunset no Allegria, no Quadrado."
+      },
+      {
+       "t": "23 de agosto · Praia e Quadrado",
+       "d": "Relax time na piscina com a Ise Colares, tarde em beach club e jantar no Bonitto Trancoso."
+      },
+      {
+       "t": "24 de agosto · Favoritto Golf",
+       "d": "Ise Training + Track&Field Experience no campo de golfe, visita à Praia da Baleia, experiência cápsula de golfe e almoço."
+      },
+      {
+       "t": "25 de agosto · Retorno",
+       "d": "Manhã livre, check-out e volta para Montes Claros."
+      }
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "4/3",
+     "eyebrow": "Esporte e social",
+     "title": "Do treino ao brinde",
+     "alt": "Ise Training in Trancoso",
+     "images": [
+      "img/cases/ise/turma-golfe.webp",
+      "img/cases/ise/treino.webp",
+      "img/cases/ise/piscina.webp",
+      "img/cases/ise/jantar.webp",
+      "img/cases/ise/praia.webp",
+      "img/cases/ise/backdrop.webp"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Gestão de parcerias",
+     "title": "Parcerias e patrocínios",
+     "text": [
+      "Captei e geri as parcerias e os patrocínios do evento. No backdrop, Porto, Track&Field Experience e tfsports ao lado da marca do Ise Training; no treino, a turma vestiu as camisetas da Track&Field; na programação social, entraram a Ise Colares, o Grupo Favoritto (Favoritto Golf, Allegria e Bonitto) e o Aysú Trancoso.",
+      "O pacote de viagem foi da Guaicuí, com ônibus leito, hospedagem e todos os transfers."
+     ],
+     "image": "img/cases/ise/backdrop.webp",
+     "ratio": "1800/1013"
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 5,
+     "ratio": "4/5",
+     "eyebrow": "Guia prático",
+     "title": "O guia da viagem",
+     "text": "Antes do embarque, cada participante recebeu um guia com o destino, o hotel, os restaurantes, o que levar e a programação dia a dia. A experiência começava ali.",
+     "alt": "Página do guia prático do Ise Training",
+     "images": [
+      "img/cases/ise/guia/g01.webp",
+      "img/cases/ise/guia/g02.webp",
+      "img/cases/ise/guia/g03.webp",
+      "img/cases/ise/guia/g04.webp",
+      "img/cases/ise/guia/g05.webp",
+      "img/cases/ise/guia/g07.webp",
+      "img/cases/ise/guia/g08.webp",
+      "img/cases/ise/guia/g09.webp",
+      "img/cases/ise/guia/g11.webp",
+      "img/cases/ise/guia/g12.webp"
+     ]
+    },
+    {
+     "type": "insta",
+     "kicker": "Audiovisual",
+     "title": "O evento em vídeo",
+     "lead": "Captação e edição: Pardal Pro Marketing.",
+     "items": [
+      {
+       "url": "https://www.instagram.com/reel/DNwtn9u3OMo/"
+      },
+      {
+       "url": "https://www.instagram.com/reel/DN8Y3Qujhbl/"
+      },
+      {
+       "url": "https://www.instagram.com/reel/DN9DNKTDjd7/"
+      },
+      {
+       "url": "https://www.instagram.com/reel/DN-4AErjhSI/"
+      },
+      {
+       "url": "https://www.instagram.com/reel/DN_jwHrjzv1/"
+      }
+     ]
+    },
+    {
+     "type": "insta",
+     "kicker": "After",
+     "title": "Confraria Training",
+     "lead": "O encontro depois da viagem.",
+     "items": [
+      {
+       "url": "https://www.instagram.com/reel/DOPCkVGEZ-j/",
+       "caption": "Confraria Training"
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "eyebrow": "Produção criativa e executiva",
+     "title": "Da marca ao último transfer",
+     "image": "img/cases/ise/turma-golfe.webp",
+     "items": [
+      {
+       "t": "Identidade",
+       "d": "Marca do evento, régua de cores e aplicações em backdrop, camisetas e redes."
+      },
+      {
+       "t": "Guia da viagem",
+       "d": "Conteúdo e design do guia prático enviado às participantes antes do embarque."
+      },
+      {
+       "t": "Programação",
+       "d": "Roteiro dos quatro dias com hotel, restaurantes, praia e o treino no campo de golfe."
+      },
+      {
+       "t": "Parcerias e patrocínios",
+       "d": "Captação e gestão das marcas parceiras e patrocinadoras, com contrapartidas em cada momento do evento."
+      },
+      {
+       "t": "No destino",
+       "d": "Condução da programação em Trancoso, do check-in ao retorno."
+      }
+     ]
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Ise Training in Trancoso · 22 a 25 de agosto de 2025 · Trancoso, BA",
+      "Produção criativa e executiva, parcerias e patrocínios: Gustavo Elian",
+      "Audiovisual: Pardal Pro Marketing"
+     ]
+    }
+   ]
+  },
+  {
    "id": "papo-calcinha",
    "case": true,
    "title": "Papo Calcinha",
