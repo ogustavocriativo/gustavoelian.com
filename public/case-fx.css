@@ -990,3 +990,6 @@
 .split .img.poles img{display:block;height:100%;width:auto;max-width:100%;max-height:none;object-fit:contain;object-position:center}
 /* grade com fundo branco (peças com fundo claro) */
 .photos.compact.white .ph-grid figure{background:#fff;box-shadow:inset 0 0 0 1px var(--line,rgba(0,0,0,.06))}
+/* stories em grade: limita a largura para não ficarem gigantes */
+#case .photos.compact .ph-grid[style*="--ar:9/16"]{max-width:640px}
+.photos.compact .ph-grid[style*="--ar:1/1"] img[src*="/confraria/"]{width:100%;height:100%;object-fit:cover;filter:none}

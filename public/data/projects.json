@@ -2353,9 +2353,101 @@
      ]
     },
     {
+     "type": "split",
+     "eyebrow": "After",
+     "title": "Confraria Training",
+     "text": [
+      "Depois da viagem, o grupo se reencontrou na Confraria Training, a confraternização (after) do Ise Training in Trancoso, apresentada pela Venda do Fred.",
+      "A noite teve uma sessão de bate-papo sobre trajetórias empreendedoras: Juliana Dourado convidou Ise Colares, Letícia Turano e Cibele Athayde. A realização foi do Studio Fitness Ise Colares, da Guaicuí e do Grupo Favoritto."
+     ],
+     "image": "img/cases/ise/confraria/kv-16x9.webp",
+     "ratio": "16/9"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Identidade",
+     "title": "O coração do Ise Training no lugar do O",
+     "text": [
+      "A marca da Confraria herda o símbolo do Ise Training, o coração com halter, encaixado no O de CONFRARIA, com a tag TRAINING em verde-escuro. As peças repetem a igrejinha e os coqueiros de Trancoso e trazem recortes das participantes da viagem, sobre papel texturizado."
+     ],
+     "image": "img/cases/ise/confraria/logo-confraria.webp",
+     "ratio": "16/9"
+    },
+    {
+     "type": "logos",
+     "eyebrow": "Marcas",
+     "title": "Quem fez a noite",
+     "items": [
+      {
+       "img": "img/cases/ise/confraria/marcas/venda-do-fred.webp",
+       "name": "Venda do Fred",
+       "sub": "Apresenta"
+      },
+      {
+       "img": "img/cases/ise/confraria/marcas/ise-colares.webp",
+       "name": "Studio Fitness Ise Colares",
+       "sub": "Realização"
+      },
+      {
+       "img": "img/cases/ise/confraria/marcas/guaicui.webp",
+       "name": "Guaicuí",
+       "sub": "Realização"
+      },
+      {
+       "img": "img/cases/ise/confraria/marcas/favoritto.webp",
+       "name": "Grupo Favoritto",
+       "sub": "Realização"
+      },
+      {
+       "img": "img/cases/ise/confraria/marcas/juliana-dourado.webp",
+       "name": "Juliana Dourado",
+       "sub": "Bate-papo"
+      }
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "1/1",
+     "eyebrow": "Campanha",
+     "title": "Da contagem de vagas à casa cheia",
+     "alt": "Peças de divulgação da Confraria Training",
+     "images": [
+      "img/cases/ise/confraria/feed-logo.webp",
+      "img/cases/ise/confraria/feed-70.webp",
+      "img/cases/ise/confraria/feed-encerradas.webp"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 2,
+     "ratio": "9/16",
+     "eyebrow": "Stories",
+     "title": "É hoje, sejam bem-vindas",
+     "alt": "Stories da Confraria Training",
+     "images": [
+      "img/cases/ise/confraria/story-hoje.webp",
+      "img/cases/ise/confraria/story-bem-vindas.webp"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Menu degustação",
+     "title": "Do volante à sustentação",
+     "text": [
+      "O cardápio seguiu a identidade da noite: volante com mini tábua de frios, bolinho de surubim, copinhos escabeche, coquetel de camarões, dadinhos de beiju e croquete mineiro, e a canjiquinha de defumados regionais como sustentação."
+     ],
+     "image": "img/cases/ise/confraria/menu.webp",
+     "ratio": "1169/1654"
+    },
+    {
      "type": "insta",
      "kicker": "After",
-     "title": "Confraria Training",
+     "title": "A Confraria em vídeo",
      "lead": "O encontro depois da viagem.",
      "items": [
       {
@@ -2396,6 +2488,7 @@
      "type": "credits",
      "items": [
       "Ise Training in Trancoso · 22 a 25 de agosto de 2025 · Trancoso, BA",
+      "Confraria Training (after) · apresentação: Venda do Fred · realização: Studio Fitness Ise Colares, Guaicuí e Grupo Favoritto",
       "Produção criativa e executiva, parcerias e patrocínios: Gustavo Elian",
       "Audiovisual: Pardal Pro Marketing"
      ]
