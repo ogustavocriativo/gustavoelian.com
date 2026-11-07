@@ -25,6 +25,16 @@ function igProfile(v, title) {
     h("iframe", { src: `https://www.instagram.com/${user}/embed/`, title: `Perfil @${user} no Instagram`, loading: "lazy", allowtransparency: "true", scrolling: "no" }),
     h("a", { class: "ig-prof-link", href: `https://www.instagram.com/${user}/`, target: "_blank", rel: "noopener" }, `Ver @${user} no Instagram ↗`));
 }
+// várias imagens do mesmo teor alternando em crossfade (pausa fora da tela e com movimento reduzido)
+function rotator(s) {
+  const imgs = s.images.map((im, i) => h("img", { src: src(im), alt: i ? "" : s.imagesAlt || s.title, loading: i ? "lazy" : null, class: i ? "" : "on", ...(i ? { "aria-hidden": "true" } : {}) }));
+  const fig = h("figure", { class: "img rot", style: "margin:0" }, ...imgs);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || imgs.length < 2) return fig;
+  let cur = 0, iv = 0;
+  const step = () => { if (document.hidden) return; imgs[cur].classList.remove("on"); cur = (cur + 1) % imgs.length; imgs[cur].classList.add("on"); };
+  if ("IntersectionObserver" in window) new IntersectionObserver((es) => { clearInterval(iv); if (es[0].isIntersecting) iv = setInterval(step, s.interval || 3200); }).observe(fig);
+  return fig;
+}
 const R = {
   // publicações do Instagram dentro do case (mesmo bloco do Studio, posicionado entre as seções)
   insta(s) { return PF.insta({ insta: s.items || [], instaTitle: s.title, instaCredit: s.credit, instaKicker: s.kicker, instaLead: s.lead }); },
@@ -51,7 +61,7 @@ const R = {
     return h("section", { class: `blk split reveal${s.panel ? " panel on-panel" : ""}${s.reverse ? " reverse" : ""}${s.wide ? " wide" : ""}` },
       h("div", { class: "wrap" },
         h("div", { class: "text" }, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title), ...paras(s.text)),
-        s.profile ? igProfile(s.profile, s.title) : s.image ? h("figure", { class: "img", style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : null));
+        s.profile ? igProfile(s.profile, s.title) : s.images ? rotator(s) : s.image ? h("figure", { class: "img", style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : null));
   },
   cards(s) {
     return h("section", { class: "blk cards reveal" }, h("div", { class: "wrap" },

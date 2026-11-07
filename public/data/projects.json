@@ -3418,9 +3418,9 @@
       "21 Simpósios Temáticos · 6 sessões livres",
       "257 trabalhos · 286 pessoas"
      ],
-     "block": "video/enehisp/hero-atos.mp4",
-     "blockAlt": "Posts animados do II ENEHISP: tutorial, prazo prorrogado, resultado e certificados",
-     "blockPoster": "img/cases/enehisp/hero-atos.jpg"
+     "block": "video/enehisp/hero-live.mp4",
+     "blockAlt": "Vinheta animada da live de abertura do II ENEHISP",
+     "blockPoster": "img/cases/enehisp/hero-live.jpg"
     },
     {
      "type": "split",
@@ -3430,7 +3430,17 @@
       "O II Encontro de Estudos em História Política recebeu 257 propostas de 286 pessoas, distribuídas em 21 Simpósios Temáticos e seis sessões de comunicação livre, em quatro dias de evento on-line.",
       "Cada proposta precisava passar por avaliação às cegas, receber carta de aceite, entrar no caderno certo, confirmar horário e, depois do evento, virar capítulo de livro ou trabalho completo nos Anais. Como presidente da comissão científica e responsável pelo sistema e pela comunicação, organizei esse percurso de ponta a ponta."
      ],
-     "image": "img/cases/enehisp/ab-st07.jpg"
+     "images": [
+      "img/cases/enehisp/desafio-01.jpg",
+      "img/cases/enehisp/desafio-02.jpg",
+      "img/cases/enehisp/desafio-03.jpg",
+      "img/cases/enehisp/desafio-04.jpg",
+      "img/cases/enehisp/desafio-05.jpg",
+      "img/cases/enehisp/desafio-06.jpg",
+      "img/cases/enehisp/desafio-07.jpg",
+      "img/cases/enehisp/desafio-08.jpg"
+     ],
+     "imagesAlt": "Cards dos Simpósios Temáticos exibidos na live de abertura"
     },
     {
      "type": "marquee",
@@ -3460,16 +3470,45 @@
     },
     {
      "type": "reels",
-     "eyebrow": "Ao vivo · 6 de outubro",
-     "title": "A abertura que colocou o evento no ar",
-     "text": "Uma vinheta de quatro minutos para a transmissão no YouTube do PPGH: a identidade se monta, os 21 Simpósios passam um a um com tema, horário e coordenação, os números do encontro aparecem e a contagem regressiva abre a live.",
+     "eyebrow": "Ao vivo · animações das lives",
+     "title": "A identidade em movimento na transmissão",
+     "text": "Animações feitas para as lives no YouTube do PPGH: a abertura que monta a marca, a passagem dos 21 Simpósios, a agenda de cada dia, as sessões livres e a contagem que colocou o evento no ar.",
      "items": [
       {
-       "src": "video/enehisp/abertura-live.mp4",
-       "poster": "video/enehisp/abertura-live.jpg",
+       "src": "video/enehisp/live-identidade.mp4",
+       "poster": "video/enehisp/live-identidade.jpg",
        "ratio": "16/9",
-       "label": "Trechos da vinheta de abertura (sem áudio)",
-       "wide": true
+       "label": "Abertura · a marca se monta"
+      },
+      {
+       "src": "video/enehisp/live-simposios.mp4",
+       "poster": "video/enehisp/live-simposios.jpg",
+       "ratio": "16/9",
+       "label": "21 Simpósios Temáticos"
+      },
+      {
+       "src": "video/enehisp/live-st-card.mp4",
+       "poster": "video/enehisp/live-st-card.jpg",
+       "ratio": "16/9",
+       "label": "Card animado de cada Simpósio"
+      },
+      {
+       "src": "video/enehisp/live-dia.mp4",
+       "poster": "video/enehisp/live-dia.jpg",
+       "ratio": "16/9",
+       "label": "Agenda do dia"
+      },
+      {
+       "src": "video/enehisp/live-sessoes.mp4",
+       "poster": "video/enehisp/live-sessoes.jpg",
+       "ratio": "16/9",
+       "label": "Seis sessões livres"
+      },
+      {
+       "src": "video/enehisp/live-contagem.mp4",
+       "poster": "video/enehisp/live-contagem.jpg",
+       "ratio": "16/9",
+       "label": "Números do evento e contagem regressiva"
       }
      ]
     },
@@ -3482,25 +3521,25 @@
        "title": "Confirmação de apresentação",
        "kind": "Para quem apresenta",
        "text": "A pessoa digita o código da carta de aceite, vê sessão e horário e confirma ou recusa. Quem precisa trocar escolhe uma sessão livre.",
-       "image": "img/cases/enehisp/sis-index-d.jpg"
+       "image": "img/cases/enehisp/thumb-index.jpg"
       },
       {
        "title": "Cronômetro das comunicações",
        "kind": "Ao vivo, no dia",
        "text": "Cada comunicador acompanha o tempo da coordenação em tempo real, com avisos sonoros aos 5 minutos, a 1 minuto e no fim.",
-       "image": "img/cases/enehisp/sis-cronometro-d.jpg"
+       "image": "img/cases/enehisp/thumb-cronometro.jpg"
       },
       {
        "title": "Mural de avaliação",
        "kind": "Para a coordenação",
        "text": "A coordenação de cada Simpósio avalia as apresentações. A nota e a presença registrada no cronômetro entram nos critérios de publicação do livro e dos anais.",
-       "image": "img/cases/enehisp/sis-mural-d.jpg"
+       "image": "img/cases/enehisp/thumb-mural.jpg"
       },
       {
        "title": "Painel de confirmações",
        "kind": "Para a organização",
        "text": "Visão interna por Simpósio Temático: quem confirmou, quem recusou e quem mudou de sessão, sem planilha paralela.",
-       "image": "img/cases/enehisp/sis-painel-d.jpg"
+       "image": "img/cases/enehisp/thumb-painel.jpg"
       }
      ]
     },
@@ -3515,7 +3554,7 @@
      "panel": true,
      "eyebrow": "Percurso em três atos",
      "title": "Do edital ao livro",
-     "image": "img/cases/enehisp/avaliacao-01.jpg",
+     "image": "img/cases/enehisp/desafio-05.jpg",
      "items": [
       {
        "t": "Submissão e cadastro",
@@ -3544,64 +3583,9 @@
      ]
     },
     {
-     "type": "photos",
-     "compact": true,
-     "eyebrow": "Comunicação · @enehisp",
-     "title": "Cada post tem a sua animação",
-     "text": "Para a fase de publicações, planejei um calendário de 21/10 a 5/12 com feed, carrosséis, stories e reels. Cada post do feed ganhou um loop de seis segundos; os botões Ato I, Ato II e Ato III marcam em que fase o leitor está.",
-     "alt": "Posts animados do II ENEHISP",
-     "images": [
-      "video/enehisp/feed-tutorial.mp4",
-      "video/enehisp/feed-prepare.mp4",
-      "video/enehisp/feed-prazo.mp4",
-      "video/enehisp/feed-encerrado.mp4",
-      "video/enehisp/feed-aceite.mp4",
-      "video/enehisp/feed-certificados.mp4"
-     ]
-    },
-    {
-     "type": "reels",
-     "eyebrow": "Stories e reels",
-     "title": "Vinhetas de oito segundos e um tutorial de trinta",
-     "text": "Os stories da contagem regressiva levam figurinha de link sobre a área tracejada. O reels mostra o envio do texto do login ao fim em trinta segundos, com telas reais do sistema e dados de demonstração.",
-     "items": [
-      {
-       "src": "video/enehisp/story-faltam9.mp4",
-       "poster": "video/enehisp/story-faltam9.jpg",
-       "ratio": "9/16",
-       "label": "Story · Faltam 9 dias"
-      },
-      {
-       "src": "video/enehisp/reels-30s.mp4",
-       "poster": "video/enehisp/reels-30s.jpg",
-       "ratio": "9/16",
-       "label": "Reels · Envio em 30 segundos"
-      },
-      {
-       "src": "video/enehisp/story-certificados.mp4",
-       "poster": "video/enehisp/story-certificados.jpg",
-       "ratio": "9/16",
-       "label": "Story · Certificados enviados"
-      }
-     ]
-    },
-    {
-     "type": "strip",
-     "title": "Carrossel · Tutorial de submissão",
-     "images": [
-      "img/cases/enehisp/tutorial-01.jpg",
-      "img/cases/enehisp/tutorial-02.jpg",
-      "img/cases/enehisp/tutorial-03.jpg",
-      "img/cases/enehisp/tutorial-04.jpg",
-      "img/cases/enehisp/tutorial-05.jpg",
-      "img/cases/enehisp/tutorial-06.jpg",
-      "img/cases/enehisp/tutorial-07.jpg"
-     ]
-    },
-    {
      "type": "split",
      "reverse": true,
-     "panel": true,
+     "panel": false,
      "eyebrow": "Identidade",
      "title": "A digital como marca, o dourado como fio",
      "text": [

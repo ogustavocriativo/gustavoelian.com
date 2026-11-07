@@ -83,10 +83,36 @@ window.EnehispDemo = (s, h) => {
     const wrap = el("div", { class: "ehd-pane" });
     const DUR = 15 * 60 * 1000;
     const T = { idx: 0, status: "parado", acumulado: 0, inicio: 0, extra: 0, speed: 30, aus: new Set(), avisos: new Set() };
+    /* tela de quem apresenta: entra com o código, ativa o som e acompanha a própria vez */
+    const U = { cod: null };
     const clock = el("div", { class: "ehd-clock", "aria-live": "off" });
     const bar = el("i");
-    const who = el("div", { class: "ehd-who" });
-    const phone = el("div", { class: "ehd-phone" }, el("small", { class: "ehd-lbl" }, "Tela de quem apresenta"), who, clock, el("div", { class: "ehd-bar" }, bar), el("p", { class: "ehd-soft" }, "Avisos sonoros aos 5 minutos, a 1 minuto e no fim."));
+    const screen = el("div", { class: "ehd-screen" });
+    const phone = el("div", { class: "ehd-phone" }, el("div", { class: "ehd-notch", "aria-hidden": "true" }), screen);
+    const nowLine = el("small", { class: "ehd-now" });
+    function phoneView() {
+      screen.replaceChildren();
+      if (!U.cod) {
+        const inp = el("input", { value: S.fala.cod, "aria-label": "Código da apresentação", autocomplete: "off", spellcheck: "false" });
+        screen.append(el("small", { class: "ehd-lbl" }, "Cronômetro das comunicações"), el("h5", {}, "Seu tempo de ", el("em", {}, "apresentação")),
+          el("p", { class: "ehd-soft" }, "Digite o código da sua apresentação para acompanhar o cronômetro da coordenação ao vivo."),
+          el("form", { class: "ehd-plogin", onsubmit: (e) => { e.preventDefault(); const f = FALAS.find((x) => x.cod.toLowerCase() === inp.value.trim().toLowerCase()); if (!f) { toast(wrap, "Código não encontrado nesta sessão.", "no"); return; } U.cod = f.cod; soundOn.checked = true; beep(740, 0.12); phoneView(); } },
+            inp, el("button", { type: "submit", class: "ehd-btn pri" }, "Entrar e ativar o som")),
+          el("p", { class: "ehd-soft" }, "Dica: abra no celular e deixe ao lado do computador enquanto compartilha os slides no Meet."));
+        delete phone.dataset.fase; return;
+      }
+      const ui = FALAS.findIndex((x) => x.cod === U.cod), f = FALAS[ui];
+      const head = el("div", { class: "ehd-who" }, el("div", { class: "ehd-row" }, el("span", { class: "ehd-code" }, f.cod), el("button", { type: "button", class: "ehd-out", onclick: () => { U.cod = null; phoneView(); } }, "Sair")), el("b", {}, f.autor), el("small", {}, f.titulo));
+      screen.append(head);
+      if (T.aus.has(ui)) { screen.append(el("div", { class: "ehd-state" }, el("b", {}, "Marcada como ausente"), el("small", {}, "Fale com a coordenação no chat do Meet."))); return; }
+      if ((f.presente && (ui !== T.idx || T.status === "concluido")) || ui < T.idx) { screen.append(el("div", { class: "ehd-state ok" }, el("b", {}, "✓ Fala concluída"), el("small", {}, "Presença registrada. O envio do texto para o livro ou os Anais já está liberado."))); return; }
+      if (ui > T.idx) {
+        let antes = 0; for (let i = T.idx; i < ui; i++) if (!T.aus.has(i)) antes++;
+        screen.append(el("div", { class: "ehd-state" }, el("b", {}, "Aguardando sua vez"), el("small", {}, `${antes} comunicaç${antes > 1 ? "ões" : "ão"} antes de você`)), nowLine);
+        return;
+      }
+      screen.append(el("div", { class: "ehd-state on" }, el("b", {}, "É a sua vez")), clock, el("div", { class: "ehd-bar" }, bar), el("p", { class: "ehd-soft" }, "Avisos sonoros aos 5 minutos, a 1 minuto e no fim."));
+    }
     const list = el("ol", { class: "ehd-queue" });
     const speedSel = el("select", { "aria-label": "Velocidade da demonstração", onchange: () => { sync(); T.speed = Number(speedSel.value); } },
       el("option", { value: "1" }, "tempo real"), el("option", { value: "30", selected: "" }, "30× mais rápido"), el("option", { value: "90" }, "90× mais rápido"));
@@ -114,7 +140,7 @@ window.EnehispDemo = (s, h) => {
     }
     function render() {
       const f = FALAS[T.idx];
-      who.replaceChildren(el("span", { class: "ehd-code" }, f.cod), el("b", {}, f.autor), el("small", {}, f.titulo));
+      phoneView();
       list.replaceChildren(...FALAS.map((x, i) => el("li", { class: i === T.idx ? "on" : T.aus.has(i) ? "aus" : x.presente ? "ok" : "" },
         el("span", { class: "ehd-code" }, x.cod), el("span", {}, x.autor), el("small", {}, T.aus.has(i) ? "ausente" : x.presente ? "presença registrada" : i === T.idx ? "em fala" : "aguardando"))));
       const st = T.status;
@@ -133,14 +159,16 @@ window.EnehispDemo = (s, h) => {
       clock.textContent = mmss(rest);
       const ratio = Math.max(0, Math.min(1, used() / (DUR + T.extra)));
       bar.style.width = `${ratio * 100}%`;
-      phone.dataset.fase = rest <= 0 ? "fim" : rest <= 60000 ? "1min" : rest <= 300000 ? "5min" : "";
-      if (T.status === "rodando") for (const [k, lim, f] of [["5", 300000, 660], ["1", 60000, 880], ["0", 0, 1040]]) if (rest <= lim && !T.avisos.has(k)) { T.avisos.add(k); if (soundOn.checked) beep(f, k === "0" ? 0.5 : 0.18); }
+      const mine = U.cod && FALAS[T.idx].cod === U.cod;
+      nowLine.textContent = `Em fala agora: ${FALAS[T.idx].autor} · ${mmss(rest)}`;
+      if (mine) phone.dataset.fase = rest <= 0 ? "fim" : rest <= 60000 ? "1min" : rest <= 300000 ? "5min" : ""; else delete phone.dataset.fase;
+      if (T.status === "rodando" && mine) for (const [k, lim, f] of [["5", 300000, 660], ["1", 60000, 880], ["0", 0, 1040]]) if (rest <= lim && !T.avisos.has(k)) { T.avisos.add(k); if (soundOn.checked) beep(f, k === "0" ? 0.5 : 0.18); }
       if (visible) raf = requestAnimationFrame(tick);
     }
     const soundOn = el("input", { type: "checkbox" });
     if ("IntersectionObserver" in window) new IntersectionObserver((es) => { visible = es[0].isIntersecting; cancelAnimationFrame(raf); if (visible) tick(); }).observe(wrap); else { visible = true; tick(); }
     wrap.append(
-      el("div", { class: "ehd-intro" }, el("h3", {}, "Cronômetro das comunicações"), el("p", {}, "A coordenação controla a sessão; cada comunicador acompanha o próprio tempo no celular, ao lado da chamada. Ao concluir a fala, a presença fica registrada e libera a avaliação e o envio do texto.")),
+      el("div", { class: "ehd-intro" }, el("h3", {}, "Cronômetro das comunicações"), el("p", {}, "À esquerda, a coordenação controla a sessão. À direita, a tela de quem apresenta: entre com um código, inicie as falas na coordenação e veja o celular passar de “aguardando sua vez” para o tempo correndo, com cores e avisos aos 5 minutos e a 1 minuto. Ao concluir, a presença fica registrada.")),
       el("div", { class: "ehd-two" },
         el("div", { class: "ehd-card" }, el("div", { class: "ehd-row" }, el("small", { class: "ehd-lbl" }, `Coordenação · ${ST.cod} · ${ST.nome}`)), list, ctrl,
           el("div", { class: "ehd-row ehd-opts" }, speedSel, el("label", { class: "ehd-check" }, soundOn, " avisos sonoros"))),
@@ -236,7 +264,88 @@ window.EnehispDemo = (s, h) => {
     return wrap;
   }
 
-  /* ---------- 5 · pareceres às cegas e índice de seleção ---------- */
+
+  /* ---------- 5 · leitura do parecerista: marca-texto e comentários no próprio texto ---------- */
+  function leitura() {
+    const wrap = el("div", { class: "ehd-pane" });
+    const TIPOS = { destaque: { nome: "Destaque", cls: "m-a" }, forte: { nome: "Ponto forte", cls: "m-b" }, revisar: { nome: "Revisar", cls: "m-c" } };
+    let tipo = "revisar", n = 0;
+    const P = [
+      "Este capítulo analisa a circulação de fotografias de imprensa em três jornais de grande tiragem entre 1962 e 1964. Parte-se da hipótese de que [[forte|o enquadramento, a legenda e a posição na página produziram, juntos, a figura do inimigo público]], antes mesmo de qualquer acusação formal.",
+      "O corpus reúne 214 fotografias publicadas na primeira página. A seleção seguiu critérios de recorrência temática, e cada imagem foi descrita em ficha própria, com dados de autoria, legenda e diagramação. [[revisar|Não fica claro, porém, como as fichas foram agrupadas na análise]].",
+      "Como observa a historiografia da imprensa, a fotografia não é registro neutro: é escolha, recorte e montagem. [[destaque|A legenda funciona como uma segunda manchete]], dirigindo a leitura da imagem e fixando um sentido entre outros possíveis.",
+      "Nas edições de março de 1964, a repetição de certos personagens em close, sempre acompanhados de termos como ‘agitador’ e ‘infiltrado’, consolidou uma gramática visual reconhecível pelo leitor. [[revisar|A conclusão generaliza para toda a imprensa a partir de três títulos]].",
+    ];
+    const SEED = { forte: "Hipótese clara e bem delimitada. Ela organiza todo o capítulo.", revisar: ["Descrever o procedimento de agrupamento das fichas (por tema, por período?).", "Sugiro restringir a conclusão aos três jornais analisados ou justificar a extrapolação."], destaque: "Boa formulação; poderia virar o título de uma seção." };
+    const comments = [];
+    const doc = el("article", { class: "ehd-doc", "aria-label": "Texto em avaliação" });
+    const side = el("ol", { class: "ehd-comms", "aria-live": "polite" });
+    const ri = { revisar: 0 };
+    P.forEach((p) => {
+      const para = el("p");
+      p.split(/(\[\[[a-z]+\|[^\]]+\]\])/).forEach((chunk) => {
+        const m = chunk.match(/^\[\[([a-z]+)\|(.+)\]\]$/);
+        if (!m) { if (chunk) para.append(chunk); return; }
+        const k = m[1]; const txt = Array.isArray(SEED[k]) ? SEED[k][ri[k]++] : SEED[k];
+        para.append(mark(k, m[2], txt));
+      });
+      doc.append(para);
+    });
+    function mark(k, text, comentario) {
+      const id = ++n;
+      const mk = el("mark", { class: TIPOS[k].cls, "data-n": String(id), tabindex: "0", onclick: () => focusC(id), onkeydown: (e) => { if (e.key === "Enter") focusC(id); } }, text);
+      comments.push({ id, k, text, comentario });
+      return mk;
+    }
+    function focusC(id) {
+      wrap.querySelectorAll(".ehd-doc mark, .ehd-comms li").forEach((x) => x.classList.toggle("on", x.dataset.n === String(id)));
+      const li = side.querySelector(`li[data-n="${id}"]`); li?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      li?.querySelector("textarea")?.focus({ preventScroll: true });
+    }
+    function renderSide() {
+      side.replaceChildren(...comments.map((c) => el("li", { "data-n": String(c.id), class: TIPOS[c.k].cls, onclick: () => focusC(c.id) },
+        el("div", { class: "ehd-row" }, el("span", { class: "ehd-num" }, String(c.id)), el("small", {}, TIPOS[c.k].nome), el("button", { type: "button", class: "ehd-out", "aria-label": `Remover comentário ${c.id}`, onclick: (e) => { e.stopPropagation(); remove(c.id); } }, "Remover")),
+        el("q", {}, c.text.length > 90 ? c.text.slice(0, 88) + "…" : c.text),
+        c.comentario != null && !c.editing ? el("p", {}, c.comentario) : el("textarea", { rows: "2", placeholder: "Escreva o comentário para a autoria", oninput: (e) => { c.comentario = e.target.value; }, onblur: () => { c.editing = false; if (!c.comentario) c.comentario = "(sem comentário)"; renderSide(); } }, c.comentario || ""))));
+      count.textContent = `${comments.length} marcações`;
+    }
+    function remove(id) {
+      const mk = doc.querySelector(`mark[data-n="${id}"]`); if (mk) mk.replaceWith(...mk.childNodes);
+      comments.splice(comments.findIndex((c) => c.id === id), 1); renderSide();
+    }
+    const count = el("small", { class: "ehd-soft" });
+    // guarda a última seleção feita dentro do texto (no celular o toque no botão pode desfazer a seleção)
+    let saved = null;
+    document.addEventListener("selectionchange", () => { const s = getSelection(); if (s.rangeCount && !s.isCollapsed && doc.contains(s.getRangeAt(0).commonAncestorContainer)) saved = s.getRangeAt(0).cloneRange(); });
+    const addBtn = btn("Marcar trecho selecionado", () => {
+      const sel = getSelection();
+      const r = (sel.rangeCount && !sel.isCollapsed && doc.contains(sel.getRangeAt(0).commonAncestorContainer)) ? sel.getRangeAt(0) : saved;
+      if (!r || r.collapsed) { toast(wrap, "Selecione um trecho do texto primeiro.", "no"); return; }
+      saved = null; if (!doc.contains(r.commonAncestorContainer)) { toast(wrap, "Selecione um trecho dentro do texto.", "no"); return; }
+      if (r.commonAncestorContainer.nodeType !== 3 && [...doc.querySelectorAll("mark")].some((m) => r.intersectsNode(m))) { toast(wrap, "O trecho cruza outra marcação. Selecione dentro de um parágrafo.", "no"); return; }
+      const text = r.toString().trim(); if (text.length < 3) return;
+      const mk = mark(tipo, "", null); comments[comments.length - 1].text = text; comments[comments.length - 1].editing = true;
+      try { r.surroundContents(mk); } catch (e) { mk.append(r.extractContents()); r.insertNode(mk); }
+      sel.removeAllRanges(); renderSide(); focusC(Number(mk.dataset.n));
+    }, "pri");
+    addBtn.addEventListener("mousedown", (e) => e.preventDefault());
+    const tools = el("div", { class: "ehd-tools", role: "toolbar", "aria-label": "Marca-texto" },
+      el("small", { class: "ehd-lbl" }, "Marca-texto"),
+      el("div", { class: "ehd-seg" }, ...Object.entries(TIPOS).map(([k, v]) => {
+        const b = el("button", { type: "button", "aria-pressed": String(k === tipo), class: v.cls, onclick: () => { tipo = k; tools.querySelectorAll(".ehd-seg button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); } }, el("i", { "aria-hidden": "true" }), v.nome);
+        return b;
+      })), addBtn);
+    wrap.append(
+      el("div", { class: "ehd-intro" }, el("h3", {}, "Leitura do parecerista"), el("p", {}, "O parecerista lê o texto dentro do sistema, sem saber quem escreveu. Selecione um trecho, escolha a cor e clique em “Marcar trecho selecionado”: o comentário fica preso ao trecho e segue para a autoria junto com o parecer.")),
+      tools,
+      el("div", { class: "ehd-read" },
+        el("div", { class: "ehd-paper" }, el("div", { class: "ehd-row" }, el("span", { class: "ehd-code" }, "Texto nº 0417 · autoria oculta"), count), el("h4", {}, "Fotografia de imprensa e a construção do inimigo público"), doc),
+        el("aside", { class: "ehd-side" }, el("small", { class: "ehd-lbl" }, "Comentários · parecerista B"), side)));
+    renderSide();
+    return wrap;
+  }
+
+  /* ---------- 6 · pareceres às cegas e índice de seleção ---------- */
   function pareceres() {
     const wrap = el("div", { class: "ehd-pane" });
     const box = el("div");
@@ -278,7 +387,7 @@ window.EnehispDemo = (s, h) => {
 
   /* ---------- montagem ---------- */
   const MODS = [
-    ["Confirmação", confirmacao], ["Cronômetro", cronometro], ["Mural da coordenação", mural], ["Submissão", submissao], ["Pareceres", pareceres],
+    ["Confirmação", confirmacao], ["Cronômetro", cronometro], ["Mural da coordenação", mural], ["Submissão", submissao], ["Leitura do parecerista", leitura], ["Pareceres", pareceres],
   ];
   const panes = MODS.map(([, f]) => f());
   const tabs = MODS.map(([n], i) => el("button", { type: "button", role: "tab", id: `ehd-t${i}`, "aria-controls": `ehd-p${i}`, "aria-selected": String(!i), tabindex: i ? "-1" : "0", onclick: () => go(i) },
