@@ -558,3 +558,5 @@ html:not(.dark) .idbg .ib2{opacity:.7}
   .portrait.cutout .datum.d3{transform-origin:top right}
 }
 @media (prefers-reduced-motion:reduce){.idbg i,.idmark{animation:none}}
+/* celular: sem filtros na lista de projetos (nem abas, nem botão de interesse) */
+@media (max-width:760px){#projetos .filters,#needAgain,#needBar{display:none!important}}
