@@ -328,12 +328,22 @@ window.CaseFX = (() => {
     // Classificação final: uma coluna por série, destaque para a campeã
     R.ranking = (s) => h("section", { class: `blk ranking${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "rk-cols" }, ...s.series.map((se) => h("article", { class: "rk" },
-        h("header", { class: "rk-head" }, h("small", {}, se.label), h("h3", {}, se.name)),
+        h("header", { class: "rk-head" + (se.logo ? " has-logo" : "") }, se.logo ? h("h3", {}, h("img", { src: src(se.logo), alt: `${se.label} ${se.name}`, loading: "lazy" })) : [h("small", {}, se.label), h("h3", {}, se.name)]),
         h("div", { class: "rk-champ" }, h("img", { src: src(se.champion.img), alt: "", loading: "lazy" }),
           h("div", {}, h("span", { class: "rk-title" }, se.champion.title), h("b", {}, se.champion.name), se.champion.sub ? h("small", {}, se.champion.sub) : null)),
         h("ol", { class: "rk-list", start: "2" }, ...se.rest.map((r, i) => h("li", {},
           h("span", { class: "rk-pos" }, `${i + 2}º`), h("img", { src: src(r.img), alt: "", loading: "lazy" }),
           h("span", { class: "rk-name" }, h("b", {}, r.name), r.sub ? h("small", {}, r.sub) : null)))))))));
+
+    // Números da gestão: valor grande + rótulo + detalhe
+    R.stats = (s) => h("section", { class: `blk stats${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("ul", { class: "st-grid" }, ...s.items.map((it, i) => h("li", { class: "st", style: `--i:${i}`, "data-fx": "" },
+        h("b", {}, it.value), h("span", {}, it.label), it.note ? h("small", {}, it.note) : null)))));
+
+    // Organograma: grupos de cargos com nomes
+    R.org = (s) => h("section", { class: `blk org${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", {}, g.title),
+        h("ul", {}, ...g.items.map((it) => h("li", {}, h("small", {}, it.role), h("b", {}, it.name)))))))));
 
     // Parede de logos (ex.: atléticas participantes): logo + nome + vínculo, em grade
     R.logos = (s) => h("section", { class: `blk logos${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),

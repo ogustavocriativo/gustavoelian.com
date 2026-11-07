@@ -1243,7 +1243,7 @@ async function renderPortfolioList() {
   let order = pfOrder(srv);
   const list = h("div", { class: "list" });
   const saveOrder = async () => { try { await api("/api/portfolio", { method: "PUT", body: { order } }); haptic(); } catch (x) { toast(x.message); } };
-  const secOf = (id) => { const e = srv.items[id] || {}; const b = catalog.projects.find((x) => x.id === id) || {}; const v = e.section || b.section; return v === "list" || v === "academia" ? v : "creative"; };
+  const secOf = (id) => { const e = srv.items[id] || {}; const b = catalog.projects.find((x) => x.id === id) || {}; const v = e.section || b.section; return ["list", "academia", "universitario"].includes(v) ? v : "creative"; };
   const row = (id, group) => {
     const p = pfInfo(id, srv), st = pfStatus(p.entry), i = group.indexOf(id);
     const pic = p.entry.thumb ? pfMediaEl(p.entry.thumb) : p.cover ? h("img", { src: "/" + p.cover, alt: "", loading: "lazy" }) : h("span", { class: "pf-ph" }, initials(p.title));
@@ -1258,11 +1258,13 @@ async function renderPortfolioList() {
         h("button", { class: "ibtn sm", type: "button", "aria-label": `Descer ${p.title}`, disabled: i === group.length - 1, onclick: () => mv(1) }, "↓")));
   };
   const draw = () => {
-    const cr = order.filter((id) => secOf(id) === "creative"), ls = order.filter((id) => secOf(id) === "list"), ac = order.filter((id) => secOf(id) === "academia");
+    const cr = order.filter((id) => secOf(id) === "creative"), ls = order.filter((id) => secOf(id) === "list"), ac = order.filter((id) => secOf(id) === "academia"), un = order.filter((id) => secOf(id) === "universitario");
     list.replaceChildren(
       secH(`Projetos criativos · ${cr.length}`), ...cr.map((id) => row(id, cr)),
       h("div", { class: "gap24" }),
       secH(`Pesquisa acadêmica e mediações · ${ac.length}`), ...(ac.length ? ac.map((id) => row(id, ac)) : [h("p", { class: "hint" }, "Nenhum item. Em um projeto, escolha \"Pesquisa e mediações\" em Onde aparece.")]),
+      h("div", { class: "gap24" }),
+      secH(`Extracurriculares e universitários · ${un.length}`), ...(un.length ? un.map((id) => row(id, un)) : [h("p", { class: "hint" }, "Nenhum item. Em um projeto, escolha \"Universitários\" em Onde aparece.")]),
       h("div", { class: "gap24" }),
       secH(`Lista de experiência · ${ls.length}`), ...(ls.length ? ls.map((id) => row(id, ls)) : [h("p", { class: "hint" }, "Nenhum item. Em um projeto, escolha \"Lista de experiência\" em Onde aparece.")]));
   };
@@ -1274,7 +1276,7 @@ async function renderPortfolioList() {
     const chips = h("div", { class: "chips" }, ...catalog.fronts.map((f) => { const b = h("button", { class: "chip" + (picked.has(f.id) ? " on" : ""), type: "button", "aria-pressed": String(picked.has(f.id)), onclick: () => { picked.has(f.id) ? picked.delete(f.id) : picked.add(f.id); b.classList.toggle("on"); b.setAttribute("aria-pressed", String(picked.has(f.id))); } }, f.label); return b; }));
     let section = "creative";
     const segSec = h("div", { class: "seg", role: "radiogroup", "aria-label": "Onde aparece" });
-    const drawSeg = () => segSec.replaceChildren(...[["creative", "Projetos criativos"], ["academia", "Pesquisa e mediações"], ["list", "Lista de experiência"]].map(([k, l]) => h("button", { type: "button", role: "radio", "aria-checked": String(section === k), class: section === k ? "on" : "", onclick: () => { section = k; drawSeg(); } }, l)));
+    const drawSeg = () => segSec.replaceChildren(...[["creative", "Projetos criativos"], ["academia", "Pesquisa e mediações"], ["universitario", "Universitários"], ["list", "Lista de experiência"]].map(([k, l]) => h("button", { type: "button", role: "radio", "aria-checked": String(section === k), class: section === k ? "on" : "", onclick: () => { section = k; drawSeg(); } }, l)));
     drawSeg();
     sheet("Novo projeto", (close) => [
       h("label", { class: "f" }, h("span", {}, "Nome"), t), h("div", { class: "f" }, h("span", {}, "Onde aparece"), segSec), h("div", { class: "f" }, h("span", {}, "Frentes"), chips),
@@ -1534,12 +1536,12 @@ async function renderPortfolioEdit(id) {
   const nd = new Set(e.needs || []);
   const needChips = h("div", { class: "chips" }, ...Object.entries(NEEDS_L).map(([k, l]) => { const bt = h("button", { class: "chip" + (nd.has(k) ? " on" : ""), type: "button", "aria-pressed": String(nd.has(k)), onclick: () => { nd.has(k) ? nd.delete(k) : nd.add(k); bt.classList.toggle("on"); bt.setAttribute("aria-pressed", String(nd.has(k))); e.needs = [...nd]; touch(); } }, l); return bt; }));
   const hint = (v) => (v ? `Atual: ${String(v).slice(0, 60)}${String(v).length > 60 ? "…" : ""}` : "");
-  const curSec = () => { const v = e.section || b.section; return v === "list" || v === "academia" ? v : "creative"; };
+  const curSec = () => { const v = e.section || b.section; return ["list", "academia", "universitario"].includes(v) ? v : "creative"; };
   const topicSw = h("label", { class: "switch" }, h("span", {}, "Só tópico, sem página", h("small", { class: "hint", style: "display:block" }, "Aparece só na lista. Se tiver link do projeto no ar, o tópico abre o link.")),
     h("input", { type: "checkbox", role: "switch", checked: !!e.topicOnly, onchange: (ev) => { e.topicOnly = ev.target.checked; touch(); } }));
   topicSw.hidden = curSec() !== "list";
   const placeSec = h("section", { class: "form-card glass" }, h("h2", {}, "Onde aparece no site"),
-    seg({ creative: "Projetos criativos", academia: "Pesquisa e mediações", list: "Lista de experiência" }, curSec(), (k) => { e.section = k; topicSw.hidden = k !== "list"; touch(); }, "Vitrine"),
+    seg({ creative: "Projetos criativos", academia: "Pesquisa e mediações", universitario: "Universitários", list: "Lista de experiência" }, curSec(), (k) => { e.section = k; topicSw.hidden = k !== "list"; touch(); }, "Vitrine"),
     h("p", { class: "hint" }, "Projetos criativos viram cards com imagem. Pesquisa e mediações tem seção própria na página inicial (eventos científicos, talks, aulas). A lista de experiência mostra tópicos compactos."),
     topicSw);
   const cardSec = h("section", { class: "form-card glass" }, h("h2", {}, "Card do projeto"),

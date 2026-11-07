@@ -246,3 +246,28 @@ dialog.pf-dlg form{position:sticky;bottom:0;padding:10px;background:#fff;text-al
 .ig-prof{display:flex;flex-direction:column;gap:8px;align-items:stretch}
 .ig-prof iframe{width:100%;max-width:540px;margin-inline:auto;height:clamp(520px,62vw,720px);border:0;border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(127,127,127,.25)}
 .ig-prof-link{align-self:center;font-size:14px;opacity:.8}
+/* hero cartaz: foto em sangria no painel */
+.hero.poster{position:relative;overflow:hidden;padding:0;min-height:min(88vh,860px);display:grid;align-content:end;isolation:isolate}
+.hero.poster .pbg{position:absolute;top:0;right:0;bottom:0;width:62%;z-index:-2}
+.hero.poster .pbg img{width:100%;height:100%;object-fit:cover;object-position:60% 30%}
+.hero.poster::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--panel) 0%,var(--panel) 38%,color-mix(in srgb,var(--panel) 55%,transparent) 50%,transparent 66%),linear-gradient(0deg,color-mix(in srgb,var(--panel) 60%,transparent) 0%,transparent 30%)}
+.hero.poster::after{content:"";position:absolute;width:640px;height:640px;left:-220px;bottom:-260px;border-radius:50%;background:var(--accent);filter:blur(120px);opacity:.32;z-index:-1;pointer-events:none}
+.hero.poster .wrap{display:block;width:100%;margin-inline:auto;box-sizing:border-box}
+.hero.poster .copy{max-width:620px;padding:clamp(96px,14vw,160px) 0 clamp(36px,5vw,64px);gap:18px}
+.hero.poster h1{font-size:clamp(4rem,12vw,9.5rem);line-height:.86;letter-spacing:-.045em;font-weight:600}
+.hero.poster h1 em{font-style:normal;color:var(--accent);display:inline-block}
+.pstats{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pstats li{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:16px;background:color-mix(in srgb,var(--onPanel) 9%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-width:0}
+.pstats b{font-size:clamp(1.5rem,2.6vw,2.125rem);font-weight:600;line-height:1;color:var(--accent);letter-spacing:-.03em}
+.pstats span{font-size:.8125rem;line-height:1.25;color:color-mix(in srgb,var(--onPanel) 78%,transparent)}
+@media (max-width:860px){
+  .hero.poster{min-height:auto;display:block}
+  .hero.poster .pbg{position:relative;inset:auto;width:100%;height:62svh;min-height:380px}
+  .hero.poster .pbg img{object-position:68% 20%}
+  .hero.poster::before{inset:0 0 auto 0;height:max(62svh,380px);background:linear-gradient(0deg,var(--panel) 0%,color-mix(in srgb,var(--panel) 60%,transparent) 30%,transparent 60%)}
+  .hero.poster::after{left:-260px;bottom:-200px}
+  .hero.poster .copy{padding:0 0 32px;margin-top:-18svh;position:relative}
+  .pstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* split com foto enquadrada (recorte cover em proporção fixa) */
+.split .img.cover img{width:100%;height:100%;max-height:none;object-fit:cover}

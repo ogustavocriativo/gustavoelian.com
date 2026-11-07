@@ -760,3 +760,25 @@
 .rk-name b{font-weight:500;font-size:.9375rem}
 .rk-name small{font-size:.75rem;opacity:.7}
 @media (max-width:860px){.rk-cols{grid-template-columns:1fr}}
+/* números da gestão */
+.st-grid{list-style:none;margin:clamp(20px,3vw,36px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.6vw,18px)}
+.st{display:flex;flex-direction:column;gap:6px;padding:clamp(18px,2.4vw,28px);border-radius:22px;background:var(--chip);min-width:0}
+.on-panel .st{background:color-mix(in srgb,var(--onPanel) 8%,transparent)}
+.st b{font-size:clamp(2.25rem,5vw,3.5rem);font-weight:500;letter-spacing:-.04em;line-height:1;color:var(--accentInk)}
+.on-panel .st b{color:var(--accent)}
+.st span{font-size:1rem;font-weight:500;line-height:1.3}
+.st small{font-size:.8125rem;opacity:.7;line-height:1.4}
+@media (max-width:860px){.st-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.st-grid{grid-template-columns:1fr}}
+/* organograma */
+.og-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.6vw,18px);margin-top:clamp(20px,3vw,36px);align-items:start}
+.og{border-radius:22px;background:var(--chip);padding:clamp(16px,2vw,24px)}
+.on-panel .og{background:color-mix(in srgb,var(--onPanel) 8%,transparent)}
+.og h3{font-size:1.125rem;font-weight:500;margin-bottom:12px}
+.og ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.og li{display:flex;flex-direction:column;line-height:1.3}
+.og li small{font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em}
+.og li b{font-weight:500}
+@media (max-width:860px){.og-grid{grid-template-columns:1fr}}
+.rk-head.has-logo h3{margin:0;line-height:0}
+.rk-head.has-logo img{height:clamp(44px,5vw,60px);width:auto;max-width:100%;object-fit:contain}

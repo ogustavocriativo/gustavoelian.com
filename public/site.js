@@ -72,7 +72,7 @@
     list.sort((a, b) => pos(a.id) - pos(b.id) || (srv.order.length ? 0 : (b.featured ? 1 : 0) - (a.featured ? 1 : 0)) || idx.get(a.id) - idx.get(b.id));
     for (const p of list) {
       const pf = p.pf;
-      p.section = p.section === "list" ? "list" : p.section === "academia" ? "academia" : "creative";
+      p.section = ["list", "academia", "universitario"].includes(p.section) ? p.section : "creative";
       p.topicOnly = p.section === "list" && pf?.topicOnly === true;
       p.hasPage = !p.topicOnly && !!(p.case || p.custom || (pf && (pf.banner || pf.gallery?.length || pf.metrics?.length || pf.feedback?.length)));
       p.href = p.hasPage ? `/projetos/${p.id}` : p.url || null;
@@ -219,6 +219,16 @@
     document.getElementById("acadWorks").replaceChildren(...items.map((p) => card(p, data)));
   }
 
+  /* extracurriculares e universitários: atlética, jogos universitários e afins */
+  function universitario(data) {
+    const items = data.list.filter((p) => p.section === "universitario");
+    const sec = document.getElementById("universitario");
+    if (!sec) return;
+    sec.hidden = !items.length;
+    document.querySelectorAll('a[href="#universitario"]').forEach((a) => { (a.closest("li") || a).hidden = !items.length; });
+    document.getElementById("uniWorks").replaceChildren(...items.map((p) => card(p, data)));
+  }
+
   /* lista de experiência: view reduzida em tópicos; com página, com link externo ou só tópico */
   function experience(data) {
     const items = data.list.filter((p) => p.section === "list");
@@ -333,7 +343,7 @@
     if (c.about.text?.length) document.getElementById("aboutText").replaceChildren(...c.about.text.map((t) => h("p", {}, t)));
     if (c.trail?.length) document.getElementById("trail").replaceChildren(...c.trail.map((t) => h("div", { class: "it rv in" }, t.k ? h("small", {}, t.k) : null, h("h3", {}, t.title), t.text ? h("p", {}, t.text) : null)));
   }).catch(() => {});
-  loadData().then((data) => { works(data); academia(data); interestPop(data); experience(data); moodboard(data); numbers(data); quotes(data); reveal(); })
+  loadData().then((data) => { works(data); academia(data); universitario(data); interestPop(data); experience(data); moodboard(data); numbers(data); quotes(data); reveal(); })
     .catch(() => { document.getElementById("works").replaceChildren(h("p", { class: "muted" }, "Não foi possível carregar os projetos. Atualize a página.")); reveal(); });
   reveal();
 })();

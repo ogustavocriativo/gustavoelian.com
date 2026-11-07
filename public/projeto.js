@@ -40,6 +40,21 @@ const R = {
   insta(s) { return PF.insta({ insta: s.items || [], instaTitle: s.title, instaCredit: s.credit, instaKicker: s.kicker, instaLead: s.lead }); },
   hero(s, p, data) {
     const front = data.fronts.find((f) => f.id === p.fronts[0]);
+    // variante cartaz: foto em sangria no painel, título grande e números do evento
+    if (s.variant === "poster") {
+      const title = s.title || p.title, acc = s.titleAccent && title.includes(s.titleAccent) ? s.titleAccent : null;
+      return h("section", { class: "blk hero poster on-panel" },
+        h("div", { class: "pbg", "aria-hidden": "true" }, h("img", { src: src(s.block), alt: "", fetchpriority: "high", style: s.blockPos ? `object-position:${s.blockPos}` : null })),
+        h("div", { class: "wrap" },
+          h("div", { class: "copy" },
+            h("a", { class: "back", href: "/#projetos" }, "← Todos os projetos"),
+            h("span", { class: "eyebrow" }, s.kicker || front?.label),
+            h("h1", {}, acc ? [title.replace(acc, "").trim(), " ", h("em", {}, acc)] : title),
+            h("p", { class: "lead" }, s.lead || p.summary),
+            s.stats ? h("ul", { class: "pstats" }, ...s.stats.map((x) => h("li", {}, h("b", {}, x.value), h("span", {}, x.label)))) : null,
+            s.chips ? h("div", { class: "chips" }, ...s.chips.map((c) => h("span", { class: "chip" }, c))) : null)),
+        s.blockAlt ? h("p", { class: "sr" }, s.blockAlt) : null);
+    }
     return h("section", { class: "blk hero on-panel" }, h("div", { class: "blob" }),
       h("div", { class: "wrap" },
         h("div", { class: "copy" },
@@ -61,7 +76,7 @@ const R = {
     return h("section", { class: `blk split reveal${s.panel ? " panel on-panel" : ""}${s.reverse ? " reverse" : ""}${s.wide ? " wide" : ""}` },
       h("div", { class: "wrap" },
         h("div", { class: "text" }, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title), ...paras(s.text)),
-        s.profile ? igProfile(s.profile, s.title) : s.images ? rotator(s) : s.image ? h("figure", { class: "img", style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : null));
+        s.profile ? igProfile(s.profile, s.title) : s.images ? rotator(s) : s.image ? h("figure", { class: `img${s.ratio ? " cover" : ""}`, style: `margin:0${s.ratio ? `;aspect-ratio:${s.ratio}` : ""}` }, h("img", { src: src(s.image), alt: s.title, loading: "lazy", style: s.imagePos ? `object-position:${s.imagePos}` : null })) : null));
   },
   cards(s) {
     return h("section", { class: "blk cards reveal" }, h("div", { class: "wrap" },

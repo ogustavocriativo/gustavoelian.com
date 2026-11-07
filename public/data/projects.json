@@ -2111,7 +2111,28 @@
       "Realização: Utopia Eventos"
      ],
      "block": "img/cases/jia/hero-01.jpg",
-     "blockAlt": "Atleta beija o troféu do JIA na noite de premiação"
+     "blockAlt": "Atleta beija o troféu do JIA na noite de premiação",
+     "variant": "poster",
+     "titleAccent": "2023",
+     "blockPos": "70% 28%",
+     "stats": [
+      {
+       "value": "34",
+       "label": "atléticas em quadra"
+      },
+      {
+       "value": "4",
+       "label": "dias de jogos"
+      },
+      {
+       "value": "3",
+       "label": "noites de festa"
+      },
+      {
+       "value": "2",
+       "label": "séries: Pequi e Catopê"
+      }
+     ]
     },
     {
      "type": "split",
@@ -2121,7 +2142,8 @@
       "A identidade parte de uma chama: a rivalidade saudável das atléticas acesa em quatro dias de jogos. O JIA ganhou letra própria, a assinatura “Origine experiências extraordinárias” e um vocabulário do Norte de Minas que virou painel e frase de efeito.",
       "Na entrada das festas, o inflável do JIA recebia o público: a marca já era cenário antes da primeira música."
      ],
-     "image": "img/cases/jia/insta-06.jpg"
+     "image": "img/cases/jia/insta-06.jpg",
+     "ratio": "4/5"
     },
     {
      "type": "marquee",
@@ -2145,7 +2167,8 @@
       "O Torneio de Verão, de beach tennis, e o Torneio de Outono, de beach volley, funcionaram como pré-teaser: colocaram as atléticas em quadra meses antes e apresentaram a chama ao público.",
       "Na semana do evento, o Montes Claros Shopping, marca que apresentou o JIA, recebeu o QG de retirada de kits: atletas e público trocavam o ingresso pelo kit dentro do shopping, com credencial, tirante e pulseira personalizados."
      ],
-     "image": "img/cases/jia/cred-01.jpg"
+     "image": "img/cases/jia/cred-01.jpg",
+     "ratio": "4/5"
     },
     {
      "type": "insta",
@@ -2171,7 +2194,8 @@
       "No Montes Claros Shopping, junto ao QG de kits, o Desafio Ehgol levou o clima dos jogos para dentro do mall: gramado sintético, gol com alvos, manequins com uniformes e mascotes recebendo o público.",
       "A ação era gratuita e premiava quem acertasse o arco. Assim, a marca parceira ficava na mão do público e o JIA, que ainda nem tinha começado, já estava na conversa de quem passava pelo shopping."
      ],
-     "image": "img/cases/jia/ehgol.jpg"
+     "image": "img/cases/jia/ehgol.jpg",
+     "ratio": "4/3"
     },
     {
      "type": "youtube",
@@ -2222,7 +2246,7 @@
       {
        "img": "img/cases/jia/aaa/buldogues.webp",
        "name": "Buldogues",
-       "sub": "Medicina Veterinária · Unifipmoc"
+       "sub": "Medicina Veterinária · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/corujao.webp",
@@ -2242,12 +2266,12 @@
       {
        "img": "img/cases/jia/aaa/el-toro.webp",
        "name": "El Toro",
-       "sub": ""
+       "sub": "Engenharias e Arquitetura · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/enfermagem-unifipmoc.webp",
        "name": "Enfermagem",
-       "sub": ""
+       "sub": "UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/enfermagem-fasi.webp",
@@ -2262,12 +2286,12 @@
       {
        "img": "img/cases/jia/aaa/fisioterapia-unifipmoc.webp",
        "name": "Fisioterapia",
-       "sub": "Unifipmoc"
+       "sub": "UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/jaguar.webp",
        "name": "Jaguar",
-       "sub": "Psicologia"
+       "sub": "Psicologia · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/manipuladores.webp",
@@ -2277,7 +2301,7 @@
       {
        "img": "img/cases/jia/aaa/medicina-unifipmoc.webp",
        "name": "Medicina",
-       "sub": "Unifipmoc"
+       "sub": "UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/medicina-unimontes.webp",
@@ -2292,17 +2316,17 @@
       {
        "img": "img/cases/jia/aaa/odontologia-aaacfm.webp",
        "name": "Odontologia",
-       "sub": ""
+       "sub": "UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/overdose.webp",
        "name": "Overdose",
-       "sub": "Farmácia"
+       "sub": "Farmácia · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/pintada.webp",
        "name": "Pintada",
-       "sub": ""
+       "sub": "Unificada · IFNMG"
       },
       {
        "img": "img/cases/jia/aaa/pirata.webp",
@@ -2317,17 +2341,17 @@
       {
        "img": "img/cases/jia/aaa/predador.webp",
        "name": "Predador",
-       "sub": "Direito · Unifipmoc"
+       "sub": "Direito · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/primata.webp",
        "name": "Primata",
-       "sub": "Administração · Unifipmoc"
+       "sub": "Administração · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/publicidade.webp",
        "name": "Publicidade e Propaganda",
-       "sub": "AAAPP"
+       "sub": "AAAPP · UNIFIPMoc"
       },
       {
        "img": "img/cases/jia/aaa/sharks.webp",
@@ -2357,7 +2381,7 @@
       {
        "img": "img/cases/jia/aaa/tubarao.webp",
        "name": "Tubarão",
-       "sub": ""
+       "sub": "Odontologia · FCO"
       },
       {
        "img": "img/cases/jia/aaa/ufmg-ica.webp",
@@ -2367,7 +2391,7 @@
       {
        "img": "img/cases/jia/aaa/vulcanos.webp",
        "name": "Vulcanos",
-       "sub": ""
+       "sub": "Fisioterapia · Funorte"
       }
      ],
      "cols": 6
@@ -2381,7 +2405,8 @@
       "Nas festas de sábado, domingo e segunda, a decoração foi pensada para virar foto: um painel colorido com as frases do evento, o inflável do JIA na entrada e paredes inteiras com as bandeiras de cada atlética.",
       "Cada torcida tinha o seu canto para posar, com copo personalizado na mão e cordão no pescoço. As marcas das atléticas dividiam o espaço com a do evento, e não disputavam com ela."
      ],
-     "image": "img/cases/jia/festas-05.jpg"
+     "image": "img/cases/jia/festas-05.jpg",
+     "ratio": "4/3"
     },
     {
      "type": "photos",
@@ -2407,7 +2432,7 @@
     {
      "type": "photos",
      "compact": true,
-     "cols": 3,
+     "cols": 4,
      "ratio": "4/5",
      "eyebrow": "Kit do participante",
      "title": "Credenciais, tirantes e pulseiras",
@@ -2415,11 +2440,9 @@
      "alt": "Credenciais, tirantes e pulseiras",
      "images": [
       "img/cases/jia/cred-01.jpg",
-      "img/cases/jia/cred-02.jpg",
       "img/cases/jia/cred-03.jpg",
       "img/cases/jia/cred-04.jpg",
-      "img/cases/jia/cred-05.jpg",
-      "img/cases/jia/cred-07.jpg"
+      "img/cases/jia/cred-05.jpg"
      ]
     },
     {
@@ -2463,16 +2486,17 @@
      "eyebrow": "Parte esportiva",
      "title": "Quatro dias de quadra",
      "text": [
-      "Handebol, futsal e vôlei distribuídos em ginásios da cidade, com tabela, arbitragem e torcida organizada por atlética.",
+      "Handebol, futsal, vôlei e basquete distribuídos em ginásios da cidade, com tabela, arbitragem e torcida organizada por atlética.",
       "A produção executiva cuidou do que não aparece na foto: agenda dos ginásios, fornecedores, credenciamento, logística entre quadras e festas e a premiação no palco da última noite."
      ],
      "image": "img/cases/jia/jogos-12.jpg",
-     "reverse": true
+     "reverse": true,
+     "ratio": "4/5"
     },
     {
      "type": "photos",
      "eyebrow": "Nas quadras",
-     "title": "Handebol, futsal e vôlei",
+     "title": "Handebol, futsal, vôlei e basquete",
      "alt": "Jogos do JIA 2023",
      "images": [
       "img/cases/jia/jogos-01.jpg",
@@ -2488,17 +2512,32 @@
       "img/cases/jia/volei-01.jpg",
       "img/cases/jia/volei-02.jpg",
       "img/cases/jia/volei-03.jpg",
-      "img/cases/jia/volei-04.jpg"
+      "img/cases/jia/volei-04.jpg",
+      "img/cases/jia/basquete-01.jpg",
+      "img/cases/jia/basquete-02.jpg"
      ]
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "reverse": true,
+     "eyebrow": "Troféus e medalhas",
+     "title": "Uma chama para cada colocação",
+     "text": [
+      "O troféu do JIA nasceu da mesma chama da identidade: peça vertical, em camadas recortadas nas cores do evento, com a marca, a série e a colocação de cada atlética gravadas na base.",
+      "Troféus para a classificação geral das séries Pequi e Catopê e medalhas no mesmo desenho, entregues no palco da última noite e levados para a pista logo em seguida."
+     ],
+     "image": "img/cases/jia/trofeu-close.jpg",
+     "ratio": "4/5"
     },
     {
      "type": "photos",
      "compact": true,
-     "cols": 3,
+     "cols": 4,
      "ratio": "4/5",
-     "eyebrow": "Premiação",
-     "title": "Troféus da chama",
-     "text": "Troféus em forma de chama, com a marca do JIA e a colocação de cada atlética, entregues no palco da última noite.",
+     "eyebrow": "Na festa",
+     "title": "A taça foi para a pista",
+     "text": "Depois da entrega, os troféus subiram ao palco, passaram de mão em mão e viraram o centro das fotos da última noite.",
      "alt": "Troféus da chama",
      "images": [
       "img/cases/jia/trofeu-01.jpg",
@@ -2506,7 +2545,9 @@
       "img/cases/jia/trofeu-03.jpg",
       "img/cases/jia/trofeu-04.jpg",
       "img/cases/jia/trofeu-05.jpg",
-      "img/cases/jia/trofeu-06.jpg"
+      "img/cases/jia/trofeu-06.jpg",
+      "img/cases/jia/trofeu-07.jpg",
+      "img/cases/jia/trofeu-08.jpg"
      ]
     },
     {
@@ -2521,7 +2562,7 @@
        "champion": {
         "title": "Maior do Norte",
         "name": "Medicina",
-        "sub": "Unifipmoc",
+        "sub": "UNIFIPMoc",
         "img": "img/cases/jia/aaa/medicina-unifipmoc.webp"
        },
        "rest": [
@@ -2548,7 +2589,7 @@
         {
          "img": "img/cases/jia/aaa/predador.webp",
          "name": "Predador",
-         "sub": "Direito · Unifipmoc"
+         "sub": "Direito · UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/medicina-funorte.webp",
@@ -2563,27 +2604,27 @@
         {
          "img": "img/cases/jia/aaa/fisioterapia-unifipmoc.webp",
          "name": "Fisioterapia",
-         "sub": "Unifipmoc"
+         "sub": "UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/publicidade.webp",
          "name": "Publicidade e Propaganda",
-         "sub": "AAAPP"
+         "sub": "AAAPP · UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/overdose.webp",
          "name": "Overdose",
-         "sub": "Farmácia"
+         "sub": "Farmácia · UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/odontologia-aaacfm.webp",
          "name": "Odontologia",
-         "sub": ""
+         "sub": "UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/el-toro.webp",
          "name": "El Toro",
-         "sub": ""
+         "sub": "Engenharias e Arquitetura · UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/sistematicos.webp",
@@ -2598,9 +2639,10 @@
         {
          "img": "img/cases/jia/aaa/jaguar.webp",
          "name": "Jaguar",
-         "sub": "Psicologia"
+         "sub": "Psicologia · UNIFIPMoc"
         }
-       ]
+       ],
+       "logo": "img/cases/jia/serie-pequi.webp"
       },
       {
        "label": "Série",
@@ -2615,12 +2657,12 @@
         {
          "img": "img/cases/jia/aaa/tubarao.webp",
          "name": "Tubarão",
-         "sub": ""
+         "sub": "Odontologia · FCO"
         },
         {
          "img": "img/cases/jia/aaa/buldogues.webp",
          "name": "Buldogues",
-         "sub": "Medicina Veterinária · Unifipmoc"
+         "sub": "Medicina Veterinária · UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/sharks.webp",
@@ -2630,7 +2672,7 @@
         {
          "img": "img/cases/jia/aaa/pintada.webp",
          "name": "Pintada",
-         "sub": ""
+         "sub": "Unificada · IFNMG"
         },
         {
          "img": "img/cases/jia/aaa/administracao-unimontes.webp",
@@ -2645,12 +2687,12 @@
         {
          "img": "img/cases/jia/aaa/primata.webp",
          "name": "Primata",
-         "sub": "Administração · Unifipmoc"
+         "sub": "Administração · UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/vulcanos.webp",
          "name": "Vulcanos",
-         "sub": ""
+         "sub": "Fisioterapia · Funorte"
         },
         {
          "img": "img/cases/jia/aaa/tormenta.webp",
@@ -2665,14 +2707,15 @@
         {
          "img": "img/cases/jia/aaa/enfermagem-unifipmoc.webp",
          "name": "Enfermagem",
-         "sub": ""
+         "sub": "UNIFIPMoc"
         },
         {
          "img": "img/cases/jia/aaa/enfermagem-fasi.webp",
          "name": "Enfermagem",
          "sub": "FASI · Funorte"
         }
-       ]
+       ],
+       "logo": "img/cases/jia/serie-catope.webp"
       }
      ]
     },
@@ -2718,7 +2761,8 @@
       "Fotos: Ventus Formaturas (cobertura oficial do JIA 2023)"
      ]
     }
-   ]
+   ],
+   "section": "universitario"
   },
   {
    "id": "fazenda-encantada-loja",
