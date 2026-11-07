@@ -890,3 +890,30 @@
 .og-md.big > span{font-size:.875rem}
 .og h3.og-lg img{height:52px;width:auto;max-width:150px;object-fit:contain;border-radius:10px}
 .og h3.og-lg img[src$=".svg"]{border-radius:0}
+.lg[data-fx]{transition-duration:.45s;transition-delay:calc(var(--i,0) * 40ms)}
+/* mosaico do split: grade 3×3 com destaque 2×2, células quadradas e preenchidas */
+.split .img.mos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:auto;gap:8px;background:none;border-radius:22px;overflow:hidden;align-self:center}
+.split .img.mos figure{position:relative;aspect-ratio:1;margin:0;overflow:hidden;border-radius:6px}
+.split .img.mos figure.m0{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.split .img.mos img{position:absolute;inset:0;width:100%;height:100%;max-height:none;object-fit:cover}
+@media (max-width:600px){
+  .split .img.mos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .split .img.mos figure.m0{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}
+  .split .img.mos figure.m5{display:none}
+}
+/* resultados no celular: rótulo enxuto, ícone e medalha menores, texto com mais largura */
+@media (max-width:600px){
+  .og{padding:18px 16px}
+  .og li.og-x{gap:12px}
+  .og-ic{width:42px;height:42px}
+  .og-t small{font-size:.6875rem;letter-spacing:.04em;text-transform:none;opacity:.75}
+  .og-t b{font-size:1rem}
+  .og-md{width:34px;height:34px}
+  .og-md > span{font-size:.625rem}
+  .og h3.og-lg img{height:44px}
+}
+.og-t small{text-wrap:balance}
+@media (max-width:600px){
+  .photos.compact figcaption{position:static;margin-top:6px;padding:0;background:none;color:inherit;backdrop-filter:none;-webkit-backdrop-filter:none;font-size:.75rem;opacity:.8}
+  .photos.compact figure:has(figcaption){overflow:visible}
+}

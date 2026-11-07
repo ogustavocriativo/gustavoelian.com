@@ -411,8 +411,8 @@ window.CaseFX = (() => {
 
     // Parede de logos (ex.: atléticas participantes): logo + nome + vínculo, em grade
     R.logos = (s) => h("section", { class: `blk logos${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
-      h("ul", { class: "lg-grid", style: s.cols ? `--cols:${s.cols}` : null }, ...s.items.map((it, i) => h("li", { class: "lg", style: `--i:${i}`, "data-fx": "" },
-        h("span", { class: "lg-fig" }, h("img", { src: src(it.img), alt: `${it.name}${it.sub ? " · " + it.sub : ""}`, loading: "lazy" })),
+      h("ul", { class: "lg-grid", style: s.cols ? `--cols:${s.cols}` : null }, ...s.items.map((it, i) => h("li", { class: "lg", style: `--i:${i % 6}`, "data-fx": "" },
+        h("span", { class: "lg-fig" }, h("img", { src: src(it.img), alt: `${it.name}${it.sub ? " · " + it.sub : ""}`, loading: i < 12 ? "eager" : "lazy", decoding: "async", width: 120, height: 120 })),
         h("b", {}, it.name), it.sub ? h("small", {}, it.sub) : null)))));
 
     // Demonstração do sistema do II ENEHISP (arquivo próprio: /enehisp-demo.js)

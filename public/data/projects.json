@@ -2506,24 +2506,6 @@
     },
     {
      "type": "photos",
-     "compact": true,
-     "cols": 3,
-     "ratio": "4/5",
-     "eyebrow": "Canecas personalizadas",
-     "title": "Uma caneca por atlética",
-     "text": "Canecas e copos com a marca do JIA e as cores de cada atlética: lembrança que voltava para casa e aparecia em todas as fotos das noites.",
-     "alt": "Uma caneca por atlética",
-     "images": [
-      "img/cases/jia/caneca-01.jpg",
-      "img/cases/jia/caneca-02.jpg",
-      "img/cases/jia/caneca-03.jpg",
-      "img/cases/jia/caneca-04.jpg",
-      "img/cases/jia/caneca-05.jpg",
-      "img/cases/jia/caneca-06.jpg"
-     ]
-    },
-    {
-     "type": "photos",
      "eyebrow": "As noites",
      "title": "3 noites de festa",
      "alt": "Festas do JIA 2023",
@@ -3098,7 +3080,7 @@
      "captions": [
       "Torcida organizada da atlética na Copa FIP 2022",
       "Time do Dragon Cheers",
-      "Time de vôlei 2022–23",
+      "Time de vôlei 2022‑23",
       "Colégio de presidentes da AAA"
      ]
     },
@@ -3149,19 +3131,19 @@
          "medal": 1
         },
         {
-         "role": "Natação masculina · nado livre",
+         "role": "Natação masc. · nado livre",
          "name": "1º lugar",
          "icon": "natacao",
          "medal": 1
         },
         {
-         "role": "Natação masculina · nado peito",
+         "role": "Natação masc. · nado peito",
          "name": "1º lugar",
          "icon": "natacao",
          "medal": 1
         },
         {
-         "role": "Atletismo masculino · 400 m",
+         "role": "Atletismo masc. · 400 m",
          "name": "1º lugar",
          "icon": "atletismo",
          "medal": 1
@@ -3179,7 +3161,7 @@
          "medal": 2
         },
         {
-         "role": "Atletismo masculino · 800 m",
+         "role": "Atletismo masc. · 800 m",
          "name": "2º lugar",
          "icon": "atletismo",
          "medal": 2
@@ -3203,13 +3185,13 @@
        "title": "Jogos InterAtléticas (JIA)",
        "items": [
         {
-         "role": "Natação · nado livre",
+         "role": "Natação · nado livre",
          "name": "1º lugar",
          "icon": "natacao",
          "medal": 1
         },
         {
-         "role": "Natação · nado costas",
+         "role": "Natação · nado costas",
          "name": "2º lugar",
          "icon": "natacao",
          "medal": 2
@@ -3227,19 +3209,19 @@
          "medal": 2
         },
         {
-         "role": "Torneio de Handebol UNIFIPMoc",
+         "role": "Torneio de Handebol",
          "name": "3º lugar feminino",
          "icon": "handebol",
          "medal": 3
         },
         {
-         "role": "Torneio de Verão · beach volley",
+         "role": "Torneio de Verão · beach volley",
          "name": "4º lugar (tiebreak)",
          "icon": "praia",
          "medal": 4
         },
         {
-         "role": "Copa Interatléticas (CIA)",
+         "role": "Copa InterAtléticas (CIA)",
          "name": "Participação não esportiva",
          "icon": "bandeira"
         }
