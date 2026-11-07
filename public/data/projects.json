@@ -2221,7 +2221,7 @@
     "trade"
    ],
    "summary": "Produção executiva e construção da cenografia do Papo Calcinha com Kamila Simioni, edição 2022: palco em vermelho e preto para um auditório lotado de mulheres.",
-   "cover": "img/cases/papo/palco.jpg",
+   "cover": "video/papo/capa.jpg",
    "theme": {
     "bg": "#F6F1EF",
     "ink": "#1B1514",
@@ -2329,7 +2329,9 @@
       "Produção executiva e construção de cenografia: Gustavo Elian"
      ]
     }
-   ]
+   ],
+   "coverPoster": "video/papo/capa.jpg",
+   "coverVideo": "video/papo/capa.mp4"
   },
   {
    "id": "jia",
@@ -3147,7 +3149,7 @@
     "social"
    ],
    "summary": "Presidi a Atlética de Publicidade e Propaganda da UNIFIPMoc e reativei a associação depois da pausa da pandemia: diretoria nova, manual de marca, propostas de patrocínio, produtos, pódios em seis competições e um Instagram que multiplicou o alcance.",
-   "cover": "img/cases/aaapp/capa.jpg",
+   "cover": "video/aaapp/capa.jpg",
    "theme": {
     "bg": "#F4F2F8",
     "ink": "#1A1426",
@@ -3616,7 +3618,9 @@
       "Marca Dragão da PP e manual do MKT: equipe de marketing da AAAPP"
      ]
     }
-   ]
+   ],
+   "coverPoster": "video/aaapp/capa.jpg",
+   "coverVideo": "video/aaapp/capa.mp4"
   },
   {
    "id": "fazenda-encantada-loja",
@@ -4213,7 +4217,7 @@
    ],
    "summary": "App de desafios para colaboradores, com registro de atividades, rankings ao vivo, cards de story e painel de TV para o escritório.",
    "url": "https://focados.netlify.app",
-   "cover": "img/cases/focado/sim-tv-sala.jpg",
+   "cover": "video/focados/capa.jpg",
    "theme": {
     "bg": "#F4F6FA",
     "ink": "#0E2340",
@@ -4934,7 +4938,9 @@
      "fg": "#F4F6FA"
     }
    ],
-   "coverStyle": "photo"
+   "coverStyle": "photo",
+   "coverPoster": "video/focados/capa.jpg",
+   "coverVideo": "video/focados/capa.mp4"
   },
   {
    "id": "investiga-gazeta",
