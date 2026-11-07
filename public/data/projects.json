@@ -2765,6 +2765,454 @@
    "section": "universitario"
   },
   {
+   "id": "aaapp",
+   "case": true,
+   "section": "universitario",
+   "title": "Dragão da PP",
+   "kind": "Presidência de atlética · marca, patrocínio e dados",
+   "client": "AAAPP · Publicidade e Propaganda UNIFIPMoc",
+   "year": "2022–23",
+   "fronts": [
+    "branding",
+    "social"
+   ],
+   "summary": "Presidi a Atlética de Publicidade e Propaganda da UNIFIPMoc e reativei a associação depois da pausa da pandemia: diretoria nova, manual de marca, propostas de patrocínio, produtos, pódios em seis competições e um Instagram que multiplicou o alcance.",
+   "cover": "img/cases/aaapp/capa.jpg",
+   "theme": {
+    "bg": "#F4F2F8",
+    "ink": "#1A1426",
+    "soft": "#5B5468",
+    "panel": "#2C1A4F",
+    "onPanel": "#F3F0FA",
+    "accent": "#11D89C",
+    "accentInk": "#442A75",
+    "chip": "#E7E2F1"
+   },
+   "sections": [
+    {
+     "type": "hero",
+     "kicker": "Presidência 2022–23 · Reativação · Marca · Patrocínio",
+     "title": "Dragão da PP",
+     "lead": "Reativei oficialmente a AAAPP em 1º de abril de 2022, como vice-presidente e presidente eleito, depois da pausa imposta pela pandemia, e assumi a presidência em 1º de julho. Montei a diretoria, organizei a marca, abri o caminho para patrocínio e levei o curso de volta às quadras.",
+     "chips": [
+      "Reativação: 01/04/2022",
+      "Presidência: desde 01/07/2022",
+      "AAAPP · UNIFIPMoc",
+      "Comunicação Social · Publicidade e Propaganda"
+     ],
+     "block": "img/cases/aaapp/dragao.webp",
+     "blockFit": "contain",
+     "blockAlt": "Mascote da AAAPP: dragão roxo com a marca Publicidade e Propaganda"
+    },
+    {
+     "type": "stats",
+     "eyebrow": "Os números da retomada",
+     "title": "De volta ao radar dos universitários",
+     "text": "Métricas do Instagram @atleticappunifip entre abril e agosto de 2022, apresentadas às marcas na proposta de patrocínio.",
+     "items": [
+      {
+       "value": "+11.645%",
+       "label": "contas alcançadas em abril",
+       "note": "6,7 mil contas, contra o período anterior"
+      },
+      {
+       "value": "19,3 mil",
+       "label": "contas alcançadas em 90 dias",
+       "note": "maio a agosto, +139%"
+      },
+      {
+       "value": "928",
+       "label": "contas com engajamento",
+       "note": "+237% no mesmo período"
+      },
+      {
+       "value": "16,7 mil",
+       "label": "visualizações no reel mais visto",
+       "note": "#OrgulhoDeSer"
+      },
+      {
+       "value": "24",
+       "label": "pessoas na diretoria",
+       "note": "indicada em junho de 2022"
+      },
+      {
+       "value": "40",
+       "label": "atletas em média",
+       "note": "em todas as modalidades"
+      }
+     ]
+    },
+    {
+     "type": "bars",
+     "eyebrow": "Reels",
+     "title": "Visualizações dos reels da gestão",
+     "items": [
+      {
+       "label": "#OrgulhoDeSer",
+       "value": 16700,
+       "display": "16,7 mil"
+      },
+      {
+       "label": "Teaser do dragão",
+       "value": 10100,
+       "display": "10,1 mil"
+      },
+      {
+       "label": "3º reel mais visto",
+       "value": 5067,
+       "display": "5.067"
+      },
+      {
+       "label": "4º reel mais visto",
+       "value": 4919,
+       "display": "4.919"
+      }
+     ],
+     "note": "Números do Instagram no fim do trimestre de maio a julho de 2022."
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Ponto de partida",
+     "title": "Dois anos parada, uma gestão para reacender",
+     "text": [
+      "Fundada em 2017, a Associação Atlética Acadêmica de Publicidade e Propaganda da UNIFIPMoc teve as atividades descontinuadas pelas dificuldades da pandemia de COVID-19. Em 1º de abril de 2022 ela voltou oficialmente, com a nova gestão eleita.",
+      "O Instagram virou o principal canal com os alunos e o argumento central para as marcas: alcance, engajamento e uma comunidade que pedia caneca e camisa até de outras cidades."
+     ],
+     "image": "img/cases/aaapp/slide-p-07.jpg",
+     "ratio": "16/9"
+    },
+    {
+     "type": "strip",
+     "title": "Manual do MKT · Como cuidar do seu dragão",
+     "images": [
+      "img/cases/aaapp/manual-01.jpg",
+      "img/cases/aaapp/manual-04.jpg",
+      "img/cases/aaapp/manual-05.jpg",
+      "img/cases/aaapp/manual-06.jpg",
+      "img/cases/aaapp/manual-07.jpg",
+      "img/cases/aaapp/manual-08.jpg",
+      "img/cases/aaapp/manual-09.jpg",
+      "img/cases/aaapp/manual-10.jpg",
+      "img/cases/aaapp/manual-11.jpg",
+      "img/cases/aaapp/manual-12.jpg",
+      "img/cases/aaapp/manual-17.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "4/5",
+     "eyebrow": "Produtos",
+     "title": "Uniforme, camisa e caneca",
+     "text": "Uniforme esportivo para uma média de 40 atletas, camisa da diretoria e caneca premium com o dragão de um lado e a frase da Dragon Gang do outro.",
+     "alt": "Produtos da AAAPP",
+     "images": [
+      "img/cases/aaapp/uniforme.jpg",
+      "img/cases/aaapp/camisa-diretoria.jpg",
+      "img/cases/aaapp/caneca.jpg"
+     ]
+    },
+    {
+     "type": "cards",
+     "eyebrow": "Patrocínio",
+     "title": "Duas cotas, uma proposta clara",
+     "items": [
+      {
+       "kind": "Patrocinador Fogo · 1 vaga · 5 meses",
+       "title": "R$ 800",
+       "text": "Marca na frente da camisa (cerca de 8 cm), dois reels em collab, visibilidade em todos os eventos e ações especiais online e offline."
+      },
+      {
+       "kind": "Patrocinador do Dragão · 3 vagas · 3 meses",
+       "title": "R$ 500",
+       "text": "Marca nas costas da camisa (cerca de 5 cm), um reel em collab, visibilidade em todos os eventos e ações especiais."
+      },
+      {
+       "kind": "Uniforme",
+       "title": "R$ 125 por atleta",
+       "text": "Camisa, short e meião para cerca de 40 atletas: o patrocínio pagava o uniforme que levava a marca para a quadra."
+      }
+     ]
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Calendário do patrocínio",
+     "title": "Onde a marca aparecia",
+     "image": "img/cases/aaapp/slide-p-15.jpg",
+     "items": [
+      {
+       "t": "15/08 · Recepção de calouros",
+       "d": "Primeiro contato dos novos alunos com a atlética, com a presença de sete presidentes de outras atléticas."
+      },
+      {
+       "t": "27/08 · ARCA",
+       "d": "Calourada unificada da FIP, em que a AAAPP fez parte da comissão central organizadora das duas edições."
+      },
+      {
+       "t": "07 a 10/09 · Copa FIP",
+       "d": "Jogos com concentração antes e depois das partidas e produção de conteúdo com o patrocinador."
+      },
+      {
+       "t": "24 e 25/09 · CAMPI",
+       "d": "Campeonato entre atléticas, com o uniforme e a marca dos patrocinadores em quadra."
+      },
+      {
+       "t": "19/11 · Dragon Fest",
+       "d": "Festa da atlética planejada para 800 pessoas, com pista, camarote do patrocinador e backstage."
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Contra-proposta",
+     "title": "Império do Açaí como patrocinador oficial",
+     "text": [
+      "Para a marca que topou a parceria, a proposta virou um plano de ativação: concentrações nos dias de jogo, conteúdo duas vezes por mês e um camarote com o nome da marca no Dragon Fest.",
+      "O festival foi desenhado em três espaços (pista, Camarote Império e backstage com bar open) para um público inicial de 800 pessoas."
+     ],
+     "image": "img/cases/aaapp/slide-c-15.jpg",
+     "ratio": "16/9"
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 2,
+     "ratio": "16/9",
+     "eyebrow": "Participações em 2022",
+     "title": "A atlética fora de casa",
+     "text": "Convidada da CIA 2022 em Uberaba, marca usada na campanha de captação da UNIFIPMoc e comissão central organizadora das duas ARCAs.",
+     "alt": "Lâminas da proposta",
+     "images": [
+      "img/cases/aaapp/slide-c-08.jpg",
+      "img/cases/aaapp/slide-c-14.jpg",
+      "img/cases/aaapp/slide-p-18.jpg",
+      "img/cases/aaapp/slide-p-19.jpg"
+     ]
+    },
+    {
+     "type": "stats",
+     "panel": true,
+     "eyebrow": "Em quadra",
+     "title": "Pódios em seis competições",
+     "text": "Resultados da AAAPP nas competições disputadas sob a gestão.",
+     "items": [
+      {
+       "value": "6",
+       "label": "competições disputadas",
+       "note": "de torneios internos aos Jogos InterAtléticas"
+      },
+      {
+       "value": "5",
+       "label": "primeiros lugares",
+       "note": "xadrez, natação e atletismo"
+      },
+      {
+       "value": "5",
+       "label": "segundos lugares",
+       "note": "handebol, futsal, Arraiá, atletismo e natação"
+      },
+      {
+       "value": "2",
+       "label": "terceiros lugares",
+       "note": "handebol feminino e natação masculina"
+      }
+     ]
+    },
+    {
+     "type": "org",
+     "eyebrow": "Resultados",
+     "title": "Competição por competição",
+     "groups": [
+      {
+       "title": "Copa FIP",
+       "items": [
+        {
+         "role": "Xadrez",
+         "name": "1º lugar geral"
+        },
+        {
+         "role": "Natação masculina · nado livre",
+         "name": "1º lugar"
+        },
+        {
+         "role": "Natação masculina · nado peito",
+         "name": "1º lugar"
+        },
+        {
+         "role": "Atletismo masculino · 400 m",
+         "name": "1º lugar"
+        },
+        {
+         "role": "Handebol feminino",
+         "name": "2º lugar geral"
+        },
+        {
+         "role": "Futsal feminino",
+         "name": "2º lugar geral"
+        },
+        {
+         "role": "Atletismo masculino · 800 m",
+         "name": "2º lugar"
+        },
+        {
+         "role": "Natação masculina",
+         "name": "3º lugar geral"
+        },
+        {
+         "role": "Vôlei masculino",
+         "name": "4º lugar geral"
+        }
+       ]
+      },
+      {
+       "title": "Jogos InterAtléticas (JIA)",
+       "items": [
+        {
+         "role": "Natação · nado livre",
+         "name": "1º lugar"
+        },
+        {
+         "role": "Natação · nado costas",
+         "name": "2º lugar"
+        }
+       ]
+      },
+      {
+       "title": "Outras competições",
+       "items": [
+        {
+         "role": "Arraiá da UNIFIPMoc",
+         "name": "2º lugar"
+        },
+        {
+         "role": "Torneio de Handebol UNIFIPMoc",
+         "name": "3º lugar feminino"
+        },
+        {
+         "role": "Torneio de Verão · beach volley",
+         "name": "4º lugar (tiebreak)"
+        },
+        {
+         "role": "Copa Interatléticas (CIA)",
+         "name": "Participação não esportiva"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "org",
+     "eyebrow": "Diretoria 2022–23",
+     "title": "Quem tocou a gestão",
+     "groups": [
+      {
+       "title": "Presidência",
+       "items": [
+        {
+         "role": "Presidente",
+         "name": "Gustavo Elian"
+        },
+        {
+         "role": "Vice-presidente",
+         "name": "Maria Ester"
+        },
+        {
+         "role": "Secretária",
+         "name": "Emilly Gabriela"
+        },
+        {
+         "role": "Tesoureira",
+         "name": "Vitória Guimarães"
+        }
+       ]
+      },
+      {
+       "title": "Esportes, eventos e torcida",
+       "items": [
+        {
+         "role": "Esportes",
+         "name": "Dayverth Francisca · Gabriel Queiroz"
+        },
+        {
+         "role": "Eventos",
+         "name": "Bruna Lacerda · Ana Vitória"
+        },
+        {
+         "role": "Torcida",
+         "name": "Vivian Fonseca"
+        },
+        {
+         "role": "Cheerleaders",
+         "name": "Rodrigo Souza"
+        },
+        {
+         "role": "Charanga",
+         "name": "Luiza Coimbra"
+        }
+       ]
+      },
+      {
+       "title": "Marketing e negócios",
+       "items": [
+        {
+         "role": "Marketing",
+         "name": "Everton Lopo"
+        },
+        {
+         "role": "Patrocínio",
+         "name": "Paulo Henrique"
+        },
+        {
+         "role": "Produtos",
+         "name": "Fabrício Pinheiro"
+        },
+        {
+         "role": "Parcerias",
+         "name": "Davi Ribeiro"
+        },
+        {
+         "role": "Vendas",
+         "name": "Maria Marcelly"
+        },
+        {
+         "role": "Patrimônio",
+         "name": "Samara Silva"
+        },
+        {
+         "role": "Inovação",
+         "name": "João Rafael"
+        },
+        {
+         "role": "Integração",
+         "name": "Luana Castro"
+        },
+        {
+         "role": "Captação",
+         "name": "Rosália"
+        },
+        {
+         "role": "Comissões",
+         "name": "Samuel Carvalho · Marcos Henrique · Isabella Prates · Pedro Botelho"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "credits",
+     "items": [
+      "Presidência da gestão 2022–23, propostas de patrocínio e direção de marca: Gustavo Elian",
+      "Associação Atlética Acadêmica de Publicidade e Propaganda (AAAPP) · UNIFIPMoc",
+      "Marca Dragão da PP e manual do MKT: equipe de marketing da AAAPP"
+     ]
+    }
+   ]
+  },
+  {
    "id": "fazenda-encantada-loja",
    "title": "Fazenda Encantada",
    "kind": "Identidade visual, embalagens e loja",

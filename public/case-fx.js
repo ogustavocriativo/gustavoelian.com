@@ -340,6 +340,17 @@ window.CaseFX = (() => {
       h("ul", { class: "st-grid" }, ...s.items.map((it, i) => h("li", { class: "st", style: `--i:${i}`, "data-fx": "" },
         h("b", {}, it.value), h("span", {}, it.label), it.note ? h("small", {}, it.note) : null)))));
 
+    // Barras horizontais: comparação simples de valores (ex.: visualizações por reel)
+    R.bars = (s) => {
+      const max = Math.max(...s.items.map((it) => it.value));
+      return h("section", { class: `blk bars${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+        h("ul", { class: "br-list", role: "list" }, ...s.items.map((it) => h("li", { class: "br" },
+          h("span", { class: "br-l" }, it.label),
+          h("span", { class: "br-t", "aria-hidden": "true" }, h("i", { style: `--w:${Math.max(4, (it.value / max) * 100).toFixed(1)}%` })),
+          h("b", { class: "br-v" }, it.display || String(it.value))))),
+        s.note ? h("p", { class: "br-note" }, s.note) : null));
+    };
+
     // Organograma: grupos de cargos com nomes
     R.org = (s) => h("section", { class: `blk org${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", {}, g.title),
