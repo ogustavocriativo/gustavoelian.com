@@ -33,8 +33,8 @@
    "fronts": [
     "web"
    ],
-   "summary": "Site institucional, sites dos médicos, landing page de protocolo, link na bio, aplicativo e ferramentas de conteúdo.",
-   "cover": "img/cases/institutodemian/d0.jpg",
+   "summary": "Site do instituto, sites dos médicos, três protocolos com marca própria, link na bio e ferramentas internas, todos com a mesma linguagem e o mesmo caminho até a consulta.",
+   "cover": "img/cases/demian26/inst-d-00.webp",
    "theme": {
     "bg": "#F6F1EC",
     "ink": "#2B2522",
@@ -48,67 +48,81 @@
    "sections": [
     {
      "type": "hero",
-     "kicker": "Web · IA · Dev",
-     "title": "Universo Instituto Demian",
-     "lead": "Um ecossistema digital para um instituto médico em Assis/SP. Cada médico, cada protocolo e cada canal ganhou o seu lugar, e todos falam a mesma língua.",
-     "image": "img/cases/institutodemian/d0.jpg",
-     "phone": "img/cases/institutodemian/m0.jpg",
+     "kicker": "Web · Marca · IA · Dev",
+     "title": "Ecossistema Demian",
+     "lead": "Um instituto médico em Assis/SP com dois médicos, três protocolos próprios e muitos canais. Cada um ganhou o seu lugar, e todos levam ao mesmo ponto: a consulta.",
+     "image": "img/cases/demian26/inst-d-00.webp",
+     "phone": "img/cases/demian26/inst-m-00.webp",
      "chips": [
       "Instituto Demian",
       "Assis/SP",
       "2026",
-      "7 produtos digitais"
-     ],
-     "block": "img/cases/institutodemian/hero-block.jpg"
+      "6 sites no ar",
+      "3 protocolos com marca"
+     ]
     },
     {
      "type": "split",
      "eyebrow": "O ecossistema",
-     "title": "Do primeiro clique à consulta",
+     "title": "Um instituto no centro, cada cuidado com a sua porta",
      "text": [
-      "O site do instituto apresenta a equipe e os cuidados. Os sites da Dra. Mônica e do Dr. Marcelo aprofundam cada especialidade. A landing page do PELVEiD® conduz à pré-avaliação.",
-      "Em todas as páginas, o caminho termina no mesmo lugar: o agendamento pelo WhatsApp, atendido pela equipe do instituto."
+      "O site do Instituto Demian é o centro: apresenta os dois médicos, os cuidados e o caminho para agendar.",
+      "Em volta dele ficam o site da Dra. Mônica, o link na bio do Dr. Marcelo e as páginas de cada protocolo (PELVEiD®, GLÚTEO iD e CONTORNE iD). Cada página fala com um público, mas todas terminam no WhatsApp da equipe do instituto."
      ],
-     "image": "img/cases/dramonica/d0.jpg"
+     "image": "img/cases/demian26/monica-d-00.webp"
     },
     {
      "type": "cards",
-     "eyebrow": "Peças",
+     "eyebrow": "No ar",
      "title": "O que foi construído",
      "items": [
       {
        "title": "Instituto Demian",
        "kind": "Site institucional",
-       "text": "Instituto, médicos, cuidados, como chegar e agendamento.",
-       "url": "https://institutodemian.netlify.app",
-       "image": "img/cases/institutodemian/d4.jpg"
+       "text": "Médicos, cuidados, teleconsulta, como chegar e agendamento em três passos.",
+       "url": "https://instituto-demian.pages.dev",
+       "image": "img/cases/demian26/inst-d-02.webp"
       },
       {
        "title": "Dra. Mônica Demian",
        "kind": "Site profissional",
-       "text": "Método de acompanhamento, cuidados, campanha Outubro Mulher e dúvidas frequentes.",
-       "url": "https://dramonica.netlify.app",
-       "image": "img/cases/dramonica/d2.jpg"
+       "text": "Emagrecimento, sono e energia com método, primeira turma do PELVEiD® e dúvidas frequentes.",
+       "url": "https://dramonicademian.com.br",
+       "image": "img/cases/demian26/monica-d-00.webp"
       },
       {
        "title": "PELVEiD®",
-       "kind": "Landing page",
-       "text": "Protocolos de cuidado íntimo e pélvico, com pré-avaliação on-line.",
-       "url": "https://pelveid.netlify.app",
-       "image": "img/cases/pelveid/d0.jpg"
+       "kind": "Protocolo · landing page",
+       "text": "Cuidado íntimo e pélvico: sinais do corpo, simulador do assoalho pélvico, dois protocolos e pré-avaliação em cinco perguntas.",
+       "url": "https://pelveid.med.br",
+       "image": "img/cases/demian26/pelve-d-00.webp"
+      },
+      {
+       "title": "GLÚTEO iD",
+       "kind": "Protocolo · landing page",
+       "text": "Bioestímulo de colágeno para os glúteos, jornada em seis etapas e pré-avaliação.",
+       "url": "https://dramonicademian.com.br/gluteo-id/",
+       "image": "img/cases/demian26/gluteo-d-00.webp"
+      },
+      {
+       "title": "CONTORNE iD",
+       "kind": "Protocolo · landing page",
+       "text": "Biocontorno corporal com mesoterapia, do sinal à reavaliação.",
+       "url": "https://dramonicademian.com.br/contorne-id/",
+       "image": "img/cases/demian26/contorne-d-00.webp"
       },
       {
        "title": "Dr. Marcelo Demian",
        "kind": "Link na bio",
-       "text": "Agendamento, teleconsulta, site do instituto e contato em uma página.",
-       "url": "https://drmarcelodemian.netlify.app",
-       "image": "img/cases/drmarcelodemian/d0.jpg"
+       "text": "Agendamento, teleconsulta de tireoide, site do instituto e como chegar, em uma tela.",
+       "url": "https://dr-marcelo-demian.pages.dev",
+       "image": "img/cases/demian26/marcelo-m-00.webp",
+       "tall": true
       },
       {
        "title": "Tá Feita IA",
        "kind": "Aplicativo",
        "text": "App da linha Cuidado de Mulher, com acesso por convite enviado pela clínica no WhatsApp.",
-       "url": "https://tafeita-ia.netlify.app",
        "image": "img/cases/tafeita-ia/m0.jpg",
        "tall": true
       },
@@ -116,40 +130,49 @@
        "title": "Aprovação de conteúdo",
        "kind": "Ferramenta interna",
        "text": "O médico aprova cada post, comenta ajustes e devolve tudo pelo WhatsApp.",
-       "url": "https://aprova-drmarcelo.netlify.app",
        "image": "img/cases/aprova-drmarcelo/d3.jpg"
       },
       {
        "title": "Calendário editorial",
        "kind": "Ferramenta interna",
        "text": "Ciclo de conteúdo de quatro semanas, com roteiro de gravação para cada dia.",
-       "url": "https://calendario-drmarcelodemian.netlify.app",
        "image": "img/cases/calendario-drmarcelodemian/d0.jpg"
       }
      ]
     },
     {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Família de marcas",
+     "title": "Três protocolos, um mesmo sobrenome",
+     "text": [
+      "PELVEiD®, GLÚTEO iD e CONTORNE iD dividem a mesma assinatura (o “iD”), a mesma tipografia e a mesma estrutura de página. Muda a cor, muda a textura, muda o público.",
+      "Assim a paciente reconhece o instituto em qualquer protocolo, e um novo cuidado entra no ecossistema sem começar do zero."
+     ],
+     "image": "img/cases/demian26/monica-d-04.webp"
+    },
+    {
      "type": "steps",
      "panel": true,
      "eyebrow": "Jornada",
-     "title": "Como o paciente percorre o ecossistema",
-     "image": "img/cases/pelveid/m0.jpg",
+     "title": "Como a paciente percorre o ecossistema",
+     "image": "img/cases/demian26/pelve-m-00.webp",
      "items": [
       {
        "t": "Encontra",
-       "d": "Chega pelo Instagram, pelo link na bio ou pela busca e cai no site do instituto ou do médico."
+       "d": "Chega pelo Instagram, pelo link na bio ou pela busca, no site do instituto, da médica ou do protocolo."
       },
       {
-       "t": "Entende",
-       "d": "Lê sobre o cuidado certo para o seu caso, em linguagem clara, com respostas às dúvidas mais comuns."
+       "t": "Se reconhece",
+       "d": "Marca os sinais que sente e entende, em linguagem clara, que aquilo tem nome, causa e cuidado."
       },
       {
-       "t": "Agenda",
-       "d": "Fala com a equipe pelo WhatsApp, a partir de qualquer página."
+       "t": "Faz a pré-avaliação",
+       "d": "Responde cinco perguntas rápidas; as respostas seguem prontas para a equipe pelo WhatsApp."
       },
       {
-       "t": "Acompanha",
-       "d": "Recebe o convite do aplicativo e segue o cuidado entre uma consulta e outra."
+       "t": "Agenda e acompanha",
+       "d": "Consulta presencial ou teleconsulta, plano por escrito e retornos combinados."
       }
      ]
     },
@@ -157,26 +180,28 @@
      "type": "strip",
      "title": "Telas do ecossistema",
      "images": [
-      "img/cases/institutodemian/d5.jpg",
-      "img/cases/dramonica/d4.jpg",
-      "img/cases/pelveid/d3.jpg",
-      "img/cases/dramonica/d3.jpg",
-      "img/cases/pelveid/d4.jpg",
-      "img/cases/aprova-drmarcelo/d1.jpg",
-      "img/cases/calendario-drmarcelodemian/d2.jpg"
+      "img/cases/demian26/pelve-d-01.webp",
+      "img/cases/demian26/pelve-d-03.webp",
+      "img/cases/demian26/gluteo-d-05.webp",
+      "img/cases/demian26/monica-d-01.webp",
+      "img/cases/demian26/pelve-d-06.webp",
+      "img/cases/demian26/gluteo-d-06.webp",
+      "img/cases/demian26/inst-d-03.webp",
+      "img/cases/demian26/monica-d-07.webp",
+      "img/cases/demian26/pelve-d-07.webp"
      ]
     },
     {
      "type": "split",
-     "reverse": true,
      "eyebrow": "Bastidores",
      "title": "Ferramentas para o conteúdo não parar",
      "text": [
-      "Além do que o paciente vê, o ecossistema tem ferramentas para a equipe: um calendário editorial com roteiros prontos e uma página de aprovação, onde o médico revisa cada publicação antes de ir ao ar."
+      "Além do que a paciente vê, o ecossistema tem ferramentas para a equipe: um calendário editorial com roteiros prontos e uma página de aprovação, onde o médico revisa cada publicação antes de ir ao ar."
      ],
      "image": "img/cases/aprova-drmarcelo/d2.jpg"
     }
-   ]
+   ],
+   "url": "https://instituto-demian.pages.dev"
   },
   {
    "id": "ibi-shopping",
@@ -3490,8 +3515,8 @@
     "branding",
     "web"
    ],
-   "summary": "Marca, sistema de rótulos com uma lenda por sabor, ilustrações do território e loja virtual para doces e laticínios artesanais da Serra do Espinhaço.",
-   "url": "https://fazencantada.netlify.app",
+   "summary": "Marca, sistema de rótulos com uma lenda por sabor, ilustrações do território e a loja fazendaencantada.store, com pedido pelo WhatsApp e painel interno de pedidos, estoque e financeiro.",
+   "url": "https://fazendaencantada.store",
    "cover": "img/cases/fazencantada/marca/mk-outdoor-arvores.jpg",
    "case": true,
    "year": "2026",
@@ -3535,7 +3560,8 @@
          "7 rótulos de geleia",
          "Ilustração",
          "Manual de identidade",
-         "Loja virtual"
+         "Loja virtual",
+         "Painel interno"
         ],
         "size": "l",
         "align": "end"
@@ -3999,11 +4025,11 @@
        "bg": "#4D4107",
        "fg": "#F0EFD5",
        "text": {
-        "eyebrow": "Loja virtual",
+        "eyebrow": "fazendaencantada.store",
         "title": "A marca vira loja",
-        "body": "Site com catálogo, carrinho e lembranças de Itacambira, construído sobre o mesmo sistema visual.",
+        "body": "Catálogo, presentes e lembranças de Itacambira no mesmo sistema visual dos rótulos.",
         "link": {
-         "href": "https://fazencantada.netlify.app",
+         "href": "https://fazendaencantada.store",
          "label": "Abrir a loja ↗"
         },
         "size": "m",
@@ -4013,19 +4039,85 @@
       {
        "area": "a",
        "bg": "#F0EFD5",
-       "img": "img/cases/fazencantada/d0.jpg",
+       "img": "img/cases/fazencantada/loja/fe-d-00.webp",
        "fit": "cover",
        "pos": "top",
-       "alt": "Página inicial da loja"
+       "alt": "Página inicial da loja Fazenda Encantada"
       },
       {
        "area": "b",
        "bg": "#F0EFD5",
-       "img": "img/cases/fazencantada/m0.jpg",
+       "img": "img/cases/fazencantada/loja/fe-m-00.webp",
        "fit": "cover",
        "pos": "top",
        "alt": "Loja no celular"
       }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Catálogo",
+     "title": "Cada pote leva o nome de um lugar",
+     "text": [
+      "A loja não lista sabores: conta lendas. A seção “Nossa linha, sabor por sabor” abre o manifesto de cada geleia, com a cor e a ilustração do rótulo.",
+      "Ao lado, os mais vendidos com preço e botão de compra rápida, e o Empório da Serra, que harmoniza cada doce com vinhos e queijos da região."
+     ],
+     "image": "img/cases/fazencantada/loja/fe-d-02.webp"
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Presentes e festas",
+     "title": "Do mimo à lembrancinha de casamento",
+     "text": [
+      "Caixas de presente montadas à mão, com faixa por valor e entrega direta para quem vai receber.",
+      "Para casamentos, aniversários e formaturas, minipotes com tampa de tecido e cartão com o nome do evento, a partir de 20 unidades, com orçamento pelo WhatsApp."
+     ],
+     "image": "img/cases/fazencantada/loja/fe-d-05.webp"
+    },
+    {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Do tacho à porta",
+     "title": "Como o pedido acontece",
+     "image": "img/cases/fazencantada/loja/fe-m-03.webp",
+     "items": [
+      {
+       "t": "Escolhe",
+       "d": "Navega por linha, presentes, Empório ou festas e monta o carrinho."
+      },
+      {
+       "t": "Pede no WhatsApp",
+       "d": "O carrinho vira uma mensagem pronta para a fazenda, com itens, quantidades e entrega."
+      },
+      {
+       "t": "Paga",
+       "d": "Link de pagamento InfinitePay: Pix ou cartão, sem sair da conversa."
+      },
+      {
+       "t": "Recebe",
+       "d": "Envio por SEDEX para todo o Brasil ou retirada em Itacambira e Bocaiúva."
+      }
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Bastidores",
+     "title": "Um painel para a fazenda não se perder",
+     "text": [
+      "Por trás da loja, um painel interno reúne pedidos, estoque e financeiro. A produtora vê o que entrou, o que está no tacho, o que falta repor e quanto a loja vendeu no mês, sem planilha paralela."
+     ],
+     "image": "img/cases/fazencantada/marca/fz-colheita.jpg"
+    },
+    {
+     "type": "strip",
+     "title": "Telas da loja",
+     "images": [
+      "img/cases/fazencantada/loja/fe-d-01.webp",
+      "img/cases/fazencantada/loja/fe-d-06.webp",
+      "img/cases/fazencantada/loja/fe-d-07.webp",
+      "img/cases/fazencantada/loja/fe-m-01.webp",
+      "img/cases/fazencantada/loja/fe-m-07.webp"
      ]
     }
    ],
