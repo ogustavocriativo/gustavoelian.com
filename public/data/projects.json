@@ -2079,11 +2079,11 @@
    "title": "Papo Calcinha",
    "kind": "Evento · palestra com Kamila Simioni",
    "client": "Kamila Simioni",
-   "year": "",
+   "year": "2023",
    "fronts": [
     "trade"
    ],
-   "summary": "Palestra-espetáculo de Kamila Simioni para um teatro lotado de mulheres: identidade do evento, cenografia em vermelho e preto e experiência do público.",
+   "summary": "Edição 2023 do Papo Calcinha, o maior evento mineiro de auditório voltado exclusivamente para mulheres: campanha de divulgação, venda de ingressos e uma noite de casa cheia em Belo Horizonte.",
    "cover": "img/cases/papo/palco.jpg",
    "theme": {
     "bg": "#F6F1EF",
@@ -2099,13 +2099,31 @@
     {
      "type": "hero",
      "variant": "poster",
-     "kicker": "Evento · Palestra",
+     "kicker": "Evento · Campanha · Edição 2023",
      "title": "Papo Calcinha",
      "titleAccent": "Calcinha",
-     "lead": "Uma noite de conversa franca entre Kamila Simioni e um teatro lotado de mulheres: a pergunta na tela era “O que é ser uma mulher realizada?”.",
+     "lead": "O maior evento mineiro de auditório voltado exclusivamente para mulheres: empoderamento feminino, relacionamento, empreendedorismo e um papo calcinha sobre a vida, com Kamila Simioni.",
      "block": "img/cases/papo/palco.jpg",
      "blockPos": "52% 50%",
-     "blockAlt": "Kamila Simioni no palco do Papo Calcinha"
+     "blockAlt": "Kamila Simioni no palco do Papo Calcinha",
+     "stats": [
+      {
+       "value": "06/05",
+       "label": "de 2023, às 18h"
+      },
+      {
+       "value": "BH",
+       "label": "Belo Horizonte · MG"
+      },
+      {
+       "value": "100%",
+       "label": "plateia feminina"
+      },
+      {
+       "value": "Meet & greet",
+       "label": "novidade da edição"
+      }
+     ]
     },
     {
      "type": "split",
@@ -2117,6 +2135,45 @@
      ],
      "image": "img/cases/papo/kamila-cartaz.jpg",
      "ratio": "4/5"
+    },
+    {
+     "type": "split",
+     "panel": true,
+     "eyebrow": "Campanha",
+     "title": "Edição 2023, preparadas?",
+     "text": [
+      "A comunicação seguiu a identidade da marca: fundo preto com linhas em onda, vermelho de destaque, a coroa como símbolo e fotos de Kamila em preto e branco.",
+      "O carrossel apresentou os três argumentos da edição em polaroides: o tema (empoderamento feminino, relacionamento e empreendedorismo), o tamanho (maior evento mineiro de auditório só para mulheres) e a novidade de 2023, o meet & greet."
+     ],
+     "image": "img/cases/papo/feed.jpg",
+     "ratio": "1/1"
+    },
+    {
+     "type": "photos",
+     "eyebrow": "Carrossel",
+     "title": "Três motivos em um arrasta",
+     "compact": true,
+     "cols": 1,
+     "ratio": "3/1",
+     "alt": "Carrossel panorâmico do Papo Calcinha 2023",
+     "images": [
+      "img/cases/papo/carrossel.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "9/16",
+     "eyebrow": "Stories",
+     "title": "Do aviso ao ingresso",
+     "text": "Sequência de stories para a venda: central de ingressos com condição especial, data, local e horário, e as novidades da edição. A venda era exclusiva para mulheres e só pelo WhatsApp oficial, com alerta contra golpes.",
+     "alt": "Stories da campanha do Papo Calcinha",
+     "images": [
+      "img/cases/papo/story-ingresso.jpg",
+      "img/cases/papo/story-info.jpg",
+      "img/cases/papo/story-novidades.jpg"
+     ]
     },
     {
      "type": "photos",
@@ -2148,7 +2205,7 @@
     {
      "type": "credits",
      "items": [
-      "Papo Calcinha com Kamila Simioni"
+      "Papo Calcinha com Kamila Simioni · Edição 2023 · Belo Horizonte"
      ]
     }
    ]
