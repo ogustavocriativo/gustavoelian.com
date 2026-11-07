@@ -2118,10 +2118,10 @@
      "eyebrow": "A ideia",
      "title": "O Nordiminas vai pegar fogo",
      "text": [
-      "A identidade parte de uma chama: a rivalidade saudável das atléticas acesa em quatro dias de jogos. O JIA ganhou letra própria, faixa de datas e a assinatura “Origine experiências extraordinárias”.",
-      "Em volta da marca, um vocabulário do Norte de Minas virou figurinha, painel e post: pequi, catopê, “uai é uai” e o orgulho de ser do Nordiminas."
+      "A identidade parte de uma chama: a rivalidade saudável das atléticas acesa em quatro dias de jogos. O JIA ganhou letra própria, a assinatura “Origine experiências extraordinárias” e um vocabulário do Norte de Minas que virou painel e frase de efeito.",
+      "Na entrada das festas, o inflável do JIA recebia o público: a marca já era cenário antes da primeira música."
      ],
-     "image": "img/cases/jia/ideia.jpg"
+     "image": "img/cases/jia/insta-06.jpg"
     },
     {
      "type": "marquee",
@@ -2134,86 +2134,75 @@
       "Treinando pro JIA",
       "Origine experiências extraordinárias"
      ],
-     "glyph": "img/cases/jia/chama.png",
      "pxs": 60
     },
     {
-     "type": "mosaic",
-     "eyebrow": "Figurinhas e assinaturas",
-     "title": "Um vocabulário que a galera repetia",
-     "text": "Figurinhas para stories, adesivos e painéis: frases do jeito que o público fala, nas cores da chama.",
-     "tiles": [
-      "img/cases/jia/st-01.jpg",
-      "img/cases/jia/st-02.jpg",
-      "img/cases/jia/st-03.jpg",
-      "img/cases/jia/st-04.jpg",
-      "img/cases/jia/st-05.jpg",
-      "img/cases/jia/st-06.jpg",
-      "img/cases/jia/st-07.jpg",
-      "img/cases/jia/st-08.jpg",
-      "img/cases/jia/st-09.jpg",
-      "img/cases/jia/st-10.jpg",
-      "img/cases/jia/st-11.jpg",
-      "img/cases/jia/st-12.jpg"
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Antes do JIA",
+     "title": "Dois eventos preparatórios e um QG no shopping",
+     "text": [
+      "O Torneio de Verão, de beach tennis, e o Torneio de Outono, de beach volley, funcionaram como pré-teaser: colocaram as atléticas em quadra meses antes e apresentaram a chama ao público.",
+      "Na semana do evento, o Montes Claros Shopping, marca que apresentou o JIA, recebeu o QG de retirada de kits: atletas e público trocavam o ingresso pelo kit dentro do shopping, com credencial, tirante e pulseira personalizados."
+     ],
+     "image": "img/cases/jia/cred-01.jpg"
+    },
+    {
+     "type": "insta",
+     "title": "Teasers dos eventos preparatórios",
+     "kicker": "Pré-teaser",
+     "items": [
+      {
+       "url": "https://www.instagram.com/p/CoQR8cRvHnQ/",
+       "caption": "Torneio de Verão · beach tennis"
+      },
+      {
+       "url": "https://www.instagram.com/p/CpitNlKu_vf/",
+       "caption": "Torneio de Outono · beach volley"
+      }
      ]
     },
     {
      "type": "split",
-     "eyebrow": "Antes do JIA",
-     "title": "Dois eventos preparatórios esquentaram as atléticas",
+     "panel": true,
+     "eyebrow": "Ativação no shopping",
+     "title": "Desafio Ehgol: acerte o arco e ganhe brinde",
      "text": [
-      "O Torneio de Verão, de beach tennis, e o Torneio de Outono, de beach volley, funcionaram como pré-teaser: colocaram as atléticas em quadra meses antes e apresentaram a chama ao público.",
-      "Para eles desenhei troféu em forma de chama e medalhas por categoria, já na linguagem que o JIA levaria para a premiação final."
+      "No Montes Claros Shopping, junto ao QG de kits, o Desafio Ehgol levou o clima dos jogos para dentro do mall: gramado sintético, gol com alvos, manequins com uniformes e mascotes recebendo o público.",
+      "A ação era gratuita e premiava quem acertasse o arco. Assim, a marca parceira ficava na mão do público e o JIA, que ainda nem tinha começado, já estava na conversa de quem passava pelo shopping."
      ],
-     "image": "img/cases/jia/preteaser.jpg",
-     "reverse": true
+     "image": "img/cases/jia/ehgol.jpg"
     },
     {
-     "type": "split",
-     "panel": true,
-     "eyebrow": "Credenciamento",
-     "title": "QG de kits no Montes Claros Shopping",
-     "text": [
-      "O Montes Claros Shopping, marca que apresentou o evento, recebeu o QG de retirada de kits: atletas e público trocavam o ingresso pelo kit dentro do shopping, levando movimento para o parceiro antes mesmo da abertura.",
-      "No kit, credenciais e pulseiras personalizadas, com a identidade do JIA e a cor de cada acesso. Nas festas, viraram parte do figurino: todo mundo exibia o cordão no pescoço."
-     ],
-     "image": "img/cases/jia/cred-01.jpg"
+     "type": "youtube",
+     "id": "Efs_OEIOn-o",
+     "eyebrow": "Na TV",
+     "title": "O Desafio Ehgol na Rede Mais",
+     "text": "Reportagem da Rede Mais sobre a ativação no Montes Claros Shopping, com a entrevista que dei sobre o JIA.",
+     "label": "“Desafio Ehgol movimenta o Montes Claros Shopping” · Rede Mais · YouTube"
+    },
+    {
+     "type": "insta",
+     "title": "Vídeo de apresentação da edição",
+     "kicker": "Apresentação",
+     "lead": "Direção criativa: Gustavo Elian · gravação e edição: Davi Ribeiro.",
+     "items": [
+      {
+       "url": "https://www.instagram.com/p/CpkoKSFOklx/",
+       "caption": "Apresentação do JIA 2023"
+      }
+     ]
     },
     {
      "type": "logos",
      "eyebrow": "Atléticas participantes",
      "title": "Cada atlética com a sua marca",
-     "text": "As associações atléticas das faculdades de Montes Claros que disputaram os jogos e levaram suas bandeiras para as festas.",
+     "text": "As associações atléticas das faculdades de Montes Claros e região que disputaram as séries Pequi e Catopê e levaram suas bandeiras para as festas.",
      "items": [
       {
-       "img": "img/cases/jia/aaa/alcooteia.webp",
-       "name": "Alcooteia",
-       "sub": "Direito · Unimontes"
-      },
-      {
-       "img": "img/cases/jia/aaa/tributaria.webp",
-       "name": "Tributária",
-       "sub": "Ciências Contábeis · Unimontes"
-      },
-      {
-       "img": "img/cases/jia/aaa/sharks.webp",
-       "name": "Sharks",
-       "sub": "Economia · Unimontes"
-      },
-      {
-       "img": "img/cases/jia/aaa/tormenta.webp",
-       "name": "Tormenta",
-       "sub": "História e Geografia · Unimontes"
-      },
-      {
-       "img": "img/cases/jia/aaa/corvus.webp",
-       "name": "Corvus",
-       "sub": "Letras · Unimontes"
-      },
-      {
-       "img": "img/cases/jia/aaa/tigrao.webp",
-       "name": "Tigrão",
-       "sub": "Direito · Funorte"
+       "img": "img/cases/jia/aaa/aaamrmf.webp",
+       "name": "AAAMRMF",
+       "sub": "Unimontes"
       },
       {
        "img": "img/cases/jia/aaa/odonto-funorte.webp",
@@ -2221,9 +2210,19 @@
        "sub": "Odontologia · Funorte"
       },
       {
-       "img": "img/cases/jia/aaa/poseidon.webp",
-       "name": "Poseidon",
-       "sub": "Psicologia · Funorte"
+       "img": "img/cases/jia/aaa/administracao-unimontes.webp",
+       "name": "Administração",
+       "sub": "Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/alcooteia.webp",
+       "name": "Alcooteia",
+       "sub": "Direito · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/buldogues.webp",
+       "name": "Buldogues",
+       "sub": "Medicina Veterinária · Unifipmoc"
       },
       {
        "img": "img/cases/jia/aaa/corujao.webp",
@@ -2231,11 +2230,147 @@
        "sub": "Engenharias · Funorte"
       },
       {
+       "img": "img/cases/jia/aaa/corvus.webp",
+       "name": "Corvus",
+       "sub": "Letras · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/educacao-fisica-unimontes.webp",
+       "name": "Educação Física",
+       "sub": "Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/el-toro.webp",
+       "name": "El Toro",
+       "sub": ""
+      },
+      {
+       "img": "img/cases/jia/aaa/enfermagem-unifipmoc.webp",
+       "name": "Enfermagem",
+       "sub": ""
+      },
+      {
+       "img": "img/cases/jia/aaa/enfermagem-fasi.webp",
+       "name": "Enfermagem",
+       "sub": "FASI · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/engenharia-unimontes.webp",
+       "name": "Engenharia",
+       "sub": "Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/fisioterapia-unifipmoc.webp",
+       "name": "Fisioterapia",
+       "sub": "Unifipmoc"
+      },
+      {
+       "img": "img/cases/jia/aaa/jaguar.webp",
+       "name": "Jaguar",
+       "sub": "Psicologia"
+      },
+      {
+       "img": "img/cases/jia/aaa/manipuladores.webp",
+       "name": "Manipuladores",
+       "sub": "Farmácia · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/medicina-unifipmoc.webp",
+       "name": "Medicina",
+       "sub": "Unifipmoc"
+      },
+      {
+       "img": "img/cases/jia/aaa/medicina-unimontes.webp",
+       "name": "Medicina",
+       "sub": "Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/medicina-funorte.webp",
+       "name": "Medicina",
+       "sub": "Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/odontologia-aaacfm.webp",
+       "name": "Odontologia",
+       "sub": ""
+      },
+      {
+       "img": "img/cases/jia/aaa/overdose.webp",
+       "name": "Overdose",
+       "sub": "Farmácia"
+      },
+      {
+       "img": "img/cases/jia/aaa/pintada.webp",
+       "name": "Pintada",
+       "sub": ""
+      },
+      {
        "img": "img/cases/jia/aaa/pirata.webp",
        "name": "Pirata",
        "sub": "Direito · FASA"
+      },
+      {
+       "img": "img/cases/jia/aaa/poseidon.webp",
+       "name": "Poseidon",
+       "sub": "Psicologia · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/predador.webp",
+       "name": "Predador",
+       "sub": "Direito · Unifipmoc"
+      },
+      {
+       "img": "img/cases/jia/aaa/primata.webp",
+       "name": "Primata",
+       "sub": "Administração · Unifipmoc"
+      },
+      {
+       "img": "img/cases/jia/aaa/publicidade.webp",
+       "name": "Publicidade e Propaganda",
+       "sub": "AAAPP"
+      },
+      {
+       "img": "img/cases/jia/aaa/sharks.webp",
+       "name": "Sharks",
+       "sub": "Economia · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/sistematicos.webp",
+       "name": "Sistemáticos",
+       "sub": "Sistemas de Informação · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/tigrao.webp",
+       "name": "Tigrão",
+       "sub": "Direito · Funorte"
+      },
+      {
+       "img": "img/cases/jia/aaa/tormenta.webp",
+       "name": "Tormenta",
+       "sub": "História e Geografia · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/tributaria.webp",
+       "name": "Tributária",
+       "sub": "Ciências Contábeis · Unimontes"
+      },
+      {
+       "img": "img/cases/jia/aaa/tubarao.webp",
+       "name": "Tubarão",
+       "sub": ""
+      },
+      {
+       "img": "img/cases/jia/aaa/ufmg-ica.webp",
+       "name": "UFMG · ICA",
+       "sub": "Montes Claros"
+      },
+      {
+       "img": "img/cases/jia/aaa/vulcanos.webp",
+       "name": "Vulcanos",
+       "sub": ""
       }
-     ]
+     ],
+     "cols": 6
     },
     {
      "type": "split",
@@ -2252,19 +2387,57 @@
      "type": "photos",
      "compact": true,
      "cols": 3,
-     "eyebrow": "Decoração e ativações",
-     "title": "Painéis, bandeiras e copos personalizados",
-     "alt": "Decoração e ativações nas festas do JIA",
+     "ratio": "4/3",
+     "eyebrow": "Espaços instagramáveis",
+     "title": "Painéis feitos para virar foto",
+     "text": "Um painel colorido com as frases do evento, o inflável na entrada e paredes inteiras com as bandeiras de cada atlética: cada torcida tinha o seu canto para posar.",
+     "alt": "Painéis feitos para virar foto",
      "images": [
-      "img/cases/jia/decor-01.jpg",
-      "img/cases/jia/decor-02.jpg",
-      "img/cases/jia/decor-03.jpg",
-      "img/cases/jia/decor-04.jpg",
-      "img/cases/jia/decor-05.jpg",
-      "img/cases/jia/decor-06.jpg",
-      "img/cases/jia/decor-07.jpg",
-      "img/cases/jia/decor-08.jpg",
-      "img/cases/jia/decor-09.jpg"
+      "img/cases/jia/insta-01.jpg",
+      "img/cases/jia/insta-02.jpg",
+      "img/cases/jia/insta-03.jpg",
+      "img/cases/jia/insta-04.jpg",
+      "img/cases/jia/insta-05.jpg",
+      "img/cases/jia/insta-07.jpg",
+      "img/cases/jia/insta-08.jpg",
+      "img/cases/jia/insta-09.jpg",
+      "img/cases/jia/decor-06.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "4/5",
+     "eyebrow": "Kit do participante",
+     "title": "Credenciais, tirantes e pulseiras",
+     "text": "Credenciamento com a identidade do JIA: tirantes estampados, credencial por categoria (incluindo “Melhor atleta”) e pulseira com QR code para o controle de acesso.",
+     "alt": "Credenciais, tirantes e pulseiras",
+     "images": [
+      "img/cases/jia/cred-01.jpg",
+      "img/cases/jia/cred-02.jpg",
+      "img/cases/jia/cred-03.jpg",
+      "img/cases/jia/cred-04.jpg",
+      "img/cases/jia/cred-05.jpg",
+      "img/cases/jia/cred-07.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "4/5",
+     "eyebrow": "Canecas personalizadas",
+     "title": "Uma caneca por atlética",
+     "text": "Canecas e copos com a marca do JIA e as cores de cada atlética: lembrança que voltava para casa e aparecia em todas as fotos das noites.",
+     "alt": "Uma caneca por atlética",
+     "images": [
+      "img/cases/jia/caneca-01.jpg",
+      "img/cases/jia/caneca-02.jpg",
+      "img/cases/jia/caneca-03.jpg",
+      "img/cases/jia/caneca-04.jpg",
+      "img/cases/jia/caneca-05.jpg",
+      "img/cases/jia/caneca-06.jpg"
      ]
     },
     {
@@ -2319,14 +2492,189 @@
      ]
     },
     {
-     "type": "split",
+     "type": "photos",
+     "compact": true,
+     "cols": 3,
+     "ratio": "4/5",
      "eyebrow": "Premiação",
-     "title": "A chama na mão de quem venceu",
-     "text": [
-      "Troféus e medalhas fecharam o ciclo que começou nos torneios de verão e outono. Na última noite, cada atlética campeã subiu ao palco com o troféu do JIA."
-     ],
-     "image": "img/cases/jia/festas-07.jpg",
-     "reverse": true
+     "title": "Troféus da chama",
+     "text": "Troféus em forma de chama, com a marca do JIA e a colocação de cada atlética, entregues no palco da última noite.",
+     "alt": "Troféus da chama",
+     "images": [
+      "img/cases/jia/trofeu-01.jpg",
+      "img/cases/jia/trofeu-02.jpg",
+      "img/cases/jia/trofeu-03.jpg",
+      "img/cases/jia/trofeu-04.jpg",
+      "img/cases/jia/trofeu-05.jpg",
+      "img/cases/jia/trofeu-06.jpg"
+     ]
+    },
+    {
+     "type": "ranking",
+     "eyebrow": "Classificação final",
+     "title": "Como terminou o JIA 2023",
+     "text": "Classificação geral nas duas séries do JIA, batizadas com símbolos do Norte de Minas.",
+     "series": [
+      {
+       "label": "Série",
+       "name": "Pequi",
+       "champion": {
+        "title": "Maior do Norte",
+        "name": "Medicina",
+        "sub": "Unifipmoc",
+        "img": "img/cases/jia/aaa/medicina-unifipmoc.webp"
+       },
+       "rest": [
+        {
+         "img": "img/cases/jia/aaa/educacao-fisica-unimontes.webp",
+         "name": "Educação Física",
+         "sub": "Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/medicina-unimontes.webp",
+         "name": "Medicina",
+         "sub": "Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/ufmg-ica.webp",
+         "name": "UFMG · ICA",
+         "sub": "Montes Claros"
+        },
+        {
+         "img": "img/cases/jia/aaa/alcooteia.webp",
+         "name": "Alcooteia",
+         "sub": "Direito · Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/predador.webp",
+         "name": "Predador",
+         "sub": "Direito · Unifipmoc"
+        },
+        {
+         "img": "img/cases/jia/aaa/medicina-funorte.webp",
+         "name": "Medicina",
+         "sub": "Funorte"
+        },
+        {
+         "img": "img/cases/jia/aaa/engenharia-unimontes.webp",
+         "name": "Engenharia",
+         "sub": "Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/fisioterapia-unifipmoc.webp",
+         "name": "Fisioterapia",
+         "sub": "Unifipmoc"
+        },
+        {
+         "img": "img/cases/jia/aaa/publicidade.webp",
+         "name": "Publicidade e Propaganda",
+         "sub": "AAAPP"
+        },
+        {
+         "img": "img/cases/jia/aaa/overdose.webp",
+         "name": "Overdose",
+         "sub": "Farmácia"
+        },
+        {
+         "img": "img/cases/jia/aaa/odontologia-aaacfm.webp",
+         "name": "Odontologia",
+         "sub": ""
+        },
+        {
+         "img": "img/cases/jia/aaa/el-toro.webp",
+         "name": "El Toro",
+         "sub": ""
+        },
+        {
+         "img": "img/cases/jia/aaa/sistematicos.webp",
+         "name": "Sistemáticos",
+         "sub": "Sistemas de Informação · Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/aaamrmf.webp",
+         "name": "AAAMRMF",
+         "sub": "Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/jaguar.webp",
+         "name": "Jaguar",
+         "sub": "Psicologia"
+        }
+       ]
+      },
+      {
+       "label": "Série",
+       "name": "Catopê",
+       "champion": {
+        "title": "Revelação do Norte",
+        "name": "AAAOF · Odontologia",
+        "sub": "Funorte",
+        "img": "img/cases/jia/aaa/odonto-funorte.webp"
+       },
+       "rest": [
+        {
+         "img": "img/cases/jia/aaa/tubarao.webp",
+         "name": "Tubarão",
+         "sub": ""
+        },
+        {
+         "img": "img/cases/jia/aaa/buldogues.webp",
+         "name": "Buldogues",
+         "sub": "Medicina Veterinária · Unifipmoc"
+        },
+        {
+         "img": "img/cases/jia/aaa/sharks.webp",
+         "name": "Sharks",
+         "sub": "Economia · Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/pintada.webp",
+         "name": "Pintada",
+         "sub": ""
+        },
+        {
+         "img": "img/cases/jia/aaa/administracao-unimontes.webp",
+         "name": "Administração",
+         "sub": "Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/tributaria.webp",
+         "name": "Tributária",
+         "sub": "Ciências Contábeis · Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/primata.webp",
+         "name": "Primata",
+         "sub": "Administração · Unifipmoc"
+        },
+        {
+         "img": "img/cases/jia/aaa/vulcanos.webp",
+         "name": "Vulcanos",
+         "sub": ""
+        },
+        {
+         "img": "img/cases/jia/aaa/tormenta.webp",
+         "name": "Tormenta",
+         "sub": "História e Geografia · Unimontes"
+        },
+        {
+         "img": "img/cases/jia/aaa/manipuladores.webp",
+         "name": "Manipuladores",
+         "sub": "Farmácia · Funorte"
+        },
+        {
+         "img": "img/cases/jia/aaa/enfermagem-unifipmoc.webp",
+         "name": "Enfermagem",
+         "sub": ""
+        },
+        {
+         "img": "img/cases/jia/aaa/enfermagem-fasi.webp",
+         "name": "Enfermagem",
+         "sub": "FASI · Funorte"
+        }
+       ]
+      }
+     ]
     },
     {
      "type": "steps",
@@ -2337,27 +2685,27 @@
      "items": [
       {
        "t": "Identidade e linguagem",
-       "d": "Marca do JIA, assinatura e vocabulário de figurinhas e frases."
+       "d": "Marca do JIA, assinatura e frases do Norte de Minas para painéis e redes."
       },
       {
        "t": "Dois eventos preparatórios",
-       "d": "Torneio de Verão (beach tennis) e Torneio de Outono (beach volley), com troféus e medalhas próprios."
+       "d": "Torneio de Verão (beach tennis) e Torneio de Outono (beach volley)."
       },
       {
-       "t": "QG de kits",
-       "d": "Retirada de kits no Montes Claros Shopping, marca que apresentou o evento."
+       "t": "QG de kits e Desafio Ehgol",
+       "d": "Retirada de kits e ativação “acerte o arco” no Montes Claros Shopping, marca que apresentou o evento."
       },
       {
-       "t": "Credenciais e pulseiras",
-       "d": "Acessos personalizados com a identidade do JIA."
+       "t": "Kit do participante",
+       "d": "Credenciais, tirantes, pulseiras com QR code e canecas personalizadas."
       },
       {
        "t": "Jogos e festas",
-       "d": "Quatro dias de quadra e três noites com cenografia das atléticas."
+       "d": "Quatro dias de quadra e três noites com espaços instagramáveis e bandeiras das atléticas."
       },
       {
        "t": "Premiação",
-       "d": "Troféus e medalhas entregues no palco da última noite."
+       "d": "Troféus da chama entregues no palco da última noite."
       }
      ]
     },
@@ -2365,8 +2713,9 @@
      "type": "credits",
      "items": [
       "Realização: Utopia Eventos · Apresentação: Montes Claros Shopping",
-      "Identidade do evento, ativações e produção executiva: Gustavo Elian",
-      "Fotos: Ventus (cobertura oficial do JIA 2023)"
+      "Identidade do evento, ativações, direção criativa e produção executiva: Gustavo Elian",
+      "Vídeo de apresentação: gravação e edição de Davi Ribeiro",
+      "Fotos: Ventus Formaturas (cobertura oficial do JIA 2023)"
      ]
     }
    ]

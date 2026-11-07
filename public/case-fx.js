@@ -111,7 +111,7 @@ window.CaseFX = (() => {
         : h("img", { src: src(im), alt: s.alt || "Fotografia de produto", loading: "lazy" });
       // compacto: grade de miniaturas (fotos e vídeos curtos, sem áudio)
       if (s.compact) return h("section", { class: "blk photos compact" }, h("div", { class: "wrap" }, head(s),
-        h("div", { class: "ph-grid", style: s.cols ? `--cols:${s.cols}` : null }, ...s.images.map((im) => h("figure", {}, media(im))))));
+        h("div", { class: "ph-grid", style: s.cols ? `--cols:${s.cols};--ar:${s.ratio || "3/2"}` : null }, ...s.images.map((im) => h("figure", {}, media(im))))));
       return h("section", { class: "blk photos" }, h("div", { class: "wrap" }, head(s),
         h("div", { class: "ph-cols" }, ...cols.map((c, ci) => h("div", { class: "ph-col", "data-par": String(speed[ci]) },
           ...c.map((im) => h("figure", {}, media(im))))))));
@@ -313,9 +313,31 @@ window.CaseFX = (() => {
 
     /* Demonstração do sistema "Briefing relâmpago": tela do moderador (telão) + celular do aluno.
        Simulado no navegador: nada é enviado a servidor. */
+    // Vídeo do YouTube sem carregar o player até o clique (capa leve, sem cookies)
+    R.youtube = (s) => {
+      const id = s.id;
+      const box = h("div", { class: "yt-box" });
+      const play = h("button", { type: "button", class: "yt-play", "aria-label": `Assistir: ${s.label || s.title || "vídeo"}`, onclick: () => {
+        box.replaceChildren(h("iframe", { src: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, title: s.label || s.title || "Vídeo", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: "", loading: "lazy" }));
+      } }, h("img", { src: s.poster ? src(s.poster) : `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, alt: "", loading: "lazy" }), h("i", { "aria-hidden": "true" }, "▶"));
+      box.append(play);
+      return h("section", { class: `blk yt${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s), box,
+        s.label ? h("p", { class: "yt-cap soft" }, s.label) : null));
+    };
+
+    // Classificação final: uma coluna por série, destaque para a campeã
+    R.ranking = (s) => h("section", { class: `blk ranking${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("div", { class: "rk-cols" }, ...s.series.map((se) => h("article", { class: "rk" },
+        h("header", { class: "rk-head" }, h("small", {}, se.label), h("h3", {}, se.name)),
+        h("div", { class: "rk-champ" }, h("img", { src: src(se.champion.img), alt: "", loading: "lazy" }),
+          h("div", {}, h("span", { class: "rk-title" }, se.champion.title), h("b", {}, se.champion.name), se.champion.sub ? h("small", {}, se.champion.sub) : null)),
+        h("ol", { class: "rk-list", start: "2" }, ...se.rest.map((r, i) => h("li", {},
+          h("span", { class: "rk-pos" }, `${i + 2}º`), h("img", { src: src(r.img), alt: "", loading: "lazy" }),
+          h("span", { class: "rk-name" }, h("b", {}, r.name), r.sub ? h("small", {}, r.sub) : null)))))))));
+
     // Parede de logos (ex.: atléticas participantes): logo + nome + vínculo, em grade
     R.logos = (s) => h("section", { class: `blk logos${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
-      h("ul", { class: "lg-grid" }, ...s.items.map((it, i) => h("li", { class: "lg", style: `--i:${i}`, "data-fx": "" },
+      h("ul", { class: "lg-grid", style: s.cols ? `--cols:${s.cols}` : null }, ...s.items.map((it, i) => h("li", { class: "lg", style: `--i:${i}`, "data-fx": "" },
         h("span", { class: "lg-fig" }, h("img", { src: src(it.img), alt: `${it.name}${it.sub ? " · " + it.sub : ""}`, loading: "lazy" })),
         h("b", {}, it.name), it.sub ? h("small", {}, it.sub) : null)))));
 
