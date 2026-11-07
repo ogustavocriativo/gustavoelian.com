@@ -112,7 +112,7 @@ window.CaseFX = (() => {
         ? h("video", { src: src(im), poster: src(im.replace(/\.(mp4|webm)$/i, ".jpg")), muted: "", loop: "", autoplay: "", playsinline: "", preload: "metadata", "aria-label": s.alt || "Vídeo" })
         : h("img", { src: src(im), alt: s.alt || "Fotografia de produto", loading: "lazy" });
       // compacto: grade de miniaturas (fotos e vídeos curtos, sem áudio)
-      if (s.compact) return h("section", { class: "blk photos compact" }, h("div", { class: "wrap" }, head(s),
+      if (s.compact) return h("section", { class: `blk photos compact${s.white ? " white" : ""}` }, h("div", { class: "wrap" }, head(s),
         h("div", { class: "ph-grid", style: s.cols ? `--cols:${s.cols};--ar:${s.ratio || "3/2"}` : null }, ...s.images.map((im, i) => h("figure", {}, media(im), s.captions?.[i] ? h("figcaption", {}, s.captions[i]) : null)))));
       return h("section", { class: "blk photos" }, h("div", { class: "wrap" }, head(s),
         h("div", { class: "ph-cols" }, ...cols.map((c, ci) => h("div", { class: "ph-col", "data-par": String(speed[ci]) },

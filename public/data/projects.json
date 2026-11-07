@@ -110,28 +110,6 @@
      "rebrand": true
     },
     {
-     "rebrand": true,
-     "type": "steps",
-     "panel": true,
-     "eyebrow": "Conceito",
-     "title": "Agora somos 3",
-     "items": [
-      {
-       "t": "Agora somos 1",
-       "d": "O objetivo agora é captação."
-      },
-      {
-       "t": "Agora somos 2",
-       "d": "A comunicação precisa ir além do paciente individual e falar com o lead comum."
-      },
-      {
-       "t": "Agora somos 3",
-       "d": "São três canais (instituto, Dra. Mônica e Dr. Marcelo) dedicados ao mesmo propósito: vender."
-      }
-     ],
-     "image": "img/cases/demian26/rebrand/simbolo.svg"
-    },
-    {
      "type": "split",
      "reverse": true,
      "eyebrow": "Na rua",
@@ -142,7 +120,7 @@
      ],
      "image": "img/cases/demian26/rebrand/png-faixas-medicos.webp",
      "rebrand": true,
-     "bare": true
+     "poles": true
     },
     {
      "rebrand": true,
@@ -154,7 +132,7 @@
       "A marca fica sempre no mesmo lugar, e quem passa na rua aprende a reconhecer o instituto pela forma, antes mesmo de ler."
      ],
      "image": "img/cases/demian26/rebrand/png-faixas-campanha.webp",
-     "bare": true
+     "poles": true
     },
     {
      "type": "split",
@@ -209,7 +187,8 @@
       "img/cases/demian26/rebrand/png-papelaria.webp"
      ],
      "rebrand": true,
-     "png": true
+     "png": true,
+     "white": true
     },
     {
      "rebrand": true,
@@ -219,12 +198,6 @@
      "text": "A primeira campanha da nova marca: os dois médicos juntos, banners e peças verticais com as campanhas de saúde do ano.",
      "slides": [
       {
-       "img": "img/cases/demian26/rebrand/p25.webp"
-      },
-      {
-       "img": "img/cases/demian26/rebrand/p19.webp"
-      },
-      {
        "img": "img/cases/demian26/rebrand/p27.webp"
       },
       {
@@ -232,12 +205,6 @@
       },
       {
        "img": "img/cases/demian26/rebrand/p29.webp"
-      },
-      {
-       "img": "img/cases/demian26/rebrand/p22.webp"
-      },
-      {
-       "img": "img/cases/demian26/rebrand/p23.webp"
       }
      ]
     },
@@ -4217,7 +4184,7 @@
    ],
    "summary": "App de desafios para colaboradores, com registro de atividades, rankings ao vivo, cards de story e painel de TV para o escritório.",
    "url": "https://focados.netlify.app",
-   "cover": "video/focados/capa.jpg",
+   "cover": "video/focados/fococast-logo.jpg",
    "theme": {
     "bg": "#F4F6FA",
     "ink": "#0E2340",
@@ -4939,8 +4906,8 @@
     }
    ],
    "coverStyle": "photo",
-   "coverPoster": "video/focados/capa.jpg",
-   "coverVideo": "video/focados/capa.mp4"
+   "coverPoster": "video/focados/fococast-logo.jpg",
+   "coverVideo": "video/focados/fococast-logo.mp4"
   },
   {
    "id": "investiga-gazeta",
