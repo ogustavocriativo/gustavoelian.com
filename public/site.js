@@ -99,7 +99,7 @@
     const stat = met ? h("span", { class: "stat" }, h("b", {}, `${met.value}${met.unit ? " " + met.unit : ""}`), met.label)
       : p.external ? h("span", { class: "stat live" }, "No ar") : p.year ? h("span", { class: "stat" }, p.year) : h("span");
     return h("a", { class: "work rv", "data-id": p.id, href: p.href, ...(p.external ? { target: "_blank", rel: "noopener" } : {}), "data-fronts": (p.fronts || []).join(" "), "aria-label": `${p.title}${p.external ? " (abre o site do projeto)" : ""}` },
-      h("div", { class: "media" }, m, p.hasPage ? h("span", { class: "tag" }, "Case completo") : null),
+      h("div", { class: "media" }, m),
       h("div", { class: "body" },
         h("div", { class: "meta" }, h("span", {}, frontLabel(data, (p.fronts || [])[0])), (p.fronts || []).length > 1 ? h("i", {}, `+${p.fronts.length - 1}`) : null),
         h("h3", {}, p.title),

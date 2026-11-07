@@ -419,6 +419,31 @@ window.CaseFX = (() => {
         h("span", { class: "lg-fig" }, h("img", { src: src(it.img), alt: `${it.name}${it.sub ? " · " + it.sub : ""}`, loading: i < 12 ? "eager" : "lazy", decoding: "async", width: 120, height: 120 })),
         h("b", {}, it.name), it.sub ? h("small", {}, it.sub) : null)))));
 
+    // Manifestos da linha: um painel por produto, nas cores do rótulo (lettering + ilustração + pote)
+    R.manifestos = (s) => h("section", { class: "blk mfs" }, h("div", { class: "wrap" }, head(s),
+      s.lead ? h("p", { class: "mfs-lead" }, s.lead) : null,
+      h("div", { class: "mfs-l" }, ...s.items.map((it, i) => h("article", { class: `mf${i % 2 ? " rev" : ""}`, style: `--c:${it.c};--a:${it.a};--t:${it.t}`, "data-fx": "" },
+        h("div", { class: "mf-tx" },
+          h("span", { class: "mf-fr" }, `Manifesto · ${it.fr}`),
+          h("div", { class: "mf-rot" }, it.sabor ? h("img", { class: "mf-sab", src: src(it.sabor), alt: it.fr, loading: "lazy", decoding: "async" }) : null,
+            h("img", { class: "mf-lg", src: src(it.logo), alt: it.name, loading: "lazy", decoding: "async" })),
+          h("h3", {}, it.tit), h("p", {}, it.mf)),
+        h("div", { class: "mf-im" }, h("img", { class: "mf-ilu", src: src(it.ic), alt: "", loading: "lazy", decoding: "async" }),
+          it.pote ? h("img", { class: "mf-pote", src: src(it.pote), alt: `${it.name}, ${it.fr}`, loading: "lazy", decoding: "async" }) : null))))));
+
+    // Lendas do território: ícone + chamada + história
+    R.lendas = (s) => h("section", { class: `blk lds${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("div", { class: "lds-g" }, ...s.items.map((it, i) => h("article", { class: "ld", style: `--i:${i}`, "data-fx": "" },
+        h("div", { class: "ld-ic" }, h("img", { src: src(it.img), alt: "", loading: "lazy", decoding: "async" })),
+        h("span", { class: "ld-k" }, it.k), h("h3", {}, it.t), h("p", {}, it.d),
+        it.produto ? h("small", { class: "ld-p" }, `No rótulo: ${it.produto}`) : null)))));
+
+    // Família de marcas (ex.: protocolos iD): logos lado a lado, cada um na sua cor
+    R.ids = (s) => h("section", { class: "blk ids" }, h("div", { class: "wrap" }, head(s),
+      h("ul", { class: "ids-g" }, ...s.items.map((it, i) => h("li", { class: "ids-i", style: `--bg:${it.bg};--fg:${it.fg || "inherit"};--i:${i}`, "data-fx": "" },
+        h("span", { class: "ids-f" }, h("img", { src: src(it.img), alt: it.name, loading: "lazy", decoding: "async" })),
+        h("b", {}, it.sub || ""), it.text ? h("small", {}, it.text) : null)))));
+
     // Demonstração do sistema do II ENEHISP (arquivo próprio: /enehisp-demo.js)
     R.enehispDemo = (s) => (window.EnehispDemo ? window.EnehispDemo(s, h, src) : null);
 

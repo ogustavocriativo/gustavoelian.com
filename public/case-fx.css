@@ -924,3 +924,50 @@
 .lu-xi{width:72px;height:72px;display:block}
 .lu-x b{font-size:1.0625rem;font-weight:600}
 @media (max-width:760px){.lu-x ul{grid-template-columns:repeat(2,minmax(0,1fr))}.lu-x li:last-child{grid-column:1/-1}}
+
+/* família de marcas (protocolos iD) */
+#case .ids-tx{max-width:62ch;margin-top:var(--s-head)}#case .ids-tx p{margin:0 0 12px;color:var(--soft)}
+#case .ids-g{list-style:none;margin:var(--s-head) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gut,16px)}
+.ids-i{display:flex;flex-direction:column;gap:6px}
+.ids-f{display:grid;place-items:center;aspect-ratio:4/3;border-radius:var(--r-md,20px);background:var(--bg);padding:12%}
+.ids-f img{width:100%;max-height:100%;object-fit:contain;transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.ids-i:hover .ids-f img{transform:scale(1.04)}
+.ids-i b{margin-top:8px;font-weight:500;color:var(--fg)}.ids-i small{color:var(--soft);font-size:.9375rem;line-height:1.45}
+@media (max-width:760px){#case .ids-g{grid-template-columns:1fr}.ids-f{aspect-ratio:16/7;padding:8% 14%}}
+@media (prefers-reduced-motion:reduce){.ids-i:hover .ids-f img{transform:none}}
+
+/* split "bare": recorte sem tela/cartão por trás */
+.split .img.bare,.fx-tilt .img.bare{background:none;border-radius:0;box-shadow:none;overflow:visible}
+.split .img.bare img{filter:drop-shadow(0 28px 40px rgba(0,0,0,.28))}
+
+/* manifestos da linha (Fazenda Encantada) */
+#case .mfs-lead{max-width:62ch;margin:var(--s-head) 0 0;color:var(--soft);font-size:1.0625rem;line-height:1.6}
+#case .mfs-l{display:grid;gap:var(--gut,16px);margin-top:var(--s-head)}
+.mf{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center;gap:clamp(20px,4vw,56px);background:var(--c);color:var(--t);border-radius:var(--r-lg,28px);padding:clamp(28px,5vw,72px);overflow:hidden;position:relative;isolation:isolate}
+.mf.rev .mf-tx{order:2}
+.mf-fr{display:block;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.mf-rot{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:18px 0 22px}
+.mf-sab{height:clamp(40px,5.2vw,72px);width:auto}
+.mf-lg{height:clamp(48px,6vw,88px);width:auto;max-width:100%}
+.mf h3{margin:0 0 12px;font-size:clamp(1.25rem,2vw,1.625rem);line-height:1.2;color:var(--a);font-weight:500}
+.mf p{margin:0;max-width:52ch;line-height:1.65;opacity:.92}
+.mf-im{position:relative;aspect-ratio:1;display:grid;place-items:center}
+.mf-ilu{position:absolute;width:80%;height:80%;object-fit:contain;opacity:.5;inset:auto;top:2%;right:0}
+.mf.rev .mf-ilu{right:auto;left:0}
+.mf-pote{position:relative;width:92%;height:92%;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(0,0,0,.35));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.mf:hover .mf-pote{transform:translateY(-6px) rotate(-2deg)}
+@media (max-width:760px){.mf{grid-template-columns:1fr}.mf.rev .mf-tx{order:0}.mf-im{max-width:360px;justify-self:center;width:100%}}
+@media (prefers-reduced-motion:reduce){.mf:hover .mf-pote{transform:none}}
+/* lendas do território */
+#case .lds-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:var(--gut,16px);margin-top:var(--s-head)}
+.ld{background:var(--chip);border-radius:var(--r-md,20px);padding:clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:8px}
+.on-panel .ld{background:rgba(255,255,255,.06)}
+.ld-ic{aspect-ratio:4/3;display:grid;place-items:center;margin-bottom:8px}
+.ld-ic img{width:82%;height:100%;object-fit:contain}
+.ld-k{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accentInk,var(--accent))}
+.on-panel .ld-k{color:var(--accent)}
+.ld h3{margin:0;font-size:1.25rem;font-weight:500}
+.ld p{margin:0;line-height:1.6;color:var(--soft);font-size:.9375rem}
+.on-panel .ld p{color:inherit;opacity:.82}
+.ld-p{margin-top:auto;padding-top:8px;font-size:.8125rem;opacity:.75}
+@media (min-width:1100px){#case .lds-g{grid-template-columns:repeat(5,minmax(0,1fr))}}

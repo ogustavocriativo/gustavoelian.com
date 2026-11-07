@@ -34,7 +34,7 @@
     "web"
    ],
    "summary": "Site do instituto, sites dos médicos, três protocolos com marca própria, link na bio e ferramentas internas, todos com a mesma linguagem e o mesmo caminho até a consulta.",
-   "cover": "img/cases/demian26/inst-d-00.webp",
+   "cover": "video/demian/capa.jpg",
    "theme": {
     "bg": "#F6F1EC",
     "ink": "#2B2522",
@@ -51,8 +51,7 @@
      "kicker": "Web · Marca · IA · Dev",
      "title": "Ecossistema Demian",
      "lead": "Um instituto médico em Assis/SP com dois médicos, três protocolos próprios e muitos canais. Cada um ganhou o seu lugar, e todos levam ao mesmo ponto: a consulta.",
-     "image": "img/cases/demian26/inst-d-00.webp",
-     "phone": "img/cases/demian26/inst-m-00.webp",
+     "image": "img/cases/demian26/id/medicos-abraco.webp",
      "chips": [
       "Instituto Demian",
       "Assis/SP",
@@ -118,90 +117,45 @@
        "url": "https://dr-marcelo-demian.pages.dev",
        "image": "img/cases/demian26/marcelo-m-00.webp",
        "tall": true
-      },
-      {
-       "title": "Tá Feita IA",
-       "kind": "Aplicativo",
-       "text": "App da linha Cuidado de Mulher, com acesso por convite enviado pela clínica no WhatsApp.",
-       "image": "img/cases/tafeita-ia/m0.jpg",
-       "tall": true
-      },
-      {
-       "title": "Aprovação de conteúdo",
-       "kind": "Ferramenta interna",
-       "text": "O médico aprova cada post, comenta ajustes e devolve tudo pelo WhatsApp.",
-       "image": "img/cases/aprova-drmarcelo/d3.jpg"
-      },
-      {
-       "title": "Calendário editorial",
-       "kind": "Ferramenta interna",
-       "text": "Ciclo de conteúdo de quatro semanas, com roteiro de gravação para cada dia.",
-       "image": "img/cases/calendario-drmarcelodemian/d0.jpg"
       }
      ]
     },
     {
-     "type": "split",
-     "reverse": true,
+     "type": "ids",
      "eyebrow": "Família de marcas",
      "title": "Três protocolos, um mesmo sobrenome",
      "text": [
-      "PELVEiD®, GLÚTEO iD e CONTORNE iD dividem a mesma assinatura (o “iD”), a mesma tipografia e a mesma estrutura de página. Muda a cor, muda a textura, muda o público.",
+      "PELVEiD®, GLÚTEO iD e CONTORNE iD dividem a mesma assinatura, o “iD”, a mesma tipografia e a mesma estrutura de página. Muda a cor, muda a textura, muda o público.",
       "Assim a paciente reconhece o instituto em qualquer protocolo, e um novo cuidado entra no ecossistema sem começar do zero."
      ],
-     "image": "img/cases/demian26/monica-d-04.webp"
-    },
-    {
-     "type": "steps",
-     "panel": true,
-     "eyebrow": "Jornada",
-     "title": "Como a paciente percorre o ecossistema",
-     "image": "img/cases/demian26/pelve-m-00.webp",
      "items": [
       {
-       "t": "Encontra",
-       "d": "Chega pelo Instagram, pelo link na bio ou pela busca, no site do instituto, da médica ou do protocolo."
+       "name": "PELVEiD®",
+       "img": "img/cases/demian26/id/pelveid-logo.webp",
+       "bg": "#EEE9F6",
+       "sub": "Cuidado íntimo e pélvico",
+       "text": "Lilás: acolhimento e discrição."
       },
       {
-       "t": "Se reconhece",
-       "d": "Marca os sinais que sente e entende, em linguagem clara, que aquilo tem nome, causa e cuidado."
+       "name": "GLÚTEO iD",
+       "img": "img/cases/demian26/id/gluteo-logo.webp",
+       "bg": "#F6E8ED",
+       "sub": "Bioestímulo de colágeno",
+       "text": "Rosa queimado: firmeza e pele."
       },
       {
-       "t": "Faz a pré-avaliação",
-       "d": "Responde cinco perguntas rápidas; as respostas seguem prontas para a equipe pelo WhatsApp."
-      },
-      {
-       "t": "Agenda e acompanha",
-       "d": "Consulta presencial ou teleconsulta, plano por escrito e retornos combinados."
+       "name": "CONTORNE iD",
+       "img": "img/cases/demian26/id/contorne-logo.webp",
+       "bg": "#E6EFE9",
+       "sub": "Biocontorno corporal",
+       "text": "Verde sálvia: leveza e forma."
       }
      ]
-    },
-    {
-     "type": "strip",
-     "title": "Telas do ecossistema",
-     "images": [
-      "img/cases/demian26/pelve-d-01.webp",
-      "img/cases/demian26/pelve-d-03.webp",
-      "img/cases/demian26/gluteo-d-05.webp",
-      "img/cases/demian26/monica-d-01.webp",
-      "img/cases/demian26/pelve-d-06.webp",
-      "img/cases/demian26/gluteo-d-06.webp",
-      "img/cases/demian26/inst-d-03.webp",
-      "img/cases/demian26/monica-d-07.webp",
-      "img/cases/demian26/pelve-d-07.webp"
-     ]
-    },
-    {
-     "type": "split",
-     "eyebrow": "Bastidores",
-     "title": "Ferramentas para o conteúdo não parar",
-     "text": [
-      "Além do que a paciente vê, o ecossistema tem ferramentas para a equipe: um calendário editorial com roteiros prontos e uma página de aprovação, onde o médico revisa cada publicação antes de ir ao ar."
-     ],
-     "image": "img/cases/aprova-drmarcelo/d2.jpg"
     }
    ],
-   "url": "https://instituto-demian.pages.dev"
+   "url": "https://instituto-demian.pages.dev",
+   "coverPoster": "video/demian/capa.jpg",
+   "coverVideo": "video/demian/capa.mp4"
   },
   {
    "id": "ibi-shopping",
@@ -1527,19 +1481,6 @@
        "url": "https://www.instagram.com/p/Cy4wcCIOkKE/"
       }
      ]
-    },
-    {
-     "type": "split",
-     "eyebrow": "Gerenciamento de conteúdo",
-     "title": "Perfis que trabalham juntos",
-     "text": [
-      "Direção de arte, copywriting e marketing de influência aplicados à rotina dos perfis, com identidade consistente entre capa, destaques e publicações."
-     ],
-     "image": "img/cases/campanhas/perfis.jpg",
-     "bg": "#E29A1C",
-     "fg": "#2E4A3E",
-     "fx": "tilt",
-     "profile": ""
     },
     {
      "type": "marquee",
@@ -3517,7 +3458,7 @@
    ],
    "summary": "Marca, sistema de rótulos com uma lenda por sabor, ilustrações do território e a loja fazendaencantada.store, com pedido pelo WhatsApp e painel interno de pedidos, estoque e financeiro.",
    "url": "https://fazendaencantada.store",
-   "cover": "img/cases/fazencantada/marca/mk-outdoor-arvores.jpg",
+   "cover": "video/fazenda/capa.jpg",
    "case": true,
    "year": "2026",
    "theme": {
@@ -3713,51 +3654,38 @@
        ]
       },
       {
-       "k": "type",
-       "bg": "#F0EFD5",
-       "fg": "#292305",
-       "fonts": [
-        {
-         "family": "Federo",
-         "label": "Institucional · Federo",
-         "sample": "Aa",
-         "alphabet": "Fazenda Encantada · Geleia de Morango · Doce de Leite Santo Antônio",
-         "use": "Logotipo, categorias, títulos de catálogo e textos de embalagem."
-        },
-        {
-         "family": "Tektur",
-         "label": "Vernacular · Tektur",
-         "sample": "Aa",
-         "alphabet": "BEIJO DE CABOCLO · TOCHA DE ESPINHAÇO · NASCENTE DO ENCANTADO",
-         "use": "Assinatura poética de cada produto e frases do manifesto."
-        }
-       ]
-      },
-      {
        "k": "icons",
-       "bg": "#4D4107",
-       "fg": "#F0EFD5",
-       "title": "O território vira ilustração",
+       "bg": "#E4E1C4",
+       "fg": "#292305",
+       "title": "Ícones do mapa de Itacambira",
        "items": [
         {
-         "img": "img/cases/fazencantada/marca/il-caboclo.jpg",
-         "label": "Caboclo d'água"
+         "img": "img/cases/fazencantada/marca/svg/mapa-serra.svg",
+         "label": "Serra"
         },
         {
-         "img": "img/cases/fazencantada/marca/il-santo.jpg",
-         "label": "Santo Antônio"
+         "img": "img/cases/fazencantada/marca/svg/mapa-mirante.svg",
+         "label": "Mirante"
         },
         {
-         "img": "img/cases/fazencantada/marca/il-cachoeira.jpg",
-         "label": "Cachoeira do Curiango"
+         "img": "img/cases/fazencantada/marca/svg/mapa-lapa.svg",
+         "label": "Lapa"
         },
         {
-         "img": "img/cases/fazencantada/marca/il-tradicao.jpg",
-         "label": "Tradição"
+         "img": "img/cases/fazencantada/marca/svg/mapa-poco.svg",
+         "label": "Poço"
         },
         {
-         "img": "img/cases/fazencantada/marca/il-igreja.jpg",
-         "label": "Matriz"
+         "img": "img/cases/fazencantada/marca/svg/mapa-garoa.svg",
+         "label": "Garoa"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/svg/mapa-folia.svg",
+         "label": "Folia"
+        },
+        {
+         "img": "img/cases/fazencantada/marca/svg/mapa-artesanato.svg",
+         "label": "Artesanato"
         }
        ]
       },
@@ -4006,6 +3934,172 @@
      ]
     },
     {
+     "type": "manifestos",
+     "eyebrow": "Nossa linha, sabor por sabor",
+     "title": "Cada produto tem um manifesto",
+     "lead": "Na Fazenda Encantada, o alimento transcende a receita: ele é afago, relíquia e lenda. Cada rótulo leva o nome de um lugar ou de uma história de Itacambira, e cada manifesto conta de onde ele vem.",
+     "items": [
+      {
+       "name": "Beijo de Caboclo",
+       "fr": "Geleia de morango",
+       "c": "#8C2030",
+       "a": "#FF8C8C",
+       "t": "#F0EFD5",
+       "tit": "O encontro com o mito!",
+       "mf": "Diz a lenda que o Caboclo D’Água habita os poços profundos do Rio Encantado, sempre arisco, oculto nas águas. Receber um “beijo” dessa figura mítica seria um milagre, um evento raro e extraordinário. Assim é esta geleia: um vermelho intenso e apaixonante que transforma o morango fresco em uma experiência de contato com o folclore e o mistério da nossa terra.",
+       "ic": "img/cases/fazencantada/linha/beijo-ic.webp",
+       "pote": "img/cases/fazencantada/linha/beijo-pote.webp",
+       "logo": "img/cases/fazencantada/linha/beijo-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/beijo-sabor.webp"
+      },
+      {
+       "name": "Tocha de Espinhaço",
+       "fr": "Geleia de morango com pimenta",
+       "c": "#8A2D21",
+       "a": "#F5917A",
+       "t": "#F0EFD5",
+       "tit": "O calor que guia na neblina da serra.",
+       "mf": "Itacambira, com seu clima frio e altitude imponente, é aquecida por esta criação. A cordilheira do Espinhaço, que embeleza e sustenta nossa geografia, encontra na pimenta o fogo necessário para despertar os sentidos. É a doçura do morango contrastando com uma picância que ilumina e aquece o paladar, como uma tocha a guiar viajantes na escuridão das montanhas.",
+       "ic": "img/cases/fazencantada/linha/tocha-ic.webp",
+       "pote": "img/cases/fazencantada/linha/tocha-pote.webp",
+       "logo": "img/cases/fazencantada/linha/tocha-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/tocha-sabor.webp"
+      },
+      {
+       "name": "Brisa de Curiango",
+       "fr": "Geleia de morango com limão",
+       "c": "#A84747",
+       "a": "#B1E070",
+       "t": "#F0EFD5",
+       "tit": "O frescor das águas em movimento.",
+       "mf": "Inspirada na famosa Cachoeira do Curiango, esta geleia é pura sinestesia. A acidez elegante do limão siciliano corta a doçura do morango da mesma forma que a brisa fria e úmida da cachoeira toca o rosto. É um suspiro cítrico, leve e refrescante, que captura o vento soprando livremente pelos vales da serra.",
+       "ic": "img/cases/fazencantada/linha/brisa-ic.webp",
+       "pote": "img/cases/fazencantada/linha/brisa-pote.webp",
+       "logo": "img/cases/fazencantada/linha/brisa-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/brisa-sabor.webp"
+      },
+      {
+       "name": "Verão Real",
+       "fr": "Geleia de abacaxi e pimenta",
+       "c": "#1C7A54",
+       "a": "#B1E070",
+       "t": "#F0EFD5",
+       "tit": "A majestade do sol em seu ápice.",
+       "mf": "A coroa imponente do abacaxi e a vivacidade da pimenta traduzem o calor tropical com ares de realeza. Enquanto a serra respira o frescor das altitudes, esta geleia traz o brilho dourado e intenso dos dias mais quentes, criando um contraste majestoso e picante que coroa qualquer harmonização.",
+       "ic": "img/cases/fazencantada/linha/verao-ic.webp",
+       "pote": "img/cases/fazencantada/linha/verao-pote.webp",
+       "logo": "img/cases/fazencantada/linha/verao-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/verao-sabor.webp"
+      },
+      {
+       "name": "Primavera Imperial",
+       "fr": "Geleia de mexerica",
+       "c": "#661207",
+       "a": "#F5917A",
+       "t": "#F0EFD5",
+       "tit": "O florescer na brisa do inverno.",
+       "mf": "Embora a mexerica seja colhida no frio, seu sabor vibrante e aroma floral são um convite ao renascimento. O título “Imperial” transporta o paladar para a Itacambira dos séculos XVIII e XIX, ancorando o frescor da fruta na nobreza do tempo. É a primavera engarrafada, resistindo ao inverno para perfumar a mesa.",
+       "ic": "img/cases/fazencantada/linha/primavera-ic.webp",
+       "pote": "img/cases/fazencantada/linha/primavera-pote.webp",
+       "logo": "img/cases/fazencantada/linha/primavera-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/primavera-sabor.webp"
+      },
+      {
+       "name": "Cordilheira de Ferro",
+       "fr": "Geleia de laranja",
+       "c": "#D66B53",
+       "a": "#661207",
+       "t": "#2C0A04",
+       "tit": "A robustez dos nossos minérios.",
+       "mf": "Uma reverência visual e gustativa à base histórica de Minas Gerais. O tom alaranjado desta geleia mimetiza a cor do solo mineral e a força imponente da Serra do Espinhaço, resgatando as memórias das antigas expedições. Um sabor cítrico, estrutural e intenso, feito para paladares que buscam a verdadeira força da nossa terra.",
+       "ic": "img/cases/fazencantada/linha/cordilheira-ic.webp",
+       "pote": "img/cases/fazencantada/linha/cordilheira-pote.webp",
+       "logo": "img/cases/fazencantada/linha/cordilheira-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/cordilheira-sabor.webp"
+      },
+      {
+       "name": "Nascente do Encantado",
+       "fr": "Geleia de manga e maracujá",
+       "c": "#CC8616",
+       "a": "#4A2E02",
+       "t": "#2C2505",
+       "tit": "A energia vital que brota da terra.",
+       "mf": "Uma explosão cromática e tropical. O amarelo vibrante da manga e do maracujá simboliza o sol, a luz e a força da vida que nasce junto com as águas do nosso rio. É a pureza original capturada em um pote: uma fusão de frutas que irradia energia e frescor antes mesmo de as águas descerem a montanha.",
+       "ic": "img/cases/fazencantada/linha/nascente-ic.webp",
+       "pote": "img/cases/fazencantada/linha/nascente-pote.webp",
+       "logo": "img/cases/fazencantada/linha/nascente-logo.webp",
+       "sabor": "img/cases/fazencantada/linha/nascente-sabor.webp"
+      },
+      {
+       "name": "Doce de Leite Santo Antônio",
+       "fr": "Doce de leite pastoso e caseiro",
+       "c": "#292305",
+       "a": "#B8B193",
+       "t": "#F0EFD5",
+       "tit": "A doçura abençoada pela história.",
+       "mf": "Uma homenagem ao padroeiro de Itacambira e à nossa secular Igreja Matriz do século XVIII. Ao unir a pureza do leite fresco à herança de uma fé centenária, criamos um doce que é um verdadeiro símbolo histórico. Degustar o Santo Antônio é comungar com as raízes mais antigas da região, em uma receita tradicional, sagrada e inesquecível.",
+       "ic": "img/cases/fazencantada/linha/doce-ic.svg",
+       "pote": "img/cases/fazencantada/linha/doce-pote.webp",
+       "logo": "img/cases/fazencantada/linha/doce-logo.webp"
+      },
+      {
+       "name": "Requeijão Barra do Encantado",
+       "fr": "Requeijão em barra",
+       "c": "#4D4107",
+       "a": "#B8B193",
+       "t": "#F0EFD5",
+       "tit": "A solidez do nosso ouro branco.",
+       "mf": "Mais do que um nome, um duplo tributo: às águas límpidas do Rio Encantado e à vocação da nossa própria Fazenda. Em seu formato tradicional em barra, este requeijão é a materialização da terra firme de onde brotam nossas nascentes. Denso, nobre e de sabor inconfundível, ele é o “ouro branco” que ancora a nossa tradição leiteira.",
+       "ic": "img/cases/fazencantada/linha/requeijao-ic.png",
+       "pote": "img/cases/fazencantada/linha/requeijao-pote.webp",
+       "logo": "img/cases/fazencantada/linha/requeijao-logo.webp"
+      }
+     ]
+    },
+    {
+     "type": "lendas",
+     "panel": false,
+     "eyebrow": "O território no rótulo",
+     "title": "As lendas da linha",
+     "items": [
+      {
+       "img": "img/cases/fazencantada/marca/svg/caboclo.svg",
+       "t": "Caboclo d’Água",
+       "k": "A lenda do Poço Encantado",
+       "d": "A 4 km da cidade, ao pé da Serra Resplandecente, o Poço Encantado tem água tão clara que se vê o fundo. Os mais antigos contam que ali vive o Caboclo d’Água, guardião do poço e das nascentes. Ele é arisco e some quando alguém tenta vê-lo, então o beijo dele é coisa rara.",
+       "produto": "Beijo de Caboclo"
+      },
+      {
+       "img": "img/cases/fazencantada/marca/svg/santo.svg",
+       "t": "Santo Antônio",
+       "k": "O padroeiro",
+       "d": "Antes de ser Itacambira, o povoado já se chamou Santo Antônio do Gorutuba, do Itacambiruçu e de Itacambira. O santo esteve em todos os nomes. Padroeiro e casamenteiro, ele batiza a Matriz e o nosso doce de leite, o único do Brasil com esse nome.",
+       "produto": "Doce de Leite Santo Antônio"
+      },
+      {
+       "img": "img/cases/fazencantada/marca/svg/cachu.svg",
+       "t": "Cachoeira do Curiango",
+       "k": "A brisa do vale",
+       "d": "Entre 10 e 14 km da cidade, numa reserva da Serra do Espinhaço, a cachoeira desce pelo Ribeirão da Dona com águas escuras e geladas, que muita gente diz que curam. Chega-se por 2 km de trilha. O respingo frio no rosto virou o limão siciliano da nossa geleia.",
+       "produto": "Brisa de Curiango"
+      },
+      {
+       "img": "img/cases/fazencantada/marca/svg/igreja.svg",
+       "t": "Matriz de Santo Antônio",
+       "k": "Desde 1707",
+       "d": "Começou a ser erguida em 1707, simples, com jeito de casa colonial portuguesa. No altar-mor há chinesices, ornatos de influência oriental raros na arte sacra brasileira. No porão, ossadas e múmias alimentam histórias há três séculos. Foi tombada pelo Iepha-MG em 1998.",
+       "produto": "Caixa Lembrança de Itacambira"
+      },
+      {
+       "img": "img/cases/fazencantada/marca/svg/tradicao.svg",
+       "t": "Tradição",
+       "k": "Pedra pontuda que sai do mato",
+       "d": "O nome vem do tupi: ita, pedra; caã, mato; bir, pontuda. É o Pico de Itacambira, que se vê de longe. A ocupação começou por volta de 1676, com as bandeiras de Fernão Dias atrás de pedras preciosas na Serra Resplandecente. O ferro e a cor da terra viraram a nossa geleia de laranja.",
+       "produto": "Cordilheira de Ferro"
+      }
+     ]
+    },
+    {
      "type": "board",
      "cols": "repeat(4,1fr)",
      "rows": "minmax(260px,24vw)",
@@ -4053,16 +4147,6 @@
        "alt": "Loja no celular"
       }
      ]
-    },
-    {
-     "type": "split",
-     "eyebrow": "Catálogo",
-     "title": "Cada pote leva o nome de um lugar",
-     "text": [
-      "A loja não lista sabores: conta lendas. A seção “Nossa linha, sabor por sabor” abre o manifesto de cada geleia, com a cor e a ilustração do rótulo.",
-      "Ao lado, os mais vendidos com preço e botão de compra rápida, e o Empório da Serra, que harmoniza cada doce com vinhos e queijos da região."
-     ],
-     "image": "img/cases/fazencantada/loja/fe-d-02.webp"
     },
     {
      "type": "split",
@@ -4121,7 +4205,9 @@
      ]
     }
    ],
-   "coverStyle": "photo"
+   "coverStyle": "photo",
+   "coverPoster": "video/fazenda/capa.jpg",
+   "coverVideo": "video/fazenda/capa.mp4"
   },
   {
    "id": "fernandes-adv",

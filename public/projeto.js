@@ -76,7 +76,7 @@ const R = {
     return h("section", { class: `blk split reveal${s.panel ? " panel on-panel" : ""}${s.reverse ? " reverse" : ""}${s.wide ? " wide" : ""}` },
       h("div", { class: "wrap" },
         h("div", { class: "text" }, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title), ...paras(s.text)),
-        s.profile ? igProfile(s.profile, s.title) : s.images && s.mosaic ? h("div", { class: "img mos" }, ...s.images.map((im, i) => h("figure", { class: `m${i}` }, h("img", { src: src(im), alt: "", loading: "lazy" })))) : s.images ? rotator(s) : s.image ? h("figure", { class: `img${s.ratio ? " cover" : ""}`, style: `margin:0${s.ratio ? `;aspect-ratio:${s.ratio}` : ""}` }, h("img", { src: src(s.image), alt: s.title, loading: "lazy", style: s.imagePos ? `object-position:${s.imagePos}` : null })) : null));
+        s.profile ? igProfile(s.profile, s.title) : s.images && s.mosaic ? h("div", { class: "img mos" }, ...s.images.map((im, i) => h("figure", { class: `m${i}` }, h("img", { src: src(im), alt: "", loading: "lazy" })))) : s.images ? rotator(s) : s.image ? h("figure", { class: `img${s.ratio ? " cover" : ""}${s.bare ? " bare" : ""}`, style: `margin:0${s.ratio ? `;aspect-ratio:${s.ratio}` : ""}` }, h("img", { src: src(s.image), alt: s.title, loading: "lazy", style: s.imagePos ? `object-position:${s.imagePos}` : null })) : null));
   },
   cards(s) {
     return h("section", { class: "blk cards reveal" }, h("div", { class: "wrap" },
