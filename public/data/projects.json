@@ -3882,36 +3882,6 @@
        }
       },
       {
-       "k": "image",
-       "img": "img/cases/fazencantada/marca/mk-outdoor-arvores.jpg",
-       "pos": "center 35%",
-       "caption": "Outdoor · simulação"
-      },
-      {
-       "k": "duo",
-       "a": {
-        "img": "img/cases/fazencantada/marca/mk-cartao-madeira.jpg",
-        "caption": "Cartão"
-       },
-       "b": {
-        "img": "img/cases/fazencantada/marca/mk-avental.jpg",
-        "pos": "center 35%",
-        "caption": "Avental da cozinha"
-       }
-      },
-      {
-       "k": "duo",
-       "a": {
-        "img": "img/cases/fazencantada/marca/mk-cartoes-kraft.jpg",
-        "caption": "Papelaria em kraft"
-       },
-       "b": {
-        "img": "img/cases/fazencantada/marca/mk-outdoor-serra.jpg",
-        "pos": "78% 25%",
-        "caption": "Outdoor na serra · simulação"
-       }
-      },
-      {
        "k": "photo",
        "img": "img/cases/fazencantada/marca/fz-donos.jpg",
        "pos": "center 35%",
