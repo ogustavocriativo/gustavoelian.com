@@ -977,3 +977,7 @@
 .bk-cta{position:absolute;z-index:3;left:50%;bottom:16px;translate:-50% 0;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;background:var(--panel,#4D4107);color:var(--onPanel,#F0EFD5);font-size:.875rem;font-weight:500;white-space:nowrap;box-shadow:0 10px 24px -10px rgba(0,0,0,.45);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
 .bk.bk-link:hover .bk-cta,.bk.bk-link:focus-visible .bk-cta{transform:translateY(-2px)}
 .bk.bk-link:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+/* grade compacta: no celular, a última peça sozinha ocupa a linha inteira (sem buraco) */
+@media (max-width:640px){.photos.compact .ph-grid > figure:last-child:nth-child(odd){grid-column:1/-1}}
+/* grade de mockups: mostra a lâmina inteira, sem cortar */
+.photos.compact .ph-grid[style*="16/9"] img{object-fit:contain;background:var(--chip)}

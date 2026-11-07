@@ -27,7 +27,7 @@
    "case": true,
    "featured": true,
    "title": "Universo Instituto Demian",
-   "kind": "Ecossistema digital",
+   "kind": "Rebranding e ecossistema digital",
    "client": "Instituto Demian · Assis/SP",
    "year": "2026",
    "fronts": [
@@ -56,6 +56,7 @@
       "Instituto Demian",
       "Assis/SP",
       "2026",
+      "Rebranding",
       "6 sites no ar",
       "3 protocolos com marca"
      ]
@@ -69,6 +70,118 @@
       "Em volta dele ficam o site da Dra. Mônica, o link na bio do Dr. Marcelo e as páginas de cada protocolo (PELVEiD®, GLÚTEO iD e CONTORNE iD). Cada página fala com um público, mas todas terminam no WhatsApp da equipe do instituto."
      ],
      "image": "img/cases/demian26/monica-d-00.webp"
+    },
+    {
+     "rebrand": true,
+     "type": "swap",
+     "eyebrow": "Rebranding",
+     "title": "A new time",
+     "text": [
+      "O Instituto Demian nasceu como uma marca de “medicina · performance · estética”. O rebranding reposiciona o instituto em três palavras que cabem em qualquer especialidade: prevenção, cuidado e performance.",
+      "O símbolo virou um perfil humano em camadas, desenhado com as cores dos dois médicos: o lilás da Dra. Mônica, o terracota institucional e o grafite do Dr. Marcelo."
+     ],
+     "items": [
+      {
+       "label": "Antes",
+       "image": "img/cases/demian26/rebrand/p01.webp",
+       "alt": "Marca anterior: Instituto Demian, medicina, performance e estética"
+      },
+      {
+       "label": "Depois",
+       "image": "img/cases/demian26/rebrand/p06.webp",
+       "alt": "Nova marca: Instituto Demian, prevenção, cuidado e performance"
+      },
+      {
+       "label": "Negativo",
+       "image": "img/cases/demian26/rebrand/p30.webp",
+       "alt": "Nova marca em versão negativa"
+      }
+     ]
+    },
+    {
+     "rebrand": true,
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Conceito",
+     "title": "Agora somos 3",
+     "items": [
+      {
+       "t": "Agora somos 1",
+       "d": "O objetivo agora é captação."
+      },
+      {
+       "t": "Agora somos 2",
+       "d": "A comunicação precisa ir além do paciente individual e falar com o lead comum."
+      },
+      {
+       "t": "Agora somos 3",
+       "d": "São três canais (instituto, Dra. Mônica e Dr. Marcelo) dedicados ao mesmo propósito: vender."
+      }
+     ],
+     "image": "img/cases/demian26/rebrand/simbolo.svg"
+    },
+    {
+     "rebrand": true,
+     "type": "split",
+     "eyebrow": "Sistema de assinaturas",
+     "title": "Uma marca, seis versões",
+     "text": [
+      "Marca oficial, simplificada e secundária, mais três monocromáticas, uma para cada voz do instituto: lilás para a Dra. Mônica, terracota para o institucional e grafite para o Dr. Marcelo.",
+      "Assim cada médico tem a sua cor sem sair da família, e qualquer peça pode ser identificada de longe."
+     ],
+     "image": "img/cases/demian26/rebrand/p07.webp"
+    },
+    {
+     "rebrand": true,
+     "type": "photos",
+     "eyebrow": "Aplicações",
+     "title": "Da fachada à garrafinha",
+     "text": "Fachada, placas dos consultórios, banners de poste, outdoor, papelaria, ícone de app e brindes: a marca aplicada em cada ponto de contato com a paciente.",
+     "alt": "Aplicações da nova marca do Instituto Demian",
+     "images": [
+      "img/cases/demian26/rebrand/p13.webp",
+      "img/cases/demian26/rebrand/p12.webp",
+      "img/cases/demian26/rebrand/p08.webp",
+      "img/cases/demian26/rebrand/p14.webp",
+      "img/cases/demian26/rebrand/p11.webp",
+      "img/cases/demian26/rebrand/p15.webp",
+      "img/cases/demian26/rebrand/p09.webp",
+      "img/cases/demian26/rebrand/p17.webp",
+      "img/cases/demian26/rebrand/p10.webp"
+     ],
+     "compact": true,
+     "cols": 3,
+     "ratio": "16/9"
+    },
+    {
+     "rebrand": true,
+     "type": "slides",
+     "eyebrow": "Campanha de lançamento",
+     "title": "Prevenção, cuidado e performance",
+     "text": "A primeira campanha da nova marca: os dois médicos juntos, banners e peças verticais com as campanhas de saúde do ano.",
+     "slides": [
+      {
+       "img": "img/cases/demian26/rebrand/p25.webp"
+      },
+      {
+       "img": "img/cases/demian26/rebrand/p19.webp"
+      },
+      {
+       "img": "img/cases/demian26/rebrand/p27.webp"
+      },
+      {
+       "img": "img/cases/demian26/rebrand/p28.webp"
+      },
+      {
+       "img": "img/cases/demian26/rebrand/p29.webp"
+      },
+      {
+       "img": "img/cases/demian26/rebrand/p22.webp"
+      },
+      {
+       "img": "img/cases/demian26/rebrand/p23.webp"
+      }
+     ]
     },
     {
      "type": "cards",
