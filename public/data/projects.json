@@ -3392,8 +3392,8 @@
     "web",
     "trade"
    ],
-   "summary": "Da submissão ao certificado: sistema web, avaliação às cegas, cadernos, cartas, modelo de slides e redes de um encontro acadêmico com 257 trabalhos.",
-   "cover": "img/cases/enehisp/sis-index-d.jpg",
+   "summary": "Do edital à publicação: sistema web, identidade, live de abertura e uma comunicação em três atos para um encontro acadêmico com 257 trabalhos.",
+   "cover": "video/enehisp/capa-abertura.jpg",
    "case": true,
    "year": "2026",
    "theme": {
@@ -3411,26 +3411,67 @@
      "type": "hero",
      "kicker": "Sistema · Identidade · Comunicação",
      "title": "II ENEHISP",
-     "lead": "Um encontro acadêmico inteiro, do edital ao certificado. Desenhei o fluxo, construí o sistema e produzi as peças que fizeram 257 trabalhos chegarem à apresentação.",
-     "image": "img/cases/enehisp/sis-index-d.jpg",
-     "phone": "img/cases/enehisp/sis-index-m.jpg",
+     "lead": "Um encontro acadêmico inteiro, do edital ao livro. Desenhei o fluxo, construí o sistema, abri a transmissão e contei cada fase em três atos, para que 257 trabalhos chegassem à apresentação e à publicação.",
      "chips": [
       "GPEPA · PPGH/Unimontes · LAHPS/UFJF",
       "6 a 9 de outubro de 2026",
-      "21 Simpósios Temáticos",
+      "21 Simpósios Temáticos · 6 sessões livres",
       "257 trabalhos · 286 pessoas"
      ],
-     "block": "img/cases/enehisp/hero-block.jpg"
+     "block": "video/enehisp/hero-atos.mp4",
+     "blockAlt": "Posts animados do II ENEHISP: tutorial, prazo prorrogado, resultado e certificados",
+     "blockPoster": "img/cases/enehisp/hero-atos.jpg"
     },
     {
      "type": "split",
      "eyebrow": "O desafio",
      "title": "Muita gente, muitos arquivos, um prazo só",
      "text": [
-      "O II Encontro de Estudos em História Política recebeu 257 propostas de 286 pessoas, distribuídas em 21 Simpósios Temáticos e seis sessões de comunicação livre.",
-      "Cada proposta precisava passar por avaliação às cegas, receber carta de aceite, entrar no caderno de resumos certo, confirmar horário e, depois do evento, gerar certificado e abrir caminho para o livro e os anais. Como presidente da comissão científica e responsável pelo sistema e pela comunicação, organizei esse percurso de ponta a ponta."
+      "O II Encontro de Estudos em História Política recebeu 257 propostas de 286 pessoas, distribuídas em 21 Simpósios Temáticos e seis sessões de comunicação livre, em quatro dias de evento on-line.",
+      "Cada proposta precisava passar por avaliação às cegas, receber carta de aceite, entrar no caderno certo, confirmar horário e, depois do evento, virar capítulo de livro ou trabalho completo nos Anais. Como presidente da comissão científica e responsável pelo sistema e pela comunicação, organizei esse percurso de ponta a ponta."
      ],
-     "image": "img/cases/enehisp/slide-01.jpg"
+     "image": "img/cases/enehisp/ab-st07.jpg"
+    },
+    {
+     "type": "marquee",
+     "items": [
+      "“A República no Brasil é o regime da fachada, da frase e da pose”",
+      "O tempo como disputa",
+      "Direitas em perspectiva",
+      "História, política e epistemologias americanas",
+      "Mulheres de direita nos séculos XX e XXI",
+      "Imagem e imprensa",
+      "Jovens e juventudes em movimentos",
+      "Memória, sensibilidade e poder",
+      "Políticas indigenistas na América Latina",
+      "Entre a diplomacia e o conflito",
+      "Primavera nos dentes",
+      "Partidos, Estado e sociedade",
+      "Escravatura e trabalho forçado no Império Português",
+      "Dimensões do regime Vargas",
+      "Negacionismo e anticomunismo no século XXI",
+      "Provincianos, marginalizados, fracassados, esquecidos",
+      "História do tempo presente e movimentos sociais",
+      "Fascismos e neofascismos",
+      "A extrema direita no Brasil e no mundo",
+      "Comunidades tradicionais e povos de terreiro",
+      "Desafios do tempo presente"
+     ]
+    },
+    {
+     "type": "reels",
+     "eyebrow": "Ao vivo · 6 de outubro",
+     "title": "A abertura que colocou o evento no ar",
+     "text": "Uma vinheta de quatro minutos para a transmissão no YouTube do PPGH: a identidade se monta, os 21 Simpósios passam um a um com tema, horário e coordenação, os números do encontro aparecem e a contagem regressiva abre a live.",
+     "items": [
+      {
+       "src": "video/enehisp/abertura-live.mp4",
+       "poster": "video/enehisp/abertura-live.jpg",
+       "ratio": "16/9",
+       "label": "Trechos da vinheta de abertura (sem áudio)",
+       "wide": true
+      }
+     ]
     },
     {
      "type": "cards",
@@ -3466,35 +3507,102 @@
     {
      "type": "steps",
      "panel": true,
-     "eyebrow": "Percurso",
-     "title": "Do edital ao certificado",
-     "image": "img/cases/enehisp/sis-cronometro-m.jpg",
+     "eyebrow": "Percurso em três atos",
+     "title": "Do edital ao livro",
+     "image": "img/cases/enehisp/avaliacao-01.jpg",
      "items": [
       {
        "t": "Submissão e cadastro",
        "d": "Cadastro mestre com 257 trabalhos e 286 pessoas, com códigos por Simpósio."
       },
       {
-       "t": "Avaliação às cegas",
-       "d": "Planilhas por coordenação, catálogo privado de autoria e médias automáticas."
+       "t": "Avaliação às cegas e cartas de aceite",
+       "d": "Planilhas por coordenação, catálogo privado de autoria e uma carta em PDF por proponente, com sessão e horário."
       },
       {
-       "t": "Cartas de aceite",
-       "d": "Uma carta em PDF por proponente, com sessão, horário médio e link de inscrição."
+       "t": "Evento ao vivo",
+       "d": "Confirmação de horário, cronômetro das comunicações e mural de avaliação da coordenação."
       },
       {
-       "t": "Cadernos de resumos",
-       "d": "Um caderno por Simpósio e o caderno completo, com capa, cronograma e notas de autoria."
+       "t": "Ato I · Envio dos textos",
+       "d": "Quem apresentou envia o capítulo de livro ou o trabalho completo para os Anais pelo próprio sistema, com o código da comunicação."
       },
       {
-       "t": "Confirmação e evento ao vivo",
-       "d": "Confirmação de horário, cronômetro das comunicações e mural de avaliação."
+       "t": "Ato II · Avaliação",
+       "d": "Pareceres às cegas em seis critérios e um índice de seleção: 70% da média dos pareceres e 30% da apresentação no evento."
       },
       {
-       "t": "Certificados, livro e anais",
-       "d": "Certificados por e-mail e um novo ciclo de submissão para as publicações."
+       "t": "Ato III · Resultado e certificados",
+       "d": "Cartas de aceite do livro e dos Anais, prazo de correções e certificados por e-mail."
       }
      ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "eyebrow": "Comunicação · @enehisp",
+     "title": "Cada post tem a sua animação",
+     "text": "Para a fase de publicações, planejei um calendário de 21/10 a 5/12 com feed, carrosséis, stories e reels. Cada post do feed ganhou um loop de seis segundos; os botões Ato I, Ato II e Ato III marcam em que fase o leitor está.",
+     "alt": "Posts animados do II ENEHISP",
+     "images": [
+      "video/enehisp/feed-tutorial.mp4",
+      "video/enehisp/feed-prepare.mp4",
+      "video/enehisp/feed-prazo.mp4",
+      "video/enehisp/feed-encerrado.mp4",
+      "video/enehisp/feed-aceite.mp4",
+      "video/enehisp/feed-certificados.mp4"
+     ]
+    },
+    {
+     "type": "reels",
+     "eyebrow": "Stories e reels",
+     "title": "Vinhetas de oito segundos e um tutorial de trinta",
+     "text": "Os stories da contagem regressiva levam figurinha de link sobre a área tracejada. O reels mostra o envio do texto do login ao fim em trinta segundos, com telas reais do sistema e dados de demonstração.",
+     "items": [
+      {
+       "src": "video/enehisp/story-faltam9.mp4",
+       "poster": "video/enehisp/story-faltam9.jpg",
+       "ratio": "9/16",
+       "label": "Story · Faltam 9 dias"
+      },
+      {
+       "src": "video/enehisp/reels-30s.mp4",
+       "poster": "video/enehisp/reels-30s.jpg",
+       "ratio": "9/16",
+       "label": "Reels · Envio em 30 segundos"
+      },
+      {
+       "src": "video/enehisp/story-certificados.mp4",
+       "poster": "video/enehisp/story-certificados.jpg",
+       "ratio": "9/16",
+       "label": "Story · Certificados enviados"
+      }
+     ]
+    },
+    {
+     "type": "strip",
+     "title": "Carrossel · Tutorial de submissão",
+     "images": [
+      "img/cases/enehisp/tutorial-01.jpg",
+      "img/cases/enehisp/tutorial-02.jpg",
+      "img/cases/enehisp/tutorial-03.jpg",
+      "img/cases/enehisp/tutorial-04.jpg",
+      "img/cases/enehisp/tutorial-05.jpg",
+      "img/cases/enehisp/tutorial-06.jpg",
+      "img/cases/enehisp/tutorial-07.jpg"
+     ]
+    },
+    {
+     "type": "split",
+     "reverse": true,
+     "panel": true,
+     "eyebrow": "Identidade",
+     "title": "A digital como marca, o dourado como fio",
+     "text": [
+      "A identidade parte de uma impressão digital: cada pesquisa deixa a sua marca na história política. Dourado e marrom sobre papel claro, com a Aldo nos títulos e a LT Wave no texto.",
+      "A mesma linguagem atravessa sistema, cadernos, cartas, modelo de slides, vinheta da live e redes sociais, para que cada participante reconheça o evento em qualquer ponto de contato."
+     ],
+     "image": "img/cases/enehisp/digital.jpg"
     },
     {
      "type": "strip",
@@ -3515,36 +3623,16 @@
      ]
     },
     {
-     "type": "split",
-     "reverse": true,
-     "eyebrow": "Identidade",
-     "title": "A digital como marca, o dourado como fio",
-     "text": [
-      "A identidade parte de uma impressão digital: cada pesquisa deixa a sua marca na história política. Dourado e marrom sobre papel claro, com a Aldo nos títulos e a LT Wave no texto.",
-      "A mesma linguagem atravessa sistema, cadernos, cartas, modelo de slides, vinhetas e redes sociais, para que cada participante reconheça o evento em qualquer ponto de contato."
-     ],
-     "image": "img/cases/enehisp/slide-12.jpg"
-    },
-    {
-     "type": "split",
-     "panel": true,
-     "eyebrow": "Comunicação",
-     "title": "Um cronograma de redes para cada fase",
-     "text": [
-      "Para o @enehisp, planejei posts, carrosséis, stories e reels para cada etapa: chamada, tutorial de submissão, contagem regressiva, avaliação em andamento, cartas de aceite e certificados.",
-      "Ao vivo, vinhetas de abertura, encerramento e palestras deram ritmo às transmissões."
-     ],
-     "image": "img/cases/enehisp/slide-04.jpg"
-    },
-    {
      "type": "credits",
      "items": [
       "Realização: Grupo de Estudos e Pesquisa do Pensamento Autoritário · PPGH/Unimontes · LAHPS/UFJF",
-      "Sistema, identidade, cadernos e comunicação: Gustavo Elian"
+      "Sistema, identidade, vinheta da live, cadernos e comunicação: Gustavo Elian"
      ]
     }
    ],
-   "section": "academia"
+   "section": "academia",
+   "coverVideo": "video/enehisp/capa-abertura.mp4",
+   "coverPoster": "video/enehisp/capa-abertura.jpg"
   },
   {
    "id": "conahist",

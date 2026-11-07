@@ -565,3 +565,6 @@
 .photos.compact figure{margin:0;border-radius:clamp(12px,1.6vw,18px);overflow:hidden;aspect-ratio:4/5;background:#0002}
 .photos.compact img,.photos.compact video{width:100%;height:100%;object-fit:cover;display:block}
 @media (max-width:640px){.photos.compact .ph-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* grade compacta com 6 peças: 3 colunas (evita 2 órfãs) */
+@media (min-width:861px){.photos.compact .ph-grid:has(> :nth-child(6):last-child){grid-template-columns:repeat(3,minmax(0,1fr));max-width:1040px}}
+.photos.compact .ph-grid:has(> :nth-child(6):last-child) figure{aspect-ratio:3/4}

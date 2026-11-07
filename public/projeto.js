@@ -43,7 +43,7 @@ const R = {
           const file = s.block || s.image || p.cover, alt = s.blockAlt || `${p.title}: imagem principal`;
           const zz = String(s.blockZoom || "").split(" "), style = [s.blockPos ? `object-position:${s.blockPos}` : "", zz[0] > 1 ? `transform:scale(${zz[0]});transform-origin:${zz[1]} ${zz[2]}` : ""].filter(Boolean).join(";") || null;
           return /\.(mp4|webm)$/i.test(file) || /video/.test(s.blockType || "")
-            ? h("video", { src: src(file), muted: "", loop: "", autoplay: "", playsinline: "", "aria-label": alt, style })
+            ? h("video", { src: src(file), poster: s.blockPoster ? src(s.blockPoster) : null, muted: "", loop: "", autoplay: "", playsinline: "", "aria-label": alt, style })
             : h("img", { src: src(file), alt, fetchpriority: "high", style });
         })())));
   },
