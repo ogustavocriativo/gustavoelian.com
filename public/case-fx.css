@@ -817,7 +817,7 @@
 .og-t small{font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:.06em}
 .og-t b{font-weight:500}
 @media (min-width:861px){.st-grid.st4{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.st b /* dupla imagem + vídeo */
+/* dupla imagem + vídeo */
 .duo-g{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,24px);margin-top:clamp(20px,3vw,36px);align-items:start}
 .duo-g figure{margin:0}
 .duo-img img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:22px;display:block}
@@ -870,3 +870,9 @@
 #case > .blk.hero:not(.poster){padding-top:var(--s-sec);padding-bottom:0}
 #case > .blk.hero:not(.poster) .media.hb.contain{padding-bottom:var(--s-sec)}
 #case > .blk + .credits{margin-top:0}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#case > .hero.poster{min-height:0}
+#case > .hero.poster .copy{padding-top:clamp(72px,9vw,120px);padding-bottom:clamp(40px,5vw,64px)}
+@media (min-width:861px){#case > .hero.poster{min-height:min(78vh,720px)}}
+#case .duo-g{gap:clamp(24px,3vw,40px)}
+#case .duo-vid .yt-box{margin-top:0}
