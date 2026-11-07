@@ -271,3 +271,24 @@ dialog.pf-dlg form{position:sticky;bottom:0;padding:10px;background:#fff;text-al
 }
 /* split com foto enquadrada (recorte cover em proporção fixa) */
 .split .img.cover img{width:100%;height:100%;max-height:none;object-fit:cover}
+/* mosaico no split */
+.split .img.mos{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:clamp(110px,12vw,180px);gap:6px;background:none;border-radius:24px;overflow:hidden}
+.split .img.mos figure{margin:0;overflow:hidden}
+.split .img.mos figure.m0{grid-column:span 2;grid-row:span 2}
+.split .img.mos img{width:100%;height:100%;max-height:none;object-fit:cover;display:block}
+@media (max-width:600px){.split .img.mos{grid-auto-rows:110px}}
+
+/* hero com bloco em "contain" (logos): não encosta na base do painel */
+.hero .media.hb.contain{align-items:center;padding-bottom:clamp(28px,4vw,56px)}
+.hero .media.hb.contain > img{max-height:min(560px,62vh);aspect-ratio:auto;height:auto}
+/* logo monocromático animado (máscara SVG) */
+.steps .img.logo-anim{position:relative;aspect-ratio:1;display:grid;place-items:center;background:color-mix(in srgb,var(--onPanel) 5%,transparent);border-radius:24px;overflow:hidden}
+.logo-anim .la-mark{position:absolute;inset:14%;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat;background:linear-gradient(115deg,var(--accent) 0%,var(--accent) 40%,#fff 50%,var(--accent) 60%,var(--accent) 100%);background-size:250% 100%;animation:laSheen 4.5s ease-in-out infinite,laFloat 6s ease-in-out infinite}
+.logo-anim .la-echo{opacity:.18;filter:blur(18px);animation:laPulse 3s ease-in-out infinite}
+.logo-anim .la-glow{position:absolute;width:70%;height:70%;border-radius:50%;background:var(--accent);filter:blur(80px);opacity:.18}
+@keyframes laSheen{0%{background-position:100% 0}60%,100%{background-position:0 0}}
+@keyframes laFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes laPulse{0%,100%{opacity:.12;transform:scale(1)}50%{opacity:.3;transform:scale(1.04)}}
+@media (prefers-reduced-motion:reduce){.logo-anim .la-mark,.logo-anim .la-echo{animation:none}}
+.hero.poster h1.plogo{line-height:0;margin:4px 0 2px}
+.hero.poster h1.plogo img{width:min(560px,100%);height:auto;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,.35))}

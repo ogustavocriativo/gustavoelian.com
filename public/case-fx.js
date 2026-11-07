@@ -111,7 +111,7 @@ window.CaseFX = (() => {
         : h("img", { src: src(im), alt: s.alt || "Fotografia de produto", loading: "lazy" });
       // compacto: grade de miniaturas (fotos e vídeos curtos, sem áudio)
       if (s.compact) return h("section", { class: "blk photos compact" }, h("div", { class: "wrap" }, head(s),
-        h("div", { class: "ph-grid", style: s.cols ? `--cols:${s.cols};--ar:${s.ratio || "3/2"}` : null }, ...s.images.map((im) => h("figure", {}, media(im))))));
+        h("div", { class: "ph-grid", style: s.cols ? `--cols:${s.cols};--ar:${s.ratio || "3/2"}` : null }, ...s.images.map((im, i) => h("figure", {}, media(im), s.captions?.[i] ? h("figcaption", {}, s.captions[i]) : null)))));
       return h("section", { class: "blk photos" }, h("div", { class: "wrap" }, head(s),
         h("div", { class: "ph-cols" }, ...cols.map((c, ci) => h("div", { class: "ph-col", "data-par": String(speed[ci]) },
           ...c.map((im) => h("figure", {}, media(im))))))));
@@ -325,6 +325,19 @@ window.CaseFX = (() => {
         s.label ? h("p", { class: "yt-cap soft" }, s.label) : null));
     };
 
+    // Dupla: texto em cima; imagem e vídeo do YouTube lado a lado no desktop, empilhados no celular
+    R.duo = (s) => {
+      const id = s.youtube;
+      const box = h("div", { class: "yt-box" });
+      box.append(h("button", { type: "button", class: "yt-play", "aria-label": `Assistir: ${s.label || "vídeo"}`, onclick: () => {
+        box.replaceChildren(h("iframe", { src: `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, title: s.label || "Vídeo", allow: "autoplay; encrypted-media; picture-in-picture; fullscreen", allowfullscreen: "", loading: "lazy" }));
+      } }, h("img", { src: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`, alt: "", loading: "lazy" }), h("i", { "aria-hidden": "true" }, "▶")));
+      return h("section", { class: `blk duo${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+        h("div", { class: "duo-g" },
+          h("figure", { class: "duo-img" }, h("img", { src: src(s.image), alt: s.alt || s.title || "", loading: "lazy" })),
+          h("figure", { class: "duo-vid" }, box, s.label ? h("figcaption", { class: "soft" }, s.videoKicker ? h("b", {}, s.videoKicker + " · ") : null, s.label) : null))));
+    };
+
     // Classificação final: uma coluna por série, destaque para a campeã
     R.ranking = (s) => h("section", { class: `blk ranking${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "rk-cols" }, ...s.series.map((se) => h("article", { class: "rk" },
@@ -338,7 +351,7 @@ window.CaseFX = (() => {
     // Números da gestão: valor grande + rótulo + detalhe
     R.stats = (s) => h("section", { class: `blk stats${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("ul", { class: `st-grid${s.items.length === 4 ? " st4" : ""}` }, ...s.items.map((it, i) => h("li", { class: "st", style: `--i:${i}`, "data-fx": "" },
-        h("b", {}, it.medal ? h("i", { class: `og-md m${it.medal}`, "aria-hidden": "true" }, `${it.medal}º`) : null, it.value), h("span", {}, it.label), it.note ? h("small", {}, it.note) : null)))));
+        h("b", {}, it.medal ? h("span", { class: `og-md big m${it.medal}`, "aria-hidden": "true" }, h("i"), h("span", {}, `${it.medal}º`)) : null, it.value), h("span", {}, it.label), it.note ? h("small", {}, it.note) : null)))));
 
     // Barras horizontais: comparação simples de valores (ex.: visualizações por reel)
     R.bars = (s) => {
@@ -351,16 +364,6 @@ window.CaseFX = (() => {
         s.note ? h("p", { class: "br-note" }, s.note) : null));
     };
 
-    // Programação: uma coluna por noite, com fotos do palco, data, local e atrações
-    R.lineup = (s) => h("section", { class: `blk lineup${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
-      h("div", { class: "lu-grid" }, ...s.nights.map((n) => h("article", { class: "lu" },
-        n.photos?.length ? h("div", { class: `lu-ph n${Math.min(n.photos.length, 2)}` }, ...n.photos.slice(0, 2).map((p) => h("figure", {}, h("img", { src: src(p.img || p), alt: p.alt || "", loading: "lazy" }), p.cap ? h("figcaption", {}, p.cap) : null))) : null,
-        h("div", { class: "lu-b" },
-          h("small", {}, n.label),
-          h("h3", {}, n.date),
-          h("p", { class: "lu-w" }, n.where),
-          h("ul", { class: "lu-a" }, ...n.artists.map((a) => h("li", {}, a)))))))));
-
     // Ícones de modalidade (traço 1.6, 24px) para listas de resultados
     const OG_ICONS = {
       xadrez: '<path d="M9 21h6M8 18h8l-1-6h-6zM10 12V9h4v3M12 3a2 2 0 0 1 2 2c0 .8-.4 1.4-1 1.7V9h-2V6.7A2 2 0 0 1 12 3z"/>',
@@ -371,16 +374,29 @@ window.CaseFX = (() => {
       volei: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 9M12 12a9 9 0 0 0 8 4.5M12 12a9 9 0 0 1-8 4.5M12 12c-3-1.5-5-4.5-5.5-8"/>',
       festa: '<path d="M3 5c3 2 6 3 9 3s6-1 9-3M5 6l1.5 5L8 7M11 8l1 5 1-5M16 7l1.5 4L19 6"/>',
       praia: '<circle cx="17" cy="6" r="2.5"/><path d="M3 20h18M6 20a6 6 0 0 1 12 0"/><circle cx="8" cy="12" r="3"/>',
-      bandeira: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'
+      bandeira: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+      basquete: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c2.8 2.8 2.8 10 0 12.8M18.4 5.6c-2.8 2.8-2.8 10 0 12.8"/>'
     };
+
+    // Programação: uma coluna por noite, com fotos do palco, data, local e atrações
+    R.lineup = (s) => h("section", { class: `blk lineup${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
+      h("div", { class: "lu-grid" }, ...s.nights.map((n) => h("article", { class: "lu" },
+        n.photos?.length ? h("div", { class: `lu-ph n${Math.min(n.photos.length, 2)}` }, ...n.photos.slice(0, 2).map((p) => h("figure", {}, h("img", { src: src(p.img || p), alt: p.alt || "", loading: "lazy" }), p.cap ? h("figcaption", {}, p.cap) : null))) : null,
+        h("div", { class: "lu-b" },
+          n.icon ? h("span", { class: "lu-ic", "aria-hidden": "true", html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${OG_ICONS[n.icon] || ""}</svg>` }) : null,
+          h("small", {}, n.label),
+          h("h3", {}, n.date),
+          h("p", { class: "lu-w" }, n.where),
+          n.artists?.length ? h("ul", { class: "lu-a" }, ...n.artists.map((a) => h("li", {}, a))) : null))))));
+
 
     // Organograma: grupos de cargos com nomes
     R.org = (s) => h("section", { class: `blk org${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
-      h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", {}, g.title),
+      h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", { class: g.logo ? "og-lg" : null }, g.logo ? h("img", { src: src(g.logo), alt: "", loading: "lazy" }) : null, g.title),
         h("ul", {}, ...g.items.map((it) => h("li", { class: it.icon || it.medal ? "og-x" : null },
           it.icon ? h("span", { class: "og-ic", "aria-hidden": "true", html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${OG_ICONS[it.icon] || ""}</svg>` }) : null,
           h("span", { class: "og-t" }, h("small", {}, it.role), h("b", {}, it.name)),
-          it.medal ? h("span", { class: `og-md m${Math.min(it.medal, 4)}`, "aria-label": `${it.medal}º lugar` }, `${it.medal}º`) : null))))))));
+          it.medal ? h("span", { class: `og-md m${Math.min(it.medal, 4)}`, role: "img", "aria-label": `${it.medal}º lugar` }, h("i", { "aria-hidden": "true" }), h("span", {}, `${it.medal}º`)) : null))))))));
 
     // Parede de logos (ex.: atléticas participantes): logo + nome + vínculo, em grade
     R.logos = (s) => h("section", { class: `blk logos${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),

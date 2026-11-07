@@ -2132,7 +2132,8 @@
        "value": "2",
        "label": "séries: Pequi e Catopê"
       }
-     ]
+     ],
+     "titleLogo": "img/cases/jia/logo-jia-claro.svg"
     },
     {
      "type": "split",
@@ -2186,7 +2187,7 @@
      ]
     },
     {
-     "type": "split",
+     "type": "duo",
      "panel": true,
      "eyebrow": "Ativação no shopping",
      "title": "Desafio Ehgol: acerte o arco e ganhe brinde",
@@ -2195,15 +2196,10 @@
       "A ação era gratuita e premiava quem acertasse o arco. Assim, a marca parceira ficava na mão do público e o JIA, que ainda nem tinha começado, já estava na conversa de quem passava pelo shopping."
      ],
      "image": "img/cases/jia/ehgol.jpg",
-     "ratio": "4/3"
-    },
-    {
-     "type": "youtube",
-     "id": "Efs_OEIOn-o",
-     "eyebrow": "Na TV",
-     "title": "O Desafio Ehgol na Rede Mais",
-     "text": "Reportagem da Rede Mais sobre a ativação no Montes Claros Shopping, com a entrevista que dei sobre o JIA.",
-     "label": "“Desafio Ehgol movimenta o Montes Claros Shopping” · Rede Mais · YouTube"
+     "alt": "Desafio Ehgol no Montes Claros Shopping",
+     "youtube": "Efs_OEIOn-o",
+     "videoKicker": "Na TV",
+     "label": "Reportagem da Rede Mais sobre a ativação, com a minha entrevista sobre o JIA."
     },
     {
      "type": "insta",
@@ -2405,8 +2401,15 @@
       "Nas festas de sábado, domingo e segunda, a decoração foi pensada para virar foto: um painel colorido com as frases do evento, o inflável do JIA na entrada e paredes inteiras com as bandeiras de cada atlética.",
       "Cada torcida tinha o seu canto para posar, com copo personalizado na mão e cordão no pescoço. As marcas das atléticas dividiam o espaço com a do evento, e não disputavam com ela."
      ],
-     "image": "img/cases/jia/festas-05.jpg",
-     "ratio": "4/3"
+     "images": [
+      "img/cases/jia/atl-01.jpg",
+      "img/cases/jia/atl-02.jpg",
+      "img/cases/jia/atl-03.jpg",
+      "img/cases/jia/atl-04.jpg",
+      "img/cases/jia/atl-05.jpg",
+      "img/cases/jia/atl-06.jpg"
+     ],
+     "mosaic": true
     },
     {
      "type": "lineup",
@@ -2471,18 +2474,18 @@
      "ratio": "4/3",
      "eyebrow": "Espaços instagramáveis",
      "title": "Painéis feitos para virar foto",
-     "text": "Um painel colorido com as frases do evento, o inflável na entrada e paredes inteiras com as bandeiras de cada atlética: cada torcida tinha o seu canto para posar.",
+     "text": "Backdrop azul com a marca do JIA, painéis coloridos no estilo lambe-lambe com as frases do evento e o camarote em preto: cada espaço com a identidade da edição, feito para virar foto.",
      "alt": "Painéis feitos para virar foto",
      "images": [
-      "img/cases/jia/insta-01.jpg",
-      "img/cases/jia/insta-02.jpg",
-      "img/cases/jia/insta-03.jpg",
-      "img/cases/jia/insta-04.jpg",
-      "img/cases/jia/insta-05.jpg",
-      "img/cases/jia/insta-07.jpg",
-      "img/cases/jia/insta-08.jpg",
-      "img/cases/jia/insta-09.jpg",
-      "img/cases/jia/decor-06.jpg"
+      "img/cases/jia/id-01.jpg",
+      "img/cases/jia/id-02.jpg",
+      "img/cases/jia/id-03.jpg",
+      "img/cases/jia/id-04.jpg",
+      "img/cases/jia/id-05.jpg",
+      "img/cases/jia/id-06.jpg",
+      "img/cases/jia/id-07.jpg",
+      "img/cases/jia/id-08.jpg",
+      "img/cases/jia/id-09.jpg"
      ]
     },
     {
@@ -2496,7 +2499,7 @@
      "alt": "Credenciais, tirantes e pulseiras",
      "images": [
       "img/cases/jia/cred-01.jpg",
-      "img/cases/jia/cred-03.jpg",
+      "img/cases/jia/cred-08.jpg",
       "img/cases/jia/cred-04.jpg",
       "img/cases/jia/cred-05.jpg"
      ]
@@ -2522,7 +2525,7 @@
     {
      "type": "photos",
      "eyebrow": "As noites",
-     "title": "Sábado, domingo e segunda",
+     "title": "3 noites de festa",
      "alt": "Festas do JIA 2023",
      "images": [
       "img/cases/jia/festas-01.jpg",
@@ -2540,7 +2543,7 @@
      "type": "split",
      "panel": true,
      "eyebrow": "Parte esportiva",
-     "title": "Quatro dias de quadra",
+     "title": "4 dias de quadra",
      "text": [
       "Handebol, futsal, vôlei e basquete distribuídos em ginásios da cidade, com tabela, arbitragem e torcida organizada por atlética.",
       "A produção executiva cuidou do que não aparece na foto: agenda dos ginásios, fornecedores, credenciamento, logística entre quadras e festas e a premiação no palco da última noite."
@@ -2550,27 +2553,75 @@
      "ratio": "4/5"
     },
     {
-     "type": "photos",
-     "eyebrow": "Nas quadras",
-     "title": "Handebol, futsal, vôlei e basquete",
-     "alt": "Jogos do JIA 2023",
-     "images": [
-      "img/cases/jia/jogos-01.jpg",
-      "img/cases/jia/jogos-02.jpg",
-      "img/cases/jia/jogos-03.jpg",
-      "img/cases/jia/jogos-04.jpg",
-      "img/cases/jia/jogos-05.jpg",
-      "img/cases/jia/jogos-07.jpg",
-      "img/cases/jia/jogos-08.jpg",
-      "img/cases/jia/jogos-09.jpg",
-      "img/cases/jia/jogos-10.jpg",
-      "img/cases/jia/jogos-11.jpg",
-      "img/cases/jia/volei-01.jpg",
-      "img/cases/jia/volei-02.jpg",
-      "img/cases/jia/volei-03.jpg",
-      "img/cases/jia/volei-04.jpg",
-      "img/cases/jia/basquete-01.jpg",
-      "img/cases/jia/basquete-02.jpg"
+     "type": "lineup",
+     "eyebrow": "Modalidades",
+     "title": "Quatro modalidades, quatro ginásios",
+     "text": "Os jogos das séries Pequi e Catopê foram distribuídos entre ginásios da cidade, com tabela, arbitragem e torcida de cada atlética.",
+     "nights": [
+      {
+       "icon": "handebol",
+       "label": "Modalidade",
+       "date": "Handebol",
+       "where": "Ginásio Ana Lopes",
+       "photos": [
+        {
+         "img": "img/cases/jia/mod-handebol-1.jpg",
+         "alt": "Jogo de handebol feminino"
+        },
+        {
+         "img": "img/cases/jia/mod-handebol-2.jpg",
+         "alt": "Jogo de handebol masculino"
+        }
+       ]
+      },
+      {
+       "icon": "futsal",
+       "label": "Modalidade",
+       "date": "Futsal",
+       "where": "Ginásio da UNIFIPMoc",
+       "photos": [
+        {
+         "img": "img/cases/jia/mod-futsal-1.jpg",
+         "alt": "Jogo de futsal"
+        },
+        {
+         "img": "img/cases/jia/mod-futsal-2.jpg",
+         "alt": "Jogo de futsal"
+        }
+       ]
+      },
+      {
+       "icon": "volei",
+       "label": "Modalidade",
+       "date": "Vôlei",
+       "where": "Ibivôlei",
+       "photos": [
+        {
+         "img": "img/cases/jia/mod-volei-1.jpg",
+         "alt": "Jogo de vôlei"
+        },
+        {
+         "img": "img/cases/jia/mod-volei-2.jpg",
+         "alt": "Equipe de vôlei comemorando"
+        }
+       ]
+      },
+      {
+       "icon": "basquete",
+       "label": "Modalidade",
+       "date": "Basquete",
+       "where": "Indyu",
+       "photos": [
+        {
+         "img": "img/cases/jia/basquete-01.jpg",
+         "alt": "Jogo de basquete"
+        },
+        {
+         "img": "img/cases/jia/basquete-02.jpg",
+         "alt": "Jogo de basquete feminino"
+        }
+       ]
+      }
      ]
     },
     {
@@ -2929,14 +2980,14 @@
     {
      "type": "split",
      "panel": true,
+     "wide": true,
      "eyebrow": "Ponto de partida",
-     "title": "Dois anos parada, uma gestão para reacender",
+     "title": "Reativar uma atlética que tinha parado",
      "text": [
-      "Fundada em 2017, a Associação Atlética Acadêmica de Publicidade e Propaganda da UNIFIPMoc teve as atividades descontinuadas pelas dificuldades da pandemia de COVID-19. Em 1º de abril de 2022 ela voltou oficialmente, com a nova gestão eleita.",
-      "O Instagram virou o principal canal com os alunos e o argumento central para as marcas: alcance, engajamento e uma comunidade que pedia caneca e camisa até de outras cidades."
-     ],
-     "image": "img/cases/aaapp/slide-p-07.jpg",
-     "ratio": "16/9"
+      "A AAAPP nasceu em 2017 para representar o curso de Publicidade e Propaganda da UNIFIPMoc. Com a pandemia de COVID-19, as atividades foram descontinuadas, e a atlética passou dois anos sem diretoria, sem eventos e sem time em quadra.",
+      "Em 1º de abril de 2022 retomei oficialmente a associação, como vice-presidente e presidente eleito. O trabalho começou do zero: formar uma diretoria de 24 pessoas, reorganizar a marca, voltar a vender produtos e reconquistar os calouros, que nunca tinham visto a atlética funcionando.",
+      "O Instagram virou o principal canal com os alunos e o argumento central para marcas parceiras. Em quatro meses, o alcance e o engajamento cresceram o suficiente para sustentar propostas de patrocínio e a volta às competições."
+     ]
     },
     {
      "type": "photos",
@@ -2990,7 +3041,6 @@
      "panel": true,
      "eyebrow": "Calendário 2022",
      "title": "Onde a atlética esteve",
-     "image": "img/cases/aaapp/slide-p-15.jpg",
      "items": [
       {
        "t": "15/08 · Recepção de calouros",
@@ -3012,7 +3062,8 @@
        "t": "19/11 · Dragon Fest",
        "d": "Festa da atlética planejada para 800 pessoas, com pista, camarote do patrocinador e backstage."
       }
-     ]
+     ],
+     "logoAnim": "img/cases/aaapp/logo-mono.svg"
     },
     {
      "type": "split",
@@ -3022,19 +3073,12 @@
      "text": [
       "A AAAPP foi convidada para a CIA 2022, em Uberaba, e levou a marca do dragão para o mural das atléticas participantes, ao lado de associações de todo o estado."
      ],
-     "image": "img/cases/aaapp/foto-14.jpg",
-     "ratio": "3/2"
-    },
-    {
-     "type": "photos",
-     "compact": true,
-     "cols": 2,
-     "ratio": "4/5",
-     "alt": "AAAPP na CIA 2022",
      "images": [
+      "img/cases/aaapp/foto-14.jpg",
       "img/cases/aaapp/foto-04.jpg",
       "img/cases/aaapp/foto-05.jpg"
-     ]
+     ],
+     "mosaic": true
     },
     {
      "type": "photos",
@@ -3042,7 +3086,7 @@
      "cols": 4,
      "ratio": "4/5",
      "eyebrow": "Em quadra e na arquibancada",
-     "title": "Atletas, torcida e Dragon Cheers",
+     "title": "Torcida, cheerleaders e times",
      "text": "Uniformes da gestão, a torcida organizada com a bandeira Dragon Gang e o time de cheerleaders Dragon Cheers.",
      "alt": "Atletas e torcida da AAAPP",
      "images": [
@@ -3050,6 +3094,12 @@
       "img/cases/aaapp/foto-10.jpg",
       "img/cases/aaapp/foto-11.jpg",
       "img/cases/aaapp/foto-09.jpg"
+     ],
+     "captions": [
+      "Torcida organizada da atlética na Copa FIP 2022",
+      "Time do Dragon Cheers",
+      "Time de vôlei 2022–23",
+      "Colégio de presidentes da AAA"
      ]
     },
     {
@@ -3146,7 +3196,8 @@
          "icon": "volei",
          "medal": 4
         }
-       ]
+       ],
+       "logo": "img/cases/aaapp/logo-copafip.jpg"
       },
       {
        "title": "Jogos InterAtléticas (JIA)",
@@ -3163,7 +3214,8 @@
          "icon": "natacao",
          "medal": 2
         }
-       ]
+       ],
+       "logo": "img/cases/aaapp/logo-jia.webp"
       },
       {
        "title": "Outras competições",

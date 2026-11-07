@@ -49,7 +49,7 @@ const R = {
           h("div", { class: "copy" },
             h("a", { class: "back", href: "/#projetos" }, "← Todos os projetos"),
             h("span", { class: "eyebrow" }, s.kicker || front?.label),
-            h("h1", {}, acc ? [title.replace(acc, "").trim(), " ", h("em", {}, acc)] : title),
+            s.titleLogo ? h("h1", { class: "plogo" }, h("img", { src: src(s.titleLogo), alt: title })) : h("h1", {}, acc ? [title.replace(acc, "").trim(), " ", h("em", {}, acc)] : title),
             h("p", { class: "lead" }, s.lead || p.summary),
             s.stats ? h("ul", { class: "pstats" }, ...s.stats.map((x) => h("li", {}, h("b", {}, x.value), h("span", {}, x.label)))) : null,
             s.chips ? h("div", { class: "chips" }, ...s.chips.map((c) => h("span", { class: "chip" }, c))) : null)),
@@ -76,7 +76,7 @@ const R = {
     return h("section", { class: `blk split reveal${s.panel ? " panel on-panel" : ""}${s.reverse ? " reverse" : ""}${s.wide ? " wide" : ""}` },
       h("div", { class: "wrap" },
         h("div", { class: "text" }, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title), ...paras(s.text)),
-        s.profile ? igProfile(s.profile, s.title) : s.images ? rotator(s) : s.image ? h("figure", { class: `img${s.ratio ? " cover" : ""}`, style: `margin:0${s.ratio ? `;aspect-ratio:${s.ratio}` : ""}` }, h("img", { src: src(s.image), alt: s.title, loading: "lazy", style: s.imagePos ? `object-position:${s.imagePos}` : null })) : null));
+        s.profile ? igProfile(s.profile, s.title) : s.images && s.mosaic ? h("div", { class: "img mos" }, ...s.images.map((im, i) => h("figure", { class: `m${i}` }, h("img", { src: src(im), alt: "", loading: "lazy" })))) : s.images ? rotator(s) : s.image ? h("figure", { class: `img${s.ratio ? " cover" : ""}`, style: `margin:0${s.ratio ? `;aspect-ratio:${s.ratio}` : ""}` }, h("img", { src: src(s.image), alt: s.title, loading: "lazy", style: s.imagePos ? `object-position:${s.imagePos}` : null })) : null));
   },
   cards(s) {
     return h("section", { class: "blk cards reveal" }, h("div", { class: "wrap" },
@@ -89,6 +89,7 @@ const R = {
     const isPhone = /(\/m0|-m)\.jpg$/.test(s.image || "");
     return h("section", { class: `blk steps reveal${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" },
       s.insta ? h("figure", { class: "img ig", style: "margin:0" }, PF.insta({ insta: [{ url: s.insta }] }).querySelector(".pf-ig")) :
+      s.logoAnim ? h("figure", { class: "img logo-anim", style: `margin:0;--logo:url('${src(s.logoAnim)}')`, "aria-hidden": "true" }, h("span", { class: "la-glow" }), h("span", { class: "la-mark" }), h("span", { class: "la-mark la-echo" })) :
       s.image ? h("figure", { class: `img${isPhone ? " phone" : ""}`, style: "margin:0" }, h("img", { src: src(s.image), alt: s.title })) : h("div"),
       h("div", {}, h("span", { class: "eyebrow" }, s.eyebrow), h("h2", {}, s.title),
         h("ol", {}, ...s.items.map((it, i) => h("li", {}, h("b", {}, String(i + 1).padStart(2, "0")), h("strong", {}, it.t), h("span", { class: "soft" }, it.d)))))));
