@@ -78,7 +78,10 @@ window.CaseFX = (() => {
       const g = s.glyph ? src(s.glyph) : null;
       const seq = (hidden) => h("div", { class: "mq-set", ...(hidden ? { "aria-hidden": "true" } : {}) },
         ...s.items.flatMap((t) => [h("span", { class: "mq-t" }, t), h("i", { class: g ? "mq-g" : "mq-dot", style: g ? `--g:url("${g}")` : null, "aria-hidden": "true" })]));
-      return h("section", { class: "blk marquee" }, h("div", { class: "mq-run" }, seq(false), seq(true)));
+      const run = h("div", { class: "mq-run" }, seq(false), seq(true));
+      // velocidade constante em px/s (s.pxs): faixas longas não disparam; mede a largura quando a faixa entra na página
+      if (s.pxs) { const fit = () => { if (!run.isConnected) return requestAnimationFrame(fit); const w = run.firstChild.scrollWidth; if (w) run.style.animationDuration = `${Math.round(w / s.pxs)}s`; }; requestAnimationFrame(fit); }
+      return h("section", { class: "blk marquee" }, run);
     };
 
     R.mosaic = (s) => h("section", { class: "blk mosaic" }, h("div", { class: "wrap" }, head(s),
