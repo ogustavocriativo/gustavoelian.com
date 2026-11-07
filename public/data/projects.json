@@ -77,8 +77,7 @@
      "eyebrow": "Rebranding",
      "title": "A new time",
      "text": [
-      "O Instituto Demian nasceu como uma marca de “medicina · performance · estética”. O rebranding reposiciona o instituto em três palavras que cabem em qualquer especialidade: prevenção, cuidado e performance.",
-      "O símbolo virou um perfil humano em camadas, desenhado com as cores dos dois médicos: o lilás da Dra. Mônica, o terracota institucional e o grafite do Dr. Marcelo."
+      "O Instituto Demian nasceu como uma marca de “medicina · performance · estética”. O rebranding moderniza o instituto e o reposiciona em três palavras que cabem em qualquer especialidade: prevenção, cuidado e performance."
      ],
      "items": [
       {
@@ -97,6 +96,18 @@
        "alt": "Nova marca em versão negativa"
       }
      ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "Modernização",
+     "title": "Mais leve, mais limpa, mais perto",
+     "text": [
+      "A tipografia ficou mais fina e espaçada, o símbolo ganhou um perfil humano em camadas e degradês suaves, e a assinatura passou a nomear o que o instituto entrega, não as áreas em que atua.",
+      "No outdoor, a marca divide a cena com os dois médicos: a pessoa reconhece o lugar e quem vai atendê-la."
+     ],
+     "image": "img/cases/demian26/rebrand/outdoor.webp",
+     "ratio": "1800/1231",
+     "rebrand": true
     },
     {
      "rebrand": true,
@@ -121,7 +132,31 @@
      "image": "img/cases/demian26/rebrand/simbolo.svg"
     },
     {
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Na rua",
+     "title": "Faixas que fazem captação",
+     "text": [
+      "As faixas de poste levam cada médico com a sua cor e uma frase de campanha: “Emagrecer não precisa ser restritivo”, “3x mais mulheres que homens”.",
+      "Cada peça tem QR code e assinatura do instituto, porque o objetivo da nova marca é captar."
+     ],
+     "image": "img/cases/demian26/rebrand/png-faixas-medicos.webp",
      "rebrand": true,
+     "bare": true
+    },
+    {
+     "rebrand": true,
+     "type": "split",
+     "eyebrow": "Calendário de saúde",
+     "title": "A mesma faixa, campanhas diferentes",
+     "text": [
+      "O layout das faixas é fixo e o conteúdo muda com o mês: a campanha de tireoide (“3x mais mulheres que homens”) entra ao lado do Dr. Marcelo, com QR code para agendar.",
+      "A marca fica sempre no mesmo lugar, e quem passa na rua aprende a reconhecer o instituto pela forma, antes mesmo de ler."
+     ],
+     "image": "img/cases/demian26/rebrand/png-faixas-campanha.webp",
+     "bare": true
+    },
+    {
      "type": "split",
      "eyebrow": "Sistema de assinaturas",
      "title": "Uma marca, seis versões",
@@ -129,29 +164,52 @@
       "Marca oficial, simplificada e secundária, mais três monocromáticas, uma para cada voz do instituto: lilás para a Dra. Mônica, terracota para o institucional e grafite para o Dr. Marcelo.",
       "Assim cada médico tem a sua cor sem sair da família, e qualquer peça pode ser identificada de longe."
      ],
-     "image": "img/cases/demian26/rebrand/p07.webp"
+     "image": "img/cases/demian26/rebrand/p07.webp",
+     "ratio": "16/9",
+     "rebrand": true
     },
     {
-     "rebrand": true,
-     "type": "photos",
-     "eyebrow": "Aplicações",
-     "title": "Da fachada à garrafinha",
-     "text": "Fachada, placas dos consultórios, banners de poste, outdoor, papelaria, ícone de app e brindes: a marca aplicada em cada ponto de contato com a paciente.",
-     "alt": "Aplicações da nova marca do Instituto Demian",
-     "images": [
-      "img/cases/demian26/rebrand/p13.webp",
-      "img/cases/demian26/rebrand/p12.webp",
-      "img/cases/demian26/rebrand/p08.webp",
-      "img/cases/demian26/rebrand/p14.webp",
-      "img/cases/demian26/rebrand/p11.webp",
-      "img/cases/demian26/rebrand/p15.webp",
-      "img/cases/demian26/rebrand/p09.webp",
-      "img/cases/demian26/rebrand/p17.webp",
-      "img/cases/demian26/rebrand/p10.webp"
+     "type": "split",
+     "reverse": true,
+     "eyebrow": "Uma cor para cada médico",
+     "title": "Do consultório ao banner da fachada",
+     "text": [
+      "As placas dos consultórios repetem o sistema: lilás no consultório da Dra. Mônica, grafite no do Dr. Marcelo.",
+      "Na fachada, a faixa vertical traz a campanha do mês, e a marca do instituto fica no alto, visível da rua."
      ],
+     "rebrand": true,
+     "images": [
+      "img/cases/demian26/rebrand/p12.webp",
+      "img/cases/demian26/rebrand/p11.webp",
+      "img/cases/demian26/rebrand/p10.webp"
+     ]
+    },
+    {
+     "type": "split",
+     "eyebrow": "A marca vira lugar",
+     "title": "Fachada nova, mesma linguagem",
+     "text": [
+      "Na fachada, o símbolo e o nome ganham escala de arquitetura, com a assinatura “prevenção · cuidado · performance” logo abaixo. A paciente chega e reconhece o que viu no Instagram, no outdoor e na faixa do poste."
+     ],
+     "image": "img/cases/demian26/rebrand/fachada.webp",
+     "ratio": "1609/978",
+     "rebrand": true
+    },
+    {
+     "type": "photos",
      "compact": true,
      "cols": 3,
-     "ratio": "16/9"
+     "ratio": "1/1",
+     "eyebrow": "Mais aplicações",
+     "title": "Brindes e papelaria",
+     "alt": "Aplicações da nova marca do Instituto Demian",
+     "images": [
+      "img/cases/demian26/rebrand/icone-app.webp",
+      "img/cases/demian26/rebrand/png-garrafas.webp",
+      "img/cases/demian26/rebrand/png-papelaria.webp"
+     ],
+     "rebrand": true,
+     "png": true
     },
     {
      "rebrand": true,

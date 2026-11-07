@@ -981,3 +981,6 @@
 @media (max-width:640px){.photos.compact .ph-grid > figure:last-child:nth-child(odd){grid-column:1/-1}}
 /* grade de mockups: mostra a lâmina inteira, sem cortar */
 .photos.compact .ph-grid[style*="16/9"] img{object-fit:contain;background:var(--chip)}
+/* grade de PNGs recortados: peça inteira sobre fundo neutro */
+.photos.compact .ph-grid[style*="--ar:1/1"] figure{background:var(--chip);display:grid;place-items:center}
+.photos.compact .ph-grid[style*="--ar:1/1"] img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(0,0,0,.18))}
