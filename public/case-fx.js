@@ -310,6 +310,9 @@ window.CaseFX = (() => {
 
     /* Demonstração do sistema "Briefing relâmpago": tela do moderador (telão) + celular do aluno.
        Simulado no navegador: nada é enviado a servidor. */
+    // Demonstração do sistema do II ENEHISP (arquivo próprio: /enehisp-demo.js)
+    R.enehispDemo = (s) => (window.EnehispDemo ? window.EnehispDemo(s, h, src) : null);
+
     R.talkDemo = (s) => {
       const P = s.pedidos || [];
       const seed = s.seed || [];

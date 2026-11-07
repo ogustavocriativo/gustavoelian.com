@@ -521,3 +521,40 @@ html:not(.dark) .need-again b,html:not(.dark) .need-again svg{color:#D3EA77}
 #palco .photo>img:not(.sl){position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
 #palco .photo figcaption{position:absolute;z-index:1;background:rgba(255,255,255,.94);color:#0A0A0B;font-size:var(--t-xs);left:16px;right:16px;bottom:16px;padding:12px 16px;border-radius:12px;line-height:1.45;width:max-content;max-width:calc(100% - 32px)}
 @media (max-width:600px){#palco .photo{aspect-ratio:4/5;max-height:none}#palco .photo figcaption{left:12px;bottom:12px;max-width:calc(100% - 24px)}}
+
+/* ===== Abertura: recorte da foto sobre fundo animado da identidade =====
+   Só o fundo se move (manchas azul/lima da marca e a assinatura @gustavoelian em trama).
+   A foto fica ancorada embaixo, e os cartões ocupam as áreas livres: topo e lateral direita. */
+.portrait.cutout{background:transparent}
+.portrait.cutout .ph{background:#0E0E14;isolation:isolate}
+.idbg{position:absolute;inset:0;z-index:0;overflow:hidden;background:radial-gradient(120% 90% at 20% 0%,#1B2240 0%,#0E0E14 60%)}
+.idbg i{position:absolute;border-radius:50%;filter:blur(48px);opacity:.85;will-change:transform}
+.idbg .ib1{width:70%;aspect-ratio:1;left:-10%;top:-12%;background:radial-gradient(closest-side,#6699FF,transparent);animation:id-a 16s ease-in-out infinite alternate}
+.idbg .ib2{width:55%;aspect-ratio:1;right:-14%;top:28%;background:radial-gradient(closest-side,#C5DD63,transparent);opacity:.55;animation:id-b 19s ease-in-out infinite alternate}
+.idbg .ib3{width:65%;aspect-ratio:1;left:20%;bottom:-25%;background:radial-gradient(closest-side,#2F5FD0,transparent);animation:id-c 22s ease-in-out infinite alternate}
+.idmark{position:absolute;inset:-50%;opacity:.05;background:#fff;-webkit-mask:url(/img/logo_gustavo.png) 0 0/220px auto repeat;mask:url(/img/logo_gustavo.png) 0 0/220px auto repeat;transform:rotate(-14deg);animation:id-mark 40s linear infinite}
+.idgrain{position:absolute;inset:0;opacity:.18;mix-blend-mode:overlay;background-image:radial-gradient(rgba(255,255,255,.35) 1px,transparent 1px);background-size:4px 4px}
+@keyframes id-a{to{transform:translate(28%,22%) scale(1.15)}}
+@keyframes id-b{to{transform:translate(-34%,18%) scale(.85)}}
+@keyframes id-c{to{transform:translate(-22%,-30%) scale(1.2)}}
+@keyframes id-mark{to{-webkit-mask-position:220px 120px;mask-position:220px 120px}}
+html:not(.dark) .portrait.cutout .ph,html:not(.dark) .idbg{background:radial-gradient(120% 90% at 20% 0%,#E6ECFF 0%,#F4F4F5 65%)}
+html:not(.dark) .idmark{background:#0E0E10;opacity:.05}
+html:not(.dark) .idbg .ib2{opacity:.7}
+/* a foto: recorte em PNG/WebP com transparência, ancorado embaixo à esquerda */
+.portrait.cutout .ph img{position:absolute;z-index:1;left:0;bottom:0;width:88%;height:auto;object-fit:contain;object-position:left bottom;filter:grayscale(1) contrast(1.05) drop-shadow(0 20px 40px rgba(0,0,0,.35))}
+/* cartões fora do rosto: dois no topo, um à direita */
+.portrait.cutout .datum.d1{left:-6%;top:5%;bottom:auto;right:auto}
+.portrait.cutout .datum.d3{right:-5%;top:5%;bottom:auto;left:auto}
+.portrait.cutout .datum.d2{right:-6%;top:36%;bottom:auto;left:auto}
+.portrait.cutout .datum.d3::after{left:-28px;right:auto}
+@media (max-width:900px){
+  .portrait.cutout .ph img{width:80%}
+  .portrait.cutout .datum.d1{left:10px;top:10px}
+  .portrait.cutout .datum.d3{right:10px;top:10px}
+  .portrait.cutout .datum.d2{right:10px;top:27%}
+}
+@media (max-width:600px){
+  .portrait.cutout .datum.d3{transform-origin:top right}
+}
+@media (prefers-reduced-motion:reduce){.idbg i,.idmark{animation:none}}

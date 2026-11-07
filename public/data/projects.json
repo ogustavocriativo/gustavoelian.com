@@ -3505,6 +3505,12 @@
      ]
     },
     {
+     "type": "enehispDemo",
+     "eyebrow": "Experimente o sistema",
+     "title": "Do código da carta ao parecer",
+     "text": "Uma versão de demonstração, com dados fictícios, dos módulos usados no evento. Os passos se ligam como no dia: a fala concluída no cronômetro registra a presença, a coordenação avalia no mural e essa nota entra no índice de seleção dos pareceres."
+    },
+    {
      "type": "steps",
      "panel": true,
      "eyebrow": "Percurso em três atos",
