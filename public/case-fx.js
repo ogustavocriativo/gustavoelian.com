@@ -337,8 +337,8 @@ window.CaseFX = (() => {
 
     // Números da gestão: valor grande + rótulo + detalhe
     R.stats = (s) => h("section", { class: `blk stats${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
-      h("ul", { class: "st-grid" }, ...s.items.map((it, i) => h("li", { class: "st", style: `--i:${i}`, "data-fx": "" },
-        h("b", {}, it.value), h("span", {}, it.label), it.note ? h("small", {}, it.note) : null)))));
+      h("ul", { class: `st-grid${s.items.length === 4 ? " st4" : ""}` }, ...s.items.map((it, i) => h("li", { class: "st", style: `--i:${i}`, "data-fx": "" },
+        h("b", {}, it.medal ? h("i", { class: `og-md m${it.medal}`, "aria-hidden": "true" }, `${it.medal}º`) : null, it.value), h("span", {}, it.label), it.note ? h("small", {}, it.note) : null)))));
 
     // Barras horizontais: comparação simples de valores (ex.: visualizações por reel)
     R.bars = (s) => {
@@ -361,10 +361,26 @@ window.CaseFX = (() => {
           h("p", { class: "lu-w" }, n.where),
           h("ul", { class: "lu-a" }, ...n.artists.map((a) => h("li", {}, a)))))))));
 
+    // Ícones de modalidade (traço 1.6, 24px) para listas de resultados
+    const OG_ICONS = {
+      xadrez: '<path d="M9 21h6M8 18h8l-1-6h-6zM10 12V9h4v3M12 3a2 2 0 0 1 2 2c0 .8-.4 1.4-1 1.7V9h-2V6.7A2 2 0 0 1 12 3z"/>',
+      natacao: '<circle cx="16" cy="6" r="2"/><path d="M3 14c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1M3 19c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1M6 11l4-4 3 3 3-1"/>',
+      atletismo: '<circle cx="14" cy="4" r="2"/><path d="M7 21l3-6 3 2v4M10 15l1-6 3 3h4M11 9l-4 1-2 3"/>',
+      handebol: '<circle cx="12" cy="12" r="9"/><path d="M12 3c-2 3-2 15 0 18M3.5 9h17M3.5 15h17"/>',
+      futsal: '<circle cx="12" cy="12" r="9"/><path d="M12 8l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 3v5M21 10l-5.5.5M17.5 19.5l-3.3-5M6.5 19.5l3.3-5M3 10l5.5.5"/>',
+      volei: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 9M12 12a9 9 0 0 0 8 4.5M12 12a9 9 0 0 1-8 4.5M12 12c-3-1.5-5-4.5-5.5-8"/>',
+      festa: '<path d="M3 5c3 2 6 3 9 3s6-1 9-3M5 6l1.5 5L8 7M11 8l1 5 1-5M16 7l1.5 4L19 6"/>',
+      praia: '<circle cx="17" cy="6" r="2.5"/><path d="M3 20h18M6 20a6 6 0 0 1 12 0"/><circle cx="8" cy="12" r="3"/>',
+      bandeira: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'
+    };
+
     // Organograma: grupos de cargos com nomes
     R.org = (s) => h("section", { class: `blk org${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", {}, g.title),
-        h("ul", {}, ...g.items.map((it) => h("li", {}, h("small", {}, it.role), h("b", {}, it.name)))))))));
+        h("ul", {}, ...g.items.map((it) => h("li", { class: it.icon || it.medal ? "og-x" : null },
+          it.icon ? h("span", { class: "og-ic", "aria-hidden": "true", html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${OG_ICONS[it.icon] || ""}</svg>` }) : null,
+          h("span", { class: "og-t" }, h("small", {}, it.role), h("b", {}, it.name)),
+          it.medal ? h("span", { class: `og-md m${Math.min(it.medal, 4)}`, "aria-label": `${it.medal}º lugar` }, `${it.medal}º`) : null))))))));
 
     // Parede de logos (ex.: atléticas participantes): logo + nome + vínculo, em grade
     R.logos = (s) => h("section", { class: `blk logos${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),

@@ -2851,12 +2851,12 @@
      "title": "Dragão da PP",
      "lead": "Reativei oficialmente a AAAPP em 1º de abril de 2022, como vice-presidente e presidente eleito, depois da pausa imposta pela pandemia, e assumi a presidência em 1º de julho. Montei a diretoria, organizei a marca, abri o caminho para patrocínio e levei o curso de volta às quadras.",
      "chips": [
-      "Reativação: 01/04/2022",
-      "Presidência: desde 01/07/2022",
+      "Reativação: 01/04/2022 · vice-presidente",
+      "Presidência: 01/07/2022 a 30/06/2023",
       "AAAPP · UNIFIPMoc",
       "Comunicação Social · Publicidade e Propaganda"
      ],
-     "block": "img/cases/aaapp/dragao.webp",
+     "block": "img/cases/aaapp/logo-aaapp.svg",
      "blockFit": "contain",
      "blockAlt": "Mascote da AAAPP: dragão roxo com a marca Publicidade e Propaganda"
     },
@@ -2939,6 +2939,20 @@
      "ratio": "16/9"
     },
     {
+     "type": "photos",
+     "compact": true,
+     "cols": 2,
+     "ratio": "3/2",
+     "eyebrow": "Recepção de calouros",
+     "title": "Calouro dragão",
+     "text": "A recepção dos novos alunos marcou a volta da atlética ao campus, com braços pintados, canecas da Dragon Gang e a presença de presidentes de outras atléticas.",
+     "alt": "Recepção de calouros da AAAPP",
+     "images": [
+      "img/cases/aaapp/foto-01.jpg",
+      "img/cases/aaapp/foto-02.jpg"
+     ]
+    },
+    {
      "type": "strip",
      "title": "Manual do MKT · Como cuidar do seu dragão",
      "images": [
@@ -2958,45 +2972,24 @@
     {
      "type": "photos",
      "compact": true,
-     "cols": 3,
+     "cols": 4,
      "ratio": "4/5",
-     "eyebrow": "Produtos",
-     "title": "Uniforme, camisa e caneca",
-     "text": "Uniforme esportivo para uma média de 40 atletas, camisa da diretoria e caneca premium com o dragão de um lado e a frase da Dragon Gang do outro.",
-     "alt": "Produtos da AAAPP",
+     "eyebrow": "Dragon Gang",
+     "title": "A marca vestida",
+     "text": "Camisa baseball da diretoria, bandeira do dragão e canecas da Dragon Gang: a identidade saiu do manual e foi para a rua.",
+     "alt": "Produtos da AAAPP em uso",
      "images": [
-      "img/cases/aaapp/uniforme.jpg",
-      "img/cases/aaapp/camisa-diretoria.jpg",
-      "img/cases/aaapp/caneca.jpg"
-     ]
-    },
-    {
-     "type": "cards",
-     "eyebrow": "Patrocínio",
-     "title": "Duas cotas, uma proposta clara",
-     "items": [
-      {
-       "kind": "Patrocinador Fogo · 1 vaga · 5 meses",
-       "title": "R$ 800",
-       "text": "Marca na frente da camisa (cerca de 8 cm), dois reels em collab, visibilidade em todos os eventos e ações especiais online e offline."
-      },
-      {
-       "kind": "Patrocinador do Dragão · 3 vagas · 3 meses",
-       "title": "R$ 500",
-       "text": "Marca nas costas da camisa (cerca de 5 cm), um reel em collab, visibilidade em todos os eventos e ações especiais."
-      },
-      {
-       "kind": "Uniforme",
-       "title": "R$ 125 por atleta",
-       "text": "Camisa, short e meião para cerca de 40 atletas: o patrocínio pagava o uniforme que levava a marca para a quadra."
-      }
+      "img/cases/aaapp/foto-12.jpg",
+      "img/cases/aaapp/foto-13.jpg",
+      "img/cases/aaapp/foto-06.jpg",
+      "img/cases/aaapp/foto-07.jpg"
      ]
     },
     {
      "type": "steps",
      "panel": true,
-     "eyebrow": "Calendário do patrocínio",
-     "title": "Onde a marca aparecia",
+     "eyebrow": "Calendário 2022",
+     "title": "Onde a atlética esteve",
      "image": "img/cases/aaapp/slide-p-15.jpg",
      "items": [
       {
@@ -3023,30 +3016,40 @@
     },
     {
      "type": "split",
-     "reverse": true,
-     "eyebrow": "Contra-proposta",
-     "title": "Império do Açaí como patrocinador oficial",
+     "panel": true,
+     "eyebrow": "Atlética convidada",
+     "title": "CIA 2022 · Copa Inter Atléticas",
      "text": [
-      "Para a marca que topou a parceria, a proposta virou um plano de ativação: concentrações nos dias de jogo, conteúdo duas vezes por mês e um camarote com o nome da marca no Dragon Fest.",
-      "O festival foi desenhado em três espaços (pista, Camarote Império e backstage com bar open) para um público inicial de 800 pessoas."
+      "A AAAPP foi convidada para a CIA 2022, em Uberaba, e levou a marca do dragão para o mural das atléticas participantes, ao lado de associações de todo o estado."
      ],
-     "image": "img/cases/aaapp/slide-c-15.jpg",
-     "ratio": "16/9"
+     "image": "img/cases/aaapp/foto-14.jpg",
+     "ratio": "3/2"
     },
     {
      "type": "photos",
      "compact": true,
      "cols": 2,
-     "ratio": "16/9",
-     "eyebrow": "Participações em 2022",
-     "title": "A atlética fora de casa",
-     "text": "Convidada da CIA 2022 em Uberaba, marca usada na campanha de captação da UNIFIPMoc e comissão central organizadora das duas ARCAs.",
-     "alt": "Lâminas da proposta",
+     "ratio": "4/5",
+     "alt": "AAAPP na CIA 2022",
      "images": [
-      "img/cases/aaapp/slide-c-08.jpg",
-      "img/cases/aaapp/slide-c-14.jpg",
-      "img/cases/aaapp/slide-p-18.jpg",
-      "img/cases/aaapp/slide-p-19.jpg"
+      "img/cases/aaapp/foto-04.jpg",
+      "img/cases/aaapp/foto-05.jpg"
+     ]
+    },
+    {
+     "type": "photos",
+     "compact": true,
+     "cols": 4,
+     "ratio": "4/5",
+     "eyebrow": "Em quadra e na arquibancada",
+     "title": "Atletas, torcida e Dragon Cheers",
+     "text": "Uniformes da gestão, a torcida organizada com a bandeira Dragon Gang e o time de cheerleaders Dragon Cheers.",
+     "alt": "Atletas e torcida da AAAPP",
+     "images": [
+      "img/cases/aaapp/foto-03.jpg",
+      "img/cases/aaapp/foto-10.jpg",
+      "img/cases/aaapp/foto-11.jpg",
+      "img/cases/aaapp/foto-09.jpg"
      ]
     },
     {
@@ -3064,17 +3067,20 @@
       {
        "value": "5",
        "label": "primeiros lugares",
-       "note": "xadrez, natação e atletismo"
+       "note": "xadrez, natação e atletismo",
+       "medal": 1
       },
       {
        "value": "5",
        "label": "segundos lugares",
-       "note": "handebol, futsal, Arraiá, atletismo e natação"
+       "note": "handebol, futsal, Arraiá, atletismo e natação",
+       "medal": 2
       },
       {
        "value": "2",
        "label": "terceiros lugares",
-       "note": "handebol feminino e natação masculina"
+       "note": "handebol feminino e natação masculina",
+       "medal": 3
       }
      ]
     },
@@ -3088,39 +3094,57 @@
        "items": [
         {
          "role": "Xadrez",
-         "name": "1º lugar geral"
+         "name": "1º lugar geral",
+         "icon": "xadrez",
+         "medal": 1
         },
         {
          "role": "Natação masculina · nado livre",
-         "name": "1º lugar"
+         "name": "1º lugar",
+         "icon": "natacao",
+         "medal": 1
         },
         {
          "role": "Natação masculina · nado peito",
-         "name": "1º lugar"
+         "name": "1º lugar",
+         "icon": "natacao",
+         "medal": 1
         },
         {
          "role": "Atletismo masculino · 400 m",
-         "name": "1º lugar"
+         "name": "1º lugar",
+         "icon": "atletismo",
+         "medal": 1
         },
         {
          "role": "Handebol feminino",
-         "name": "2º lugar geral"
+         "name": "2º lugar geral",
+         "icon": "handebol",
+         "medal": 2
         },
         {
          "role": "Futsal feminino",
-         "name": "2º lugar geral"
+         "name": "2º lugar geral",
+         "icon": "futsal",
+         "medal": 2
         },
         {
          "role": "Atletismo masculino · 800 m",
-         "name": "2º lugar"
+         "name": "2º lugar",
+         "icon": "atletismo",
+         "medal": 2
         },
         {
          "role": "Natação masculina",
-         "name": "3º lugar geral"
+         "name": "3º lugar geral",
+         "icon": "natacao",
+         "medal": 3
         },
         {
          "role": "Vôlei masculino",
-         "name": "4º lugar geral"
+         "name": "4º lugar geral",
+         "icon": "volei",
+         "medal": 4
         }
        ]
       },
@@ -3129,11 +3153,15 @@
        "items": [
         {
          "role": "Natação · nado livre",
-         "name": "1º lugar"
+         "name": "1º lugar",
+         "icon": "natacao",
+         "medal": 1
         },
         {
          "role": "Natação · nado costas",
-         "name": "2º lugar"
+         "name": "2º lugar",
+         "icon": "natacao",
+         "medal": 2
         }
        ]
       },
@@ -3142,19 +3170,26 @@
        "items": [
         {
          "role": "Arraiá da UNIFIPMoc",
-         "name": "2º lugar"
+         "name": "2º lugar",
+         "icon": "festa",
+         "medal": 2
         },
         {
          "role": "Torneio de Handebol UNIFIPMoc",
-         "name": "3º lugar feminino"
+         "name": "3º lugar feminino",
+         "icon": "handebol",
+         "medal": 3
         },
         {
          "role": "Torneio de Verão · beach volley",
-         "name": "4º lugar (tiebreak)"
+         "name": "4º lugar (tiebreak)",
+         "icon": "praia",
+         "medal": 4
         },
         {
          "role": "Copa Interatléticas (CIA)",
-         "name": "Participação não esportiva"
+         "name": "Participação não esportiva",
+         "icon": "bandeira"
         }
        ]
       }
