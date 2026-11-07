@@ -2077,13 +2077,13 @@
    "id": "papo-calcinha",
    "case": true,
    "title": "Papo Calcinha",
-   "kind": "Evento · palestra com Kamila Simioni",
+   "kind": "Produção executiva e cenografia",
    "client": "Kamila Simioni",
    "year": "2022",
    "fronts": [
     "trade"
    ],
-   "summary": "Papo Calcinha com Kamila Simioni, edição 2022: evento de auditório voltado exclusivamente para mulheres, com a marca do evento em palco e uma noite de casa cheia.",
+   "summary": "Produção executiva e construção da cenografia do Papo Calcinha com Kamila Simioni, edição 2022: palco em vermelho e preto para um auditório lotado de mulheres.",
    "cover": "img/cases/papo/palco.jpg",
    "theme": {
     "bg": "#F6F1EF",
@@ -2099,21 +2099,21 @@
     {
      "type": "hero",
      "variant": "poster",
-     "kicker": "Evento · Edição 2022",
+     "kicker": "Produção executiva · Cenografia · Edição 2022",
      "title": "Papo Calcinha",
      "titleAccent": "Calcinha",
-     "lead": "Um evento de auditório voltado exclusivamente para mulheres: empoderamento feminino, relacionamento, empreendedorismo e um papo calcinha sobre a vida, com Kamila Simioni.",
+     "lead": "Conduzi a produção executiva e construí a cenografia do Papo Calcinha com Kamila Simioni, um evento de auditório voltado exclusivamente para mulheres: empoderamento feminino, relacionamento, empreendedorismo e um papo calcinha sobre a vida.",
      "block": "img/cases/papo/palco.jpg",
      "blockPos": "52% 50%",
      "blockAlt": "Kamila Simioni no palco do Papo Calcinha"
     },
     {
      "type": "split",
-     "eyebrow": "A marca",
-     "title": "Papo Calcinha com Kamila Simioni",
+     "eyebrow": "Cenografia",
+     "title": "Um palco de conversa, não de palestra",
      "text": [
-      "Tipografia vermelha forte, a assinatura manuscrita de Kamila e o ponto final como marca de quem fala sem rodeio.",
-      "No palco, o cartaz da marca dividia a mesa com a taça e o jarro: cenário de conversa, não de palestra."
+      "A cenografia traduziu a marca para o espaço: arco de balões em vermelho e preto para as fotos, e no palco uma mesa alta com cadeira, jarro, taça e o cartaz do Papo Calcinha, como uma conversa entre amigas.",
+      "O monitor de retorno virado para Kamila exibia as perguntas da noite, como “O que é ser uma mulher realizada?”, e a luz cênica alternava entre o branco frio dos fachos e o vermelho da identidade."
      ],
      "image": "img/cases/papo/kamila-cartaz.jpg",
      "ratio": "4/5"
@@ -2135,7 +2135,7 @@
      "ratio": "3/4",
      "eyebrow": "Casa cheia",
      "title": "Do palco para a plateia",
-     "text": "A plateia vestida de preto, celulares acesos e a tela com as perguntas da noite.",
+     "text": "Auditório lotado, plateia vestida de preto, celulares acesos e a tela com as perguntas da noite.",
      "alt": "Plateia do Papo Calcinha",
      "images": [
       "img/cases/papo/plateia-palco.jpg",
@@ -2156,9 +2156,35 @@
      ]
     },
     {
+     "type": "steps",
+     "panel": true,
+     "eyebrow": "Produção executiva",
+     "title": "Do arco de balões à última pergunta",
+     "image": "img/cases/papo/palco-costas.jpg",
+     "items": [
+      {
+       "t": "Cenografia",
+       "d": "Desenho e montagem do palco e do espaço de fotos com a identidade do evento."
+      },
+      {
+       "t": "Palco",
+       "d": "Mesa, cadeira, cartaz, monitor de retorno e roteiro de perguntas em tela."
+      },
+      {
+       "t": "Fornecedores",
+       "d": "Coordenação de luz cênica, som, balões e equipe técnica do teatro."
+      },
+      {
+       "t": "Noite do evento",
+       "d": "Recepção do público, cronograma de palco e apoio à Kamila do início ao fim."
+      }
+     ]
+    },
+    {
      "type": "credits",
      "items": [
-      "Papo Calcinha com Kamila Simioni · Edição 2022"
+      "Papo Calcinha com Kamila Simioni · Edição 2022",
+      "Produção executiva e construção de cenografia: Gustavo Elian"
      ]
     }
    ]
