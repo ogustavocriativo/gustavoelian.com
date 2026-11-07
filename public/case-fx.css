@@ -825,26 +825,11 @@
 .duo-vid figcaption{margin-top:10px;font-size:.875rem}
 .duo-vid iframe{width:100%;height:100%;border:0;display:block}
 @media (max-width:760px){.duo-g{grid-template-columns:1fr}}
-.lu-ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--accent);color:#1A1A1A;margin-bottom:6px}
-.lu-ic svg{width:24px;height:24px}
 .og h3.og-lg{display:flex;align-items:center;gap:12px}
 .og h3.og-lg img{height:44px;width:auto;border-radius:10px}
 
 /* ícones de modalidade */
-.og-ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,var(--accentInk),color-mix(in srgb,var(--accentInk) 70%,#000));color:var(--accent);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 14px -8px color-mix(in srgb,var(--accentInk) 80%,transparent)}
-.og-ic svg{width:22px;height:22px;stroke-width:1.8}
 /* medalhas: disco metálico com fita */
-.og-md{position:relative;width:34px;height:34px;flex:none;display:grid;place-items:center;margin-top:8px}
-.og-md > i{position:absolute;top:-10px;left:50%;width:18px;height:14px;transform:translateX(-50%);background:linear-gradient(90deg,var(--accentInk) 0 50%,var(--accent) 50% 100%);clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%)}
-.og-md > span{position:relative;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:.6875rem;font-weight:800;letter-spacing:-.02em;color:rgba(40,28,0,.85);box-shadow:inset 0 0 0 3px rgba(255,255,255,.35),inset 0 -4px 6px rgba(0,0,0,.18),0 4px 10px -4px rgba(0,0,0,.4)}
-.og-md.m1 > span{background:radial-gradient(circle at 35% 30%,#FFF4B8,#F2C445 45%,#C8901C)}
-.og-md.m2 > span{background:radial-gradient(circle at 35% 30%,#FFFFFF,#D3D8DF 45%,#9AA3AF);color:#2D333B}
-.og-md.m3 > span{background:radial-gradient(circle at 35% 30%,#FFD9BC,#D88B55 45%,#9C5A2C);color:#3B1E0A}
-.og-md.m4 > span{background:color-mix(in srgb,var(--ink) 10%,transparent);color:var(--ink);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ink) 18%,transparent)}
-.og-md.m4 > i{display:none}
-.og-md.big{width:44px;height:44px;display:inline-grid;vertical-align:middle;margin:6px 12px 0 0}
-.og-md.big > span{width:44px;height:44px;font-size:.8125rem}
-.og-md.big > i{width:22px;height:16px;top:-12px}
 .st b{display:flex;align-items:center}
 /* legendas nas grades de fotos */
 .photos.compact figure{position:relative}
@@ -876,3 +861,32 @@
 @media (min-width:861px){#case > .hero.poster{min-height:min(78vh,720px)}}
 #case .duo-g{gap:clamp(24px,3vw,40px)}
 #case .duo-vid .yt-box{margin-top:0}
+
+/* ===== Pictogramas de modalidade ===== */
+.pict{display:block;width:100%;height:100%;color:#1C1B19;overflow:visible}
+.pict .f{fill:currentColor;stroke:none}
+.og-ic{width:52px;height:52px;flex:none}
+.lu-ic{width:72px;height:72px;margin:-4px 0 4px -6px;display:block}
+/* ===== Medalhas: disco canelado metálico, hexágono central e fita dupla ===== */
+.og-md{--m1:#E9EDF2;--m2:#B9C1CB;position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;margin-top:10px}
+.og-md.m1{--m1:#FFE08A;--m2:#D49A2A}
+.og-md.m2{--m1:#F4F6F9;--m2:#A9B2BD}
+.og-md.m3{--m1:#F6C3A2;--m2:#B76E45}
+.og-md > i{position:absolute;bottom:62%;left:50%;width:62%;height:62%;transform:translateX(-50%);z-index:0;
+  background:linear-gradient(90deg,transparent 0 6%,var(--accentInk) 6% 44%,transparent 44% 56%,var(--accentInk) 56% 94%,transparent 94%);
+  clip-path:polygon(0 0,46% 0,50% 100%,54% 0,100% 0,62% 100%,38% 100%)}
+.og-md > span{position:relative;z-index:1;width:100%;height:100%;border-radius:50%;display:grid;place-items:center;isolation:isolate;
+  font-size:.6875rem;font-weight:800;color:#fff;letter-spacing:-.02em;text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.og-md > span::before{content:"";position:absolute;inset:0;border-radius:50%;z-index:-2;
+  background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.55),transparent 45%),radial-gradient(circle,transparent 58%,rgba(0,0,0,.22) 100%),repeating-conic-gradient(var(--m1) 0 5deg,var(--m2) 5deg 10deg);
+  box-shadow:0 6px 12px -6px rgba(0,0,0,.5)}
+.og-md > span::after{content:"";position:absolute;inset:24%;z-index:-1;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+  background:linear-gradient(160deg,#55575C,#2A2B2E)}
+.og-md.m4 > i{display:none}
+.og-md.m4 > span{color:var(--ink);text-shadow:none}
+.og-md.m4 > span::before{background:color-mix(in srgb,var(--ink) 10%,transparent);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ink) 18%,transparent)}
+.og-md.m4 > span::after{display:none}
+.og-md.big{width:56px;height:56px;display:inline-grid;vertical-align:middle;margin:12px 14px 0 0}
+.og-md.big > span{font-size:.875rem}
+.og h3.og-lg img{height:52px;width:auto;max-width:150px;object-fit:contain;border-radius:10px}
+.og h3.og-lg img[src$=".svg"]{border-radius:0}

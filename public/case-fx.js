@@ -365,25 +365,36 @@ window.CaseFX = (() => {
     };
 
     // Ícones de modalidade (traço 1.6, 24px) para listas de resultados
-    const OG_ICONS = {
-      xadrez: '<path d="M9 21h6M8 18h8l-1-6h-6zM10 12V9h4v3M12 3a2 2 0 0 1 2 2c0 .8-.4 1.4-1 1.7V9h-2V6.7A2 2 0 0 1 12 3z"/>',
-      natacao: '<circle cx="16" cy="6" r="2"/><path d="M3 14c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1M3 19c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1M6 11l4-4 3 3 3-1"/>',
-      atletismo: '<circle cx="14" cy="4" r="2"/><path d="M7 21l3-6 3 2v4M10 15l1-6 3 3h4M11 9l-4 1-2 3"/>',
-      handebol: '<circle cx="12" cy="12" r="9"/><path d="M12 3c-2 3-2 15 0 18M3.5 9h17M3.5 15h17"/>',
-      futsal: '<circle cx="12" cy="12" r="9"/><path d="M12 8l3.5 2.5-1.3 4h-4.4l-1.3-4zM12 3v5M21 10l-5.5.5M17.5 19.5l-3.3-5M6.5 19.5l3.3-5M3 10l5.5.5"/>',
-      volei: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 9M12 12a9 9 0 0 0 8 4.5M12 12a9 9 0 0 1-8 4.5M12 12c-3-1.5-5-4.5-5.5-8"/>',
-      festa: '<path d="M3 5c3 2 6 3 9 3s6-1 9-3M5 6l1.5 5L8 7M11 8l1 5 1-5M16 7l1.5 4L19 6"/>',
-      praia: '<circle cx="17" cy="6" r="2.5"/><path d="M3 20h18M6 20a6 6 0 0 1 12 0"/><circle cx="8" cy="12" r="3"/>',
-      bandeira: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
-      basquete: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c2.8 2.8 2.8 10 0 12.8M18.4 5.6c-2.8 2.8-2.8 10 0 12.8"/>'
+    // Pictogramas de modalidade (grade 64): figura em traço único, arredondado, com cabeça em ponto,
+    // sobre uma mancha orgânica colorida — linguagem de pictograma "desenhado à mão".
+    const PICT = {
+      atletismo: '<circle class="f" cx="40" cy="11" r="5.5"/><path d="M35 21 Q31 29 28 36 M34 23 Q42 26 47 21 M34 23 Q26 24 21 19 M28 36 Q36 41 39 47 Q39 52 36 57 M28 36 Q23 44 12 46"/>',
+      natacao: '<circle class="f" cx="14" cy="28" r="5.5"/><path d="M21 33 Q35 27 51 33 M25 30 Q30 17 42 21 M5 49 q5.5 -5 11 0 t11 0 t11 0 t11 0 t11 0"/>',
+      futsal: '<circle class="f" cx="22" cy="10" r="5.5"/><circle class="f" cx="52" cy="44" r="5.5"/><path d="M24 19 Q26 28 30 35 M25 22 Q18 25 13 30 M25 22 Q32 20 38 15 M30 35 Q39 38 45 35 M30 35 Q28 46 21 56"/>',
+      volei: '<circle class="f" cx="27" cy="15" r="5.5"/><circle class="f" cx="46" cy="8" r="5.5"/><path d="M28 23 Q35 16 40 13 M28 23 Q26 32 28 40 M28 25 Q20 28 16 33 M28 40 Q35 45 39 51 M28 40 Q22 48 17 57"/>',
+      handebol: '<circle class="f" cx="29" cy="11" r="5.5"/><circle class="f" cx="48" cy="10" r="5.5"/><path d="M30 20 Q37 20 42 15 M30 20 Q28 31 26 40 M30 23 Q22 26 17 22 M26 40 Q33 46 37 55 M26 40 Q19 46 12 49"/>',
+      basquete: '<circle class="f" cx="25" cy="16" r="5.5"/><circle class="f" cx="42" cy="8" r="5.5"/><path d="M26 24 Q32 16 37 12 M26 24 Q30 18 36 16 M26 24 Q25 34 26 43 M26 43 Q32 49 33 57 M26 43 Q19 50 17 57 M48 24 H60 M50 24 L53 31 L57 24"/>',
+      xadrez: '<circle class="f" cx="32" cy="15" r="6.5"/><path class="f" d="M25 49 Q27 35 32 25 Q37 35 39 49 Z"/><path d="M20 53 H44 M26 25 H38"/>',
+      festa: '<circle class="f" cx="32" cy="23" r="5.5"/><path d="M4 7 Q32 15 60 7 M32 31 Q22 27 18 21 M32 31 Q42 27 46 21 M32 31 Q32 38 32 43 M32 43 Q26 50 22 57 M32 43 Q38 50 42 57"/><path class="f" d="M10 9 l3 7 l3 -6 Z M22 12 l3 7 l3 -6 Z M36 12 l3 7 l3 -7 Z M48 10 l3 6 l3 -7 Z"/>',
+      praia: '<circle class="f" cx="16" cy="33" r="5.5"/><circle class="f" cx="7" cy="17" r="5"/><path d="M22 37 Q35 41 47 35 M20 31 Q14 26 11 22 M47 35 Q53 30 58 24 M47 35 Q53 38 59 37 M4 55 H60"/>',
+      bandeira: '<circle class="f" cx="22" cy="17" r="5.5"/><path d="M22 25 Q23 34 23 42 M23 42 Q19 49 16 57 M23 42 Q28 49 31 57 M22 28 Q30 25 37 20 M38 5 V44"/><path class="f" d="M38 5 L57 11 L38 18 Z"/>'
     };
+    const PICT_BG = ["#7CC6A4", "#F2B84B", "#A27BC0", "#EE8A72", "#6FB1E0"];
+    const PICT_COLOR = { atletismo: 3, natacao: 4, futsal: 0, volei: 1, handebol: 3, basquete: 1, xadrez: 2, festa: 1, praia: 4, bandeira: 0 };
+    const BLOBS = ["M12 32C8 16 22 5 38 8 54 11 62 26 56 41 50 56 32 61 20 54 9 48 14 41 12 32Z", "M9 28C11 13 27 4 42 9 57 14 60 33 53 46 45 59 24 60 15 50 6 41 8 36 9 28Z", "M14 22C20 9 38 4 50 13 61 22 58 42 47 52 35 62 17 57 10 45 5 35 9 31 14 22Z"];
+    const pict = (name) => {
+      if (!PICT[name]) return "";
+      const k = Object.keys(PICT).indexOf(name);
+      return `<svg viewBox="0 0 64 64" class="pict" aria-hidden="true"><path d="${BLOBS[k % 3]}" fill="${PICT_BG[PICT_COLOR[name] ?? k % 5]}"/><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">${PICT[name]}</g></svg>`;
+    };
+
 
     // Programação: uma coluna por noite, com fotos do palco, data, local e atrações
     R.lineup = (s) => h("section", { class: `blk lineup${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "lu-grid" }, ...s.nights.map((n) => h("article", { class: "lu" },
         n.photos?.length ? h("div", { class: `lu-ph n${Math.min(n.photos.length, 2)}` }, ...n.photos.slice(0, 2).map((p) => h("figure", {}, h("img", { src: src(p.img || p), alt: p.alt || "", loading: "lazy" }), p.cap ? h("figcaption", {}, p.cap) : null))) : null,
         h("div", { class: "lu-b" },
-          n.icon ? h("span", { class: "lu-ic", "aria-hidden": "true", html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${OG_ICONS[n.icon] || ""}</svg>` }) : null,
+          n.icon ? h("span", { class: "lu-ic", "aria-hidden": "true", html: pict(n.icon) }) : null,
           h("small", {}, n.label),
           h("h3", {}, n.date),
           h("p", { class: "lu-w" }, n.where),
@@ -394,7 +405,7 @@ window.CaseFX = (() => {
     R.org = (s) => h("section", { class: `blk org${s.panel ? " panel on-panel" : ""}` }, h("div", { class: "wrap" }, head(s),
       h("div", { class: "og-grid" }, ...s.groups.map((g) => h("article", { class: "og" }, h("h3", { class: g.logo ? "og-lg" : null }, g.logo ? h("img", { src: src(g.logo), alt: "", loading: "lazy" }) : null, g.title),
         h("ul", {}, ...g.items.map((it) => h("li", { class: it.icon || it.medal ? "og-x" : null },
-          it.icon ? h("span", { class: "og-ic", "aria-hidden": "true", html: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${OG_ICONS[it.icon] || ""}</svg>` }) : null,
+          it.icon ? h("span", { class: "og-ic", "aria-hidden": "true", html: pict(it.icon) }) : null,
           h("span", { class: "og-t" }, h("small", {}, it.role), h("b", {}, it.name)),
           it.medal ? h("span", { class: `og-md m${Math.min(it.medal, 4)}`, role: "img", "aria-label": `${it.medal}º lugar` }, h("i", { "aria-hidden": "true" }), h("span", {}, `${it.medal}º`)) : null))))))));
 
