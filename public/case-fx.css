@@ -829,9 +829,6 @@
 .lu-ic svg{width:24px;height:24px}
 .og h3.og-lg{display:flex;align-items:center;gap:12px}
 .og h3.og-lg img{height:44px;width:auto;border-radius:10px}
-/* ritmo vertical entre seções */
-.blk:not(.panel):not(.hero){padding-block:clamp(36px,5.5vw,80px)}
-.blk.panel + .blk.panel{margin-top:clamp(16px,2.4vw,28px)}
 
 /* ícones de modalidade */
 .og-ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,var(--accentInk),color-mix(in srgb,var(--accentInk) 70%,#000));color:var(--accent);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 14px -8px color-mix(in srgb,var(--accentInk) 80%,transparent)}
@@ -852,3 +849,24 @@
 /* legendas nas grades de fotos */
 .photos.compact figure{position:relative}
 .photos.compact figcaption{position:absolute;left:10px;right:10px;bottom:10px;padding:6px 10px;border-radius:12px;font-size:.75rem;line-height:1.3;background:rgba(0,0,0,.62);color:#fff;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+
+/* ===== Ritmo vertical padronizado (grade de 8 pt) =====
+   --s-sec: respiro interno de seção com painel (fundo próprio)
+   --s-open: respiro de seção aberta (sem fundo) — metade do anterior, porque duas abertas seguidas somam os dois
+   --s-head: distância título → conteúdo; --gut: distância entre cartões de seção */
+#case{--s-sec:clamp(48px,7vw,96px);--s-open:clamp(32px,4vw,56px);--s-head:clamp(24px,3vw,40px)}
+#case > .blk,#case > .pf-blk{margin:0 var(--gut);padding-block:var(--s-open)}
+#case > .blk.panel,#case > .blk.on-panel,#case > .cta{padding-block:var(--s-sec)}
+#case > .blk.panel,#case > .blk.on-panel,#case > .cta{margin-block:var(--gut)}
+#case > .hero{padding-block:0;margin-top:var(--gut)}
+#case > .hero:not(.poster){padding-top:var(--s-sec)}
+#case > .blk.marquee{padding-block:clamp(16px,2.4vw,24px);margin-block:var(--gut)}
+#case > .credits{padding-block:var(--s-open)}
+#case .fx-head + *,#case .head + *{margin-top:var(--s-head)}
+#case .st-grid,#case .og-grid,#case .lu-grid,#case .rk-cols,#case .duo-g,#case .br-list,#case .lg-grid,#case .ph-grid,#case .ph-cols,#case .yt-box{margin-top:var(--s-head)}
+#case .fx-head > * + *{margin-top:12px}
+#case .split .text{gap:16px}
+#case > .blk.hero.poster{padding-block:0}
+#case > .blk.hero:not(.poster){padding-top:var(--s-sec);padding-bottom:0}
+#case > .blk.hero:not(.poster) .media.hb.contain{padding-bottom:var(--s-sec)}
+#case > .blk + .credits{margin-top:0}
