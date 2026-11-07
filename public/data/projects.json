@@ -2078,7 +2078,7 @@
    "case": true,
    "title": "Papo Calcinha",
    "kind": "Produção executiva e cenografia",
-   "client": "Kamila Simioni",
+   "client": "Kamila Simioni · Belo Horizonte",
    "year": "2022",
    "fronts": [
     "trade"
@@ -2105,7 +2105,12 @@
      "lead": "Conduzi a produção executiva e construí a cenografia do Papo Calcinha com Kamila Simioni, um evento de auditório voltado exclusivamente para mulheres: empoderamento feminino, relacionamento, empreendedorismo e um papo calcinha sobre a vida.",
      "block": "img/cases/papo/palco.jpg",
      "blockPos": "52% 50%",
-     "blockAlt": "Kamila Simioni no palco do Papo Calcinha"
+     "blockAlt": "Kamila Simioni no palco do Papo Calcinha",
+     "chips": [
+      "Abril de 2022",
+      "Belo Horizonte · MG",
+      "Evento exclusivo para mulheres"
+     ]
     },
     {
      "type": "split",
@@ -2183,7 +2188,7 @@
     {
      "type": "credits",
      "items": [
-      "Papo Calcinha com Kamila Simioni · Edição 2022",
+      "Papo Calcinha com Kamila Simioni · Edição 2022 · Belo Horizonte, abril de 2022",
       "Produção executiva e construção de cenografia: Gustavo Elian"
      ]
     }
