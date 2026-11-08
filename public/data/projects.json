@@ -2188,7 +2188,7 @@
     "trade"
    ],
    "summary": "Produção criativa e executiva, parcerias e patrocínios de uma imersão esportiva e social só de mulheres em Trancoso: treino no campo de golfe, praia, gastronomia e marcas parceiras em quatro dias.",
-   "cover": "img/cases/ise/backdrop.webp",
+   "cover": "video/ise/capa.jpg",
    "theme": {
     "bg": "#F7F4EE",
     "ink": "#1F1A2E",
@@ -2493,7 +2493,9 @@
       "Audiovisual: Pardal Pro Marketing"
      ]
     }
-   ]
+   ],
+   "coverPoster": "video/ise/capa.jpg",
+   "coverVideo": "video/ise/capa.mp4"
   },
   {
    "id": "papo-calcinha",
