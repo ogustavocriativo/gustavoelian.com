@@ -3920,7 +3920,7 @@
     "branding"
    ],
    "summary": "Rebranding UP Front 2026 da Guaicuí Turismo: nova linha criativa #Vai com Guaicuí, quatro eixos de negócio, fachada, redes e campanhas de verão, Férias de Campeão, Fly & Ski e Copa do Mundo 2026.",
-   "cover": "img/cases/guaicui/p36.webp",
+   "cover": "video/guaicui/capa.jpg",
    "theme": {
     "bg": "#F5F2EA",
     "ink": "#24251A",
@@ -4221,7 +4221,9 @@
       "Comunicação e rebranding: Gustavo Elian"
      ]
     }
-   ]
+   ],
+   "coverPoster": "video/guaicui/capa.jpg",
+   "coverVideo": "video/guaicui/capa.mp4"
   },
   {
    "id": "fazenda-encantada-loja",
