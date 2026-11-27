@@ -117,8 +117,10 @@ const evText = (e) => ({
   paid: `Pagamento confirmado · ${brl(e.total)}`,
   payment: `Recebimento registrado · ${brl(e.total)} (${METHODS[e.method] || e.method})`,
   stage: `Contrato → ${stageLabel(e.stage)}`,
-  "email-sent": e.what === "entrega" ? "Entrega final enviada por e-mail" : e.what === "conclusao" ? "E-mail de conclusão enviado: agradecimento e certificado" : e.what === "aprovada-saldo" ? "E-mail de entrega aprovada enviado (aguarda o saldo)" : e.what === "previa" ? `Prévia ${e.message || ""} enviada por e-mail` : e.what === "recibo" ? "Recibo enviado por e-mail" : e.what === "aditivo" ? "Aditivo enviado por e-mail" : `Proposta enviada por e-mail para ${e.to || "o cliente"}`,
+  "email-sent": e.what === "entrega" ? "Entrega final enviada por e-mail" : e.what === "conclusao" ? "E-mail de conclusão enviado: agradecimento e certificado" : e.what === "aprovada-saldo" ? "E-mail de entrega aprovada enviado (aguarda o saldo)" : e.what === "avaliacao" ? "Pedido de avaliação enviado por e-mail" : e.what === "previa" ? `Prévia ${e.message || ""} enviada por e-mail` : e.what === "recibo" ? "Recibo enviado por e-mail" : e.what === "aditivo" ? "Aditivo enviado por e-mail" : `Proposta enviada por e-mail para ${e.to || "o cliente"}`,
   certificate: e.certificate ? `Projeto concluído: certificado de cessão emitido · ${e.certificate}` : "Certificado de cessão emitido",
+  review: `Cliente enviou avaliação · ${e.rating}/5${e.consent ? " · autorizou publicar" : ""}`,
+  "review-publicada": "Avaliação publicada no site", "review-recusada": "Avaliação recusada", "review-oculta": "Avaliação tirada do site",
   "direct-access": e.on ? "Painel do cliente liberado só com o e-mail" : "Painel do cliente voltou a exigir o link por e-mail",
   "delivery-approved": `Cliente aprovou a entrega${e.version > 1 ? ` (versão ${e.version})` : ""}`,
   "delivery-changes": `Cliente pediu alterações${e.version > 1 ? ` na versão ${e.version}` : ""}`,
@@ -259,6 +261,7 @@ async function renderHome() {
   approved.forEach((q) => { const n = q.state.paymentNotice; if (n && !n.confirmedAt && totalOf(q) - paidOf(q) > 0.01) todos.push({ cls: "warn", ic: "receipt", t: `Confirmar Pix de ${q.client.name}`, s: `Comprovante enviado ${when(n.at)}`, href: `#/c/${q.slug}` }); });
   approved.forEach((q) => { const due = q.state.work?.dueDate; const st = q.state.work?.stage || "aprovado"; if (due && due < today() && !["entregue", "concluido"].includes(st)) todos.push({ cls: "danger", ic: "alert", t: `Entrega atrasada · ${q.client.name}`, s: `Prevista para ${dateBR(due)}`, href: `#/c/${q.slug}` }); });
   approved.forEach((q) => { if (!q.state.payments?.length && totalOf(q) > 0) { const pl = planOf(q, pct)[0]; if (pl && !pl.done && Date.now() - Date.parse(q.state.approvedAt) > 2 * 864e5) todos.push({ cls: "warn", ic: "wallet", t: `Cobrar entrada · ${q.client.name}`, s: `${brl(pl.amount)} desde ${dateBR(q.state.approvedAt)}`, href: `#/c/${q.slug}` }); } });
+  approved.forEach((q) => { const r = q.state.review; if (r?.status === "pendente" && r.consent) todos.push({ cls: "warn", ic: "check", t: `Avaliação de ${r.name || q.client.name} (${r.rating}/5)`, s: "Publicar no site ou recusar", href: `#/c/${q.slug}` }); });
   const recentComments = evs.filter((e) => e.type === "comment" && Date.now() - Date.parse(e.at) < 7 * 864e5).slice(0, 3);
   recentComments.forEach((e) => todos.push({ cls: "info", ic: "chat", t: `${e.name || nameFromSlug(e.slug)} comentou`, s: (e.message || "").slice(0, 70), href: `#/q/${e.slug}/detalhe` }));
   open.forEach((q) => { const d = (expiresAt(q) - now) / 864e5; if (q.state?.firstViewAt && Date.now() - Date.parse(q.state.lastViewAt || q.state.firstViewAt) > 3 * 864e5) todos.push({ cls: "info", ic: "send", t: `Follow-up com ${q.client.name}`, s: `Viu ${q.state.views || 1}x, último acesso ${when(q.state.lastViewAt || q.state.firstViewAt)}`, href: `#/q/${q.slug}/detalhe` }); else if (d <= 3) todos.push({ cls: "warn", ic: "clock", t: `Proposta vence em ${Math.max(0, Math.ceil(d))} dia(s)`, s: q.client.name, href: `#/q/${q.slug}/detalhe` }); });
@@ -1028,7 +1031,7 @@ async function renderContract(slug) {
     } }, icon("box"), s.drive ? "Gerar de novo no Drive" : "Salvar contrato no Drive e enviar por e-mail"));
 
   shell({ title: q0.client?.name || "Contrato", eyebrow: q0.title || "Contrato", back: "#/contratos", compact: true, nav: false },
-    hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, signCard, workCard, termsCard, payCard, deliveryCard(slug, q0, s, rest), docCard),
+    hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, signCard, workCard, termsCard, payCard, deliveryCard(slug, q0, s, rest), reviewCard(slug, s), docCard),
     secH("Linha do tempo"), h("div", { class: "glass card" }, ...events.map((e) => evRow(e))), h("div", { class: "gap24" }));
 }
 /* Entrega final: link do sistema/site, manual de uso, arquivos com integridade; o cliente aprova ou pede alterações no painel.
@@ -1063,6 +1066,36 @@ function deliveryCard(slug, q0, s, rest) {
         try { await api(`/api/quotes/${slug}/work`, { method: "PUT", body: { directAccess: e.target.checked } }); toast(e.target.checked ? "Painel abre só com o e-mail" : "Painel volta a exigir o link por e-mail"); }
         catch (x) { e.target.checked = !e.target.checked; toast(x.message); } } });
       return h("div", {}, h("label", { class: "switch" }, "Abrir o painel só com o e-mail", sw), h("p", { class: "hint" }, "Sem o link de confirmação: quem digitar o e-mail do cliente entra no painel. Use para testes e desligue depois.")); })());
+  return box;
+}
+/* Avaliação do cliente: pedida por e-mail 3 dias após a conclusão; só aparece no site depois que você publica. */
+const RSTATUS = { pendente: ["Aguardando sua aprovação", "warn"], publicada: ["Publicada no site", "ok"], recusada: ["Recusada", ""], oculta: ["Oculta do site", ""] };
+function reviewCard(slug, s) {
+  if (!s.delivery?.certificate) return "";
+  const r = s.review, box = h("section", { class: "form-card glass" }, h("h2", {}, "Avaliação do cliente"));
+  const act = async (body, b, ok) => { b.disabled = true; try { await api(`/api/quotes/${slug}/avaliacao`, { method: "PUT", body }); haptic(); toast(ok); renderContract(slug); } catch (x) { toast(x.message); b.disabled = false; } };
+  if (!r) {
+    const due = Date.parse(s.delivery.certificateIssuedAt || s.delivery.certificate.at) + 3 * 864e5;
+    box.append(h("p", { class: "hint" }, s.reviewRequest ? `Pedido enviado em ${dateBR(s.reviewRequest.at)}. A avaliação aparece aqui quando o cliente responder.` : `O pedido de avaliação sai sozinho por e-mail em ${new Date(due).toLocaleDateString("pt-BR")} (3 dias após a conclusão).`),
+      h("button", { class: "btn block", type: "button", onclick: async (e) => { const b = e.currentTarget; b.disabled = true; try { const x = await api(`/api/quotes/${slug}/avaliacao/pedir`, { method: "POST" }); toast(`Pedido enviado para ${x.to}`); renderContract(slug); } catch (x) { toast(x.message); b.disabled = false; } } }, icon("send"), s.reviewRequest ? "Pedir de novo agora" : "Pedir avaliação agora"));
+    return box;
+  }
+  const [lbl, cls] = RSTATUS[r.status] || RSTATUS.pendente;
+  const hl = h("input", { class: "in", value: r.highlight || "", maxlength: "160", placeholder: "Opcional: trecho curto que vira a citação grande no site" });
+  const nm = h("input", { class: "in", value: r.name || "", maxlength: "80" });
+  const rl = h("input", { class: "in", value: r.role || "", maxlength: "80" });
+  box.append(
+    h("p", { class: "pill wrap " + cls }, `${lbl} · ${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)} · ${dateBR(r.at)}`),
+    h("div", { class: "note-box", style: "background:var(--glass-2,rgba(0,0,0,.04))" }, h("p", { style: "margin:0;white-space:pre-wrap" }, `“${r.message}”`), h("small", { class: "faint" }, `${r.name}${r.role ? " · " + r.role : ""}`)),
+    h("p", { class: "hint" }, r.consent ? "O cliente autorizou publicar no site com o nome." : "O cliente não autorizou publicar: ela fica só aqui."),
+    r.consent ? h("div", { class: "stack" },
+      h("div", { class: "r2" }, h("label", { class: "f" }, h("span", {}, "Nome no site"), nm), h("label", { class: "f" }, h("span", {}, "Profissão ou empresa"), rl)),
+      h("label", { class: "f" }, h("span", {}, "Frase em destaque"), hl)) : "",
+    h("div", { class: "btns grid2" },
+      r.consent && r.status !== "publicada" ? h("button", { class: "btn primary", type: "button", onclick: (e) => act({ action: "publicar", highlight: hl.value, name: nm.value, role: rl.value }, e.currentTarget, "Avaliação publicada no site") }, icon("check"), "Publicar no site") : "",
+      r.status === "publicada" ? h("button", { class: "btn", type: "button", onclick: (e) => act({ highlight: hl.value, name: nm.value, role: rl.value }, e.currentTarget, "Avaliação atualizada") }, "Salvar ajustes") : "",
+      r.status === "publicada" ? h("button", { class: "btn", type: "button", onclick: (e) => act({ action: "ocultar" }, e.currentTarget, "Avaliação tirada do site") }, "Tirar do site") : "",
+      r.status === "pendente" ? h("button", { class: "btn", type: "button", onclick: (e) => act({ action: "recusar" }, e.currentTarget, "Avaliação recusada") }, "Recusar") : ""));
   return box;
 }
 async function deliverySheet(slug, prev, q0) {

@@ -6,6 +6,7 @@ import { clientToken, fail, getState, json, quotes, readClientToken } from "../l
 import { sendMail, callGoogle, esc, firstName, googleReady } from "../lib/google.mts";
 import { mails } from "../lib/mails.mts";
 import { publicDelivery, respondDelivery } from "../lib/delivery.mts";
+import { submitReview } from "../lib/reviews.mts";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const STAGES: Record<string, string> = { aprovado: "Aprovado", producao: "Produção", revisao: "Revisão", entregue: "Entregue", concluido: "Concluído" };
@@ -40,6 +41,19 @@ export default async (req: Request, context: Context) => {
       await sendMail(email, mails.acesso({ name, link }));
     }
     await new Promise((r) => setTimeout(r, 400));
+    return json({ ok: true });
+  }
+
+  /* Avaliação do cliente, no painel (só depois da conclusão): { t, slug, rating, message, name, role, consent } */
+  if (url.pathname.endsWith("/avaliacao")) {
+    if (req.method !== "POST") return fail("Método não permitido", 405);
+    const b = await req.json().catch(() => ({}));
+    const who = await readClientToken(String(b.t || ""));
+    if (!who) return fail("Seu acesso expirou. Peça um novo link no painel.", 401);
+    const mine = (await quotesFor(who)).find((x) => x.q.slug === String(b.slug || ""));
+    if (!mine) return fail("Projeto não encontrado", 404);
+    const r: any = await submitReview(mine.q.slug, b);
+    if (r.error) return fail(r.error, 409);
     return json({ ok: true });
   }
 
@@ -79,12 +93,15 @@ export default async (req: Request, context: Context) => {
         contractPdf: st.approvedAt && st.contractText ? `/api/pdf/${q.slug}/contrato?download` : "",
         page: `/${q.slug}`,
         delivery: publicDelivery(st.delivery),
+        concluded: !!st.delivery?.certificate,
+        review: st.review ? { rating: st.review.rating, message: st.review.message, name: st.review.name, role: st.review.role, consent: st.review.consent, status: st.review.status, at: st.review.at } : null,
+        signerName: st.signer?.name || q.client?.name || "",
       };
     }),
   }, 200, { "cache-control": "no-store" });
 };
 
 export const config: Config = {
-  path: ["/api/acompanhar", "/api/acompanhar/entrar", "/api/acompanhar/entrega"],
+  path: ["/api/acompanhar", "/api/acompanhar/entrar", "/api/acompanhar/entrega", "/api/acompanhar/avaliacao"],
   rateLimit: { windowLimit: 12, windowSize: 60, aggregateBy: ["ip", "domain"] },
 };

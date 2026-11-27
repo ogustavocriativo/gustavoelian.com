@@ -269,11 +269,26 @@
       h("div", { class: "who" }, h("span", { class: "av", "aria-hidden": "true" }, f.avatar ? h("img", { src: media(f.avatar), alt: "", loading: "lazy" }) : ini),
         h("div", {}, h("strong", {}, f.name), h("span", {}, [f.role, p ? p.title : null].filter(Boolean).join(" · ")))));
   }
-  function quotes(data) {
+  /* Avaliação de cliente com contrato concluído (aprovada no Studio): nota, mensagem e projeto, com ou sem case no portfólio. */
+  function reviewCard(r) {
+    const ini = r.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+    return h("article", { class: "quote review" },
+      h("p", { class: "stars", "aria-label": `Nota ${r.rating} de 5` }, "★".repeat(r.rating) + "☆".repeat(5 - r.rating)),
+      r.highlight ? h("p", { class: "big" }, `“${r.highlight}”`) : null,
+      h("div", { class: "bubble review" }, r.message, h("span", { class: "t" }, dateBR(r.date))),
+      h("span", { class: "channel" }, "Avaliação de cliente com contrato concluído"),
+      h("div", { class: "who" }, h("span", { class: "av", "aria-hidden": "true" }, ini),
+        h("div", {}, h("strong", {}, r.name), h("span", {}, [r.role, r.project].filter(Boolean).join(" · ")))));
+  }
+  async function quotes(data) {
     const all = data.list.flatMap((p) => (p.pf?.feedback || []).map((f) => quoteCard(f, p)));
-    if (!all.length) return;
-    document.getElementById("quotes").replaceChildren(...all);
+    let revs = [];
+    try { const r = await fetch("/api/avaliacoes"); if (r.ok) revs = (await r.json()).reviews || []; } catch {}
+    const cards = [...revs.map(reviewCard), ...all];
+    if (!cards.length) return;
+    document.getElementById("quotes").replaceChildren(...cards);
     document.getElementById("depoimentos").hidden = false;
+    reveal();
   }
 
   function reveal() {

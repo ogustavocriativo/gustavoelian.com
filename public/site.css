@@ -197,6 +197,8 @@ button{font:inherit;color:inherit}
 .quote .big{font-family:var(--font-display);font-weight:300;font-size:clamp(1.5rem,3vw,2.25rem);line-height:1.15;letter-spacing:-.025em}
 .bubble{position:relative;align-self:flex-start;max-width:100%;padding:12px 14px 22px;border-radius:18px 18px 18px 4px;background:#fff;font-size:var(--t-sm);line-height:1.5;white-space:pre-line;overflow-wrap:anywhere;box-shadow:0 1px 0 rgba(0,0,0,.04)}
 .bubble.whatsapp{background:#E7F8DE}
+.bubble.review{background:var(--bg,#F4F4F5)}
+.quote .stars{margin:0;font-size:1.25rem;letter-spacing:3px;color:#E5A50A}
 .bubble .t{position:absolute;right:12px;bottom:6px;font-size:.6875rem;color:var(--ink-3)}
 .channel{font-size:var(--t-xs);color:var(--ink-3)}
 .who{display:flex;align-items:center;gap:12px;margin-top:auto}

@@ -104,6 +104,13 @@ export const mails = {
     button: { href: p.panel, label: "Abrir meu painel" },
   }),
 
+  /** 13. Três dias depois da conclusão: pedido de avaliação (escrita no painel, publicada no site só com aprovação). */
+  avaliacao: (p: { name: string; title: string; link: string }): Mail => ({
+    subject: `Como foi o projeto? Deixe sua avaliação · ${p.title || "seu projeto"}`, title: "Como foi trabalhar comigo?", eyebrow: "Avaliação",
+    html: `${hi(p.name)}<p>Já faz alguns dias desde a conclusão de <b>${proj(p.title)}</b>. Espero que esteja tudo funcionando como você imaginou.</p><p>Queria pedir um favor rápido: conte, em poucas linhas, como foi a experiência. Leva dois minutos e é feito no seu painel, com uma nota de 1 a 5 e uma mensagem.</p><p>Com a sua autorização, a avaliação pode aparecer no meu site, com o seu nome. Isso ajuda muito outras pessoas a decidirem com segurança.</p>${bye}`,
+    button: { href: p.link, label: "Deixar minha avaliação" },
+  }),
+
   /** 12. Link de acesso ao painel do cliente. */
   acesso: (p: { name: string; link: string }): Mail => ({
     subject: "Seu acesso para acompanhar o projeto", title: "Acompanhe o seu projeto", eyebrow: "Área do cliente",
@@ -127,6 +134,7 @@ export function sampleMails(origin: string) {
     ["Pedido de alteração", mails.ajustes({ name: n, title: t, message: "Trocar a foto da seção Sobre e corrigir o telefone do rodapé.", panel })],
     ["Entrega aprovada com saldo", mails.aprovadaComSaldo({ name: n, title: t, rest: 1440, payLink: `${link}#pagamento` })],
     ["Conclusão e certificado", mails.conclusao({ name: n, title: t, contractNumber: "GE-7KQM-3XPA", certCode: "X6DJ-77E2", certUrl: `${origin}/certificado?c=X6DJ-77E2`, panel })],
+    ["Pedido de avaliação (3 dias após a conclusão)", mails.avaliacao({ name: n, title: t, link: `${panel}#avaliar` })],
     ["Acesso ao painel", mails.acesso({ name: n, link: panel })],
   ] as [string, Mail][];
 }

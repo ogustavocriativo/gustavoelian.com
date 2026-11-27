@@ -5,6 +5,8 @@ import * as m_auth from "../netlify/functions/auth.mts";
 import * as m_charges from "../netlify/functions/charges.mts";
 import * as m_client from "../netlify/functions/client.mts";
 import * as m_emails from "../netlify/functions/emails.mts";
+import * as m_reviews from "../netlify/functions/reviews.mts";
+import { requestDueReviews } from "../netlify/lib/reviews.mts";
 import * as m_clientlogo from "../netlify/functions/clientlogo.mts";
 import * as m_delivery from "../netlify/functions/delivery.mts";
 import * as m_files from "../netlify/functions/files.mts";
@@ -27,7 +29,7 @@ import * as m_emailimg from "../netlify/functions/email-img.mts";
 import * as m_signing from "../netlify/functions/signing-api.mts";
 import { checkGoogleSignatures } from "../netlify/lib/signing.mts";
 import ogEdge from "../netlify/edge-functions/proposta-og.ts";
-const MODS: any[] = [m_auth,m_charges,m_client,m_clientlogo,m_delivery,m_files,m_google,m_history,m_inbox,m_infinitepay,m_manage,m_og,m_pay,m_pdf,m_portfolio,m_preview,m_previews,m_public,m_quotes,m_review,m_settings,m_emailimg,m_signing,m_emails];
+const MODS: any[] = [m_auth,m_charges,m_client,m_clientlogo,m_delivery,m_files,m_google,m_history,m_inbox,m_infinitepay,m_manage,m_og,m_pay,m_pdf,m_portfolio,m_preview,m_previews,m_public,m_quotes,m_review,m_settings,m_emailimg,m_signing,m_emails,m_reviews];
 
 // ---------- rotas: os mesmos caminhos do netlify (config.path) ----------
 type Route = { re: RegExp; keys: string[]; score: number; mod: any };
@@ -139,5 +141,7 @@ const handler = {
 (handler as any).scheduled = async (_ev: any, env: any, ctx: ExecutionContext) => {
   RT.env = env; RT.ctx = ctx; SELF = { origin: "https://gustavoelian.com", env, ctx };
   ctx.waitUntil(checkGoogleSignatures().then((r) => console.log("assinaturas", JSON.stringify(r))).catch((x) => console.error("assinaturas", x)));
+  // pedidos de avaliação: uma vez por hora (o cron roda a cada 10 min)
+  if (new Date().getUTCMinutes() < 10) ctx.waitUntil(requestDueReviews().then((r) => console.log("avaliacoes", JSON.stringify(r))).catch((x) => console.error("avaliacoes", x)));
 };
 export default handler;

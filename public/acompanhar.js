@@ -42,6 +42,7 @@
         p.total ? h("div", { class: "ac-k" }, h("small", {}, "Pago"), h("b", {}, brl(p.paid)), h("small", {}, `de ${brl(p.total)}`), h("div", { class: "ac-bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Pagamento" }, h("i", { style: `width:${pct}%` }))) : null,
         p.approvedAt ? h("div", { class: "ac-k" }, h("small", {}, "Contrato assinado"), h("b", {}, dt(p.approvedAt))) : null),
       p.delivery ? delivery(p, p.delivery) : p.approvedAt ? certBox(p, null) : null,
+      p.concluded ? reviewBox(p) : null,
       p.files.length ? h("div", { class: "ac-files", id: "acervo" }, h("p", { class: "ac-h3" }, "Acervo de materiais"), ...p.files.map((f) => h("a", { href: f.url }, f.name, h("span", {}, kb(f.size))))) : h("p", { class: "muted" }, "Os arquivos aparecem aqui assim que forem entregues."),
       h("div", { class: "ac-act" },
         h("a", { class: "btn dark", href: p.page }, p.status === "proposta" ? "Ver e aprovar a proposta" : "Abrir a proposta e pagamentos"),
@@ -109,6 +110,47 @@
         h("ol", { class: "ac-recs" }, ...d.recommendations.map((r) => h("li", {}, h("b", {}, r.t), h("small", {}, r.d))))),
       d.files?.length ? h("details", {}, h("summary", { class: "muted" }, "Códigos de integridade dos arquivos (SHA-256)"), ...d.files.map((f) => h("p", { class: "ac-hash" }, `${f.name}: ${f.hash || "—"}`))) : "");
     return box;
+  }
+
+  /* Avaliação: aparece quando o projeto está concluído (entrega aprovada + quitado). Publicada no site só com aprovação. */
+  function reviewBox(p) {
+    const r = p.review;
+    const sec = h("section", { class: "ac-rev", id: "avaliar", "aria-label": "Avaliação do projeto" }, h("span", { class: "eyebrow" }, "Avaliação"));
+    if (r) {
+      sec.append(h("h3", {}, "Obrigado pela sua avaliação!"),
+        h("p", { class: "ac-stars", "aria-label": `Nota ${r.rating} de 5` }, "★".repeat(r.rating) + "☆".repeat(5 - r.rating)),
+        h("blockquote", {}, r.message),
+        h("p", { class: "muted" }, r.status === "publicada" ? "Ela já está publicada no site. Obrigado por ajudar outras pessoas a decidirem com segurança." : r.consent ? "Ela passa por uma revisão rápida antes de aparecer no site." : "Você não autorizou a publicação: ela fica só comigo, como retorno."));
+      return sec;
+    }
+    let rating = 0;
+    const stars = h("div", { class: "ac-rate", role: "radiogroup", "aria-label": "Nota de 1 a 5" }, ...[1, 2, 3, 4, 5].map((n) => h("button", { type: "button", role: "radio", "aria-checked": "false", "aria-label": `${n} de 5`, onclick: () => { rating = n; [...stars.children].forEach((b, i) => { b.classList.toggle("on", i < n); b.setAttribute("aria-checked", String(i + 1 === n)); }); } }, "★")));
+    const msg = h("textarea", { class: "ac-in", id: `rv-${p.slug}`, rows: "5", placeholder: "Como foi a experiência? O que mudou no seu negócio com o projeto?" });
+    const name = h("input", { class: "ac-in", id: `rvn-${p.slug}`, value: p.signerName || "", autocomplete: "name" });
+    const role = h("input", { class: "ac-in", id: `rvr-${p.slug}`, value: p.company || "", placeholder: "Ex.: fotógrafa, Julia Barbosa Fotografia" });
+    const consent = h("input", { type: "checkbox", id: `rvc-${p.slug}`, checked: "" });
+    const out = h("p", { class: "ac-msg", role: "status" });
+    const btn = h("button", { class: "btn dark", type: "submit" }, "Enviar avaliação");
+    sec.append(h("h3", {}, "Como foi trabalhar comigo?"),
+      h("p", { class: "muted" }, "Sua opinião me ajuda a melhorar e, com a sua autorização, ajuda outras pessoas a decidirem com segurança."),
+      h("form", { class: "ac-resp-form", onsubmit: async (e) => {
+        e.preventDefault(); out.className = "ac-msg";
+        if (!rating) { out.textContent = "Escolha uma nota de 1 a 5."; out.className = "ac-msg err"; return; }
+        if (msg.value.trim().length < 10) { out.textContent = "Escreva pelo menos uma frase."; out.className = "ac-msg err"; msg.focus(); return; }
+        btn.disabled = true; btn.textContent = "Enviando…";
+        try {
+          const r = await fetch("/api/acompanhar/avaliacao", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ t: token, slug: p.slug, rating, message: msg.value, name: name.value, role: role.value, consent: consent.checked }) });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok) throw new Error(j.error || "Não foi possível enviar agora.");
+          panel();
+        } catch (x) { out.textContent = x.message; out.className = "ac-msg err"; btn.disabled = false; btn.textContent = "Enviar avaliação"; }
+      } },
+        h("p", { class: "ac-h3" }, "Sua nota"), stars,
+        h("label", { class: "ac-h3", for: `rv-${p.slug}` }, "Sua mensagem"), msg,
+        h("div", { class: "ac-two" }, h("div", {}, h("label", { class: "ac-h3", for: `rvn-${p.slug}` }, "Seu nome"), name), h("div", {}, h("label", { class: "ac-h3", for: `rvr-${p.slug}` }, "Profissão ou empresa"), role)),
+        h("label", { class: "ac-consent", for: `rvc-${p.slug}` }, consent, h("span", {}, "Autorizo publicar esta avaliação no site gustavoelian.com, com meu nome e profissão ou empresa.")),
+        btn, out));
+    return sec;
   }
 
   async function panel() {
