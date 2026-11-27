@@ -36,7 +36,15 @@ class Doc {
     const lines: string[] = [];
     for (const para of String(text || "").split("\n")) {
       let line = "";
-      for (const word of para.split(/\s+/)) {
+      // palavras mais largas que a coluna (links, códigos) são quebradas por caractere para não invadir a margem
+      const words: string[] = [];
+      for (const w of para.split(/\s+/)) {
+        if (font.widthOfTextAtSize(w, size) <= width) { words.push(w); continue; }
+        let part = "";
+        for (const ch of w) { if (font.widthOfTextAtSize(part + ch, size) > width && part) { words.push(part); part = ch; } else part += ch; }
+        if (part) words.push(part);
+      }
+      for (const word of words) {
         const test = line ? line + " " + word : word;
         if (font.widthOfTextAtSize(test, size) > width && line) { lines.push(line); line = word; } else line = test;
       }
