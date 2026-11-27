@@ -979,7 +979,7 @@ async function renderContract(slug) {
     s.drive?.folderUrl ? h("div", { class: "btns grid2" },
       h("a", { class: "btn", href: s.drive.pdfUrl, target: "_blank", rel: "noopener" }, icon("pdf"), "PDF no Drive"),
       h("a", { class: "btn", href: s.drive.folderUrl, target: "_blank", rel: "noopener" }, icon("box"), "Pasta do cliente"),
-      h("a", { class: "btn block", style: "grid-column:1/-1", href: s.drive.docUrl, target: "_blank", rel: "noopener" }, icon("pen"), "Abrir no Google Docs para pedir eSignature")) : null,
+      s.drive.docUrl ? h("a", { class: "btn block", style: "grid-column:1/-1", href: s.drive.docUrl, target: "_blank", rel: "noopener" }, icon("pen"), "Abrir no Google Docs") : null) : null,
     h("button", { class: "btn ghost block", type: "button", onclick: async (ev) => {
       const b = ev.currentTarget; b.disabled = true; b.textContent = "Gerando no Drive…";
       try { await api(`/api/quotes/${slug}/google/drive`, { method: "POST" }); toast("Contrato salvo no Drive"); renderContract(slug); } catch (x) { toast(x.message); b.disabled = false; b.textContent = "Tentar de novo"; }
