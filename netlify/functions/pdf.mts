@@ -178,7 +178,7 @@ function pill(d: Doc, x: number, yTop: number, label: string, url: string, dark 
   return w;
 }
 
-async function contractPdf(q: any, s: any, st: any, origin: string) {
+export async function contractPdf(q: any, s: any, st: any, origin: string) {
   const code = String(st.contractHash || "").slice(0, 16);
   const d = await Doc.create(`Contrato ${q.slug} · verificação ${code} · ${s.issuer.site}`);
   const W = A4[0] - 2 * M;

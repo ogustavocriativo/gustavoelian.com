@@ -25,14 +25,27 @@ const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;
 export const firstName = (n: any) => esc(String(n || "").trim().split(/\s+/)[0] || "");
 export { esc };
 
+/* PDF do contrato no layout aprovado (o mesmo de /api/pdf/:slug/contrato), em base64, para o Drive e o e-mail. */
+export async function contractPdfBase64(q: any, st: any, origin: string) {
+  try {
+    const { loadPdfImages } = await import("./assets.mts");
+    await (loadPdfImages as any)?.(origin);
+    const { contractPdf } = await import("../functions/pdf.mts");
+    const bytes = await contractPdf(q, await getSettings(), st, origin);
+    return Buffer.from(bytes).toString("base64");
+  } catch { return ""; }
+}
+
 export async function sendContractToDrive(slug: string, q: any, st: any, origin: string) {
   const settings = await getSettings();
+  const pdf = await contractPdfBase64(q, st, origin);
   const r = await callGoogle("contract", {
     client: q.client?.company || q.client?.name || slug,
     date: (st.approvedAt || new Date().toISOString()).slice(0, 10),
     text: st.contractText || "", signer: st.signer || {}, signatureImage: st.signatureImage || "",
     approvedAt: st.approvedAt ? new Date(st.approvedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) : "",
     hash: st.contractHash || "", link: `${origin}/${slug}`, ownerEmail: settings.issuer?.email || "",
+    pdf, pdfName: `${(st.approvedAt || new Date().toISOString()).slice(0, 10)} · ${q.client?.company || q.client?.name || slug} · Contrato assinado.pdf`,
     emailHtml: emailHtml({ title: "Contrato assinado", eyebrow: "Contrato", html: `<p>Olá${st.signer?.name ? ", " + firstName(st.signer.name) : ""}!</p><p>Segue em anexo a cópia do contrato assinado. O próximo passo é o pagamento da entrada, pelo mesmo link da proposta.</p>`, button: { href: `${origin}/${slug}`, label: "Abrir a proposta" } }),
   }, 45000);
   if (r?.ok) { await patchState(slug, { drive: { docUrl: r.docUrl, pdfUrl: r.pdfUrl, pdfId: r.pdfId, folderUrl: r.folderUrl, at: new Date().toISOString() } }); await addEvent(slug, { type: "drive" }); }

@@ -1,7 +1,7 @@
 // Gestão (admin): catálogo de serviços, etapas do contrato e registro de pagamentos.
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, brl, fail, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, settingsStore, sha256, uid } from "../lib/core.mts";
-import { callGoogle, googleReady } from "../lib/google.mts";
+import { callGoogle, contractPdfBase64, googleReady } from "../lib/google.mts";
 
 const str = (v: any, max = 400) => String(v ?? "").trim().slice(0, max);
 const money = (v: any) => {
@@ -123,7 +123,9 @@ export default async (req: Request, context: Context) => {
     // cópia do aditivo na pasta do cliente no Drive (se a ponte estiver ligada e atualizada)
     let drive: any = null;
     if (googleReady()) {
-      drive = await callGoogle("amendment", { client: q.client?.company || q.client?.name || slug, n: amend.n, at: new Date(at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }), channel, reason, prev, next: amend.next, hash: amend.hash, contractHash: st.contractHash || "", signer: st.signer || {}, link: `${new URL(req.url).origin}/${slug}` }, 45000);
+      // o contrato no layout aprovado, já com o aditivo listado, vai junto para a pasta do cliente
+      const pdf = await contractPdfBase64(q, { ...(await getState(slug)) }, new URL(req.url).origin);
+      drive = await callGoogle("amendment", { pdf, pdfName: `${new Date(at).toISOString().slice(0, 10)} · ${q.client?.company || q.client?.name || slug} · Contrato com Aditivo ${amend.n}.pdf`, client: q.client?.company || q.client?.name || slug, n: amend.n, at: new Date(at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }), channel, reason, prev, next: amend.next, hash: amend.hash, contractHash: st.contractHash || "", signer: st.signer || {}, link: `${new URL(req.url).origin}/${slug}` }, 45000);
       if (drive?.ok) await patchState(slug, { amendments: amendments.map((a) => (a.id === amend.id ? { ...a, driveUrl: drive.pdfUrl } : a)) });
     }
     return json({ ...(await getState(slug)), driveSaved: !!drive?.ok, driveError: drive && !drive.ok ? String(drive.error || "") : "" });

@@ -68,6 +68,7 @@ function sendEmail_(b) {
 function contract_(b) {
   var clientName = clean_(b.client || "Cliente");
   var folder = folderPath_(ROOT_PATH.concat([clientName, "Contrato"]));
+  if (b.pdf) return contractPdf_(b, folder, clientName);
   var date = String(b.date || new Date().toISOString()).slice(0, 10);
   var title = date + " · " + clientName + " · Contrato";
 
@@ -113,10 +114,26 @@ function contract_(b) {
   return { ok: true, docUrl: doc.getUrl(), pdfUrl: pdf.getUrl(), pdfId: pdf.getId(), folderUrl: folder.getUrl() };
 }
 
+/* Contrato no layout aprovado: o site manda o PDF pronto; aqui só guarda na pasta do cliente e envia a cópia. */
+function contractPdf_(b, folder, clientName) {
+  var s = b.signer || {};
+  var pdf = folder.createFile(Utilities.newBlob(Utilities.base64Decode(b.pdf), "application/pdf", b.pdfName || "Contrato assinado.pdf"));
+  var recipients = [s.email, b.ownerEmail].filter(function (x) { return x && /@/.test(x); });
+  if (recipients.length && b.sendEmail !== false) {
+    GmailApp.sendEmail(recipients.join(","), "Contrato assinado · " + clientName, "Segue em anexo a cópia do contrato assinado.",
+      { name: SENDER_NAME, attachments: [pdf.getBlob()], htmlBody: b.emailHtml || layout_("Contrato assinado", "<p>Segue em anexo a cópia do contrato assinado.</p>", b.link ? { href: b.link, label: "Abrir a proposta" } : null) });
+  }
+  return { ok: true, pdfUrl: pdf.getUrl(), pdfId: pdf.getId(), folderUrl: folder.getUrl() };
+}
+
 /* ---------- aditivo de condição de pagamento: Doc + PDF na pasta Contrato do cliente ---------- */
 function amendment_(b) {
   var clientName = clean_(b.client || "Cliente");
   var folder = folderPath_(ROOT_PATH.concat([clientName, "Contrato"]));
+  if (b.pdf) {
+    var f = folder.createFile(Utilities.newBlob(Utilities.base64Decode(b.pdf), "application/pdf", b.pdfName || ("Aditivo " + b.n + ".pdf")));
+    return { ok: true, pdfUrl: f.getUrl(), pdfId: f.getId(), folderUrl: folder.getUrl() };
+  }
   var title = String(new Date().toISOString()).slice(0, 10) + " · " + clientName + " · Aditivo " + b.n;
   var doc = DocumentApp.create(title);
   var body = doc.getBody();
