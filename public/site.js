@@ -271,14 +271,13 @@
   }
   /* Avaliação de cliente com contrato concluído (aprovada no Studio): nota, mensagem e projeto, com ou sem case no portfólio. */
   function reviewCard(r) {
-    const ini = r.name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
     return h("article", { class: "quote review" },
       h("p", { class: "stars", "aria-label": `Nota ${r.rating} de 5` }, "★".repeat(r.rating) + "☆".repeat(5 - r.rating)),
       r.highlight ? h("p", { class: "big" }, `“${r.highlight}”`) : null,
       h("div", { class: "bubble review" }, r.message, h("span", { class: "t" }, dateBR(r.date))),
       h("span", { class: "channel" }, "Avaliação de cliente com contrato concluído"),
-      h("div", { class: "who" }, h("span", { class: "av", "aria-hidden": "true" }, ini),
-        h("div", {}, h("strong", {}, r.name), h("span", {}, [r.role, r.project].filter(Boolean).join(" · ")))));
+      // avaliações do sistema: sem foto nem iniciais do cliente, só nome e profissão
+      h("div", { class: "who no-av" }, h("div", {}, h("strong", {}, r.name), h("span", {}, [r.role, r.project].filter(Boolean).join(" · ")))));
   }
   async function quotes(data) {
     const all = data.list.flatMap((p) => (p.pf?.feedback || []).map((f) => quoteCard(f, p)));

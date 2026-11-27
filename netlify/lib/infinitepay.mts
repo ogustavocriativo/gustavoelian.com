@@ -44,7 +44,8 @@ export async function ipCreateLink(o: { kind: "charge" | "quote"; id: string; am
   const a = o.address;
   if (a?.cep && a.street && a.number && a.city && a.state) body.address = { cep: a.cep, street: a.street, number: a.number, neighborhood: a.neighborhood || "", city: a.city, state: a.state, ...(a.complement ? { complement: a.complement } : {}) };
   // serviço digital, sem entrega física: não pede endereço de entrega (exige a chave de API da InfinitePay)
-  if (await ipApiKey()) body.options = { require_delivery_address: false };
+  // e cada link vale para um único pagamento (evita pagar duas vezes pelo mesmo link)
+  if (await ipApiKey()) body.options = { require_delivery_address: false, single_payment: true };
   const r = await fetch(`${API}/links`, { method: "POST", headers: await headers(), body: JSON.stringify(body) });
   const data: any = await r.json().catch(() => ({}));
   const url = data.url || data.link || data.checkout_url || data.payment_url;
