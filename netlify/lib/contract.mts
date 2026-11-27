@@ -12,7 +12,7 @@ export function paymentLabel(q: Quote, settings: any, sel: any) {
   return { total: p.cash, text: `à vista, ${brl(p.cash)}: entrada de ${entryPct}% (${brl(entry)}) e ${100 - entryPct}% (${brl(p.cash - entry)}) na entrega final e aprovação` };
 }
 
-export function buildContract(q: Quote, settings: any, signer: any, sel: any) {
+export function buildContract(q: Quote, settings: any, signer: any, sel: any, extra: { numero?: string } = {}) {
   const tpl = (q.contract?.text || "").trim() || settings.contractTemplate;
   const p = priceOf(q, sel || {});
   const items = (q.items || []).filter((i: any) => p.itemIds.includes(i.id));
@@ -40,6 +40,7 @@ export function buildContract(q: Quote, settings: any, signer: any, sel: any) {
     // data por extenso, sem ponto final: "27 de novembro de 2026"
     data: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "numeric", month: "long", year: "numeric" }),
     proposta: q.slug,
+    numero: extra.numero || "(gerado na aprovação)",
   };
   // modelos salvos antes da mudança terminavam em "{{data}}." · a linha de local e data não leva ponto final
   return tpl.replace(/\{\{data\}\}\.\s*$/, "{{data}}").replace(/\{\{(\w+)\}\}/g, (_: string, k: string) => map[k] ?? "");

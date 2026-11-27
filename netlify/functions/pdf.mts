@@ -188,12 +188,13 @@ function pill(d: Doc, x: number, yTop: number, label: string, url: string, dark 
 
 export async function contractPdf(q: any, s: any, st: any, origin: string) {
   const code = String(st.contractHash || "").slice(0, 16);
-  const d = await Doc.create(`Contrato ${q.slug} · verificação ${code} · ${s.issuer.site}`);
+  const num = st.contractNumber || q.slug;
+  const d = await Doc.create(`Contrato nº ${num} · verificação ${code} · ${s.issuer.site}`);
   const W = A4[0] - 2 * M;
   const links = { painel: `${origin}/acompanhar`, acervo: `${origin}/acompanhar#acervo`, proposta: `${origin}/${q.slug}`, contato: `https://wa.me/${s.issuer.whatsapp}?text=${encodeURIComponent(`Olá, Gustavo! Sobre o contrato ${q.slug}`)}` };
 
   // número do contrato no topo, alinhado ao logo
-  d.right(`Contrato nº ${q.slug}`, A4[1] - 50, "med", 8.5, C.soft);
+  d.right(`Contrato nº ${num}`, A4[1] - 50, "med", 8.5, C.soft);
   d.label("Contrato de prestação de serviços", 6);
   d.text(q.client?.name || q.client?.company || "", { font: "bold", size: 24, lh: 30 });
   const sub = [q.client?.company && q.client.company !== q.client?.name ? q.client.company : "", q.title].filter(Boolean).join(" · ");

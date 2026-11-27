@@ -1,6 +1,6 @@
 // Página do cliente: leitura da proposta e interações (seleção, comentário, aprovação/assinatura, aviso de pagamento).
 import type { Config, Context } from "@netlify/functions";
-import { addEvent, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
+import { addEvent, nextContractNumber, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
 import { buildContract, paymentLabel } from "../lib/contract.mts";
 import { callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
 import { prepareGoogleSigning } from "../lib/signing.mts";
@@ -165,10 +165,11 @@ export default async (req: Request, context: Context) => {
     if (googleMode) {
       // aprovação no site; a assinatura das partes é feita depois, pelo eSignature do Google
       const sel = st.selection || { packageId: null, itemIds: (q.items || []).map((i: any) => i.id), method: "avista" };
-      const contract = buildContract(q, settings, signer, sel);
+      const contractNumber = await nextContractNumber();
+      const contract = buildContract(q, settings, signer, sel, { numero: contractNumber });
       const pay = paymentLabel(q, settings, sel);
       await patchState(slug, {
-        approvedAt: new Date().toISOString(),
+        approvedAt: new Date().toISOString(), contractNumber,
         signer: { ...signer, emailVerifiedAt: null, ip: context.ip, userAgent: clip(req.headers.get("user-agent"), 300), city: context.geo?.city || "" },
         selection: sel, total: pay.total, paymentText: pay.text, contractText: contract, contractHash: await sha256(contract),
         signatureImage: null, otp: null, signing: { mode: "google", status: "preparando" },
@@ -193,10 +194,11 @@ export default async (req: Request, context: Context) => {
       emailVerifiedAt = new Date().toISOString();
     }
     const sel = st.selection || { packageId: null, itemIds: (q.items || []).map((i: any) => i.id), method: "avista" };
-    const contract = q.contract?.enabled !== false ? buildContract(q, settings, signer, sel) : "";
+    const contractNumber = q.contract?.enabled !== false ? await nextContractNumber() : "";
+    const contract = q.contract?.enabled !== false ? buildContract(q, settings, signer, sel, { numero: contractNumber }) : "";
     const pay = paymentLabel(q, settings, sel);
     const acceptance = {
-      approvedAt: new Date().toISOString(),
+      approvedAt: new Date().toISOString(), contractNumber,
       signer: { ...signer, emailVerifiedAt, ip: context.ip, userAgent: clip(req.headers.get("user-agent"), 300), city: context.geo?.city || "" },
       selection: sel,
       total: pay.total,

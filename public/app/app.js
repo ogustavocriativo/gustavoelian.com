@@ -987,7 +987,7 @@ async function renderContract(slug) {
       gs.signedDriveUrl ? h("a", { class: "btn", href: gs.signedDriveUrl, target: "_blank", rel: "noopener" }, icon("pdf"), "PDF assinado no Drive") : null,
       gs.status === "aguardando" ? signAct("verificar", "Verificar agora") : null,
       gs.status === "erro" || gs.status === "preparando" ? signAct("preparar", "Preparar contrato para assinatura") : null)) : null;
-  const docCard = h("section", { class: "form-card glass" }, h("h2", {}, gs && gs.status !== "assinado" ? "Contrato aprovado" : "Contrato assinado"),
+  const docCard = h("section", { class: "form-card glass" }, h("h2", {}, gs && gs.status !== "assinado" ? "Contrato aprovado" : "Contrato assinado", s.contractNumber ? h("span", { class: "pill", style: "margin-left:8px" }, s.contractNumber) : null),
     h("dl", { class: "kv" }, h("dt", {}, "Assinante"), h("dd", {}, sg.name || "—"), h("dt", {}, "Documento"), h("dd", {}, sg.doc || "—"), h("dt", {}, "E-mail"), h("dd", {}, sg.email || "—"), h("dt", {}, "Quando"), h("dd", {}, new Date(s.approvedAt).toLocaleString("pt-BR")), h("dt", {}, "IP"), h("dd", {}, sg.ip || "—")),
     s.contractHash ? h("p", { class: "hash" }, "SHA-256 ", s.contractHash) : null,
     h("div", { class: "btns grid2" },

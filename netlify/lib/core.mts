@@ -107,6 +107,15 @@ export async function aliasOf(slug: string): Promise<string | null> {
 export async function getState(slug: string) {
   return ((await states().get(slug, { type: "json" })) as Record<string, any>) || {};
 }
+/* Número sequencial do contrato, por ano: GE-2026-0001, GE-2026-0002… (gerado na aprovação da proposta). */
+export async function nextContractNumber() {
+  const year = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", year: "numeric" });
+  const key = `contratos-${year}`;
+  const cur: any = (await store("counters").get(key, { type: "json" })) || { n: 0 };
+  const n = Number(cur.n || 0) + 1;
+  await store("counters").setJSON(key, { n, at: new Date().toISOString() });
+  return `GE-${year}-${String(n).padStart(4, "0")}`;
+}
 export async function patchState(slug: string, patch: Record<string, any>) {
   const cur = await getState(slug);
   const next = { ...cur, ...patch, updatedAt: new Date().toISOString() };
@@ -159,12 +168,12 @@ export const DEFAULT_SETTINGS = {
   // "google": o cliente aprova no site e as partes assinam pelo eSignature do Google; "sistema": assinatura desenhada no site
   signing: "google",
   contractTemplate: `CONTRATO DE PRESTAÇÃO DE SERVIÇOS
-Proposta nº {{proposta}}
+Contrato nº {{numero}}
 
 CONTRATANTE: {{cliente}}{{documento}}, com endereço em {{endereco}}, e-mail {{email}}{{telefone}}.
 CONTRATADO: {{emissor}}, {{emissor_doc}}, com endereço em {{emissor_endereco}}, e-mail {{emissor_email}}.
 
-As partes acima identificadas firmam este contrato, que se rege pelas cláusulas a seguir e pela proposta nº {{proposta}}, que o integra como anexo.
+As partes acima identificadas firmam este contrato, que se rege pelas cláusulas a seguir e pela proposta comercial aprovada pelo CONTRATANTE, que o integra como anexo.
 
 1. OBJETO
 1.1. Este contrato tem por objeto a prestação, pelo CONTRATADO ao CONTRATANTE, dos seguintes serviços: {{objeto}}, conforme o escopo descrito na proposta e nos prazos definidos na cláusula 3.

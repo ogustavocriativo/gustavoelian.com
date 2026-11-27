@@ -32,7 +32,7 @@ const brl = (v: number) => "R$ " + Number(v || 0).toLocaleString("pt-BR", { mini
 export async function prepareGoogleSigning(slug: string, origin: string) {
   const q: any = await getQuote(slug); if (!q) return;
   const st: any = await getState(slug);
-  const pdfName = `${String(st.approvedAt || new Date().toISOString()).slice(0, 10)} · ${clientLabel(q, slug)} · Contrato para assinatura.pdf`;
+  const pdfName = `${st.contractNumber ? st.contractNumber + " · " : ""}${clientLabel(q, slug)} · Contrato para assinatura.pdf`;
   const pdf = await contractPdfBase64(q, st, origin);
   const r = pdf ? await callGoogle("contract", { client: clientLabel(q, slug), pdf, pdfName, sendEmail: false, signer: st.signer || {}, link: `${origin}/${slug}` }, 45000) : { ok: false, error: "Não foi possível gerar o PDF" };
   if (!r?.ok) {
@@ -43,7 +43,7 @@ export async function prepareGoogleSigning(slug: string, origin: string) {
   }
   await patchState(slug, { signing: { mode: "google", status: "aguardando", pdfName, pdfId: r.pdfId, pdfUrl: r.pdfUrl, folderUrl: r.folderUrl, preparedAt: new Date().toISOString() } });
   await addEvent(slug, { type: "signing-ready" });
-  await notifyOwner(`Proposta aprovada · ${clientLabel(q, slug)}`, [
+  await notifyOwner(`Proposta aprovada · ${clientLabel(q, slug)}${st.contractNumber ? " · " + st.contractNumber : ""}`, [
     `${st.signer?.name || q.client?.name || "O cliente"} aprovou "${q.title || "a proposta"}" · ${brl(st.total)}.`,
     `Abra o PDF no Drive e toque em "Solicitar assinatura": seu campo e o do cliente (${st.signer?.email || "e-mail do cliente"}).`,
   ], { href: r.pdfUrl, label: "Abrir o contrato no Drive" });
