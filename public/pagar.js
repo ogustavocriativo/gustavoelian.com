@@ -58,9 +58,9 @@ async function main() {
     } else {
       const go = h("button", { class: "btn primary", type: "button", onclick: async () => { go.disabled = true; go.textContent = "Abrindo pagamento seguro…"; try { const r = await api(`/api/pagar/${id}/checkout`, { method: "POST" }); location.href = r.url; } catch (x) { toast(x.message); go.disabled = false; go.textContent = `Pagar ${c.provider === "infinitepay" ? c.amountLabel : c.cardAmountLabel}`; } } }, `Pagar ${c.provider === "infinitepay" ? c.amountLabel : c.cardAmountLabel}`);
       pane.replaceChildren(
-        c.cardFeePct > 0 && c.provider !== "infinitepay" ? h("div", { class: "pg-row" }, h("span", {}, "No cartão"), h("b", {}, c.cardAmountLabel)) : null,
-        c.cardFeePct > 0 && c.provider !== "infinitepay" ? h("p", { class: "pg-note" }, `Inclui a taxa da operadora (${String(c.cardFeePct).replace(".", ",")}%). No Pix o valor é ${c.amountLabel}.`) : null,
-        c.installments > 1 ? h("p", { class: "pg-note" }, `Parcele em até ${c.installments}x na próxima tela.`) : null,
+        c.cardFeePct > 0 && c.provider !== "infinitepay" ? h("div", { class: "pg-row" }, h("span", {}, "No cartão"), h("b", {}, c.cardAmountLabel)) : "",
+        c.cardFeePct > 0 && c.provider !== "infinitepay" ? h("p", { class: "pg-note" }, `Inclui a taxa da operadora (${String(c.cardFeePct).replace(".", ",")}%). No Pix o valor é ${c.amountLabel}.`) : "",
+        c.installments > 1 ? h("p", { class: "pg-note" }, `Parcele em até ${c.installments}x na próxima tela.`) : "",
         go, h("p", { class: "pg-note" }, c.provider === "infinitepay" ? "Pix ou cartão de crédito em até 12x, na página segura da InfinitePay. A confirmação chega por e-mail na hora." : "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
     }
   }

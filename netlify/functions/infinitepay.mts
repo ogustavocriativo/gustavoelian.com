@@ -22,7 +22,11 @@ async function settle(order_nsu: string, transaction_nsu: string, slug: string) 
   // trava antes de lançar, para webhook e retorno simultâneos não lançarem duas vezes
   const at = new Date().toISOString();
   await S.setJSON(order_nsu, { ...o, done: true, paidAt: at, transaction: transaction_nsu, method });
-  if (o.kind === "charge") await markChargePaid(o.id, { amount, method, note, ref: `ip-${transaction_nsu}` });
+  if (o.kind === "charge") {
+    const c: any = await markChargePaid(o.id, { amount, method, note, ref: `ip-${transaction_nsu}` });
+    try { const { notifyOwner } = await import("../lib/signing.mts");
+      await notifyOwner(`Cobrança paga · R$ ${amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} · ${c?.name || o.id}`, [`${method === "pix" ? "Pix" : "Cartão"} pela InfinitePay${chk.installments > 1 ? ` em ${chk.installments}x` : ""}. Baixa feita automaticamente.`, c?.desc || ""].filter(Boolean), { href: "https://gustavoelian.com/app/#/financeiro", label: "Abrir o Financeiro" }); } catch {}
+  }
   else {
     const cur = await getState(o.id);
     if (!(cur.payments || []).some((p: any) => p.id === `ip-${transaction_nsu}`)) {
