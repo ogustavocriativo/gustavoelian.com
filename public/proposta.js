@@ -3,6 +3,15 @@ const app = document.getElementById("app");
 const slug = location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
 const toastEl = document.getElementById("toast");
 const brl = (v) => "R$ " + Number(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+/* Contrato na página: o fecho com local e data fica à direita, como no PDF. */
+const DATE_LINE = /^[A-Za-zÀ-ÿ' .-]{2,60}, (\d{2}\/\d{2}\/\d{4}|\d{1,2}º? de [a-zç]+ de \d{4})\.?$/;
+function fillContract(el, text) {
+  const t = String(text || "").replace(/\s+$/, ""), i = t.lastIndexOf("\n"), last = t.slice(i + 1).trim();
+  if (DATE_LINE.test(last)) el.replaceChildren(t.slice(0, i + 1), h("span", { class: "contract-date" }, last));
+  else el.textContent = t;
+  return el;
+}
+
 function h(tag, attrs = {}, ...kids) {
   const el = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs || {})) {
@@ -89,7 +98,7 @@ function chooser() {
     Object.entries(methodBtns).forEach(([k, b]) => b.setAttribute("aria-pressed", String(sel.method === k)));
   };
   let saveT;
-  const persist = () => { drawSummary(); clearTimeout(saveT); saveT = setTimeout(async () => { try { const r = await post("select", sel); D.contractPreview = r.contractPreview; const c = document.getElementById("contractText"); if (c) c.textContent = r.contractPreview; } catch (x) { toast(x.message); } }, 500); };
+  const persist = () => { drawSummary(); clearTimeout(saveT); saveT = setTimeout(async () => { try { const r = await post("select", sel); D.contractPreview = r.contractPreview; const c = document.getElementById("contractText"); if (c) fillContract(c, r.contractPreview); } catch (x) { toast(x.message); } }, 500); };
 
   const opts = h("div", { class: "opts", role: "radiogroup", "aria-label": "Opções" });
   const itemChecks = h("div", { class: "subitems" }, ...q.items.map((it) => h("label", {}, h("input", { type: "checkbox", value: it.id, disabled: locked, checked: !sel.packageId && (sel.itemIds?.length ? sel.itemIds.includes(it.id) : true), onchange: () => {
@@ -209,7 +218,7 @@ function approve() {
     h("div", { class: "grid2" }, inp("name", "Nome completo *", "text", { autocomplete: "name", value: D.quote.client.name || "" }), inp("doc", "CPF ou CNPJ *", "text", { inputmode: "numeric", autocomplete: "off" })),
     h("div", { class: "grid2" }, inp("email", "E-mail *", "email", { autocomplete: "email" }), h("label", { class: "f", for: "phone" }, "WhatsApp", h("input", { id: "phone", name: "phone", type: "tel", autocomplete: "tel" }))),
     D.quote.contractEnabled ? inp("address", "Endereço completo, com cidade *", "text", { autocomplete: "street-address" }) : null,
-    D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), h("div", { class: "contract", id: "contractText", tabindex: "0" }, D.contractPreview)] : null,
+    D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), fillContract(h("div", { class: "contract", id: "contractText", tabindex: "0" }), D.contractPreview)] : null,
     D.quote.contractEnabled ? pad : null,
     D.otp ? otpField(() => new FormData(form), err) : null,
     h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),

@@ -34,8 +34,13 @@ export function buildContract(q: Quote, settings: any, signer: any, sel: any) {
     pagamento: pay.text,
     // prazos iguais viram um só ("7 dias úteis"); diferentes vêm numerados como os serviços
     prazo: (() => { const ds = items.map((i: any) => String(i.deadline || "").trim()); const set = [...new Set(ds.filter(Boolean))]; return set.length <= 1 ? (set[0] || "") : ds.map((d: string, n: number) => (d ? `(${n + 1}) ${d}` : "")).filter(Boolean).join("; "); })(),
-    data: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+    // data por extenso, sem ponto final: "27 de novembro de 2026"
+    data: new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", day: "numeric", month: "long", year: "numeric" }),
     proposta: q.slug,
   };
-  return tpl.replace(/\{\{(\w+)\}\}/g, (_: string, k: string) => map[k] ?? "");
+  // modelos salvos antes da mudança terminavam em "{{data}}." · a linha de local e data não leva ponto final
+  return tpl.replace(/\{\{data\}\}\.\s*$/, "{{data}}").replace(/\{\{(\w+)\}\}/g, (_: string, k: string) => map[k] ?? "");
 }
+
+/* Linha de local e data do fecho ("Montes Claros, 27 de novembro de 2026"): alinhada à direita no PDF e na página. */
+export const DATE_LINE = /^[A-Za-zÀ-ÿ' .-]{2,60}, (\d{2}\/\d{2}\/\d{4}|\d{1,2}º? de [a-zç]+ de \d{4})\.?$/;

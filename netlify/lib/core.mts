@@ -237,7 +237,7 @@ Valem como comunicação formal entre as partes as mensagens enviadas aos e-mail
 14. FORO
 Fica eleito o foro da comarca de {{cidade}}/MG para resolver qualquer questão oriunda deste contrato.
 
-{{cidade}}, {{data}}.`,
+{{cidade}}, {{data}}`,
 };
 export async function getSettings() {
   const saved = ((await settingsStore().get("main", { type: "json" })) as any) || {};

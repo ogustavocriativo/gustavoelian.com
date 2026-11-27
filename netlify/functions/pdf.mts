@@ -6,6 +6,8 @@ import { LTWaveBold, LTWaveLight, LTWaveMedium, LTWaveRegular, pdf_logo_on_white
 import { brl, fail, getQuote, getSettings, getState, isAdmin, priceOf } from "../lib/core.mts";
 import catalog from "../../public/data/projects.json" with { type: "json" };
 import { buildProposalPdf } from "../lib/proposal-pdf.mts";
+import { DATE_LINE } from "../lib/contract.mts";
+import { issuerSignaturePng } from "../lib/signature.mts";
 
 const A4: [number, number] = [595.28, 841.89];
 const M = 56; // margem
@@ -219,6 +221,9 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
       const [k, ...v] = t.split(":");
       d.text(k, { font: "med", size: 8, color: C.soft, lh: 11 });
       d.text(v.join(":").trim(), { size: 10, lh: 14.5, gap: 6 });
+    } else if (DATE_LINE.test(t)) {
+      // local e data do fecho, à direita da página (o texto assinado não muda)
+      d.y -= 10; d.ensure(20); d.right(t, d.y - 10.5, "reg", 10.5); d.y -= 20;
     } else d.text(t, { size: 9.8, lh: 14.6, gap: 3 });
   }
 
@@ -239,7 +244,12 @@ async function contractPdf(q: any, s: any, st: any, origin: string) {
     d.page.drawText(note, { x, y: sy - 105, size: 7.5, font: d.f.reg, color: C.soft });
   };
   sig(M, st.signer?.name || "", `CONTRATANTE · ${st.signer?.doc || ""}`, `Assinado eletronicamente em ${fmtDateTime(st.approvedAt)}`);
-  d.page.drawText("Assinado eletronicamente", { x: M + half + 24, y: sy - 52, size: 13, font: d.f.light, color: C.accent });
+  // assinatura manuscrita do contratado, na mesma altura da do contratante
+  {
+    const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64"));
+    const ih = 56, iw = (ih * img.width) / img.height;
+    d.page.drawImage(img, { x: M + half + 24, y: sy - 64, width: iw, height: ih });
+  }
   sig(M + half + 24, s.issuer.name, `CONTRATADO · ${s.issuer.doc}`, `Ao emitir a proposta em ${fmtDate(String(q.createdAt || st.approvedAt).slice(0, 10))}`);
   d.y = sy - 124;
 
