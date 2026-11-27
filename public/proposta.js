@@ -265,10 +265,12 @@ function approve() {
     h("div", { class: "grid2" }, inp("name", "Nome completo *", "text", { autocomplete: "name", value: D.quote.client.name || "" }), inp("doc", "CPF ou CNPJ *", "text", { inputmode: "numeric", autocomplete: "off", placeholder: "000.000.000-00", maxlength: "18", oninput: (e) => { e.target.value = maskDoc(e.target.value); } })),
     h("div", { class: "grid2" }, inp("email", "E-mail *", "email", { autocomplete: "email" }), h("label", { class: "f", for: "phone" }, "WhatsApp", h("input", { id: "phone", name: "phone", type: "tel", autocomplete: "tel" }))),
     D.quote.contractEnabled ? addressFields() : null,
-    D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), fillContract(h("div", { class: "contract", id: "contractText", tabindex: "0" }), D.contractPreview)] : null,
+    // com assinatura pelo Google o cliente não vê esboço aqui: lê o contrato completo no e-mail do Google, antes de assinar
+    D.quote.contractEnabled && !G ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), fillContract(h("div", { class: "contract", id: "contractText", tabindex: "0" }), D.contractPreview)] : null,
+    G ? h("p", { class: "note" }, "Depois da aprovação, o contrato completo chega no seu e-mail, enviado pelo Google, para você ler com calma e assinar eletronicamente.") : null,
     D.quote.contractEnabled && pad ? pad : null,
     !G && D.otp ? otpField(() => new FormData(form), err) : null,
-    h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), G ? "Li e aprovo a proposta e os termos de contratação. Ciente de que receberei o contrato por e-mail, do Google, para assinar eletronicamente." : D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
+    h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), G ? "Li e aprovo a proposta nas condições escolhidas acima. Ciente de que receberei o contrato por e-mail, do Google, para ler e assinar eletronicamente." : D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
     !G && D.signing === false ? h("p", { class: "err" }, "A assinatura está temporariamente indisponível. Fale comigo pelo WhatsApp que resolvo na hora.") : null,
     err, h("button", { class: "btn primary", type: "submit", ...(!G && D.signing === false ? { disabled: "" } : {}) }, "Aprovar proposta"));
   return h("section", { class: "blk", id: "aprovar" }, h("span", { class: "eyebrow" }, "Aprovação"), h("h2", {}, G ? "Aprovar proposta" : D.quote.contractEnabled ? "Aprovar e assinar" : "Aprovar proposta"),
