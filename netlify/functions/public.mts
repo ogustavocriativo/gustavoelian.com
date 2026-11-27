@@ -84,7 +84,8 @@ export default async (req: Request, context: Context) => {
       state: { selection: state.selection || null, approvedAt: state.approvedAt || null, signer: state.signer ? { name: state.signer.name } : null, paidAt: state.paidAt || null, paymentNotice: state.paymentNotice || null },
       issuer: settings.issuer,
       payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key, card: !!Netlify.env.get("INFINITEPAY_HANDLE") || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: Netlify.env.get("INFINITEPAY_HANDLE") ? "infinitepay" : "stripe" },
-      otp: googleReady(),
+      otp: true, // assinatura sempre exige o código enviado ao e-mail de quem assina
+      signing: googleReady(),
       contractPreview,
       preview: admin && !q.published,
     });
@@ -132,11 +133,11 @@ export default async (req: Request, context: Context) => {
   }
 
   /* Código de confirmação enviado ao e-mail de quem vai assinar: prova que a pessoa controla o e-mail informado
-     (reforça o aceite eletrônico, Lei 14.063/2020). Só é exigido quando o envio por Gmail está ligado. */
+     (reforça o aceite eletrônico, Lei 14.063/2020). É sempre exigido: sem o envio por Gmail ligado, a assinatura fica suspensa. */
   if (action === "otp") {
     const st = await getState(slug);
     if (st.approvedAt) return fail("Esta proposta já foi aprovada", 409);
-    if (!googleReady()) return json({ ok: true, skipped: true });
+    if (!googleReady()) return fail("A assinatura está temporariamente indisponível: o envio do código de confirmação não está ligado. Fale comigo pelo WhatsApp.", 503);
     const email = clip(body.email, 160).toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("Digite um e-mail válido");
     if (st.otp && Date.now() - Date.parse(st.otp.sentAt) < 30_000) return fail("Aguarde meio minuto para pedir outro código", 429);
@@ -161,7 +162,9 @@ export default async (req: Request, context: Context) => {
     const sig = String(body.signature || "");
     if (sig && (!/^data:image\/(png|jpeg);base64,/.test(sig) || sig.length > 300_000)) return fail("Assinatura inválida");
     let emailVerifiedAt: string | null = null;
-    if (googleReady()) {
+    // confirmação do e-mail por código é obrigatória para assinar
+    if (!googleReady()) return fail("A assinatura está temporariamente indisponível: o envio do código de confirmação não está ligado. Fale comigo pelo WhatsApp.", 503);
+    {
       const o = st.otp, code = clip(body.code, 8).replace(/\D/g, "");
       if (!o || !code) return fail("Digite o código que enviamos para o seu e-mail");
       if (o.tries >= 5 || Date.now() > o.exp) return fail("Esse código expirou. Peça um novo.", 410);

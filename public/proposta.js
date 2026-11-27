@@ -198,6 +198,7 @@ function approve() {
     e.preventDefault(); err.textContent = "";
     const fd = new FormData(form);
     if (!fd.get("accept")) { err.textContent = "Para aprovar, marque que leu e aceita os termos."; return; }
+    if (D.otp && !String(fd.get("code") || "").trim()) { err.textContent = "Confirme o seu e-mail: peça o código e digite-o antes de assinar."; return; }
     const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Registrando…";
     try {
       await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad.getData(), code: fd.get("code") });
@@ -212,7 +213,8 @@ function approve() {
     D.quote.contractEnabled ? pad : null,
     D.otp ? otpField(() => new FormData(form), err) : null,
     h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
-    err, h("button", { class: "btn primary", type: "submit" }, "Aprovar proposta"));
+    D.signing === false ? h("p", { class: "err" }, "A assinatura está temporariamente indisponível. Fale comigo pelo WhatsApp que resolvo na hora.") : null,
+    err, h("button", { class: "btn primary", type: "submit", ...(D.signing === false ? { disabled: "" } : {}) }, "Aprovar proposta"));
   return h("section", { class: "blk", id: "aprovar" }, h("span", { class: "eyebrow" }, "Aprovação"), h("h2", {}, D.quote.contractEnabled ? "Aprovar e assinar" : "Aprovar proposta"),
     h("p", { class: "lead" }, "Confira a condição escolhida, preencha seus dados e aprove. Você recebe o contrato em PDF na hora."), form);
 }
