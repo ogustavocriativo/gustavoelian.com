@@ -25,7 +25,7 @@ async function headers() {
 }
 
 /** Cria o link de checkout. `amount` em reais. Devolve a URL para onde o cliente vai. */
-export async function ipCreateLink(o: { kind: "charge" | "quote"; id: string; amount: number; label: string; origin: string; back: string; maxInstallments?: number; customer?: { name?: string; email?: string; phone?: string }; address?: any }) {
+export async function ipCreateLink(o: { kind: "charge" | "quote"; id: string; amount: number; label: string; origin: string; back: string; maxInstallments?: number; customer?: { name?: string; email?: string; phone?: string }; address?: any; cardOnly?: boolean }) {
   const cents = Math.round(o.amount * 100);
   if (cents < 100) throw new Error("O valor mínimo no InfinitePay é R$ 1,00");
   const nsu = `${o.kind === "charge" ? "c" : "q"}-${o.id}-${Date.now().toString(36)}`.slice(0, 60);
@@ -45,7 +45,8 @@ export async function ipCreateLink(o: { kind: "charge" | "quote"; id: string; am
   if (a?.cep && a.street && a.number && a.city && a.state) body.address = { cep: a.cep, street: a.street, number: a.number, neighborhood: a.neighborhood || "", city: a.city, state: a.state, ...(a.complement ? { complement: a.complement } : {}) };
   // serviço digital, sem entrega física: não pede endereço de entrega (exige a chave de API da InfinitePay)
   // e cada link vale para um único pagamento (evita pagar duas vezes pelo mesmo link)
-  if (await ipApiKey()) body.options = { require_delivery_address: false, single_payment: true };
+  // Pix é pago na nossa página (QR Code na proposta e na cobrança): a InfinitePay abre só para cartão
+  if (await ipApiKey()) body.options = { require_delivery_address: false, single_payment: true, ...(o.cardOnly ? { payment_methods_enabled: ["credit_card"] } : {}) };
   const r = await fetch(`${API}/links`, { method: "POST", headers: await headers(), body: JSON.stringify(body) });
   const data: any = await r.json().catch(() => ({}));
   const url = data.url || data.link || data.checkout_url || data.payment_url;

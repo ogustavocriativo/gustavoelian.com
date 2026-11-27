@@ -294,19 +294,19 @@ async function payment() {
     return sec;
   }
   if (method === "cartao" && D.payments.card) {
-    sec.append(h("p", { class: "lead" }, "Pague com cartão de crédito, Apple Pay ou Google Pay em ambiente seguro."),
+    sec.append(h("p", { class: "lead" }, "Pague com cartão de crédito, em até 12x, no ambiente seguro da InfinitePay."),
       h("button", { class: "btn dark", type: "button", onclick: async (e) => {
         e.currentTarget.disabled = true;
         try { const r = await fetch(`/api/pay/${slug}/checkout`, { method: "POST" }); const d = await r.json(); if (!r.ok) throw new Error(d.error); location.href = d.url; }
         catch (x) { toast(x.message); e.currentTarget.disabled = false; }
-      } }, "Pagar com cartão ou Apple Pay"));
+      } }, "Pagar com cartão de crédito"));
   }
   if (D.payments.pix) {
     try {
       const r = await fetch(`/api/pay/${slug}/pix`); const pix = await r.json();
       if (r.ok) {
         const code = h("code", {}, pix.payload);
-        sec.append(h("p", { class: "lead" }, method === "cartao" && D.payments.card ? "Prefere Pix? Pague a entrada à vista:" : `Pague a entrada de ${D.payments.entryPct}% por Pix. O restante fica para a entrega.`),
+        sec.append(h("p", { class: "lead" }, method === "cartao" && D.payments.card ? "Prefere Pix? Pague aqui mesmo, sem sair da página:" : `Pague a entrada de ${D.payments.entryPct}% por Pix. O restante fica para a entrega.`),
           h("div", { class: "pix" }, h("div", { class: "qr", html: pix.svg, role: "img", "aria-label": "QR Code Pix" }),
             h("div", { class: "stack" }, h("strong", { style: "font-size:1.75rem" }, pix.amountLabel), h("small", {}, pix.label), code,
               h("button", { class: "btn primary", type: "button", onclick: async () => { try { await navigator.clipboard.writeText(pix.payload); toast("Código Pix copiado"); } catch { const r2 = document.createRange(); r2.selectNodeContents(code); getSelection().removeAllRanges(); getSelection().addRange(r2); toast("Código selecionado: copie e cole no app do banco"); } } }, "Copiar código Pix"))));

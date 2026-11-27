@@ -61,7 +61,7 @@ async function main() {
         c.cardFeePct > 0 ? h("div", { class: "pg-row" }, h("span", {}, "No cartão"), h("b", {}, c.cardAmountLabel)) : null,
         c.cardFeePct > 0 ? h("p", { class: "pg-note" }, `Inclui a taxa da operadora (${String(c.cardFeePct).replace(".", ",")}%). No Pix o valor é ${c.amountLabel}.`) : null,
         c.installments > 1 ? h("p", { class: "pg-note" }, `Parcele em até ${c.installments}x na próxima tela.`) : null,
-        go, h("p", { class: "pg-note" }, c.provider === "infinitepay" ? "Cartão em até 12x ou Pix, na página segura da InfinitePay." : "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
+        go, h("p", { class: "pg-note" }, c.provider === "infinitepay" ? "Cartão de crédito em até 12x, na página segura da InfinitePay. O Pix é pago aqui mesmo." : "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
     }
   }
   app.replaceChildren(h("div", { class: "pg-card" }, head, seg, pane),

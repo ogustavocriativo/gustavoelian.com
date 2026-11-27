@@ -86,7 +86,7 @@ export default async (req: Request, context: Context) => {
     if (ipReady()) {
       const { amount, label } = amountFor(q, settings, { ...sel, method: "cartao" });
       try {
-        const r = await ipCreateLink({ kind: "quote", id: slug, amount, label: `Proposta ${q.client?.name || ""} · ${label}`, origin: url.origin, back: `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email || q.client?.email, phone: st.signer?.phone || q.client?.phone }, address: st.signer?.addressParts || parseAddress(st.signer?.address) });
+        const r = await ipCreateLink({ kind: "quote", id: slug, amount, label: `Proposta ${q.client?.name || ""} · ${label}`, origin: url.origin, back: `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email || q.client?.email, phone: st.signer?.phone || q.client?.phone }, address: st.signer?.addressParts || parseAddress(st.signer?.address), cardOnly: !!settings.pix?.key });
         await addEvent(slug, { type: "checkout-start", total: amount });
         return json({ url: r.url });
       } catch (x: any) { return fail(x.message || "Não foi possível iniciar o pagamento", 502); }

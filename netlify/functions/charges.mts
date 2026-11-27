@@ -47,7 +47,7 @@ export default async (req: Request, context: Context) => {
     if (action === "checkout" && req.method === "POST") {
       if (ipReady()) {
         try {
-          const r = await ipCreateLink({ kind: "charge", id, amount: cardAmountOf(c), label: c.desc || `Pagamento para ${s.issuer?.name || "Gustavo Elian"}`, origin: url.origin, back: `/pagar/${id}`, customer: { name: c.name, phone: c.phone } });
+          const r = await ipCreateLink({ kind: "charge", id, amount: cardAmountOf(c), label: c.desc || `Pagamento para ${s.issuer?.name || "Gustavo Elian"}`, origin: url.origin, back: `/pagar/${id}`, customer: { name: c.name, phone: c.phone }, cardOnly: !!s.pix?.key });
           await charges().setJSON(id, { ...c, checkoutAt: new Date().toISOString(), provider: "infinitepay" });
           return json({ url: r.url });
         } catch (x: any) { return fail(x.message || "Não foi possível iniciar o pagamento", 502); }
