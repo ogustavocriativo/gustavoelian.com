@@ -1,8 +1,8 @@
 // Layout dos e-mails enviados aos clientes, na identidade do site (gustavoelian.com):
-// logo oficial, tipografia LT Wave (título em imagem + fonte web onde o leitor aceitar), tinta #0E0E10,
+// logo oficial, apenas a tipografia LT Wave (título em imagem; corpo em fonte web, sem fonte reserva), tinta #0E0E10,
 // destaque #6699FF/#2F5FD0, cartões #F4F4F5 com cantos arredondados e botão em pílula.
 const ORIGIN = "https://gustavoelian.com";
-const FONT = `'LT Wave','Avenir Next','Segoe UI',Helvetica,Arial,sans-serif`;
+const FONT = `'LT Wave'`; // só a tipografia oficial, sem fontes reserva
 const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
 
 export type EmailParts = { title?: string; subject?: string; html?: string; button?: { href: string; label?: string } | null; eyebrow?: string };
