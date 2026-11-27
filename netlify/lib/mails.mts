@@ -31,6 +31,8 @@ export const mails = {
   codigo: (p: { name?: string; title?: string; code: string }): Mail => ({
     subject: `${p.code} é o seu código para assinar`, title: "Código de confirmação", eyebrow: "Assinatura do contrato",
     html: `${hi(p.name)}<p>Use este código para confirmar o seu e-mail e assinar a proposta${p.title ? ` de <b>${esc(p.title)}</b>` : ""}:</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0"><tr><td align="center" style="padding:22px 0;background:#F4F4F5;border-radius:20px">${textImg("codigo", p.code, "margin:0 auto")}</td></tr></table><p>Ele vale por 10 minutos. Se não foi você, ignore esta mensagem.</p>`,
+    // e-mail não executa código: o botão abre uma página do site que copia o código (ele vai depois do "#", não passa pelo servidor)
+    button: { href: `https://gustavoelian.com/copiar#${encodeURIComponent(p.code)}`, label: "Copiar código" },
   }),
 
   /** 3. Cliente aprovou a proposta (assinatura pelo Google a caminho). */

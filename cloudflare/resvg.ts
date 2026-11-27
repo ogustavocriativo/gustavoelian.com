@@ -8,7 +8,7 @@ let fonts: Uint8Array[] = [];
 export async function prepareResvg(origin: string) {
   ready ||= (async () => {
     await initWasm(wasm);
-    fonts = await Promise.all(["LTWave-Light.otf", "LTWave-Medium.otf"].map(async (f) => new Uint8Array(await (await RT.env.ASSETS.fetch(new Request(`${origin}/fonts/${f}`))).arrayBuffer())));
+    fonts = await Promise.all(["LTWave-Light.otf", "LTWave-Regular.otf", "LTWave-Medium.otf"].map(async (f) => new Uint8Array(await (await RT.env.ASSETS.fetch(new Request(`${origin}/fonts/${f}`))).arrayBuffer())));
   })();
   await ready;
 }

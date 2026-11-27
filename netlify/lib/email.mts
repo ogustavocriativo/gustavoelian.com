@@ -9,22 +9,26 @@ const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;
 export type EmailParts = { title?: string; subject?: string; html?: string; button?: { href: string; label?: string } | null; eyebrow?: string };
 
 /** Cartão de link dentro do corpo do e-mail (sistema entregue, manual, certificado). */
-import { textImg } from "./emailtext.mts";
+import { richFromHtml, textImg } from "./emailtext.mts";
 
 export function linkCard(href: string, label: string, sub = "") {
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 14px"><tr><td style="background:#F4F4F5;border-radius:20px;padding:18px 22px"><a href="${esc(href)}" style="text-decoration:none;display:block">${textImg("destaque", label)}</a>${sub ? `<span style="display:block;margin-top:6px;font-family:${FONT};font-size:13px;color:#55575E;overflow-wrap:anywhere">${esc(sub)}</span>` : ""}</td></tr></table>`;
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 14px"><tr><td style="background:#F4F4F5;border-radius:20px;padding:18px 22px"><a href="${esc(href)}" style="text-decoration:none;display:block">${textImg("destaque", label)}</a>${sub ? textImg("sub", sub, "margin-top:6px") : ""}</td></tr></table>`;
 }
 
 export function emailHtml(p: EmailParts) {
   const title = String(p.title || p.subject || "").trim();
   const eyebrow = p.eyebrow || "Gustavo Elian · Studio";
   const btn = p.button?.href ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:30px 0 4px"><tr><td style="border-radius:999px;background:#0E0E10"><a href="${esc(p.button.href)}" style="display:inline-block;padding:16px 30px;font-family:${FONT};font-size:16px;font-weight:500;color:#FFFFFF;text-decoration:none;border-radius:999px">${textImg("botao", p.button.label || "Abrir")}</a></td></tr></table>` : "";
-  // corpo: parágrafos e listas vindos do sistema recebem o estilo do site
+  // corpo: cada parágrafo, lista e caixa de destaque vira imagem na LT Wave (o texto vai no alt); só o rodapé fica em texto
   const body = String(p.html || "")
-    .replace(/<p>/g, `<p style="margin:0 0 14px;font-family:${FONT};font-size:16px;line-height:1.6;color:#2E2F33">`)
-    .replace(/<ul>/g, `<ul style="margin:0 0 14px;padding-left:20px;font-family:${FONT};font-size:15px;line-height:1.6;color:#2E2F33">`)
-    .replace(/<li>/g, `<li style="margin:0 0 6px">`)
-    .replace(/<b>/g, `<b style="font-weight:500;color:#0E0E10">`);
+    .replace(/<ul[^>]*>([\s\S]*?)<\/ul>/gi, (_m, inner) => `<div style="margin:0 0 14px">${textImg("corpo", [...String(inner).matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)].map((x) => "•  " + richFromHtml(x[1]).trim()).join("\n"))}</div>`)
+    .replace(/<p( style="([^"]*)")?>([\s\S]*?)<\/p>/gi, (_m, _a, st = "", inner) => {
+      const txt = richFromHtml(inner).trim();
+      if (!txt) return "";
+      if (/background/i.test(st)) return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 16px"><tr><td style="background:#F4F4F5;border-radius:18px;padding:16px 20px">${textImg("nota", txt)}</td></tr></table>`;
+      const mt = (st.match(/margin-top:\s*(\d+)px/) || [])[1];
+      return `<div style="margin:${mt ? mt + "px" : "0"} 0 14px">${textImg("corpo", txt)}</div>`;
+    });
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>${esc(title)}</title>
 <style>
 @font-face{font-family:'LT Wave';src:url(${ORIGIN}/fonts/LTWave-Light.woff2) format('woff2');font-weight:300}

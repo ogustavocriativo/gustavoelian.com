@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Copiar código · Gustavo Elian</title>
+<style>
+@font-face{font-family:'LT Wave';src:url(/fonts/LTWave-Light.woff2) format('woff2');font-weight:300}
+@font-face{font-family:'LT Wave';src:url(/fonts/LTWave-Medium.woff2) format('woff2');font-weight:500}
+:root{--bg:#ECECEE;--card:#fff;--ink:#0E0E10;--soft:#55575E;--box:#F4F4F5;--ok:#1F7A4D}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E0E10;--card:#1A1B1E;--ink:#F4F4F5;--soft:#A8AAB2;--box:#26272B;--ok:#5BD69A}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px 16px;background:var(--bg);color:var(--ink);font-family:'LT Wave',system-ui,sans-serif}
+main{width:100%;max-width:420px;background:var(--card);border-radius:28px;padding:32px 24px;text-align:center}
+img{display:block;margin:0 auto 24px;width:150px;height:auto}
+@media (prefers-color-scheme:dark){img{filter:invert(1)}}
+p{margin:0;color:var(--soft);line-height:1.5}
+.code{margin:18px 0 22px;padding:20px 0;border-radius:18px;background:var(--box);font-size:40px;font-weight:500;letter-spacing:.3em;padding-left:.3em;color:var(--ink);user-select:all}
+button{width:100%;min-height:56px;border:0;border-radius:999px;background:var(--ink);color:var(--card);font:500 17px 'LT Wave',system-ui,sans-serif;cursor:pointer}
+button:focus-visible{outline:3px solid #6699FF;outline-offset:3px}
+.ok{margin-top:16px;min-height:1.5em;color:var(--ok);font-weight:500}
+</style>
+</head>
+<body>
+<main>
+  <img src="/img/logo_gustavo.png" alt="@gustavoelian" width="150" height="28">
+  <p>Seu código de confirmação</p>
+  <div class="code" id="code" aria-live="polite">——</div>
+  <button type="button" id="copy">Copiar código</button>
+  <p class="ok" id="msg" role="status"></p>
+</main>
+<script>
+// o código vem depois do "#" no link do e-mail (não é enviado ao servidor)
+const code = decodeURIComponent(location.hash.slice(1)).replace(/\D/g, "").slice(0, 12);
+const el = document.getElementById("code"), msg = document.getElementById("msg"), btn = document.getElementById("copy");
+el.textContent = code || "——";
+async function copy(auto) {
+  if (!code) return;
+  let ok = false;
+  try { await navigator.clipboard.writeText(code); ok = true; }
+  catch { if (!auto) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); try { ok = document.execCommand("copy"); } catch {} } }
+  if (ok) { msg.textContent = "Copiado! Volte para a proposta e cole o código."; btn.textContent = "Copiado"; }
+  else if (!auto) msg.textContent = "Toque e segure no código para copiar.";
+}
+btn.addEventListener("click", () => copy(false));
+copy(true); // alguns celulares já copiam ao abrir; nos outros, um toque no botão
+</script>
+</body>
+</html>
