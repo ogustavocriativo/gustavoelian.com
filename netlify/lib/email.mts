@@ -1,5 +1,5 @@
 // Layout dos e-mails enviados aos clientes, na identidade do site (gustavoelian.com):
-// logo oficial, apenas a tipografia LT Wave (título em imagem; corpo em fonte web, sem fonte reserva), tinta #0E0E10,
+// logo oficial, apenas a tipografia LT Wave (fonte web, sem fonte reserva), tinta #0E0E10,
 // destaque #6699FF/#2F5FD0, cartões #F4F4F5 com cantos arredondados e botão em pílula.
 const ORIGIN = "https://gustavoelian.com";
 const FONT = `'LT Wave'`; // só a tipografia oficial, sem fontes reserva
@@ -32,7 +32,7 @@ a{color:#2F5FD0}
 <tr><td style="padding:0 6px 20px"><a href="${ORIGIN}"><img src="${ORIGIN}/img/logo_gustavo.png" width="168" height="31" alt="@gustavoelian" style="display:block;border:0;width:168px;height:auto"></a></td></tr>
 <tr><td class="card" style="font-family:${FONT};color:#2E2F33;background:#FFFFFF;border-radius:32px;padding:40px 44px">
 <p style="margin:0 0 18px;font-family:${FONT};font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#55575E"><span style="color:#6699FF;font-size:14px">●</span>&nbsp; ${esc(eyebrow)}</p>
-${title ? `<h1 style="margin:0 0 20px;font-family:${FONT};font-size:34px;line-height:1.15;font-weight:300;letter-spacing:-.02em;color:#0E0E10"><img src="${ORIGIN}/api/email/titulo?t=${encodeURIComponent(title)}" alt="${esc(title)}" width="504" style="display:block;border:0;width:100%;max-width:504px;height:auto;font-family:${FONT};font-size:30px;font-weight:300;color:#0E0E10"></h1>` : ""}
+${title ? `<h1 style="margin:0 0 20px;font-family:${FONT};font-size:34px;line-height:1.15;font-weight:300;letter-spacing:-.02em;color:#0E0E10">${esc(title)}</h1>` : ""}
 ${body}${btn}
 </td></tr>
 <tr><td style="padding:24px 10px 0;font-family:${FONT};font-size:12px;line-height:1.6;color:#6B6E76">
