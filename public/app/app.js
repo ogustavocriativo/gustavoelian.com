@@ -1200,7 +1200,7 @@ async function renderSettings() {
         f("Endereço (vai no contrato)", bind(s.issuer, "address")), f("Cidade e foro", bind(s.issuer, "city")),
         f("WhatsApp (só números, com 55)", bind(s.issuer, "whatsapp", { inputmode: "numeric" })), f("WhatsApp exibido no PDF", bind(s.issuer, "whatsappLabel"))),
       (() => { const st = h("p", { class: "hint" }, "Verificando…");
-        api("/api/google/status").then((r) => { st.textContent = !r.ready ? "Ainda não configurado. Falta cadastrar GOOGLE_SCRIPT_URL e GOOGLE_SCRIPT_SECRET no Netlify." : r.ok ? `Ligado como ${r.user}. Contratos vão para Meu Drive › @adm › @clientes.` : `Configurado, mas com erro: ${r.error}`; st.className = "pill wrap " + (r.ready && r.ok ? "ok" : ""); }).catch(() => (st.textContent = "Não foi possível verificar."));
+        api("/api/google/status").then((r) => { st.textContent = !r.ready ? "Ainda não configurado. Falta cadastrar GOOGLE_SCRIPT_URL e GOOGLE_SCRIPT_SECRET no Cloudflare (Workers › gustavoelian › Settings › Variables and Secrets)." : r.ok ? `Ligado como ${r.user}. Contratos vão para Meu Drive › @adm › @clientes.` : `Configurado, mas com erro: ${r.error}`; st.className = "pill wrap " + (r.ready && r.ok ? "ok" : ""); }).catch(() => (st.textContent = "Não foi possível verificar."));
         return h("section", { class: "form-card glass" }, h("h2", {}, "Gmail e Google Drive"), st); })(),
       h("section", { class: "form-card glass" }, h("h2", {}, "Pagamento"),
         h("div", { class: "r2" }, f("Entrada à vista (%)", bind(s.payments, "entryPct", { min: 0, max: 100, inputmode: "numeric" }, "number")), f("Máx. parcelas", bind(s.payments, "maxInstallments", { min: 1, max: 12, inputmode: "numeric" }, "number"))),
