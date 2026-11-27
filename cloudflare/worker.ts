@@ -1,6 +1,7 @@
 import { RT } from "./rt";
 import { prepareResvg } from "./resvg";
 import { loadPdfImages } from "../netlify/lib/assets.mts";
+import { store } from "../netlify/lib/core.mts";
 import * as m_auth from "../netlify/functions/auth.mts";
 import * as m_charges from "../netlify/functions/charges.mts";
 import * as m_client from "../netlify/functions/client.mts";
@@ -124,6 +125,26 @@ const handler = {
     if (req.method !== "GET" && req.method !== "HEAD") return new Response("Not found", { status: 404 });
     const extra: Record<string, string> = { ...BASE_HEADERS };
     if (path.startsWith("/app/")) extra["cache-control"] = "no-cache";
+    // página inicial: já sai do servidor com a foto atual do topo (editada no Studio), sem piscar a foto antiga
+    if (path === "/" || path === "/index.html") {
+      const page = await env.ASSETS.fetch(req);
+      if (page.ok && (page.headers.get("content-type") || "").includes("text/html")) {
+        const site: any = await store("portfolio").get("site", { type: "json" }).catch(() => null);
+        const ph = site?.hero?.photo;
+        const out = withHeaders(page, { ...extra, "cache-control": "no-cache" });
+        if (!ph?.key) return out;
+        const src = `/api/media/${ph.key}`;
+        const style = ph.fx != null ? `object-position:${ph.fx}% ${ph.fy}%` + (ph.z > 1 ? `;transform:scale(${ph.z});transform-origin:${ph.ox}% ${ph.oy}%` : "") : "";
+        return new HTMLRewriter()
+          .on("head", { element(e) { e.append(`<link rel="preload" as="image" href="${src}" fetchpriority="high">`, { html: true }); } })
+          .on("img#heroPhoto", { element(e) {
+            e.setAttribute("src", src); e.removeAttribute("width"); e.removeAttribute("height");
+            if (site.hero.photoAlt) e.setAttribute("alt", String(site.hero.photoAlt));
+            if (style) e.setAttribute("style", style);
+          } })
+          .transform(out);
+      }
+    }
     let res = await env.ASSETS.fetch(req);
     if (res.status !== 404) return withHeaders(res, extra);
 

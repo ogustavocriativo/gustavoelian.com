@@ -120,6 +120,10 @@ export default async (req: Request, context: Context) => {
     return json(next);
   }
   if (req.method === "DELETE") {
+    // junto vão a avaliação publicada no site e o certificado (a verificação pública deixa de existir)
+    const old: any = await states().get(slug, { type: "json" }).catch(() => null);
+    await store("reviews").delete(slug).catch(() => {});
+    if (old?.delivery?.certificate?.code) await store("certs").delete(old.delivery.certificate.code).catch(() => {});
     await quotes().delete(`quotes/${slug}`);
     await states().delete(slug);
     for (const s of [events(), files()]) {
