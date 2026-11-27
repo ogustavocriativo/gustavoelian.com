@@ -7,6 +7,7 @@ import * as m_charges from "../netlify/functions/charges.mts";
 import * as m_client from "../netlify/functions/client.mts";
 import * as m_emails from "../netlify/functions/emails.mts";
 import * as m_reviews from "../netlify/functions/reviews.mts";
+import * as m_academic from "../netlify/functions/academic.mts";
 import { requestDueReviews } from "../netlify/lib/reviews.mts";
 import * as m_clientlogo from "../netlify/functions/clientlogo.mts";
 import * as m_delivery from "../netlify/functions/delivery.mts";
@@ -30,7 +31,7 @@ import * as m_emailimg from "../netlify/functions/email-img.mts";
 import * as m_signing from "../netlify/functions/signing-api.mts";
 import { checkGoogleSignatures } from "../netlify/lib/signing.mts";
 import ogEdge from "../netlify/edge-functions/proposta-og.ts";
-const MODS: any[] = [m_auth,m_charges,m_client,m_clientlogo,m_delivery,m_files,m_google,m_history,m_inbox,m_infinitepay,m_manage,m_og,m_pay,m_pdf,m_portfolio,m_preview,m_previews,m_public,m_quotes,m_review,m_settings,m_emailimg,m_signing,m_emails,m_reviews];
+const MODS: any[] = [m_auth,m_charges,m_client,m_clientlogo,m_delivery,m_files,m_google,m_history,m_inbox,m_infinitepay,m_manage,m_og,m_pay,m_pdf,m_portfolio,m_preview,m_previews,m_public,m_quotes,m_review,m_settings,m_emailimg,m_signing,m_emails,m_reviews,m_academic];
 
 // ---------- rotas: os mesmos caminhos do netlify (config.path) ----------
 type Route = { re: RegExp; keys: string[]; score: number; mod: any };

@@ -1427,7 +1427,7 @@ async function renderPortfolioList() {
     h("div", { class: "stack" },
       h("div", { class: "glass card pf-intro" },
         h("p", {}, `${visible} de ${order.length} projetos visíveis no site. A ordem abaixo é a ordem da página inicial: use as setas para reorganizar.`),
-        h("div", { class: "btns" }, h("a", { class: "btn small primary", href: "#/editor" }, icon("pen"), "Editor visual"), h("a", { class: "btn small", href: "#/portfolio/moodboard" }, icon("box"), "Moodboard"), h("a", { class: "btn small", href: "#/portfolio/sobre" }, icon("pen"), "Textos da página inicial"), h("a", { class: "btn ghost small", href: "/", target: "_blank", rel: "noopener" }, icon("eye"), "Abrir o site"))),
+        h("div", { class: "btns" }, h("a", { class: "btn small primary", href: "#/editor" }, icon("pen"), "Editor visual"), h("a", { class: "btn small", href: "#/portfolio/moodboard" }, icon("box"), "Moodboard"), h("a", { class: "btn small", href: "#/portfolio/sobre" }, icon("pen"), "Textos da página inicial"), h("a", { class: "btn small", href: "#/portfolio/academico" }, icon("doc"), "Currículo acadêmico"), h("a", { class: "btn ghost small", href: "/", target: "_blank", rel: "noopener" }, icon("eye"), "Abrir o site"))),
       list), h("div", { class: "gap24" }));
 }
 
@@ -1968,6 +1968,132 @@ async function renderSiteContent() {
     h("div", { class: "gap24" }));
 }
 
+/* ================= currículo acadêmico (/academico) =================
+   Perfil, formação e produção (projetos, apresentações com slides, minicursos, publicações, docência, vídeos).
+   Slides em PDF e capas sobem para /api/academico/upload; links do Google Slides, Canva e YouTube também valem. */
+const ACAD_T = { projeto: "Projetos e eventos", apresentacao: "Apresentações em eventos", minicurso: "Minicursos e oficinas", publicacao: "Publicações", docencia: "Docência e bancas", video: "Vídeos e lives" };
+const ACAD_LOGOS = { unimontes: "Unimontes", ppgh: "PPGH", uerj: "UERJ", fcs: "FCS", ppgcom: "PPGCom", alcar: "Alcar" };
+async function renderAcademico() {
+  loading("Currículo acadêmico");
+  let c;
+  try { c = await fetch(`/api/academico?fresh=${Date.now()}`, { cache: "no-store", credentials: "same-origin" }).then((r) => r.json()); } catch { c = null; }
+  if (!c || !c.profile) { shell({ title: "Currículo acadêmico", back: "#/portfolio", compact: true, nav: false }, h("p", { class: "hint" }, "Não deu para carregar agora. Tente de novo.")); return; }
+  c.profile.status ||= []; c.profile.lines ||= []; c.formacao ||= []; c.items ||= [];
+  let dirty = false;
+  const status = h("span", { class: "pf-state", role: "status" }, c.isDefault ? "Conteúdo inicial (ainda não salvo)" : "Tudo salvo");
+  const touch = () => { dirty = true; status.textContent = "Alterações não salvas"; status.className = "pf-state warn"; };
+  window.onbeforeunload = () => (dirty ? true : null);
+  const inp = (obj, key, attrs = {}, tag = "input") => { const el = h(tag, { class: "in", ...attrs }); el.value = obj[key] ?? ""; el.addEventListener("input", () => { obj[key] = el.value; touch(); }); return el; };
+  const lines = (obj, key, attrs = {}) => { const el = h("textarea", { class: "in", rows: 3, ...attrs }); el.value = (obj[key] || []).join("\n"); el.addEventListener("input", () => { obj[key] = el.value.split("\n").map((x) => x.trim()).filter(Boolean); touch(); }); return el; };
+  const f = (l, el) => h("label", { class: "f" }, h("span", {}, l), el);
+  const chk = (obj, key, label) => { const el = h("input", { type: "checkbox", checked: !!obj[key], onchange: (e) => { obj[key] = e.target.checked; touch(); } }); return h("label", { class: "chk", style: "display:flex;gap:8px;align-items:center;min-height:44px" }, el, h("span", {}, label)); };
+  const logoSel = (obj, key) => h("select", { class: "in", onchange: (e) => { obj[key] = e.target.value; touch(); } }, h("option", { value: "" }, "Sem logo"), ...Object.entries(ACAD_LOGOS).map(([k, v]) => h("option", { value: k, selected: obj[key] === k }, v)));
+  const tools = (arr, i, redraw) => h("div", { class: "pf-tools" },
+    h("button", { class: "ibtn sm", type: "button", "aria-label": "Subir", disabled: i === 0, onclick: () => { [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]]; touch(); redraw(); } }, "↑"),
+    h("button", { class: "ibtn sm", type: "button", "aria-label": "Descer", disabled: i === arr.length - 1, onclick: () => { [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]]; touch(); redraw(); } }, "↓"),
+    h("button", { class: "ibtn sm", type: "button", "aria-label": "Excluir", onclick: () => { arr.splice(i, 1); touch(); redraw(); } }, icon("trash")));
+  const upload = async (file) => { const fd = new FormData(); fd.append("file", file); status.textContent = `Enviando ${file.name}…`; const r = await api("/api/academico/upload", { method: "POST", body: fd }); status.textContent = "Alterações não salvas"; return { key: r.key, type: r.type, name: r.name }; };
+  const fileBtn = (label, accept, onFile) => { const input = h("input", { type: "file", accept, style: "display:none", onchange: async (e) => { const fl = e.target.files[0]; e.target.value = ""; if (!fl) return; try { await onFile(await upload(fl)); touch(); } catch (x) { toast(x.message); status.textContent = "Alterações não salvas"; } } }); return h("span", {}, input, h("button", { class: "btn small", type: "button", onclick: () => input.click() }, icon("plus"), label)); };
+
+  // perfil
+  const p = c.profile;
+  const photoBox = h("div", { class: "stack", style: "gap:8px" });
+  const drawPhoto = () => photoBox.replaceChildren(
+    p.photo?.key ? h("img", { src: `/api/media/${p.photo.key}`, alt: "", style: "width:96px;height:96px;object-fit:cover;border-radius:50%" }) : h("p", { class: "hint", style: "margin:0" }, "Sem foto própria: usa a foto da abertura do site."),
+    h("div", { class: "btns" }, fileBtn(p.photo?.key ? "Trocar foto" : "Enviar foto", "image/jpeg,image/png,image/webp", (m) => { p.photo = m; drawPhoto(); }),
+      p.photo?.key ? h("button", { class: "btn ghost small", type: "button", onclick: () => { p.photo = null; touch(); drawPhoto(); } }, "Tirar foto") : null));
+  drawPhoto();
+  const stBox = h("div", { class: "stack" });
+  const drawSt = () => stBox.replaceChildren(...p.status.map((s, i) => h("div", { class: "pf-sec" },
+    h("div", { class: "pf-sec-h" }, h("strong", {}, s.label || `Vínculo ${i + 1}`), tools(p.status, i, drawSt)),
+    h("div", { class: "r2" }, f("Vínculo", inp(s, "label", { placeholder: "Ex.: Mestrando em História Social" })), f("Logo", logoSel(s, "logo"))),
+    f("Instituição", inp(s, "org", { placeholder: "Ex.: PPGH · Unimontes" })))),
+    p.status.length < 6 ? h("button", { class: "btn block", type: "button", onclick: () => { p.status.push({ label: "", org: "", logo: "" }); touch(); drawSt(); } }, icon("plus"), "Novo vínculo") : null);
+  drawSt();
+
+  // formação
+  const fmBox = h("div", { class: "stack" });
+  const drawFm = () => fmBox.replaceChildren(...c.formacao.map((x, i) => h("div", { class: "pf-sec" },
+    h("div", { class: "pf-sec-h" }, h("strong", {}, x.level || `Formação ${i + 1}`), tools(c.formacao, i, drawFm)),
+    h("div", { class: "r2" }, f("Nível e curso", inp(x, "level", { placeholder: "Ex.: Mestrado em História Social" })), f("Período", inp(x, "years", { placeholder: "2025–2026" }))),
+    f("Instituição", inp(x, "org")),
+    f("Título do trabalho", inp(x, "thesis", { rows: 2 }, "textarea")),
+    f("Observação", inp(x, "note", { placeholder: "Ex.: Orientação: Prof. Dr. …" })),
+    h("div", { class: "f" }, h("span", {}, "Logos"), h("div", { class: "btns" }, ...Object.entries(ACAD_LOGOS).map(([k, v]) => { x.logos ||= []; return h("label", { class: "chk", style: "display:flex;gap:6px;align-items:center;min-height:44px;margin-right:10px" }, h("input", { type: "checkbox", checked: x.logos.includes(k), onchange: (e) => { x.logos = e.target.checked ? [...x.logos, k] : x.logos.filter((y) => y !== k); touch(); } }), v); }))))),
+    h("button", { class: "btn block", type: "button", onclick: () => { c.formacao.push({ level: "", org: "", years: "", note: "", thesis: "", logos: [] }); touch(); drawFm(); } }, icon("plus"), "Nova formação"));
+  drawFm();
+
+  // produção, agrupada por tipo
+  const itBox = h("div", { class: "stack" });
+  let open = null;
+  const itemForm = (it) => {
+    it.stats ||= []; it.chips ||= [];
+    const media = h("div", { class: "stack", style: "gap:8px" });
+    const drawMedia = () => media.replaceChildren(
+      h("span", { class: "pf-lbl" }, "Slides"),
+      it.slides?.key ? h("p", { class: "hint", style: "margin:0" }, `PDF enviado: ${it.slides.name || "slides.pdf"}`) : null,
+      h("div", { class: "btns" }, fileBtn(it.slides?.key ? "Trocar PDF dos slides" : "Enviar PDF dos slides", "application/pdf", (m) => { it.slides = m; drawMedia(); }),
+        it.slides?.key ? h("button", { class: "btn ghost small", type: "button", onclick: () => { it.slides = null; touch(); drawMedia(); } }, "Tirar PDF") : null),
+      f("…ou link do Google Slides / Canva", inp(it, "slidesUrl", { placeholder: "https://docs.google.com/presentation/…", inputmode: "url" })),
+      h("span", { class: "pf-lbl" }, "Capa"),
+      it.coverMedia?.key ? h("img", { src: `/api/media/${it.coverMedia.key}`, alt: "", style: "width:120px;border-radius:8px" }) : it.cover ? h("img", { src: it.cover, alt: "", style: "width:120px;border-radius:8px" }) : null,
+      h("div", { class: "btns" }, fileBtn(it.coverMedia?.key || it.cover ? "Trocar capa" : "Enviar capa", "image/jpeg,image/png,image/webp,application/pdf", (m) => { it.coverMedia = m; drawMedia(); }),
+        it.coverMedia?.key || it.cover ? h("button", { class: "btn ghost small", type: "button", onclick: () => { it.coverMedia = null; it.cover = ""; touch(); drawMedia(); } }, "Tirar capa") : null));
+    drawMedia();
+    const stats = h("div", { class: "stack", style: "gap:8px" });
+    const drawStats = () => stats.replaceChildren(h("span", { class: "pf-lbl" }, "Números em destaque"), ...it.stats.map((s, i) => h("div", { class: "r2" }, f("Número", inp(s, "n", { placeholder: "Ex.: 120" })), h("div", { style: "display:flex;gap:8px;align-items:end" }, f("Legenda", inp(s, "l", { placeholder: "Ex.: trabalhos inscritos" })), h("button", { class: "ibtn sm", type: "button", "aria-label": "Tirar número", onclick: () => { it.stats.splice(i, 1); touch(); drawStats(); } }, icon("trash"))))),
+      it.stats.length < 4 ? h("button", { class: "btn small", type: "button", onclick: () => { it.stats.push({ n: "", l: "" }); touch(); drawStats(); } }, icon("plus"), "Número") : null);
+    drawStats();
+    const typeSel = h("select", { class: "in", onchange: (e) => { it.type = e.target.value; touch(); open = it.id; drawIt(); } }, ...Object.entries(ACAD_T).map(([k, v]) => h("option", { value: k, selected: it.type === k }, v)));
+    return h("div", { class: "stack" },
+      h("div", { class: "r2" }, f("Tipo", typeSel), f("Ano", inp(it, "year", { inputmode: "numeric", maxlength: 4, placeholder: "2026" }))),
+      f("Título", inp(it, "title", { rows: 2 }, "textarea")),
+      f("Evento ou veículo", inp(it, "event", { placeholder: "Ex.: IX ALCAR Sudeste · ECO/UFRJ" })),
+      h("div", { class: "r2" }, f("Papel", inp(it, "role", { placeholder: "Ex.: Ministrante" })), f("Data", inp(it, "date", { placeholder: "Ex.: 6 a 9 out. 2026" }))),
+      f("Situação (opcional)", inp(it, "status", { placeholder: "Ex.: Aprovado, No prelo" })),
+      f("Resumo", inp(it, "summary", { rows: 3 }, "textarea")),
+      f("Marcadores (um por linha)", lines(it, "chips")),
+      stats, media,
+      f(it.type === "video" ? "Link do YouTube" : "Vídeo do YouTube (opcional)", inp(it, "video", { placeholder: "https://youtube.com/watch?v=…", inputmode: "url" })),
+      h("div", { class: "r2" }, f("Link externo", inp(it, "link", { placeholder: "https://…", inputmode: "url" })), f("Texto do link", inp(it, "linkLabel", { placeholder: "Ex.: Ler o artigo" }))),
+      h("div", { class: "btns" }, chk(it, "featured", "Destacar"), chk(it, "hidden", "Ocultar do site")));
+  };
+  const drawIt = () => itBox.replaceChildren(...Object.entries(ACAD_T).map(([t, label]) => {
+    const list = c.items.filter((x) => x.type === t);
+    return h("section", { class: "form-card glass" }, h("h2", {}, `${label} `, h("span", { class: "hint" }, `(${list.length})`)),
+      ...list.map((it) => { const i = c.items.indexOf(it); const d = h("details", { class: "pf-sec", open: open === it.id },
+        h("summary", { style: "cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px" }, h("strong", { style: "flex:1;min-width:0;overflow-wrap:anywhere" }, `${it.year ? it.year + " · " : ""}${it.title || "Sem título"}`), it.hidden ? h("span", { class: "hint" }, "oculto") : null, it.featured ? h("span", { class: "hint" }, "destaque") : null),
+        h("div", { class: "pf-sec-h" }, h("span", {}), tools(c.items, i, drawIt)), itemForm(it));
+        d.addEventListener("toggle", () => { if (d.open) open = it.id; }); return d; }),
+      h("button", { class: "btn block", type: "button", onclick: () => { const id = Math.random().toString(36).slice(2, 10); c.items.push({ id, type: t, title: "", year: String(new Date().getFullYear()) }); open = id; touch(); drawIt(); } }, icon("plus"), t === "video" ? "Nova live ou vídeo" : "Novo item"));
+  }));
+  drawIt();
+
+  const saveBtn = h("button", { class: "btn primary", type: "button", onclick: async () => {
+    const empty = c.items.find((x) => !String(x.title || "").trim());
+    if (empty) { toast("Há um item sem título — preencha ou exclua antes de salvar."); open = empty.id; drawIt(); return; }
+    saveBtn.disabled = true; status.textContent = "Salvando…";
+    try { const r = await api("/api/academico", { method: "PUT", body: c }); Object.assign(c, r); c.isDefault = false; dirty = false; status.textContent = "Salvo · no site em até 1 min"; status.className = "pf-state ok"; haptic(); toast("Currículo acadêmico atualizado"); }
+    catch (x) { status.textContent = x.message; status.className = "pf-state warn"; toast(x.message); } finally { saveBtn.disabled = false; }
+  } }, icon("check"), "Salvar");
+
+  shell({ title: "Currículo acadêmico", eyebrow: "Página /academico do site", back: "#/portfolio", compact: true, nav: false },
+    h("div", { class: "stack" },
+      h("div", { class: "btns" }, h("a", { class: "btn ghost small", href: "/academico", target: "_blank", rel: "noopener" }, icon("eye"), "Abrir a página")),
+      h("section", { class: "form-card glass" }, h("h2", {}, "Perfil"), photoBox,
+        f("Nome", inp(p, "name")),
+        h("div", { class: "r2" }, f("ID Lattes", inp(p, "lattesId", { inputmode: "numeric" })), f("ORCID", inp(p, "orcid"))),
+        f("E-mail", inp(p, "email", { type: "email" })),
+        f("Biografia", inp(p, "bio", { rows: 6 }, "textarea")),
+        f("Nome em citações", inp(p, "citation")),
+        f("Linhas de pesquisa (uma por linha)", lines(p, "lines", { rows: 5 }))),
+      h("section", { class: "form-card glass" }, h("h2", {}, "Vínculos"), h("p", { class: "hint" }, "Aparecem no cartão do perfil, com o logo ao lado."), stBox),
+      h("section", { class: "form-card glass" }, h("h2", {}, "Formação"), fmBox),
+      itBox,
+      h("div", { class: "pf-bar glass" }, status, saveBtn)),
+    h("div", { class: "gap24" }));
+}
+
 /* ================= página do projeto (seções) =================
    Edita textos, imagens e cores de cada seção publicada; reordena e oculta seções.
    O que não é texto, imagem ou cor fica preservado como está. */
@@ -2151,6 +2277,7 @@ async function route() {
     if (r === "/ajustes") return await renderSettings();
     if (r === "/portfolio") return await renderPortfolioList();
     if (r === "/portfolio/sobre") return await renderSiteContent();
+  if (r === "/portfolio/academico") return await renderAcademico();
     if (r === "/portfolio/moodboard") return await renderMoodboard();
     if ((m = r.match(/^\/portfolio\/([a-z0-9-]+)\/pagina$/))) return await renderPageEdit(m[1]);
     if (r === "/editor") return renderCanvasList();
