@@ -80,6 +80,11 @@ export default async (req: Request, context: Context) => {
     }
     if (body.dueDate !== undefined) work.dueDate = str(body.dueDate, 20);
     if (body.notes !== undefined) work.notes = str(body.notes, 4000);
+    // acesso ao painel só com o e-mail, sem o link enviado por e-mail (para testes ou clientes combinados)
+    if (body.directAccess !== undefined) {
+      await addEvent(slug, { type: "direct-access", on: !!body.directAccess });
+      return json(await patchState(slug, { work, directAccess: !!body.directAccess }));
+    }
     return json(await patchState(slug, { work }));
   }
 

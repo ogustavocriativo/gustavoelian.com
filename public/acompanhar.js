@@ -23,6 +23,7 @@
           const r = await fetch("/api/acompanhar/entrar", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: inp.value }) });
           const d = await r.json().catch(() => ({}));
           if (!r.ok) throw new Error(d.error || "Não foi possível enviar agora.");
+          if (d.link) { location.href = d.link; return; }
           out.textContent = `Se ${inp.value} estiver cadastrado, o link chega em instantes. Confira também o spam.`;
         } catch (x) { out.textContent = x.message; out.className = "ac-msg err"; }
         btn.disabled = false; btn.textContent = "Receber link de acesso";

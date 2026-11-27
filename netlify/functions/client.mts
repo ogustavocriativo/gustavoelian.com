@@ -32,6 +32,8 @@ export default async (req: Request, context: Context) => {
     if (!EMAIL_RE.test(email)) return fail("Digite um e-mail válido");
     if (!googleReady()) return fail("O envio de acesso ainda está sendo configurado. Fale comigo pelo WhatsApp.", 503);
     const found = await quotesFor(email);
+    // acesso direto liberado no Studio para este cliente: abre o painel sem esperar o e-mail
+    if (found.some((x) => x.st.directAccess)) return json({ ok: true, link: `/acompanhar?t=${await clientToken(email)}` });
     if (found.length) {
       const link = `${url.origin}/acompanhar?t=${await clientToken(email)}`;
       const name = found[0].st.signer?.name || found[0].q.client?.name || "";

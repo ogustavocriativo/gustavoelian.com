@@ -119,6 +119,7 @@ const evText = (e) => ({
   stage: `Contrato → ${stageLabel(e.stage)}`,
   "email-sent": e.what === "entrega" ? "Entrega final enviada por e-mail" : e.what === "conclusao" ? "E-mail de conclusão enviado: agradecimento e certificado" : e.what === "aprovada-saldo" ? "E-mail de entrega aprovada enviado (aguarda o saldo)" : e.what === "previa" ? `Prévia ${e.message || ""} enviada por e-mail` : e.what === "recibo" ? "Recibo enviado por e-mail" : e.what === "aditivo" ? "Aditivo enviado por e-mail" : `Proposta enviada por e-mail para ${e.to || "o cliente"}`,
   certificate: e.certificate ? `Projeto concluído: certificado de cessão emitido · ${e.certificate}` : "Certificado de cessão emitido",
+  "direct-access": e.on ? "Painel do cliente liberado só com o e-mail" : "Painel do cliente voltou a exigir o link por e-mail",
   "delivery-approved": `Cliente aprovou a entrega${e.version > 1 ? ` (versão ${e.version})` : ""}`,
   "delivery-changes": `Cliente pediu alterações${e.version > 1 ? ` na versão ${e.version}` : ""}`,
   "email-error": "E-mail da entrega não saiu",
@@ -1057,7 +1058,11 @@ function deliveryCard(slug, q0, s, rest) {
       const b = e.currentTarget; b.disabled = true;
       try { const r = await api(`/api/quotes/${slug}/delivery?painel`); window.open(r.url, "_blank", "noopener"); } catch (x) { toast(x.message); }
       b.disabled = false;
-    } }, icon("eye"), "Ver o painel como o cliente"));
+    } }, icon("eye"), "Ver o painel como o cliente"),
+    (() => { const sw = h("input", { type: "checkbox", checked: !!s.directAccess, onchange: async (e) => {
+        try { await api(`/api/quotes/${slug}/work`, { method: "PUT", body: { directAccess: e.target.checked } }); toast(e.target.checked ? "Painel abre só com o e-mail" : "Painel volta a exigir o link por e-mail"); }
+        catch (x) { e.target.checked = !e.target.checked; toast(x.message); } } });
+      return h("div", {}, h("label", { class: "switch" }, "Abrir o painel só com o e-mail", sw), h("p", { class: "hint" }, "Sem o link de confirmação: quem digitar o e-mail do cliente entra no painel. Use para testes e desligue depois.")); })());
   return box;
 }
 async function deliverySheet(slug, prev, q0) {
