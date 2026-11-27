@@ -29,6 +29,9 @@ export function buildContract(q: Quote, settings: any, signer: any, sel: any) {
     especificas: (q.contract?.extra || "").trim() || "Não há condições específicas além das descritas na proposta.",
     emissor: settings.issuer.name,
     emissor_doc: settings.issuer.doc,
+    // objeto: só os serviços e o que cada um entrega; os prazos ficam na cláusula 3
+    objeto: items.map((i: any, n: number) => `(${n + 1}) ${i.title}${(i.deliverables || []).length ? ` (${i.deliverables.join("; ")})` : ""}`).join("; "),
+    prazos_itens: items.map((i: any, n: number) => `(${n + 1}) ${i.title}: ${String(i.deadline || "").trim() || "conforme a proposta"}`).join("; "),
     servicos: items.map((i: any, n: number) => `(${n + 1}) ${i.title}${i.deadline ? `, prazo de ${i.deadline}` : ""}`).join("; "),
     valor: brl(pay.total),
     pagamento: pay.text,

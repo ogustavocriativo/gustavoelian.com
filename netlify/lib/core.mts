@@ -158,7 +158,7 @@ export const DEFAULT_SETTINGS = {
   payments: { entryPct: 60, maxInstallments: 5 },
   // "google": o cliente aprova no site e as partes assinam pelo eSignature do Google; "sistema": assinatura desenhada no site
   signing: "google",
-  contractTemplate: `CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE DESIGN, BRANDING E COMUNICAÇÃO
+  contractTemplate: `CONTRATO DE PRESTAÇÃO DE SERVIÇOS
 Proposta nº {{proposta}}
 
 CONTRATANTE: {{cliente}}{{documento}}, com endereço em {{endereco}}, e-mail {{email}}{{telefone}}.
@@ -167,7 +167,7 @@ CONTRATADO: {{emissor}}, {{emissor_doc}}, com endereço em {{emissor_endereco}},
 As partes acima identificadas firmam este contrato, que se rege pelas cláusulas a seguir e pela proposta nº {{proposta}}, que o integra como anexo.
 
 1. OBJETO
-1.1. O CONTRATADO prestará ao CONTRATANTE os seguintes serviços: {{servicos}}, conforme o escopo descrito na proposta.
+1.1. Este contrato tem por objeto a prestação, pelo CONTRATADO ao CONTRATANTE, dos seguintes serviços: {{objeto}}, conforme o escopo descrito na proposta e nos prazos definidos na cláusula 3.
 1.2. Somente os itens descritos na proposta fazem parte deste contrato. Qualquer pedido fora desse escopo será orçado e aprovado por escrito antes de ser executado, com prazo e valor próprios.
 1.3. Salvo previsão expressa na proposta, não estão incluídos: impressão e produção gráfica, mídia paga, compra de fontes, imagens ou recursos licenciados, taxas de registro (INPI), hospedagem, domínio e despesas de terceiros.
 
@@ -176,12 +176,13 @@ As partes acima identificadas firmam este contrato, que se rege pelas cláusulas
 2.2. Os pagamentos são feitos por Pix, cartão de crédito pelo link da proposta ou transferência para a conta do CONTRATADO. Comprovantes devem ser enviados pelo próprio link da proposta ou por e-mail.
 2.3. Em caso de atraso, incidem multa de 2% (dois por cento) sobre a parcela vencida, juros de mora de 1% (um por cento) ao mês, calculados dia a dia, e correção monetária pelo IPCA.
 2.4. Com atraso superior a 15 (quinze) dias, o CONTRATADO pode suspender os trabalhos e as entregas até a regularização, e os prazos ficam suspensos pelo mesmo período.
-2.5. A nota fiscal é emitida conforme os pagamentos recebidos.
+2.5. O CONTRATADO emite a nota fiscal de cada pagamento e a envia ao e-mail do CONTRATANTE em até 5 (cinco) dias úteis após a confirmação do pagamento.
 
 3. PRAZOS E CRONOGRAMA
-3.1. Prazos de entrega: {{prazo}}. Os prazos começam a contar após a confirmação do pagamento da entrada e o recebimento dos materiais e informações necessários.
-3.2. Atrasos do CONTRATANTE no envio de materiais, nas respostas ou nas aprovações prorrogam os prazos do CONTRATADO pelo mesmo período.
-3.3. Se o CONTRATANTE ficar 30 (trinta) dias corridos sem responder a uma solicitação formal, o projeto será considerado encerrado na etapa em que estiver, sendo devidos os valores correspondentes ao que já foi produzido. A retomada depende de nova agenda e pode ter valores atualizados.
+3.1. Os prazos de entrega de cada serviço são: {{prazos_itens}}.
+3.2. Os prazos começam a contar após a confirmação do pagamento da entrada e o recebimento dos materiais e informações necessários.
+3.3. Atrasos do CONTRATANTE no envio de materiais, nas respostas ou nas aprovações prorrogam os prazos do CONTRATADO pelo mesmo período.
+3.4. Se o CONTRATANTE ficar 30 (trinta) dias corridos sem responder a uma solicitação formal, o projeto será considerado encerrado na etapa em que estiver, sendo devidos os valores correspondentes ao que já foi produzido. A retomada depende de nova agenda e pode ter valores atualizados.
 
 4. APROVAÇÕES E AJUSTES
 4.1. As entregas são apresentadas pelo painel de acompanhamento, por e-mail ou por WhatsApp. O CONTRATANTE tem 3 (três) dias úteis para aprovar ou pedir ajustes.
@@ -204,41 +205,46 @@ e) Preservar a imagem do CONTRATANTE em todas as etapas do trabalho.
 
 7. PROPRIEDADE INTELECTUAL E DIREITOS DE USO (Lei nº 9.610/1998)
 7.1. Após a quitação integral, o CONTRATADO cede ao CONTRATANTE, em caráter definitivo, os direitos patrimoniais de uso das peças finais aprovadas, para as finalidades descritas na proposta. Antes da quitação integral, o uso das peças não é autorizado.
-7.2. Estudos, esboços, alternativas não escolhidas e arquivos de trabalho continuam pertencendo ao CONTRATADO. Arquivos abertos ou editáveis só são entregues quando previstos na proposta.
-7.3. A autoria é preservada. O CONTRATADO pode exibir o trabalho em portfólio, redes sociais e premiações após o lançamento público, salvo pedido de sigilo feito por escrito.
-7.4. O registro de marca no INPI é de responsabilidade e custo do CONTRATANTE, salvo se contratado. O CONTRATADO não garante a concessão do registro, que depende exclusivamente de análise do INPI.
-7.5. Fontes, imagens e demais recursos de terceiros seguem as licenças dos respectivos titulares.
+7.2. Estudos, esboços, alternativas não escolhidas e arquivos de trabalho pertencem ao CONTRATADO. O CONTRATANTE recebe os arquivos relacionados na proposta, nos formatos nela indicados.
+7.3. A autoria é preservada. O CONTRATANTE pode pedir sigilo sobre o trabalho, por escrito, em até 30 (trinta) dias após o pagamento da última parcela. Sem esse pedido, o CONTRATADO fica autorizado a exibir os materiais produzidos em portfólio, redes sociais, premiações e demais ações de divulgação do próprio trabalho, sem prejuízo à imagem do CONTRATANTE.
+7.4. Fontes, imagens e demais recursos de terceiros seguem as licenças dos respectivos titulares.
 
-8. SIGILO E DADOS PESSOAIS (Lei nº 13.709/2018)
-8.1. As partes manterão sigilo sobre informações estratégicas, comerciais e financeiras recebidas, durante o contrato e por 2 (dois) anos após o seu término.
-8.2. Os dados pessoais informados são usados apenas para a execução deste contrato, a emissão de documentos fiscais e o cumprimento de obrigações legais.
+8. REGISTRO DE MARCA
+8.1. O registro de marca no INPI é de responsabilidade e custo do CONTRATANTE, salvo se contratado na proposta.
+8.2. A concessão do registro depende exclusivamente da análise do INPI. O CONTRATADO não garante a concessão, mesmo quando contratado para acompanhar o pedido.
 
-9. RESPONSABILIDADES
-9.1. O CONTRATADO se compromete com a qualidade técnica e estratégica do trabalho, mas não garante resultados comerciais, como vendas, alcance, engajamento ou conversão, que dependem de fatores externos e da operação do CONTRATANTE.
-9.2. O CONTRATADO não responde por falhas de plataformas de terceiros, por materiais fornecidos pelo CONTRATANTE ou por terceiros indicados por ele, nem por lucros cessantes. Sua responsabilidade fica limitada ao valor efetivamente pago neste contrato.
-9.3. Este contrato não gera vínculo empregatício nem exclusividade entre as partes.
+9. CONFIDENCIALIDADE
+9.1. As partes manterão sigilo sobre as informações estratégicas, comerciais e financeiras recebidas uma da outra, durante o contrato e por 2 (dois) anos após o seu término.
+9.2. O sigilo não impede o CONTRATANTE de divulgar o preço e as condições deste contrato.
+9.3. Os dados pessoais informados são usados apenas para a execução deste contrato, a emissão de documentos fiscais e o cumprimento de obrigações legais.
 
-10. RESCISÃO
-10.1. Qualquer parte pode rescindir este contrato mediante aviso por escrito com 15 (quinze) dias de antecedência; para serviços mensais, 30 (trinta) dias.
-10.2. Na rescisão, são devidos os serviços prestados até a data, proporcionalmente às etapas realizadas. A entrada remunera a reserva de agenda e o trabalho inicial e não é devolvida após o início dos trabalhos, ressalvado o item 10.4.
-10.3. O CONTRATANTE recebe os materiais finalizados e pagos até a data da rescisão.
-10.4. Quando a contratação for feita à distância por pessoa física, o CONTRATANTE pode desistir em até 7 (sete) dias da assinatura, com devolução dos valores pagos (art. 49 do Código de Defesa do Consumidor).
-10.5. O descumprimento grave de qualquer cláusula, não corrigido em até 5 (cinco) dias após notificação, permite a rescisão imediata pela parte prejudicada.
+10. RESPONSABILIDADES
+10.1. O CONTRATADO não é responsável pelos resultados comerciais de campanhas, peças, sites ou sistemas, como vendas, alcance, engajamento ou conversão.
+10.2. O CONTRATADO não responde por falhas de plataformas de terceiros nem por materiais fornecidos pelo CONTRATANTE ou por terceiros indicados por ele. Sua responsabilidade fica limitada ao valor efetivamente pago neste contrato.
+10.3. Este contrato não gera vínculo empregatício nem exclusividade entre as partes.
 
-11. CONDIÇÕES ESPECÍFICAS
+11. RESCISÃO
+11.1. Qualquer das partes pode rescindir este contrato por aviso escrito enviado pelos meios da cláusula 13. A rescisão produz efeitos 15 (quinze) dias após o recebimento do aviso; para serviços mensais, 30 (trinta) dias.
+11.2. Se a rescisão partir do CONTRATANTE, sem descumprimento do CONTRATADO:
+a) o valor da entrada não é devolvido, pois remunera a reserva de agenda e o trabalho inicial;
+b) o CONTRATANTE paga os serviços concluídos até a data em que a rescisão produz efeitos, pelo valor de cada item na proposta, descontado o que já tiver pago;
+c) não há multa rescisória;
+d) o CONTRATANTE recebe os materiais finalizados e pagos; materiais em andamento não são entregues.
+11.3. Se a rescisão partir do CONTRATADO, sem descumprimento do CONTRATANTE, o CONTRATADO entrega os materiais finalizados e devolve, em até 10 (dez) dias, os valores recebidos por serviços não concluídos.
+11.4. Considera-se descumprimento: a) atraso de pagamento superior a 15 (quinze) dias; b) falta de resposta do CONTRATANTE por 30 (trinta) dias corridos, nos termos do item 3.4; c) atraso do CONTRATADO superior a 15 (quinze) dias úteis em relação aos prazos da cláusula 3, sem causa atribuível ao CONTRATANTE; d) uso das peças antes da quitação integral; e) violação da cláusula de confidencialidade.
+11.5. O descumprimento não corrigido em até 5 (cinco) dias após notificação permite à parte prejudicada rescindir o contrato de imediato. Aplicam-se à parte que descumpriu as regras do item 11.2, se for o CONTRATANTE, ou do item 11.3, se for o CONTRATADO.
+
+12. CONDIÇÕES ESPECÍFICAS
 {{especificas}}
 
-12. COMUNICAÇÕES
-Valem como comunicação formal entre as partes as mensagens enviadas aos e-mails e WhatsApp informados neste contrato e os registros do painel de acompanhamento em gustavoelian.com/acompanhar.
+13. COMUNICAÇÕES
+13.1. As partes definem como meios oficiais de comunicação os e-mails e os números de WhatsApp informados neste contrato e o painel de acompanhamento em gustavoelian.com/acompanhar, que é também a plataforma de apresentação e aprovação das entregas. As manifestações feitas nesses meios, dentro dos prazos deste contrato, valem como resposta formal e definitiva.
 
-13. ASSINATURA ELETRÔNICA
-13.1. As partes reconhecem a validade da assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020 e do art. 10, § 2º, da MP nº 2.200-2/2001.
-13.2. As partes assinam este contrato pelo serviço de assinatura eletrônica do Google (Google Workspace), que registra o e-mail, a data e a hora de cada assinatura em trilha de auditoria anexada ao documento e protege o arquivo assinado com certificado digital, de modo que qualquer alteração posterior seja identificável.
-13.3. A aprovação da proposta pelo CONTRATANTE fica registrada com nome, documento, endereço, e-mail, data, hora, endereço IP, localização aproximada, dispositivo e código de integridade (SHA-256) do texto aprovado.
-13.4. Ambas as partes recebem uma cópia do documento assinado.
+14. CONSIDERAÇÕES FINAIS
+14.1. As partes reconhecem a validade da assinatura eletrônica deste contrato, feita pelo serviço de assinatura do Google, e cada uma recebe uma cópia do documento assinado.
 
-14. FORO
-Fica eleito o foro da comarca de {{cidade}}/MG para resolver qualquer questão oriunda deste contrato.
+15. FORO
+15.1. As partes elegem o foro da Comarca de {{cidade}}, Estado de Minas Gerais, como o único competente para dirimir quaisquer questões, controvérsias ou demandas decorrentes deste contrato, renunciando expressamente a qualquer outro.
 
 {{cidade}}, {{data}}`,
 };
