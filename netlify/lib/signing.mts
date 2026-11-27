@@ -81,7 +81,7 @@ export async function checkGoogleSignatures(onlySlug?: string) {
     await addEvent(p.slug, { type: "signed-google" });
     signed.push(p.slug);
     const to = p.st.signer?.email || q.client?.email;
-    if (to) await sendMail(to, mails.assinado({ name: p.st.signer?.name, title: q.title, payLink: `${SITE}/${p.slug}#pagamento`, contractNumber: p.st.contractNumber }));
+    if (to) await sendMail(to, mails.assinado({ name: p.st.signer?.name, title: q.title, payLink: `${SITE}/${p.slug}#pagamento`, contractNumber: p.st.contractNumber }), hit.id ? { pdfFileId: hit.id } : {});
     await notifyOwner(`Contrato assinado · ${clientLabel(q, p.slug)}`, [`${p.st.signer?.name || "O cliente"} assinou pelo Google. A entrada já pode ser paga.`], { href: `${SITE}/app/#/c/${p.slug}`, label: "Abrir no Studio" });
   }
   return { checked: pending.length, signed };

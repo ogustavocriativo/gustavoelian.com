@@ -44,6 +44,9 @@
       !p.delivery && p.canPay ? payBox(p, false) : null,
       p.delivery ? delivery(p, p.delivery) : p.approvedAt ? certBox(p, null) : null,
       p.concluded ? reviewBox(p) : null,
+      (p.payments || []).length || (p.amendments || []).length ? h("div", { class: "ac-files", id: "documentos" }, h("p", { class: "ac-h3" }, "Documentos do contrato"),
+        ...(p.amendments || []).map((a) => h("a", { href: a.pdf }, `Aditivo ${a.n} · ${dt(a.at)}`, h("span", {}, "PDF"))),
+        ...(p.payments || []).map((x) => h("a", { href: x.receipt }, `Recibo · ${brl(x.amount)} · ${dt(x.date)}`, h("span", {}, "PDF")))) : null,
       p.files.length ? h("div", { class: "ac-files", id: "acervo" }, h("p", { class: "ac-h3" }, "Acervo de materiais"), ...p.files.map((f) => h("a", { href: f.url }, f.name, h("span", {}, kb(f.size))))) : h("p", { class: "muted" }, "Os arquivos aparecem aqui assim que forem entregues."),
       h("div", { class: "ac-act" },
         h("a", { class: "btn dark", href: p.page }, p.status === "proposta" ? "Ver e aprovar a proposta" : "Abrir a proposta e pagamentos"),
@@ -56,7 +59,8 @@
 
   function certBox(p, d) {
     const approved = d?.status === "aprovada", paid = p.total > 0 && p.paid >= p.total - 0.009;
-    if (d?.certificate) return h("div", { class: "ac-cert" }, h("div", {}, h("small", {}, "Certificado de autoria e cessão de direitos"), h("br"), h("b", {}, d.certificate.code)), h("a", { class: "btn dark", href: d.certificate.url, target: "_blank", rel: "noopener" }, "Ver e baixar certificado"));
+    if (d?.certificate) return h("div", { class: "ac-cert" }, h("div", {}, h("small", {}, "Certificado de autoria e cessão de direitos"), h("br"), h("b", {}, d.certificate.code)),
+      h("div", { class: "ac-act" }, h("a", { class: "btn dark", href: `/api/pdf/${p.slug}/certificado?download` }, "Baixar certificado (PDF)"), h("a", { class: "btn", href: d.certificate.url, target: "_blank", rel: "noopener" }, "Verificar autenticidade")));
     return h("div", { class: "ac-certinfo" },
       h("p", { class: "ac-h3" }, "Certificado de cessão de direitos"),
       h("p", {}, CERT_INFO),

@@ -42,7 +42,7 @@ export const mails = {
   /** 4. Contrato assinado pelas partes. */
   assinado: (p: { name: string; title: string; payLink: string; contractNumber?: string }): Mail => ({
     subject: `Contrato assinado · ${p.title || "seu projeto"}`, title: "Contrato assinado", eyebrow: "Contrato",
-    html: `${hi(p.name)}<p>O contrato de <b>${proj(p.title)}</b>${num(p.contractNumber)} foi assinado pelas duas partes. A cópia assinada, com a trilha de auditoria do Google, fica no link da proposta e no seu painel.</p><p>O próximo passo é o pagamento da entrada, pelo mesmo link. Assim que ele for confirmado, começo a produção.</p>${certInfo("Ele é enviado por e-mail depois que você aprovar a entrega final e o pagamento estiver quitado.")}${bye}`,
+    html: `${hi(p.name)}<p>O contrato de <b>${proj(p.title)}</b>${num(p.contractNumber)} foi assinado pelas duas partes. A cópia assinada, com a trilha de auditoria do Google, segue em anexo e fica também no link da proposta e no seu painel.</p><p>O próximo passo é o pagamento da entrada, pelo mesmo link. Assim que ele for confirmado, começo a produção.</p>${certInfo("Ele é enviado por e-mail depois que você aprovar a entrega final e o pagamento estiver quitado.")}${bye}`,
     button: { href: p.payLink, label: "Pagar a entrada" },
   }),
 
@@ -51,7 +51,7 @@ export const mails = {
     const rest = Math.max(0, p.total - p.paid);
     return {
       subject: `Recebimento confirmado · ${brl(p.amount)}${p.contractNumber ? " · " + p.contractNumber : ""}`, title: "Recebimento confirmado", eyebrow: "Recibo",
-      html: `${hi(p.name)}<p>Confirmo o recebimento de <b>${brl(p.amount)}</b> em ${esc(p.date.split("-").reverse().join("/"))}, por ${esc(p.method)}, referente a <b>${proj(p.title)}</b>${num(p.contractNumber)}.</p><p>Total pago: <b>${brl(p.paid)}</b> de ${brl(p.total)}.${rest > 0.009 ? ` Saldo: <b>${brl(rest)}</b>.` : " <b>Contrato quitado.</b>"}</p><p>Código do lançamento: ${esc(p.id)}.</p>${rest > 0.009 ? certInfo(`Ele é liberado com a quitação do saldo de ${brl(rest)} e a aprovação da entrega final.`) : ""}${bye}`,
+      html: `${hi(p.name)}<p>Confirmo o recebimento de <b>${brl(p.amount)}</b> em ${esc(p.date.split("-").reverse().join("/"))}, por ${esc(p.method)}, referente a <b>${proj(p.title)}</b>${num(p.contractNumber)}.</p><p>Total pago: <b>${brl(p.paid)}</b> de ${brl(p.total)}.${rest > 0.009 ? ` Saldo: <b>${brl(rest)}</b>.` : " <b>Contrato quitado.</b>"}</p><p>Código do lançamento: ${esc(p.id)}. O recibo em PDF segue em anexo.</p>${rest > 0.009 ? certInfo(`Ele é liberado com a quitação do saldo de ${brl(rest)} e a aprovação da entrega final.`) : ""}${bye}`,
       button: { href: p.panel, label: "Ver no meu painel" },
     };
   },
@@ -59,8 +59,8 @@ export const mails = {
   /** 6. Aditivo de pagamento. */
   aditivo: (p: { name: string; title: string; n: number; channel: string; before: string; after: string; code: string; contractNumber?: string; link: string }): Mail => ({
     subject: `Aditivo ${p.n} · condição de pagamento${p.contractNumber ? " · " + p.contractNumber : ""}`, title: `Aditivo ${p.n} ao contrato`, eyebrow: "Contrato",
-    html: `${hi(p.name)}<p>Registrei o que combinamos por ${esc(p.channel)} sobre o pagamento de <b>${proj(p.title)}</b>:</p><p>Antes: ${esc(p.before || "—")}<br>Agora: <b>${esc(p.after)}</b></p><p>As demais cláusulas do contrato continuam as mesmas. O contrato atualizado, com o aditivo, está no link abaixo e no seu painel.</p><p>Código do aditivo: ${esc(p.code)}…</p>${bye}`,
-    button: { href: p.link, label: "Ver o contrato atualizado" },
+    html: `${hi(p.name)}<p>Registrei o que combinamos por ${esc(p.channel)} sobre o pagamento de <b>${proj(p.title)}</b>:</p><p>Antes: ${esc(p.before || "—")}<br>Agora: <b>${esc(p.after)}</b></p><p>As demais cláusulas do contrato continuam as mesmas. O aditivo em PDF segue em anexo e fica também no seu painel.</p><p>Código do aditivo: ${esc(p.code)}…</p>${bye}`,
+    button: { href: p.link, label: "Ver o aditivo" },
   }),
 
   /** 7. Prévia pronta para aprovação (a aprovação da prévia é feita na própria página da prévia). */
@@ -101,7 +101,7 @@ export const mails = {
     subject: `Obrigado! Seu certificado de cessão de direitos · ${p.title || "seu projeto"}`, title: "Obrigado pela parceria", eyebrow: "Projeto concluído",
     html: `${hi(p.name)}<p>Com a entrega aprovada e o contrato${p.contractNumber ? ` nº ${esc(p.contractNumber)}` : ""} quitado, <b>${proj(p.title)}</b> está concluído. Foi um prazer construir este projeto com você.</p>`
       + linkCard(p.certUrl, `Certificado nº ${esc(p.certCode)}`, "Autoria e cessão de direitos patrimoniais · verificável por qualquer pessoa")
-      + `<p>O certificado registra a cessão dos direitos de uso das peças entregues, com o código de integridade de cada arquivo. Guarde-o junto dos arquivos: ele fica também no seu painel.</p><p>Se precisar de algo daqui para frente, uma nova peça, um ajuste ou uma indicação, é só responder este e-mail ou me chamar no WhatsApp. E se puder, conte como foi a experiência: isso me ajuda muito.</p><p style="margin-top:22px">Muito obrigado,<br><b>Gustavo Elian</b></p>`,
+      + `<p>O certificado registra a cessão dos direitos de uso das peças entregues, com o código de integridade de cada arquivo. O certificado em PDF segue em anexo; guarde-o junto dos arquivos. Ele fica também no seu painel.</p><p>Se precisar de algo daqui para frente, uma nova peça, um ajuste ou uma indicação, é só responder este e-mail ou me chamar no WhatsApp. E se puder, conte como foi a experiência: isso me ajuda muito.</p><p style="margin-top:22px">Muito obrigado,<br><b>Gustavo Elian</b></p>`,
     button: { href: p.panel, label: "Abrir meu painel" },
   }),
 

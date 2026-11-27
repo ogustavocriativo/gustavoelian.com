@@ -134,11 +134,13 @@ export async function issueCertificateIfReady(slug: string, origin = "https://gu
   if (work.stage !== "concluido") { work.stage = "concluido"; work.history = [...(work.history || []), { stage: "concluido", at: now }].slice(-30); }
   await patchState(slug, { delivery: { ...d, paid: true, certificate, certificateIssuedAt: now }, work });
   await addEvent(slug, { type: "certificate", certificate: certificate.code });
-  const { googleReady, sendMail } = await import("./google.mts");
+  const { googleReady, sendMail, docToDrive } = await import("./google.mts");
   const { mails } = await import("./mails.mts");
   const to = st.signer?.email || q.client?.email;
   if (googleReady() && to) {
-    const r = await sendMail(to, mails.conclusao({ name: st.signer?.name || q.client?.name, title: q.title, contractNumber: st.contractNumber, certCode: certificate.code, certUrl: `${origin}/certificado?c=${certificate.code}`, panel: `${origin}/acompanhar?t=${await clientToken(to)}`, systemUrl: d.systemUrl }));
+    // certificado em PDF no layout do contrato, salvo na pasta do cliente (Entrega) e anexado ao e-mail de conclusão
+    const cpdf = await docToDrive("certificado", q, await getState(slug), origin, null, "Entrega", `Certificado ${certificate.code} · ${q.title || "projeto"}.pdf`);
+    const r = await sendMail(to, mails.conclusao({ name: st.signer?.name || q.client?.name, title: q.title, contractNumber: st.contractNumber, certCode: certificate.code, certUrl: `${origin}/certificado?c=${certificate.code}`, panel: `${origin}/acompanhar?t=${await clientToken(to)}`, systemUrl: d.systemUrl }), cpdf ? { pdfFileId: cpdf.id } : {});
     await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "conclusao", to });
   }
   return certificate;

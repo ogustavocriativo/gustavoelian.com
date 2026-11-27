@@ -41,9 +41,24 @@ export async function contractPdfBase64(q: any, st: any, origin: string) {
   } catch { return ""; }
 }
 
+/** Gera um documento no layout do contrato (aditivo, recibo, certificado), salva na pasta do cliente no Drive e devolve o id para anexar ao e-mail. */
+export async function docToDrive(kind: "aditivo" | "recibo" | "certificado", q: any, st: any, origin: string, arg: any, sub: string, name: string) {
+  try {
+    const { loadPdfImages } = await import("./assets.mts");
+    await (loadPdfImages as any)?.(origin);
+    const pdf: any = await import("../functions/pdf.mts");
+    const s = await getSettings();
+    const bytes = kind === "aditivo" ? await pdf.aditivoPdf(q, s, st, arg, origin) : kind === "recibo" ? await pdf.reciboPdf(q, s, st, arg, origin) : await pdf.certificadoPdf(q, s, st, origin);
+    const r = await callGoogle("file", { client: q.client?.company || q.client?.name || q.slug, sub, name, mime: "application/pdf", data: Buffer.from(bytes).toString("base64") }, 45000);
+    return r?.ok ? { id: r.id as string, url: r.url as string } : null;
+  } catch { return null; }
+}
+
 export async function sendContractToDrive(slug: string, q: any, st: any, origin: string) {
   const settings = await getSettings();
   const pdf = await contractPdfBase64(q, st, origin);
+  // sem o PDF no layout aprovado não envia nada (nunca cai no modelo antigo do Google Docs)
+  if (!pdf) { await addEvent(slug, { type: "drive-error", message: "Não consegui gerar o PDF do contrato" }); return { ok: false, error: "Não consegui gerar o PDF do contrato. Tente de novo." }; }
   const r = await callGoogle("contract", {
     client: q.client?.company || q.client?.name || slug,
     date: (st.approvedAt || new Date().toISOString()).slice(0, 10),

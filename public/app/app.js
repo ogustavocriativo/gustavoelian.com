@@ -1106,8 +1106,26 @@ async function deliverySheet(slug, prev, q0) {
   const ta = (v, ph, rows = 3) => { const t = h("textarea", { class: "in", rows, placeholder: ph }); t.value = (v || []).join ? (v || []).join("\n") : v || ""; return t; };
   const url = h("input", { class: "in", type: "url", inputmode: "url", placeholder: "https://sistema.cliente.com.br", value: prev?.systemUrl || "" });
   const urlLabel = h("input", { class: "in", placeholder: "Ex.: Acessar o sistema", value: prev?.systemLabel || "", maxlength: "60" });
-  const pdfs = (q0?.attachments || []).filter((a) => a.showToClient && !a.fromClient && a.kind !== "contrato-assinado" && /pdf/i.test(a.type || a.name));
-  const manual = h("select", { class: "in" }, h("option", { value: "" }, pdfs.length ? "Sem manual" : "Anexe o PDF em Arquivos (visível ao cliente)"), ...pdfs.map((a) => h("option", { value: a.id, selected: prev?.manual?.id === a.id || (!prev && /manual|guia/i.test(a.name)) }, a.name)));
+  // arquivos da entrega: os visíveis ao cliente em Arquivos + os enviados aqui (manual, guias, recursos em PDF, imagens, ZIP)
+  const atts = () => (q0?.attachments || []).filter((a) => a.showToClient && !a.fromClient && a.kind !== "contrato-assinado");
+  const manual = h("select", { class: "in" });
+  const drawManual = (pick) => { const pdfs = atts().filter((a) => /pdf/i.test(a.type || a.name)); const cur = pick || manual.value || prev?.manual?.id;
+    manual.replaceChildren(h("option", { value: "" }, pdfs.length ? "Sem manual" : "Envie o PDF do manual abaixo"), ...pdfs.map((a) => h("option", { value: a.id, selected: cur ? cur === a.id : !prev && /manual|guia/i.test(a.name) }, a.name))); };
+  drawManual();
+  const list = h("div", { class: "stack", style: "gap:6px" });
+  const drawList = () => list.replaceChildren(...(atts().length ? atts().map((a) => h("div", { class: "file" }, h("span", {}, icon(/pdf/i.test(a.type || a.name) ? "pdf" : "doc"), " ", a.name), h("small", { class: "faint" }, `${Math.max(1, Math.round((a.size || 0) / 1024))} KB`))) : [h("p", { class: "hint" }, "Nenhum arquivo ainda.")]));
+  drawList();
+  const upMsg = h("p", { class: "hint", role: "status" });
+  const up = h("input", { type: "file", multiple: true, accept: "application/pdf,image/*,.zip,.svg,.ai", hidden: true, onchange: async (e) => {
+    let lastPdf = "";
+    for (const f of e.target.files) {
+      upMsg.textContent = `Enviando ${f.name}…`;
+      const fd = new FormData(); fd.append("file", f);
+      try { const meta = await api(`/api/quotes/${slug}/files`, { method: "POST", body: fd }); q0.attachments = [...(q0.attachments || []), meta]; if (/pdf/i.test(meta.type || meta.name) && /manual|guia|uso/i.test(meta.name)) lastPdf = meta.id; }
+      catch (x) { toast(`${f.name}: ${x.message}`); }
+    }
+    upMsg.textContent = ""; e.target.value = ""; drawManual(lastPdf); drawList();
+  } });
   const note = ta(prev?.status === "ajustes" ? "" : prev?.note, prev?.status === "ajustes" ? "O que mudou nesta versão (vai no e-mail)." : "Opcional: uma mensagem para o cliente no e-mail da entrega.", 2);
   const lic = ta(prev?.licenses, "Uma por linha. Ex.: Fonte Gilroy · licença desktop comercial · comprar em nome da empresa");
   const acc = ta(prev?.accesses, "Uma por linha, sem senhas. Ex.: Hospedagem Hostinger · conta transferida para contato@empresa.com");
@@ -1118,6 +1136,8 @@ async function deliverySheet(slug, prev, q0) {
     h("p", { class: "hint" }, "O cliente recebe por e-mail o link do projeto, o manual em anexo e o acesso ao painel, onde aprova a entrega ou pede alterações. O certificado sai depois da aprovação e da quitação."),
     h("label", { class: "f" }, h("span", {}, "Link do sistema ou site entregue"), url),
     h("label", { class: "f" }, h("span", {}, "Texto do botão do link"), urlLabel),
+    h("div", { class: "f" }, h("span", {}, "Arquivos da entrega (o cliente baixa no painel, cada um com código de integridade)"), list,
+      h("button", { class: "btn block", type: "button", onclick: () => up.click() }, icon("plus"), "Enviar manual, guias e outros arquivos (PDF, imagens, ZIP · até 4 MB cada)"), up, upMsg),
     h("label", { class: "f" }, h("span", {}, "Manual de uso (PDF, vai anexado no e-mail)"), manual),
     h("label", { class: "f" }, h("span", {}, "Mensagem ao cliente"), note),
     h("label", { class: "f" }, h("span", {}, "Tipo de projeto (define as recomendações)"), chips),

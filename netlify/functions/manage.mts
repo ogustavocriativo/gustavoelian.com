@@ -1,7 +1,7 @@
 // Gestão (admin): catálogo de serviços, etapas do contrato e registro de pagamentos.
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, brl, fail, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, settingsStore, sha256, uid, clientToken } from "../lib/core.mts";
-import { sendMail, callGoogle, contractPdfBase64, esc, firstName, googleReady } from "../lib/google.mts";
+import { sendMail, callGoogle, contractPdfBase64, docToDrive, esc, firstName, googleReady } from "../lib/google.mts";
 import { mails } from "../lib/mails.mts";
 import { issueCertificateIfPaid } from "../lib/delivery.mts";
 
@@ -130,21 +130,17 @@ export default async (req: Request, context: Context) => {
     const next = await settle(slug, st.payments || [], { ...st, total });
     await patchState(slug, { total, paymentText: text, terms: { ...terms, at }, amendments });
     await addEvent(slug, { type: "terms", total, text: text.slice(0, 160), channel });
-    // aviso do aditivo ao cliente, com o contrato atualizado no painel
+    // aditivo em PDF no layout do contrato: salvo na pasta do cliente (Contrato) e anexado ao e-mail
+    const origin = new URL(req.url).origin;
+    const fresh = await getState(slug);
+    const drive = googleReady() ? await docToDrive("aditivo", q, fresh, origin, amend.n, "Contrato", `${new Date(at).toISOString().slice(0, 10)} · Aditivo ${amend.n} · Contrato ${st.contractNumber || slug}.pdf`) : null;
+    if (drive) await patchState(slug, { amendments: amendments.map((a) => (a.id === amend.id ? { ...a, driveUrl: drive.url, driveId: drive.id } : a)) });
     { const to = st.signer?.email || q.client?.email;
       if (googleReady() && to) {
-        const r = await sendMail(to, mails.aditivo({ name: st.signer?.name, title: q.title, n: amend.n, channel, before: prev.text, after: text, code: amend.hash.slice(0, 16), contractNumber: st.contractNumber, link: `${new URL(req.url).origin}/api/pdf/${slug}/contrato` }));
+        const r = await sendMail(to, mails.aditivo({ name: st.signer?.name, title: q.title, n: amend.n, channel, before: prev.text, after: text, code: amend.hash.slice(0, 16), contractNumber: st.contractNumber, link: `${origin}/api/pdf/${slug}/aditivo-${amend.n}` }), drive ? { pdfFileId: drive.id } : {});
         await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "aditivo", to });
       } }
-    // cópia do aditivo na pasta do cliente no Drive (se a ponte estiver ligada e atualizada)
-    let drive: any = null;
-    if (googleReady()) {
-      // o contrato no layout aprovado, já com o aditivo listado, vai junto para a pasta do cliente
-      const pdf = await contractPdfBase64(q, { ...(await getState(slug)) }, new URL(req.url).origin);
-      drive = await callGoogle("amendment", { pdf, pdfName: `${new Date(at).toISOString().slice(0, 10)} · ${q.client?.company || q.client?.name || slug} · Contrato com Aditivo ${amend.n}.pdf`, client: q.client?.company || q.client?.name || slug, n: amend.n, at: new Date(at).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }), channel, reason, prev, next: amend.next, hash: amend.hash, contractHash: st.contractHash || "", signer: st.signer || {}, link: `${new URL(req.url).origin}/${slug}` }, 45000);
-      if (drive?.ok) await patchState(slug, { amendments: amendments.map((a) => (a.id === amend.id ? { ...a, driveUrl: drive.pdfUrl } : a)) });
-    }
-    return json({ ...(await getState(slug)), driveSaved: !!drive?.ok, driveError: drive && !drive.ok ? String(drive.error || "") : "" });
+    return json({ ...(await getState(slug)), driveSaved: !!drive, driveError: googleReady() && !drive ? "Não consegui salvar o aditivo no Drive" : "" });
   }
 
   /* ---------- Pagamentos recebidos ---------- */
@@ -169,7 +165,8 @@ export default async (req: Request, context: Context) => {
       // recibo por e-mail para o cliente
       const to = st.signer?.email || q.client?.email;
       if (googleReady() && to) {
-        const r = await sendMail(to, mails.recibo({ name: st.signer?.name, title: q.title, contractNumber: st.contractNumber, amount, date: p.date, method: { pix: "Pix", cartao: "cartão", transferencia: "transferência", dinheiro: "dinheiro", boleto: "boleto", outro: "outro meio" }[p.method] || p.method, paid: Number(next.paidTotal || 0), total: Number(next.total || 0), id: p.id, panel: `${new URL(req.url).origin}/acompanhar?t=${await clientToken(to)}` }));
+        const rec = await docToDrive("recibo", q, await getState(slug), new URL(req.url).origin, p.id, "Recibos", `${p.date} · Recibo ${brl(amount)} · Contrato ${st.contractNumber || slug}.pdf`);
+        const r = await sendMail(to, mails.recibo({ name: st.signer?.name, title: q.title, contractNumber: st.contractNumber, amount, date: p.date, method: { pix: "Pix", cartao: "cartão", transferencia: "transferência", dinheiro: "dinheiro", boleto: "boleto", outro: "outro meio" }[p.method] || p.method, paid: Number(next.paidTotal || 0), total: Number(next.total || 0), id: p.id, panel: `${new URL(req.url).origin}/acompanhar?t=${await clientToken(to)}` }), rec ? { pdfFileId: rec.id } : {});
         await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "recibo", to });
       }
       // o e-mail de conclusão (agradecimento + certificado) é sempre o último: sai depois do recibo

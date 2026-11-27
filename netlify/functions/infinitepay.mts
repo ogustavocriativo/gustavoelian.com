@@ -38,7 +38,10 @@ async function settle(order_nsu: string, transaction_nsu: string, slug: string) 
         const q: any = await getQuote(o.id); const to = cur.signer?.email || q?.client?.email;
         if (q && to && googleReady()) {
           const origin = "https://gustavoelian.com";
-          const r = await sendMail(to, mails.recibo({ name: cur.signer?.name || q.client?.name, title: q.title, contractNumber: cur.contractNumber, amount, date: at.slice(0, 10), method: method === "pix" ? "Pix" : `cartão de crédito${chk.installments > 1 ? ` em ${chk.installments}x` : ""}`, paid: paidTotal, total: Number(cur.total || 0), id: `ip-${transaction_nsu}`, panel: `${origin}/acompanhar?t=${await clientToken(to)}` }));
+          const { docToDrive } = await import("../lib/google.mts");
+          const fresh: any = await getState(o.id);
+          const rec = await docToDrive("recibo", q, fresh, origin, `ip-${transaction_nsu}`, "Recibos", `${at.slice(0, 10)} · Recibo R$ ${amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} · Contrato ${cur.contractNumber || o.id}.pdf`);
+          const r = await sendMail(to, mails.recibo({ name: cur.signer?.name || q.client?.name, title: q.title, contractNumber: cur.contractNumber, amount, date: at.slice(0, 10), method: method === "pix" ? "Pix" : `cartão de crédito${chk.installments > 1 ? ` em ${chk.installments}x` : ""}`, paid: paidTotal, total: Number(cur.total || 0), id: `ip-${transaction_nsu}`, panel: `${origin}/acompanhar?t=${await clientToken(to)}` }), rec ? { pdfFileId: rec.id } : {});
           await addEvent(o.id, { type: r?.ok ? "email-sent" : "email-error", what: "recibo", to });
         }
         const { notifyOwner } = await import("../lib/signing.mts");

@@ -3,7 +3,7 @@ import type { Config, Context } from "@netlify/functions";
 import { PDFDocument, PDFName, PDFString, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import { LTWaveBold, LTWaveLight, LTWaveMedium, LTWaveRegular, pdf_logo_on_white } from "../lib/assets.mts";
-import { brl, fail, getQuote, getSettings, getState, isAdmin, priceOf } from "../lib/core.mts";
+import { brl, fail, formatDoc, getQuote, getSettings, getState, isAdmin, priceOf } from "../lib/core.mts";
 import catalog from "../../public/data/projects.json" with { type: "json" };
 import { buildProposalPdf } from "../lib/proposal-pdf.mts";
 import { DATE_LINE } from "../lib/contract.mts";
@@ -314,6 +314,130 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
   return d.save();
 }
 
+/* ---------- Documentos derivados do contrato, no mesmo layout (logo, LT Wave, cabeçalho com nº do contrato, rodapé com verificação) ---------- */
+const CHANNEL: Record<string, string> = { whatsapp: "WhatsApp", email: "e-mail", presencial: "pessoalmente", telefone: "telefone" };
+const METHOD_LABEL: Record<string, string> = { pix: "Pix", cartao: "cartão de crédito", transferencia: "transferência", dinheiro: "dinheiro", boleto: "boleto", outro: "outro meio" };
+async function header(title: string, q: any, s: any, st: any, footerCode: string) {
+  const num = st.contractNumber || q.slug;
+  const d = await Doc.create(`${title} · Contrato nº ${num} · verificação ${footerCode} · ${s.issuer.site}`);
+  d.right(`Contrato nº ${num}`, A4[1] - 50, "med", 8.5, C.soft);
+  return d;
+}
+function kv(d: Doc, rows: [string, string][]) {
+  const W = A4[0] - 2 * M, half = (W - 24) / 2;
+  for (let i = 0; i < rows.length; i += 2) {
+    d.ensure(44); const y0 = d.y; let used = 1;
+    for (const [j, [k, v]] of [rows[i], rows[i + 1]].filter(Boolean).entries()) {
+      const x = M + j * (half + 24);
+      d.page.drawText(k, { x, y: y0 - 8, size: 7.5, font: d.f.med, color: C.soft });
+      const vl = d.wrap(String(v || "—"), d.f.reg, 9, half).slice(0, 4); used = Math.max(used, vl.length);
+      vl.forEach((ln: string, n: number) => d.page.drawText(ln, { x, y: y0 - 21 - n * 11.5, size: 9, font: d.f.reg, color: C.ink }));
+    }
+    d.y = y0 - 20 - used * 11.5;
+  }
+}
+function summary(d: Doc, cols: [string, string][]) {
+  const W = A4[0] - 2 * M; d.ensure(80); const top = d.y, h = 64;
+  round(d, M, top, W, h, 14, C.ice);
+  cols.slice(0, 3).forEach(([k, v], i) => {
+    const x = M + 18 + i * ((W - 36) / 3);
+    d.page.drawText(k.toUpperCase(), { x, y: top - 24, size: 7.5, font: d.f.med, color: C.accent });
+    d.page.drawText(d.wrap(v, d.f.bold, 11, (W - 36) / 3 - 10)[0] || "", { x, y: top - 40, size: 11, font: d.f.bold, color: C.ink });
+  });
+  d.y = top - h - 22;
+}
+function parties(d: Doc, q: any, s: any, st: any) {
+  kv(d, [["Contratante", `${st.signer?.name || q.client?.name || ""}${st.signer?.doc ? " · " + formatDoc(st.signer.doc) : ""}`], ["Contratado", `${s.issuer.name} · ${s.issuer.doc}`]]);
+}
+
+/** Aditivo nº N ao contrato: documento próprio, encadeado ao código do contrato e ao aditivo anterior. */
+export async function aditivoPdf(q: any, s: any, st: any, n: number, origin: string) {
+  const a = (st.amendments || []).find((x: any) => Number(x.n) === Number(n));
+  if (!a) throw new Error("Aditivo não encontrado");
+  const d = await header(`Aditivo ${a.n}`, q, s, st, String(a.hash).slice(0, 16));
+  d.label(`Aditivo ${a.n} ao contrato de prestação de serviços`, 6);
+  d.text(q.client?.name || q.client?.company || "", { font: "bold", size: 24, lh: 30 });
+  d.text([q.client?.company && q.client.company !== q.client?.name ? q.client.company : "", q.title].filter(Boolean).join(" · "), { font: "light", size: 13, color: C.soft, gap: 16 });
+  summary(d, [["Aditivo", `nº ${a.n}`], ["Combinado em", fmtDate(String(a.at).slice(0, 10))], ["Novo total", brl(Number(a.next?.total || 0))]]);
+  d.label("Partes", 8); parties(d, q, s, st);
+  d.y -= 6; d.rule(16); d.label("Condição de pagamento", 8);
+  d.text("Condição anterior", { font: "med", size: 8, color: C.soft, lh: 11 });
+  d.text(`${a.prev?.text || "—"} (${brl(Number(a.prev?.total || 0))})`, { size: 10, lh: 14.5, gap: 8 });
+  d.text("Nova condição", { font: "med", size: 8, color: C.soft, lh: 11 });
+  d.text(`${a.next?.text || "—"} (${brl(Number(a.next?.total || 0))})`, { font: "med", size: 10.5, lh: 15, gap: 8 });
+  d.text("Motivo", { font: "med", size: 8, color: C.soft, lh: 11 });
+  d.text(a.reason || "—", { size: 10, lh: 14.5, gap: 10 });
+  d.text(`Este aditivo registra o que as partes combinaram por ${CHANNEL[a.channel] || a.channel} em ${fmtDateTime(a.at)} (Brasília). As demais cláusulas do contrato nº ${st.contractNumber || q.slug} permanecem como foram assinadas.`, { size: 9.8, lh: 14.6, gap: 14 });
+  d.ensure(120); d.rule(16); d.label("Registro e integridade", 10);
+  kv(d, [["Código do aditivo (SHA-256)", a.hash], ["Ligado a (contrato ou aditivo anterior)", a.prevHash || st.contractHash || "—"], ["Contrato", `nº ${st.contractNumber || q.slug}`], ["Proposta", `${origin}/${q.slug}`]]);
+  d.doc.setTitle(`Aditivo ${a.n} · Contrato ${st.contractNumber || q.slug}`); d.doc.setAuthor(s.issuer.name);
+  return d.save();
+}
+
+/** Recibo de um pagamento registrado (manual ou pela InfinitePay). */
+export async function reciboPdf(q: any, s: any, st: any, pid: string, origin: string) {
+  const pays: any[] = st.payments || [];
+  const idx = pays.findIndex((p) => p.id === pid);
+  if (idx < 0) throw new Error("Pagamento não encontrado");
+  const p = pays[idx];
+  const paidUntil = pays.slice(0, idx + 1).reduce((t, x) => t + Number(x.amount || 0), 0);
+  const rest = Math.max(0, Number(st.total || 0) - paidUntil);
+  const d = await header("Recibo", q, s, st, String(p.id).slice(0, 16));
+  d.label("Recibo de pagamento", 6);
+  d.text(brl(Number(p.amount || 0)), { font: "bold", size: 30, lh: 36 });
+  d.text(q.title || "", { font: "light", size: 13, color: C.soft, gap: 16 });
+  summary(d, [["Pago em", fmtDate(String(p.date || p.at).slice(0, 10))], ["Forma", (METHOD_LABEL[p.method] || p.method || "—") + (p.note && /\d+x/.test(p.note) ? ` · ${p.note.match(/\d+x/)[0]}` : "")], ["Saldo", rest > 0.009 ? brl(rest) : "Quitado"]]);
+  d.text(`Recebi de ${st.signer?.name || q.client?.name || ""}${st.signer?.doc ? `, ${formatDoc(st.signer.doc)}` : ""}, a importância de ${brl(Number(p.amount || 0))}, referente a ${q.title || "prestação de serviços"}, conforme o contrato nº ${st.contractNumber || q.slug}.`, { size: 10.5, lh: 15.5, gap: 14 });
+  d.label("Partes", 8); parties(d, q, s, st);
+  d.y -= 6; d.rule(16); d.label("Situação do contrato", 8);
+  kv(d, [["Valor do contrato", brl(Number(st.total || 0))], ["Total pago até este recibo", brl(paidUntil)], ["Saldo", rest > 0.009 ? brl(rest) : "Contrato quitado"], ["Código do lançamento", p.id]]);
+  d.ensure(150); d.y -= 10;
+  d.right(`${s.issuer.city || "Montes Claros"}, ${fmtDate(String(p.date || p.at).slice(0, 10))}`, d.y - 10.5, "reg", 10.5); d.y -= 30;
+  { const sy = d.y, half = (A4[0] - 2 * M - 24) / 2;
+    const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64")); const ih = 56, iw = (ih * img.width) / img.height;
+    d.page.drawImage(img, { x: M, y: sy - 64, width: iw, height: ih });
+    d.page.drawLine({ start: { x: M, y: sy - 66 }, end: { x: M + half, y: sy - 66 }, thickness: 0.6, color: C.ink });
+    d.page.drawText(s.issuer.name, { x: M, y: sy - 80, size: 10, font: d.f.med, color: C.ink });
+    d.page.drawText(`Recebedor · ${s.issuer.doc}`, { x: M, y: sy - 93, size: 8, font: d.f.reg, color: C.soft });
+    d.y = sy - 110; }
+  d.doc.setTitle(`Recibo ${brl(Number(p.amount || 0))} · Contrato ${st.contractNumber || q.slug}`); d.doc.setAuthor(s.issuer.name);
+  return d.save();
+}
+
+/** Certificado de autoria e cessão de direitos (o mesmo texto e código de integridade da página de verificação). */
+export async function certificadoPdf(q: any, s: any, st: any, origin: string) {
+  const dl = st.delivery, c = dl?.certificate;
+  if (!c) throw new Error("Certificado ainda não emitido");
+  const d = await header(`Certificado ${c.code}`, q, s, st, String(c.hash).slice(0, 16));
+  d.label("Certificado de autoria e cessão de direitos patrimoniais", 6);
+  d.text(`Certificado nº ${c.code}`, { font: "bold", size: 24, lh: 30 });
+  d.text(q.title || "", { font: "light", size: 13, color: C.soft, gap: 16 });
+  summary(d, [["Cessionário", String(dl.holder?.name || "").split(" ").slice(0, 2).join(" ")], ["Emitido em", fmtDate(String(c.at).slice(0, 10))], ["Contrato", `nº ${st.contractNumber || q.slug}`]]);
+  d.text(c.text, { size: 10.5, lh: 15.5, gap: 14 });
+  d.label("Partes", 8);
+  kv(d, [["Autor e cedente", `${s.issuer.name} · ${s.issuer.doc}`], ["Cessionário", [dl.holder?.name, dl.holder?.doc, dl.holder?.company].filter(Boolean).join(" · ")]]);
+  if ((dl.items || []).length) { d.text("Obras", { font: "med", size: 7.5, color: C.soft, lh: 11 }); d.text(dl.items.join("; "), { size: 9.5, lh: 13.5, gap: 8 }); }
+  if ((dl.files || []).length) {
+    d.ensure(80); d.rule(16); d.label("Arquivos entregues e códigos de integridade (SHA-256)", 8);
+    for (const f of dl.files) { d.ensure(30); d.text(f.name, { font: "med", size: 9.5, lh: 13 }); d.text(f.hash || "—", { size: 7.5, color: C.soft, lh: 10.5, gap: 5 }); }
+  }
+  d.ensure(150); d.rule(16);
+  const sy = d.y;
+  const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64"));
+  const ih = 56, iw = (ih * img.width) / img.height;
+  d.page.drawImage(img, { x: M, y: sy - 64, width: iw, height: ih });
+  const half = (A4[0] - 2 * M - 24) / 2;
+  d.page.drawLine({ start: { x: M, y: sy - 66 }, end: { x: M + half, y: sy - 66 }, thickness: 0.6, color: C.ink });
+  d.page.drawText(s.issuer.name, { x: M, y: sy - 80, size: 10, font: d.f.med, color: C.ink });
+  d.page.drawText("Autor e cedente", { x: M, y: sy - 93, size: 8, font: d.f.reg, color: C.soft });
+  d.y = sy - 112;
+  d.text("Código de integridade do certificado (SHA-256)", { font: "med", size: 7.5, color: C.soft, lh: 11 });
+  d.text(c.hash, { size: 8.5, lh: 12, gap: 8 });
+  d.link(`Verificar autenticidade: ${origin}/certificado?c=${c.code}`, `${origin}/certificado?c=${c.code}`, { size: 9 });
+  d.doc.setTitle(`Certificado ${c.code} · ${q.title || ""}`); d.doc.setAuthor(s.issuer.name);
+  return d.save();
+}
+
 export default async (req: Request, context: Context) => {
   const { slug, kind } = context.params;
   const q = await getQuote(slug);
@@ -331,6 +455,15 @@ export default async (req: Request, context: Context) => {
       if (buf) return new Response(buf as ArrayBuffer, { headers: { "content-type": "application/pdf", "content-disposition": `${new URL(req.url).searchParams.has("download") ? "attachment" : "inline"}; filename="Contrato-assinado-${q.slug}.pdf"`, "cache-control": "no-store" } });
     }
     bytes = await contractPdf(q, s, st, origin); name = `Contrato-${q.slug}.pdf`;
+  } else if (/^aditivo-\d+$/.test(kind)) {
+    try { bytes = await aditivoPdf(q, s, st, Number(kind.split("-")[1]), origin); } catch (x: any) { return fail(x.message, 404); }
+    name = `Aditivo-${kind.split("-")[1]}-${st.contractNumber || q.slug}.pdf`;
+  } else if (/^recibo-[\w-]+$/.test(kind)) {
+    try { bytes = await reciboPdf(q, s, st, kind.slice(7), origin); } catch (x: any) { return fail(x.message, 404); }
+    name = `Recibo-${st.contractNumber || q.slug}-${kind.slice(7, 15)}.pdf`;
+  } else if (kind === "certificado") {
+    try { bytes = await certificadoPdf(q, s, st, origin); } catch (x: any) { return fail(x.message, 404); }
+    name = `Certificado-${st.delivery.certificate.code}.pdf`;
   } else {
     const projs = (catalog as any).projects.filter((p: any) => (q.projectIds || []).includes(p.id)).map((p: any) => (p.case ? { ...p, url: `${origin}/projetos/${p.id}` } : p));
     const withImg = await Promise.all(projs.slice(0, 4).map(async (p: any) => {
