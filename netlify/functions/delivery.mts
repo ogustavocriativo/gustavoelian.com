@@ -56,7 +56,7 @@ export default async (req: Request, context: Context) => {
     else {
       const recs = delivery.recommendations.slice(0, 6).map((r: any) => `<li><b>${esc(r.t)}.</b> ${esc(r.d)}</li>`).join("");
       const r = await callGoogle("email", {
-        to, subject: `Entrega final · ${q.title || "seu projeto"}`, title: "Seu projeto foi entregue",
+        to, subject: `Entrega final · ${q.title || "seu projeto"}`, title: "Seu projeto foi entregue", eyebrow: "Entrega final",
         html: `<p>Olá${firstName(st.signer?.name || q.client?.name) ? ", " + firstName(st.signer?.name || q.client?.name) : ""}!</p>
 <p>A entrega final de <b>${esc(q.title || "seu projeto")}</b> está no seu painel, com ${delivery.files.length} arquivo(s), cada um com seu código de integridade.</p>
 ${delivery.certificate ? `<p>O <b>certificado de autoria e cessão de direitos</b> foi emitido com o código <b>${esc(delivery.certificate.code)}</b>. Qualquer pessoa pode verificá-lo em ${esc(url.origin)}/certificado?c=${esc(delivery.certificate.code)}.</p>` : `<p>O certificado de cessão de direitos é emitido assim que o pagamento for quitado.</p>`}

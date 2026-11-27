@@ -1,4 +1,5 @@
 import { addEvent, getSettings, patchState } from "./core.mts";
+import { emailHtml } from "./email.mts";
 // Ponte com o Google (Apps Script publicado na conta do Gustavo): Gmail e Drive.
 // Configuração no Netlify: GOOGLE_SCRIPT_URL (termina em /exec) e GOOGLE_SCRIPT_SECRET.
 export const googleReady = () => !!(Netlify.env.get("GOOGLE_SCRIPT_URL") && (Netlify.env.get("GOOGLE_SCRIPT_SECRET") || "").length >= 24);
@@ -10,6 +11,8 @@ export async function callGoogle(action: string, payload: Record<string, any> = 
   const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), timeoutMs);
   try {
     // o Apps Script responde com um redirecionamento; o fetch segue e lê o JSON
+    // e-mails saem com o layout da identidade do site (o script do Google usa fullHtml quando recebe)
+    if (action === "email" && !payload.fullHtml) payload = { ...payload, fullHtml: emailHtml({ title: payload.title, subject: payload.subject, html: payload.html, button: payload.button, eyebrow: payload.eyebrow }) };
     const r = await fetch(url, { method: "POST", headers: { "content-type": "text/plain;charset=utf-8" }, body: JSON.stringify({ ...payload, action, secret }), redirect: "follow", signal: ctl.signal });
     const txt = await r.text();
     try { return JSON.parse(txt); } catch { return { ok: false, error: "Resposta inesperada do Google" }; }
@@ -30,6 +33,7 @@ export async function sendContractToDrive(slug: string, q: any, st: any, origin:
     text: st.contractText || "", signer: st.signer || {}, signatureImage: st.signatureImage || "",
     approvedAt: st.approvedAt ? new Date(st.approvedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) : "",
     hash: st.contractHash || "", link: `${origin}/${slug}`, ownerEmail: settings.issuer?.email || "",
+    emailHtml: emailHtml({ title: "Contrato assinado", eyebrow: "Contrato", html: `<p>Olá${st.signer?.name ? ", " + firstName(st.signer.name) : ""}!</p><p>Segue em anexo a cópia do contrato assinado. O próximo passo é o pagamento da entrada, pelo mesmo link da proposta.</p>`, button: { href: `${origin}/${slug}`, label: "Abrir a proposta" } }),
   }, 45000);
   if (r?.ok) { await patchState(slug, { drive: { docUrl: r.docUrl, pdfUrl: r.pdfUrl, pdfId: r.pdfId, folderUrl: r.folderUrl, at: new Date().toISOString() } }); await addEvent(slug, { type: "drive" }); }
   else await addEvent(slug, { type: "drive-error", message: String(r?.error || "erro").slice(0, 200) });

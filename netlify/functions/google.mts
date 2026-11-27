@@ -23,7 +23,7 @@ export default async (req: Request, context: Context) => {
     const link = `${url.origin}/${slug}`;
     const r = await callGoogle("email", {
       to, subject: `Sua proposta${q.client?.company ? " · " + q.client.company : ""} está pronta`,
-      title: "Sua proposta está pronta",
+      title: "Sua proposta está pronta", eyebrow: "Proposta",
       html: `<p>Olá, ${firstName(q.client?.name)}!</p><p>Preparei a proposta${q.title ? ` de <b>${esc(q.title)}</b>` : ""} com escopo, prazos e formas de pagamento. Pelo link você vê os detalhes, escolhe o pacote e aprova.</p><p>Qualquer dúvida, é só responder este e-mail.</p>`,
       button: { href: link, label: "Ver minha proposta" },
     });

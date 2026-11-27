@@ -35,7 +35,7 @@ export default async (req: Request, context: Context) => {
       const link = `${url.origin}/acompanhar?t=${await clientToken(email)}`;
       const name = found[0].st.signer?.name || found[0].q.client?.name || "";
       await callGoogle("email", {
-        to: email, subject: "Seu acesso para acompanhar o projeto", title: "Acompanhe o seu projeto",
+        to: email, subject: "Seu acesso para acompanhar o projeto", title: "Acompanhe o seu projeto", eyebrow: "Área do cliente",
         html: `<p>Olá${name ? ", " + firstName(name) : ""}!</p><p>Por este link você acompanha a etapa do projeto, os prazos, os pagamentos e os arquivos já entregues. Ele vale por 14 dias; depois é só pedir outro no site.</p>`,
         button: { href: link, label: "Abrir meu painel" },
       });

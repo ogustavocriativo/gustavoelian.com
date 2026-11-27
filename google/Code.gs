@@ -56,7 +56,7 @@ function out_(o) {
 function sendEmail_(b) {
   var to = String(b.to || "").trim();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return { ok: false, error: "E-mail do destinatário inválido" };
-  var opts = { name: SENDER_NAME, htmlBody: layout_(b.title || b.subject, b.html || "", b.button) };
+  var opts = { name: SENDER_NAME, htmlBody: b.fullHtml || layout_(b.title || b.subject, b.html || "", b.button) };
   if (b.cc) opts.cc = b.cc;
   if (b.replyTo) opts.replyTo = b.replyTo;
   if (b.pdfFileId) opts.attachments = [DriveApp.getFileById(b.pdfFileId).getBlob()];
@@ -108,7 +108,7 @@ function contract_(b) {
     GmailApp.sendEmail(recipients.join(","), "Contrato assinado · " + clientName,
       "Segue em anexo a cópia do contrato assinado.",
       { name: SENDER_NAME, attachments: [pdf.getBlob()],
-        htmlBody: layout_("Contrato assinado", "<p>Olá" + (s.name ? ", " + esc_(s.name.split(" ")[0]) : "") + "!</p><p>Segue em anexo a cópia do contrato assinado. O próximo passo é o pagamento da entrada, pelo mesmo link da proposta.</p>", b.link ? { href: b.link, label: "Abrir a proposta" } : null) });
+        htmlBody: b.emailHtml || layout_("Contrato assinado", "<p>Olá" + (s.name ? ", " + esc_(s.name.split(" ")[0]) : "") + "!</p><p>Segue em anexo a cópia do contrato assinado. O próximo passo é o pagamento da entrada, pelo mesmo link da proposta.</p>", b.link ? { href: b.link, label: "Abrir a proposta" } : null) });
   }
   return { ok: true, docUrl: doc.getUrl(), pdfUrl: pdf.getUrl(), pdfId: pdf.getId(), folderUrl: folder.getUrl() };
 }
