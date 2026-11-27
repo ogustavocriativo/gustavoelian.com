@@ -30,6 +30,20 @@ async function settle(order_nsu: string, transaction_nsu: string, slug: string) 
       const paidTotal = payments.reduce((t: number, p: any) => t + Number(p.amount || 0), 0);
       await patchState(o.id, { paidAt: cur.paidAt || at, payment: cur.payment || { method: "infinitepay", amount }, payments, paidTotal });
       await addEvent(o.id, { type: "paid", method: method === "pix" ? "Pix (InfinitePay)" : "cartão (InfinitePay)", total: amount });
+      // recibo automático (o comprovante da transação a InfinitePay envia à parte); o certificado, se for o caso, vem depois
+      try {
+        const { getQuote, clientToken } = await import("../lib/core.mts");
+        const { googleReady, sendMail } = await import("../lib/google.mts");
+        const { mails } = await import("../lib/mails.mts");
+        const q: any = await getQuote(o.id); const to = cur.signer?.email || q?.client?.email;
+        if (q && to && googleReady()) {
+          const origin = "https://gustavoelian.com";
+          const r = await sendMail(to, mails.recibo({ name: cur.signer?.name || q.client?.name, title: q.title, contractNumber: cur.contractNumber, amount, date: at.slice(0, 10), method: method === "pix" ? "Pix" : `cartão de crédito${chk.installments > 1 ? ` em ${chk.installments}x` : ""}`, paid: paidTotal, total: Number(cur.total || 0), id: `ip-${transaction_nsu}`, panel: `${origin}/acompanhar?t=${await clientToken(to)}` }));
+          await addEvent(o.id, { type: r?.ok ? "email-sent" : "email-error", what: "recibo", to });
+        }
+        const { notifyOwner } = await import("../lib/signing.mts");
+        await notifyOwner(`Pagamento confirmado · R$ ${amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} · ${q?.client?.company || q?.client?.name || o.id}`, [`${method === "pix" ? "Pix" : "Cartão"} pela InfinitePay${chk.installments > 1 ? ` em ${chk.installments}x` : ""}. Baixa e recibo feitos automaticamente.`, `Pago: R$ ${paidTotal.toLocaleString("pt-BR", { minimumFractionDigits: 2 })} de R$ ${Number(cur.total || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}.`], { href: `https://gustavoelian.com/app/#/c/${o.id}`, label: "Abrir no Studio" });
+      } catch {}
       await (await import("../lib/delivery.mts")).issueCertificateIfPaid(o.id).catch(() => {});
     }
   }

@@ -71,11 +71,12 @@ export const mails = {
   }),
 
   /** 8. Entrega final: link do sistema/site, manual em anexo e aprovação no painel. */
-  entrega: (p: { name: string; title: string; version: number; systemUrl?: string; systemLabel?: string; manualName?: string; manualAttached?: boolean; manualUrl?: string; filesCount: number; note?: string; panel: string; paid: boolean }): Mail => ({
+  entrega: (p: { name: string; title: string; version: number; systemUrl?: string; systemLabel?: string; manualName?: string; manualAttached?: boolean; manualUrl?: string; filesCount: number; note?: string; panel: string; paid: boolean; rest?: number }): Mail => ({
     subject: `Entrega final${p.version > 1 ? ` · versão ${p.version}` : ""} · ${p.title || "seu projeto"}`, title: "Seu projeto foi entregue", eyebrow: `Entrega final${p.version > 1 ? ` · versão ${p.version}` : ""}`,
     html: `${hi(p.name)}<p>A entrega final de <b>${proj(p.title)}</b> está pronta.</p>${p.note ? `<p>${para(p.note)}</p>` : ""}`
       + (p.systemUrl ? linkCard(p.systemUrl, p.systemLabel || "Acessar o projeto", p.systemUrl.replace(/^https?:\/\//, "")) : "")
       + (p.manualName ? linkCard(p.manualUrl || p.panel, "Manual de uso", `${p.manualName}${p.manualAttached ? " · em anexo neste e-mail" : ""}`) : "")
+      + (!p.paid && (p.rest || 0) >= 1 ? linkCard(`${p.panel}#pagar`, `Pagar o saldo · ${brl(p.rest || 0)}`, "Pix ou cartão em até 12x · confirmação automática por e-mail") : "")
       + `<p>${p.filesCount ? `Os ${p.filesCount} arquivo(s) da entrega estão no seu painel, cada um com o seu código de integridade. ` : ""}No painel você também <b>aprova a entrega</b> ou <b>pede alterações</b>, descrevendo o que precisa mudar.</p>`
       + certInfo(p.paid ? "Como o contrato já está quitado, ele chega por e-mail assim que você aprovar esta entrega." : "Ele chega por e-mail assim que você aprovar esta entrega e o pagamento for quitado.") + bye,
     button: { href: p.panel, label: "Aprovar ou pedir alterações" },
@@ -130,9 +131,9 @@ export function sampleMails(origin: string) {
     ["Recibo", mails.recibo({ name: n, title: t, contractNumber: "GE-7KQM-3XPA", amount: 2160, date: "2026-11-27", method: "Pix", paid: 2160, total: 3600, id: "a1b2c3d4", panel })],
     ["Aditivo", mails.aditivo({ name: n, title: t, n: 1, channel: "WhatsApp", before: "à vista, 60% + 40%", after: "3 parcelas de R$ 1.200,00", code: "9f3c1a7e2b4d6f80", contractNumber: "GE-7KQM-3XPA", link })],
     ["Prévia", mails.previa({ name: n, title: t, version: 2, note: "Ajustei as cores do menu e troquei a foto da página inicial.", link: `${origin}/v/julia-barbosa-site` })],
-    ["Entrega final", mails.entrega({ name: n, title: t, version: 1, systemUrl: "https://juliabarbosafotografia.com.br", systemLabel: "Acessar o site", manualName: "Guia de uso do site.pdf", manualAttached: true, filesCount: 3, panel, paid: false })],
+    ["Entrega final", mails.entrega({ name: n, title: t, version: 1, systemUrl: "https://juliabarbosafotografia.com.br", systemLabel: "Acessar o site", manualName: "Guia de uso do site.pdf", manualAttached: true, filesCount: 3, panel, paid: false, rest: 1440 })],
     ["Pedido de alteração", mails.ajustes({ name: n, title: t, message: "Trocar a foto da seção Sobre e corrigir o telefone do rodapé.", panel })],
-    ["Entrega aprovada com saldo", mails.aprovadaComSaldo({ name: n, title: t, rest: 1440, payLink: `${link}#pagamento` })],
+    ["Entrega aprovada com saldo", mails.aprovadaComSaldo({ name: n, title: t, rest: 1440, payLink: `${panel}#pagar` })],
     ["Conclusão e certificado", mails.conclusao({ name: n, title: t, contractNumber: "GE-7KQM-3XPA", certCode: "X6DJ-77E2", certUrl: `${origin}/certificado?c=X6DJ-77E2`, panel })],
     ["Pedido de avaliação (3 dias após a conclusão)", mails.avaliacao({ name: n, title: t, link: `${panel}#avaliar` })],
     ["Acesso ao painel", mails.acesso({ name: n, link: panel })],

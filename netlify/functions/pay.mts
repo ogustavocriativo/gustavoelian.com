@@ -3,6 +3,7 @@ import type { Config, Context } from "@netlify/functions";
 import QRCode from "qrcode";
 import { markChargePaid } from "../lib/charges.mts";
 import { ipCreateLink, ipReady, parseAddress } from "../lib/infinitepay.mts";
+import { balanceOptions } from "../lib/balance.mts";
 import { addEvent, brl, fail, getQuote, getSettings, getState, json, patchState, priceOf } from "../lib/core.mts";
 
 function tlv(id: string, value: string) { return id + String(value.length).padStart(2, "0") + value; }
@@ -82,11 +83,29 @@ export default async (req: Request, context: Context) => {
     return json({ amount, amountLabel: brl(amount), label, payload, svg });
   }
 
+  /* Saldo em aberto (depois da entrega ou a qualquer momento após a assinatura): { opcao: "total" | "proxima" } → InfinitePay (cartão ou Pix) */
+  if (action === "saldo") {
+    if (!st.approvedAt) return fail("A proposta ainda não foi aprovada", 409);
+    const b = await (req.method === "POST" ? req.json().catch(() => ({})) : Promise.resolve({}));
+    const { rest, options, pending } = balanceOptions(st, settings.payments?.entryPct ?? 60);
+    if (req.method === "GET") return json({ rest, options, pending });
+    if (req.method !== "POST") return fail("Método não permitido", 405);
+    if (st.signing?.mode === "google" && st.signing.status !== "assinado") return fail("O pagamento abre depois que o contrato for assinado", 409);
+    const opt = options.find((o: any) => o.id === (b.opcao === "proxima" ? "proxima" : "total"));
+    if (!opt) return fail("Não há saldo em aberto", 409);
+    if (!ipReady()) return fail("Pagamento on-line ainda não configurado. Fale comigo pelo WhatsApp.", 503);
+    try {
+      const r = await ipCreateLink({ kind: "quote", id: slug, amount: opt.amount, label: `${q.title || "Projeto"} · ${opt.id === "total" ? "saldo" : opt.label.replace(/^Pagar a próxima parcela · /, "")}${st.contractNumber ? " · " + st.contractNumber : ""}`, origin: url.origin, back: String(b.back || "").startsWith("/acompanhar") ? "/acompanhar" : `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email || q.client?.email, phone: st.signer?.phone || q.client?.phone }, address: st.signer?.addressParts || parseAddress(st.signer?.address) });
+      await addEvent(slug, { type: "checkout-start", total: opt.amount, what: opt.id });
+      return json({ url: r.url });
+    } catch (x: any) { return fail(x.message || "Não foi possível iniciar o pagamento", 502); }
+  }
+
   if (action === "checkout" && req.method === "POST") {
     if (ipReady()) {
       const { amount, label } = amountFor(q, settings, { ...sel, method: "cartao" });
       try {
-        const r = await ipCreateLink({ kind: "quote", id: slug, amount, label: `Proposta ${q.client?.name || ""} · ${label}`, origin: url.origin, back: `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email || q.client?.email, phone: st.signer?.phone || q.client?.phone }, address: st.signer?.addressParts || parseAddress(st.signer?.address), cardOnly: !!settings.pix?.key });
+        const r = await ipCreateLink({ kind: "quote", id: slug, amount, label: `Proposta ${q.client?.name || ""} · ${label}`, origin: url.origin, back: `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email || q.client?.email, phone: st.signer?.phone || q.client?.phone }, address: st.signer?.addressParts || parseAddress(st.signer?.address) });
         await addEvent(slug, { type: "checkout-start", total: amount });
         return json({ url: r.url });
       } catch (x: any) { return fail(x.message || "Não foi possível iniciar o pagamento", 502); }

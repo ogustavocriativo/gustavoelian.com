@@ -72,7 +72,7 @@ export default async (req: Request, context: Context) => {
         }
       }
       const panel = `${url.origin}/acompanhar?t=${await clientToken(to)}`;
-      const m = mails.entrega({ name: st.signer?.name || q.client?.name, title: q.title, version: delivery.version, systemUrl: delivery.systemUrl, systemLabel: delivery.systemLabel, manualName: delivery.manual?.name, manualAttached: !!pdfFileId, manualUrl: delivery.manual ? `${url.origin}/api/quotes/${slug}/files/${delivery.manual.id}?download` : "", filesCount: delivery.files.length, note: delivery.note, panel, paid: delivery.paid });
+      const m = mails.entrega({ name: st.signer?.name || q.client?.name, title: q.title, version: delivery.version, systemUrl: delivery.systemUrl, systemLabel: delivery.systemLabel, manualName: delivery.manual?.name, manualAttached: !!pdfFileId, manualUrl: delivery.manual ? `${url.origin}/api/quotes/${slug}/files/${delivery.manual.id}?download` : "", filesCount: delivery.files.length, note: delivery.note, panel, paid: delivery.paid, rest: Math.max(0, Number(st.total || 0) - Number(st.paidTotal || 0)) });
       const r = await sendMail(to, m, pdfFileId ? { pdfFileId } : {});
       emailed = !!r?.ok; if (!emailed) emailError = String(r?.error || "Falha no envio");
       await addEvent(slug, { type: emailed ? "email-sent" : "email-error", what: "entrega", to });

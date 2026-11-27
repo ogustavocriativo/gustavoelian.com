@@ -172,7 +172,7 @@ export async function respondDelivery(slug: string, kind: "aprovar" | "ajustes",
   const cert = await issueCertificateIfReady(slug, origin);
   if (!cert && googleReady() && to) {
     const rest = Math.max(0, Number(st.total || 0) - Number(st.paidTotal || 0));
-    const r = await sendMail(to, mails.aprovadaComSaldo({ name, title: q.title, rest, payLink: `${origin}/${slug}#pagamento` }));
+    const r = await sendMail(to, mails.aprovadaComSaldo({ name, title: q.title, rest, payLink: `${origin}/acompanhar?t=${await clientToken(to)}#pagar` }));
     await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "aprovada-saldo", to });
   }
   return { ok: true, status: "aprovada", certificate: cert?.code || null };

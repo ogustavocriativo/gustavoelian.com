@@ -14,7 +14,7 @@ const str = (v: any, max: number) => String(v ?? "").trim().slice(0, max);
 const pub = (c: any, s: any) => ({
   id: c.id, amount: c.amount, amountLabel: brl(c.amount), cardAmount: cardAmountOf(c), cardAmountLabel: brl(cardAmountOf(c)), cardFeePct: Number(c.cardFeePct || 0),
   installments: c.installments || 1, desc: c.desc, name: c.name, status: c.status, paidAt: c.paidAt || null, noticeAt: c.noticeAt || null,
-  issuer: s.issuer?.name || "Gustavo Elian", pix: !!s.pix?.key, card: ipReady() || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: ipReady() ? "infinitepay" : "stripe",
+  issuer: s.issuer?.name || "Gustavo Elian", pix: !!s.pix?.key && !ipReady(), card: ipReady() || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: ipReady() ? "infinitepay" : "stripe",
 });
 
 export default async (req: Request, context: Context) => {
@@ -47,7 +47,7 @@ export default async (req: Request, context: Context) => {
     if (action === "checkout" && req.method === "POST") {
       if (ipReady()) {
         try {
-          const r = await ipCreateLink({ kind: "charge", id, amount: cardAmountOf(c), label: c.desc || `Pagamento para ${s.issuer?.name || "Gustavo Elian"}`, origin: url.origin, back: `/pagar/${id}`, customer: { name: c.name, phone: c.phone }, cardOnly: !!s.pix?.key });
+          const r = await ipCreateLink({ kind: "charge", id, amount: c.amount, /* a InfinitePay mostra Pix e as taxas do cartão na página dela */ label: c.desc || `Pagamento para ${s.issuer?.name || "Gustavo Elian"}`, origin: url.origin, back: `/pagar/${id}`, customer: { name: c.name, phone: c.phone } });
           await charges().setJSON(id, { ...c, checkoutAt: new Date().toISOString(), provider: "infinitepay" });
           return json({ url: r.url });
         } catch (x: any) { return fail(x.message || "Não foi possível iniciar o pagamento", 502); }

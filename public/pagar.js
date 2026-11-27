@@ -38,7 +38,7 @@ async function main() {
   let cur = methods[0];
   const pane = h("div", { class: "pg-pane" });
   const head = h("div", { class: "pg-head" }, h("span", { class: "pg-to" }, `${c.name ? c.name.split(" ")[0] + ", seu" : "Seu"} pagamento para ${c.issuer}`), money(c.amountLabel), c.desc ? h("p", { class: "pg-desc" }, c.desc) : null);
-  const segBtns = methods.map((m) => h("button", { type: "button", "aria-pressed": String(m === cur), onclick: () => { cur = m; segBtns.forEach((b, i) => b.setAttribute("aria-pressed", String(methods[i] === m))); draw(); } }, m === "pix" ? "Pix" : "Cartão"));
+  const segBtns = methods.map((m) => h("button", { type: "button", "aria-pressed": String(m === cur), onclick: () => { cur = m; segBtns.forEach((b, i) => b.setAttribute("aria-pressed", String(methods[i] === m))); draw(); } }, m === "pix" ? "Pix" : c.provider === "infinitepay" ? "Pix ou cartão" : "Cartão"));
   const seg = methods.length > 1 ? h("div", { class: "seg", role: "group", "aria-label": "Forma de pagamento" }, ...segBtns) : null;
 
   async function draw() {
@@ -56,12 +56,12 @@ async function main() {
           h("p", { class: "pg-note" }, "Sem taxa. Cai na hora."), done);
       } catch (x) { pane.replaceChildren(h("p", { class: "pg-note" }, x.message)); }
     } else {
-      const go = h("button", { class: "btn primary", type: "button", onclick: async () => { go.disabled = true; go.textContent = "Abrindo pagamento seguro…"; try { const r = await api(`/api/pagar/${id}/checkout`, { method: "POST" }); location.href = r.url; } catch (x) { toast(x.message); go.disabled = false; go.textContent = `Pagar ${c.cardAmountLabel}`; } } }, `Pagar ${c.cardAmountLabel}`);
+      const go = h("button", { class: "btn primary", type: "button", onclick: async () => { go.disabled = true; go.textContent = "Abrindo pagamento seguro…"; try { const r = await api(`/api/pagar/${id}/checkout`, { method: "POST" }); location.href = r.url; } catch (x) { toast(x.message); go.disabled = false; go.textContent = `Pagar ${c.provider === "infinitepay" ? c.amountLabel : c.cardAmountLabel}`; } } }, `Pagar ${c.provider === "infinitepay" ? c.amountLabel : c.cardAmountLabel}`);
       pane.replaceChildren(
-        c.cardFeePct > 0 ? h("div", { class: "pg-row" }, h("span", {}, "No cartão"), h("b", {}, c.cardAmountLabel)) : null,
-        c.cardFeePct > 0 ? h("p", { class: "pg-note" }, `Inclui a taxa da operadora (${String(c.cardFeePct).replace(".", ",")}%). No Pix o valor é ${c.amountLabel}.`) : null,
+        c.cardFeePct > 0 && c.provider !== "infinitepay" ? h("div", { class: "pg-row" }, h("span", {}, "No cartão"), h("b", {}, c.cardAmountLabel)) : null,
+        c.cardFeePct > 0 && c.provider !== "infinitepay" ? h("p", { class: "pg-note" }, `Inclui a taxa da operadora (${String(c.cardFeePct).replace(".", ",")}%). No Pix o valor é ${c.amountLabel}.`) : null,
         c.installments > 1 ? h("p", { class: "pg-note" }, `Parcele em até ${c.installments}x na próxima tela.`) : null,
-        go, h("p", { class: "pg-note" }, c.provider === "infinitepay" ? "Cartão de crédito em até 12x, na página segura da InfinitePay. O Pix é pago aqui mesmo." : "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
+        go, h("p", { class: "pg-note" }, c.provider === "infinitepay" ? "Pix ou cartão de crédito em até 12x, na página segura da InfinitePay. A confirmação chega por e-mail na hora." : "Crédito, débito, Apple Pay ou Google Pay, na página segura do Stripe."));
     }
   }
   app.replaceChildren(h("div", { class: "pg-card" }, head, seg, pane),

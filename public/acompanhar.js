@@ -41,6 +41,7 @@
         p.dueDate ? h("div", { class: "ac-k" }, h("small", {}, "Previsão de entrega"), h("b", {}, dt(p.dueDate))) : null,
         p.total ? h("div", { class: "ac-k" }, h("small", {}, "Pago"), h("b", {}, brl(p.paid)), h("small", {}, `de ${brl(p.total)}`), h("div", { class: "ac-bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Pagamento" }, h("i", { style: `width:${pct}%` }))) : null,
         p.approvedAt ? h("div", { class: "ac-k" }, h("small", {}, "Contrato assinado"), h("b", {}, dt(p.approvedAt))) : null),
+      !p.delivery && p.canPay ? payBox(p, false) : null,
       p.delivery ? delivery(p, p.delivery) : p.approvedAt ? certBox(p, null) : null,
       p.concluded ? reviewBox(p) : null,
       p.files.length ? h("div", { class: "ac-files", id: "acervo" }, h("p", { class: "ac-h3" }, "Acervo de materiais"), ...p.files.map((f) => h("a", { href: f.url }, f.name, h("span", {}, kb(f.size))))) : h("p", { class: "muted" }, "Os arquivos aparecem aqui assim que forem entregues."),
@@ -63,6 +64,27 @@
         h("li", { class: approved ? "ok" : "" }, approved ? "Entrega final aprovada" : "Aprovação da entrega final"),
         h("li", { class: paid ? "ok" : "" }, paid ? "Pagamento quitado" : `Quitação do pagamento${p.total ? ` · falta ${brl(Math.max(0, p.total - p.paid))}` : ""}`)),
       h("p", { class: "muted" }, "Com os dois itens concluídos, ele chega automaticamente no seu e-mail e fica disponível aqui."));
+  }
+
+  /* Saldo em aberto: pagar a próxima parcela ou tudo à vista, direto na InfinitePay (Pix ou cartão). */
+  function payBox(p, delivered) {
+    const box = h("div", { class: "ac-pay", id: "pagar" }, h("p", { class: "ac-h3" }, "Pagamento em aberto"), h("p", { class: "muted" }, "Carregando…"));
+    fetch(`/api/pay/${p.slug}/saldo`).then((r) => r.json().then((d) => ({ ok: r.ok, d }))).then(({ ok, d }) => {
+      if (!ok || !d.options?.length) { box.remove(); return; }
+      const go = (opcao) => async (e) => { const b = e.currentTarget; b.disabled = true; const t = b.textContent; b.textContent = "Abrindo pagamento seguro…";
+        try { const x = await fetch(`/api/pay/${p.slug}/saldo`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ opcao, back: "/acompanhar" }) }); const j = await x.json(); if (!x.ok) throw new Error(j.error); location.href = j.url; }
+        catch (er) { b.disabled = false; b.textContent = t; box.querySelector(".ac-msg").textContent = er.message; } };
+      const next = d.options.find((o) => o.id === "proxima"), all = d.options.find((o) => o.id === "total");
+      box.replaceChildren(h("p", { class: "ac-h3" }, "Pagamento em aberto"),
+        h("p", { class: "ac-big" }, brl(d.rest)),
+        h("p", { class: "muted" }, (delivered ? "A entrega já está com você. " : "") + "Pague com Pix ou cartão de crédito em até 12x, na página segura da InfinitePay. A confirmação chega no seu e-mail na hora" + (delivered ? " e libera o certificado de cessão de direitos, junto com a sua aprovação da entrega." : ".")),
+        d.pending?.length > 1 ? h("ul", { class: "ac-list" }, ...d.pending.map((x) => h("li", {}, `${x.label}: ${brl(x.amount)}${x.due ? ` · vence ${dt(x.due)}` : ""}`))) : "",
+        h("div", { class: "ac-act" },
+          next ? h("button", { class: "btn dark", type: "button", onclick: go("proxima") }, `Pagar a próxima parcela · ${brl(next.amount)}`) : "",
+          all ? h("button", { class: next ? "btn" : "btn dark", type: "button", onclick: go("total") }, next ? `Pagar tudo à vista · ${brl(all.amount)}` : `Pagar ${brl(all.amount)}`) : ""),
+        h("p", { class: "ac-msg", role: "status" }));
+    }).catch(() => box.remove());
+    return box;
   }
 
   function respond(p, d, box) {
@@ -101,6 +123,7 @@
         d.manual ? h("a", { class: "ac-link", href: d.manual.url }, h("b", {}, "Manual de uso"), h("small", {}, `${d.manual.name} · ${kb(d.manual.size)}`)) : null) : null,
       d.files?.length ? h("div", { class: "ac-files" }, h("p", { class: "ac-h3" }, "Arquivos da entrega"), ...d.files.map((f) => h("a", { href: f.url || "#" }, f.name, h("span", {}, kb(f.size))))) : null,
       d.status === "ajustes" && last?.message ? h("div", { class: "ac-k" }, h("small", {}, `Seu pedido de alteração · ${dt(last.at)}`), h("p", {}, last.message), h("small", {}, "Estou ajustando. A nova versão chega por e-mail para você aprovar.")) : null);
+    if (p.canPay) box.append(payBox(p, true));
     if (d.status === "aguardando") respond(p, d, box);
     box.append(certBox(p, d),
       d.licenses?.length ? h("div", {}, h("p", { class: "ac-h3" }, "Licenças de terceiros"), h("ul", { class: "ac-list" }, ...d.licenses.map((x) => h("li", {}, x)))) : "",
@@ -159,9 +182,11 @@
       const r = await fetch(`/api/acompanhar?t=${encodeURIComponent(token)}`);
       const d = await r.json();
       if (!r.ok) return login(d.error || "Link expirado. Peça um novo acesso.");
+      const pg = new URLSearchParams(location.search).get("pagamento");
       history.replaceState(null, "", "/acompanhar");
       try { sessionStorage.setItem("ge_ac", token); } catch {}
       box.replaceChildren(
+        pg ? h("p", { class: "ac-k", role: "status" }, pg === "ok" ? "Pagamento confirmado. O recibo chegou no seu e-mail." : "O pagamento ainda não foi confirmado. Se você pagou, a confirmação chega por e-mail em instantes.") : "",
         h("div", { class: "ac-head" }, h("div", {}, h("span", { class: "eyebrow" }, "Área do cliente"), h("h1", {}, d.name ? `Olá, ${d.name.split(" ")[0]}.` : "Seus projetos")), h("span", { class: "muted" }, d.email)),
         ...(d.projects.length ? d.projects.map(project) : [h("p", { class: "muted" }, "Nenhum projeto ligado a este e-mail ainda.")]),
         h("section", { class: "sec", style: "padding-bottom:0" }, h("div", { class: "sec-head" }, h("span", { class: "eyebrow" }, "Acervo"), h("h2", {}, "Trabalhos realizados"), h("p", {}, "Conheça outros projetos que já saíram do papel.")), h("a", { class: "btn dark", href: "/#projetos" }, "Ver o portfólio")));
@@ -170,5 +195,5 @@
   }
 
   let saved = null; try { saved = sessionStorage.getItem("ge_ac"); } catch {}
-  if (token) panel(); else if (saved) { history.replaceState(null, "", "/acompanhar?t=" + saved); location.reload(); } else login();
+  if (token) panel(); else if (saved) { const pg = new URLSearchParams(location.search).get("pagamento"); history.replaceState(null, "", "/acompanhar?t=" + saved + (pg ? "&pagamento=" + encodeURIComponent(pg) : "")); location.reload(); } else login();
 })();

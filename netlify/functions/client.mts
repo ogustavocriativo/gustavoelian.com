@@ -94,6 +94,7 @@ export default async (req: Request, context: Context) => {
         page: `/${q.slug}`,
         delivery: publicDelivery(st.delivery),
         concluded: !!st.delivery?.certificate,
+        canPay: !!st.approvedAt && (st.signing?.mode !== "google" || st.signing.status === "assinado") && Number(st.total || 0) - Number(st.paidTotal || 0) >= 1,
         review: st.review ? { rating: st.review.rating, message: st.review.message, name: st.review.name, role: st.review.role, consent: st.review.consent, status: st.review.status, at: st.review.at } : null,
         signerName: st.signer?.name || q.client?.name || "",
       };

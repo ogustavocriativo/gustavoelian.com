@@ -94,7 +94,7 @@ export default async (req: Request, context: Context) => {
       state: { selection: state.selection || null, approvedAt: state.approvedAt || null, signer: state.signer ? { name: state.signer.name } : null, paidAt: state.paidAt || null, paymentNotice: state.paymentNotice || null, signing: state.signing ? { mode: state.signing.mode, status: state.signing.status, signedAt: state.signing.signedAt || null } : null },
       signingMode: settings.signing === "google" ? "google" : "sistema",
       issuer: settings.issuer,
-      payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key, card: !!Netlify.env.get("INFINITEPAY_HANDLE") || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: Netlify.env.get("INFINITEPAY_HANDLE") ? "infinitepay" : "stripe" },
+      payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key && !Netlify.env.get("INFINITEPAY_HANDLE"), card: !!Netlify.env.get("INFINITEPAY_HANDLE") || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: Netlify.env.get("INFINITEPAY_HANDLE") ? "infinitepay" : "stripe" },
       otp: true, // assinatura sempre exige o código enviado ao e-mail de quem assina
       signing: googleReady(),
       contractPreview,

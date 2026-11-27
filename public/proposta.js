@@ -293,6 +293,24 @@ async function payment() {
       h("div", { class: "done" }, h("strong", {}, "Na demonstração nenhum pagamento é gerado.")), h("p", {}, "Assim que o pagamento cai, você recebe o aviso no Studio e a cliente acompanha tudo em gustavoelian.com/acompanhar."));
     return sec;
   }
+  // InfinitePay: todo pagamento (Pix ou cartão) passa por ela, e a baixa, o recibo e o certificado saem sozinhos
+  if (D.payments.provider === "infinitepay" && D.payments.card) {
+    try {
+      const r = await fetch(`/api/pay/${slug}/saldo`); const d = await r.json();
+      if (r.ok && d.options?.length) {
+        const brl = (v) => "R$ " + Number(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const go = (opcao) => async (e) => { const b = e.currentTarget; b.disabled = true; const t = b.textContent; b.textContent = "Abrindo pagamento seguro…";
+          try { const x = await fetch(`/api/pay/${slug}/saldo`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ opcao }) }); const j = await x.json(); if (!x.ok) throw new Error(j.error); location.href = j.url; }
+          catch (er) { toast(er.message); b.disabled = false; b.textContent = t; } };
+        const next = d.options.find((o) => o.id === "proxima"), all = d.options.find((o) => o.id === "total");
+        sec.append(h("p", { class: "lead" }, `Em aberto: ${brl(d.rest)}. Pague com Pix ou cartão de crédito em até 12x, na página segura da InfinitePay. A confirmação chega no seu e-mail na hora.`),
+          h("div", { class: "pay-opts" },
+            next ? h("button", { class: "btn dark", type: "button", onclick: go("proxima") }, `Pagar ${next.label.replace(/^Pagar a próxima parcela · /, "")} · ${brl(next.amount)}`) : null,
+            all ? h("button", { class: next ? "btn" : "btn dark", type: "button", onclick: go("total") }, next ? `Pagar tudo à vista · ${brl(all.amount)}` : `Pagar ${brl(all.amount)}`) : null));
+      }
+    } catch {}
+    return sec;
+  }
   if (method === "cartao" && D.payments.card) {
     sec.append(h("p", { class: "lead" }, "Pague com cartão de crédito, em até 12x, no ambiente seguro da InfinitePay."),
       h("button", { class: "btn dark", type: "button", onclick: async (e) => {
