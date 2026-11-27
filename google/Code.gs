@@ -42,6 +42,7 @@ function doPost(e) {
     if (body.action === "contract") return out_(contract_(body));
     if (body.action === "amendment") return out_(amendment_(body));
     if (body.action === "file") return out_(file_(body));
+    if (body.action === "signed") return out_(signed_(body));
     return out_({ ok: false, error: "Ação desconhecida" });
   } catch (err) {
     return out_({ ok: false, error: String(err && err.message || err) });
@@ -158,6 +159,23 @@ function amendment_(b) {
   docFile.moveTo(folder);
   var pdf = folder.createFile(docFile.getAs("application/pdf").setName(title + ".pdf"));
   return { ok: true, docUrl: doc.getUrl(), pdfUrl: pdf.getUrl(), pdfId: pdf.getId(), folderUrl: folder.getUrl() };
+}
+
+/* ---------- contratos assinados pelo eSignature do Google ----------
+   O Google salva o PDF assinado na mesma pasta, com o nome do original + " - dd/mm/aaaa, hh:mm.pdf". */
+function signed_(b) {
+  var out = [];
+  (b.names || []).slice(0, 50).forEach(function (base) {
+    base = String(base || "");
+    if (!base) return;
+    var it = DriveApp.searchFiles('title contains "' + base.replace(/["\\]/g, " ") + ' - " and mimeType = "application/pdf" and trashed = false');
+    while (it.hasNext()) {
+      var f = it.next();
+      if (f.getName().indexOf(base + " - ") !== 0) continue;
+      out.push({ name: f.getName(), id: f.getId(), url: f.getUrl(), created: f.getDateCreated().toISOString(), data: Utilities.base64Encode(f.getBlob().getBytes()) });
+    }
+  });
+  return { ok: true, files: out };
 }
 
 /* ---------- arquivo avulso (comprovantes etc.) em uma subpasta do cliente ---------- */

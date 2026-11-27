@@ -123,6 +123,9 @@ const evText = (e) => ({
   "payment-delete": `Recebimento excluído · ${brl(e.total)}`,
   "receipt-import": "Comprovante importado pelo Studio",
   migracao: e.message || "Contrato restaurado do Studio antigo",
+  "signing-ready": "Contrato pronto no Drive para pedir a assinatura do Google",
+  "signing-error": `Contrato não foi para o Drive: ${e.message || "erro"}`,
+  "signed-google": "Contrato assinado pelas partes no Google",
   previa: e.message || "Prévia",
   drive: "Contrato salvo no Drive e enviado por e-mail",
   "drive-error": `Contrato não foi para o Drive: ${e.message || "erro"}`,
@@ -968,7 +971,23 @@ async function renderContract(slug) {
     ...(s.amendments || []).map((a) => h("div", { class: "plan" }, h("span", {}, `Aditivo ${a.n} · ${dateBR(a.at)}`, " ", h("span", { class: "pill" }, a.channel)), h("small", {}, a.reason), h("small", { class: "hash" }, "SHA-256 ", a.hash.slice(0, 16) + "…", a.driveUrl ? " · " : "", a.driveUrl ? h("a", { href: a.driveUrl, target: "_blank", rel: "noopener" }, "no Drive") : null))),
     h("button", { class: "btn block", type: "button", onclick: () => termsSheet(slug, s, rest) }, icon("pen"), "Alterar forma, valor ou parcelas"));
   const sg = s.signer || {};
-  const docCard = h("section", { class: "form-card glass" }, h("h2", {}, "Contrato assinado"),
+  // assinatura pelo Google: status, atalho para o PDF no Drive e verificação manual
+  const gs = s.signing?.mode === "google" ? s.signing : null;
+  const signAct = (acao, label) => h("button", { class: "btn" + (acao === "verificar" ? " primary" : ""), type: "button", onclick: async (ev) => {
+    const b = ev.currentTarget; b.disabled = true; b.textContent = acao === "verificar" ? "Procurando no Drive…" : "Gerando o PDF…";
+    try { const r = await api(`/api/quotes/${slug}/assinatura`, { method: "POST", body: JSON.stringify({ acao }) }); toast(acao === "verificar" ? (r.signed ? "Contrato assinado encontrado" : "Ainda não há versão assinada no Drive") : "Contrato pronto no Drive"); renderContract(slug); }
+    catch (x) { toast(x.message); b.disabled = false; b.textContent = label; }
+  } }, label);
+  const signCard = gs ? h("section", { class: "form-card glass" }, h("h2", {}, "Assinatura pelo Google"),
+    h("p", {}, h("span", { class: "pill " + (gs.status === "assinado" ? "ok" : "info") }, { preparando: "Preparando o PDF", aguardando: "Aguardando assinatura", assinado: "Assinado pelas partes", erro: "Erro ao gerar no Drive" }[gs.status] || gs.status)),
+    gs.status === "aguardando" ? h("p", { class: "hint" }, "Abra o PDF no Drive, toque em \"Solicitar assinatura\" e coloque o seu campo e o do cliente (", sg.email || "e-mail do cliente", "). O sistema confere o Drive a cada 10 minutos.") : null,
+    gs.status === "assinado" ? h("p", { class: "hint" }, `Assinado em ${new Date(gs.signedAt).toLocaleString("pt-BR")}. O PDF assinado, com a trilha de auditoria do Google, está anexo e é o que o cliente baixa.`) : null,
+    h("div", { class: "btns grid2" },
+      gs.pdfUrl && gs.status !== "assinado" ? h("a", { class: "btn", href: gs.pdfUrl, target: "_blank", rel: "noopener" }, icon("pen"), "Abrir PDF no Drive") : null,
+      gs.signedDriveUrl ? h("a", { class: "btn", href: gs.signedDriveUrl, target: "_blank", rel: "noopener" }, icon("pdf"), "PDF assinado no Drive") : null,
+      gs.status === "aguardando" ? signAct("verificar", "Verificar agora") : null,
+      gs.status === "erro" || gs.status === "preparando" ? signAct("preparar", "Preparar contrato para assinatura") : null)) : null;
+  const docCard = h("section", { class: "form-card glass" }, h("h2", {}, gs && gs.status !== "assinado" ? "Contrato aprovado" : "Contrato assinado"),
     h("dl", { class: "kv" }, h("dt", {}, "Assinante"), h("dd", {}, sg.name || "—"), h("dt", {}, "Documento"), h("dd", {}, sg.doc || "—"), h("dt", {}, "E-mail"), h("dd", {}, sg.email || "—"), h("dt", {}, "Quando"), h("dd", {}, new Date(s.approvedAt).toLocaleString("pt-BR")), h("dt", {}, "IP"), h("dd", {}, sg.ip || "—")),
     s.contractHash ? h("p", { class: "hash" }, "SHA-256 ", s.contractHash) : null,
     h("div", { class: "btns grid2" },
@@ -986,7 +1005,7 @@ async function renderContract(slug) {
     } }, icon("box"), s.drive ? "Gerar de novo no Drive" : "Salvar contrato no Drive e enviar por e-mail"));
 
   shell({ title: q0.client?.name || "Contrato", eyebrow: q0.title || "Contrato", back: "#/contratos", compact: true, nav: false },
-    hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, workCard, termsCard, payCard, deliveryCard(slug, q0, s, rest), docCard),
+    hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, signCard, workCard, termsCard, payCard, deliveryCard(slug, q0, s, rest), docCard),
     secH("Linha do tempo"), h("div", { class: "glass card" }, ...events.map((e) => evRow(e))), h("div", { class: "gap24" }));
 }
 /* Entrega final: certificado de cessão, integridade dos arquivos, licenças, acessos e recomendações de conformidade. */

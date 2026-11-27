@@ -194,23 +194,26 @@ function otpField(getForm, err) {
 }
 function approve() {
   const s = D.state;
+  const G = D.signingMode === "google" && D.quote.contractEnabled; // assinatura pelo Google depois da aprovação
   if (s.approvedAt) {
+    const waiting = s.signing?.mode === "google" && s.signing.status !== "assinado";
     return h("section", { class: "blk", id: "aprovar" }, h("div", { class: "done" },
       h("strong", {}, `Proposta aprovada por ${s.signer?.name} em ${new Date(s.approvedAt).toLocaleString("pt-BR")}.`),
-      D.quote.contractEnabled ? h("a", { href: `/api/pdf/${slug}/contrato?download` }, "Baixar contrato assinado (PDF)") : null,
+      waiting ? h("p", {}, "Próximo passo: você recebe por e-mail, do Google, o contrato para assinar eletronicamente. Depois da assinatura, o pagamento da entrada aparece aqui.") : null,
+      D.quote.contractEnabled ? h("a", { href: `/api/pdf/${slug}/contrato?download` }, waiting ? "Baixar contrato (PDF)" : "Baixar contrato assinado (PDF)") : null,
       h("a", { href: `/api/pdf/${slug}/orcamento?download` }, "Baixar proposta (PDF)")));
   }
   const err = h("p", { class: "err", role: "alert" });
-  const pad = signaturePad();
+  const pad = G ? null : signaturePad();
   const inp = (id, label, type = "text", attrs = {}) => h("label", { class: "f", for: id }, label, h("input", { id, name: id, type, required: true, ...attrs }));
   const form = h("form", { class: "stack", onsubmit: async (e) => {
     e.preventDefault(); err.textContent = "";
     const fd = new FormData(form);
     if (!fd.get("accept")) { err.textContent = "Para aprovar, marque que leu e aceita os termos."; return; }
-    if (D.otp && !String(fd.get("code") || "").trim()) { err.textContent = "Confirme o seu e-mail: peça o código e digite-o antes de assinar."; return; }
+    if (!G && D.otp && !String(fd.get("code") || "").trim()) { err.textContent = "Confirme o seu e-mail: peça o código e digite-o antes de assinar."; return; }
     const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Registrando…";
     try {
-      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad.getData(), code: fd.get("code") });
+      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad ? pad.getData() : "", code: fd.get("code") });
       if (D.demo) { try { sessionStorage.setItem("ge_demo", JSON.stringify({ selection: sel, approvedAt: new Date().toISOString(), signer: { name: fd.get("name") } })); } catch {} }
       await load(); toast("Proposta aprovada. Obrigado!"); location.hash = "#pagamento";
     } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "Aprovar proposta"; }
@@ -219,18 +222,21 @@ function approve() {
     h("div", { class: "grid2" }, inp("email", "E-mail *", "email", { autocomplete: "email" }), h("label", { class: "f", for: "phone" }, "WhatsApp", h("input", { id: "phone", name: "phone", type: "tel", autocomplete: "tel" }))),
     D.quote.contractEnabled ? inp("address", "Endereço completo, com cidade *", "text", { autocomplete: "street-address" }) : null,
     D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), fillContract(h("div", { class: "contract", id: "contractText", tabindex: "0" }), D.contractPreview)] : null,
-    D.quote.contractEnabled ? pad : null,
-    D.otp ? otpField(() => new FormData(form), err) : null,
-    h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
-    D.signing === false ? h("p", { class: "err" }, "A assinatura está temporariamente indisponível. Fale comigo pelo WhatsApp que resolvo na hora.") : null,
-    err, h("button", { class: "btn primary", type: "submit", ...(D.signing === false ? { disabled: "" } : {}) }, "Aprovar proposta"));
-  return h("section", { class: "blk", id: "aprovar" }, h("span", { class: "eyebrow" }, "Aprovação"), h("h2", {}, D.quote.contractEnabled ? "Aprovar e assinar" : "Aprovar proposta"),
-    h("p", { class: "lead" }, "Confira a condição escolhida, preencha seus dados e aprove. Você recebe o contrato em PDF na hora."), form);
+    D.quote.contractEnabled && pad ? pad : null,
+    !G && D.otp ? otpField(() => new FormData(form), err) : null,
+    h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), G ? "Li e aprovo a proposta e os termos de contratação. Sei que receberei o contrato por e-mail, do Google, para assinar eletronicamente." : D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
+    !G && D.signing === false ? h("p", { class: "err" }, "A assinatura está temporariamente indisponível. Fale comigo pelo WhatsApp que resolvo na hora.") : null,
+    err, h("button", { class: "btn primary", type: "submit", ...(!G && D.signing === false ? { disabled: "" } : {}) }, "Aprovar proposta"));
+  return h("section", { class: "blk", id: "aprovar" }, h("span", { class: "eyebrow" }, "Aprovação"), h("h2", {}, G ? "Aprovar proposta" : D.quote.contractEnabled ? "Aprovar e assinar" : "Aprovar proposta"),
+    h("p", { class: "lead" }, G ? "Confira a condição escolhida, preencha seus dados e aprove. Em seguida você recebe, do Google, o contrato para assinar." : "Confira a condição escolhida, preencha seus dados e aprove. Você recebe o contrato em PDF na hora."), form);
 }
 
 async function payment() {
   const s = D.state;
   if (!s.approvedAt) return null;
+  // com assinatura pelo Google, o pagamento só abre depois do contrato assinado
+  if (s.signing?.mode === "google" && s.signing.status !== "assinado" && !s.paidAt) return h("section", { class: "blk", id: "pagamento" }, h("span", { class: "eyebrow" }, "Pagamento"), h("h2", {}, "Assine o contrato para pagar"),
+    h("p", { class: "lead" }, "O contrato chega no seu e-mail, enviado pelo Google. Assim que as duas partes assinarem, o pagamento da entrada abre aqui."));
   const sec = h("section", { class: "blk", id: "pagamento" }, h("span", { class: "eyebrow" }, "Pagamento"), h("h2", {}, s.paidAt ? "Pagamento confirmado" : "Pagar e começar"));
   const params = new URLSearchParams(location.search);
   if (s.paidAt || params.get("pagamento") === "ok") { sec.append(h("div", { class: "done" }, h("strong", {}, "Recebemos o seu pagamento. Obrigado! Em breve entro em contato para começarmos."))); return sec; }

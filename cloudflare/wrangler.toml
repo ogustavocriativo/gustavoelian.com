@@ -20,3 +20,6 @@ bucket_name = "gustavoelian-dados"
 
 [observability]
 enabled = true
+
+[triggers]
+crons = ["*/10 * * * *"]

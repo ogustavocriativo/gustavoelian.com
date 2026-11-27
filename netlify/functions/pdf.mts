@@ -227,14 +227,15 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
     d.page.drawText(role, { x, y: sy - 93, size: 8, font: d.f.reg, color: C.soft });
     d.page.drawText(note, { x, y: sy - 105, size: 7.5, font: d.f.reg, color: C.soft });
   };
-  sig(M, st.signer?.name || "", `CONTRATANTE · ${st.signer?.doc || ""}`, `Assinado eletronicamente em ${fmtDateTime(st.approvedAt)}`);
+  const g = st.signing?.mode === "google"; // assinatura das partes pelo eSignature do Google: bloco em branco para os campos do Google
+  sig(M, st.signer?.name || "", `CONTRATANTE · ${st.signer?.doc || ""}`, g ? "Assinatura eletrônica pelo Google" : `Assinado eletronicamente em ${fmtDateTime(st.approvedAt)}`);
   // assinatura manuscrita do contratado, na mesma altura da do contratante
-  {
+  if (!g) {
     const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64"));
     const ih = 56, iw = (ih * img.width) / img.height;
     d.page.drawImage(img, { x: M + half + 24, y: sy - 64, width: iw, height: ih });
   }
-  sig(M + half + 24, s.issuer.name, `CONTRATADO · ${s.issuer.doc}`, `Ao emitir a proposta em ${fmtDate(String(q.createdAt || st.approvedAt).slice(0, 10))}`);
+  sig(M + half + 24, s.issuer.name, `CONTRATADO · ${s.issuer.doc}`, g ? "Assinatura eletrônica pelo Google" : `Ao emitir a proposta em ${fmtDate(String(q.createdAt || st.approvedAt).slice(0, 10))}`);
   d.y = sy - 124;
 
   // cartão-resumo com os atalhos clicáveis, depois das assinaturas e antes do registro de aceite
@@ -247,7 +248,7 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
     d.page.drawText(v, { x, y: top - 40, size: 11, font: d.f.bold, color: C.ink });
   };
   col(0, "Valor", brl(Number(st.total || 0)));
-  col(1, "Assinado em", fmtDate(String(st.approvedAt).slice(0, 10)));
+  col(1, g ? "Aprovado em" : "Assinado em", fmtDate(String(st.approvedAt).slice(0, 10)));
   col(2, "Contratante", String(st.signer?.name || q.client?.name || "").split(" ").slice(0, 2).join(" "));
   let px = M + 18;
   px += pill(d, px, top - 62, "Acompanhar a demanda", links.painel, true) + 8;
@@ -258,12 +259,12 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
 
   // trilha de auditoria em duas colunas
   d.ensure(200); d.rule(16);
-  d.label("Registro de aceite eletrônico (Lei 14.063/2020)", 10);
+  d.label(g ? "Registro da aprovação da proposta (Lei 14.063/2020)" : "Registro de aceite eletrônico (Lei 14.063/2020)", 10);
   const rows: [string, string][] = [
     ["Nome", st.signer?.name], ["CPF/CNPJ", st.signer?.doc], ["E-mail", st.signer?.email], ["WhatsApp", st.signer?.phone || "—"],
-    ["Endereço", st.signer?.address || "—"], ["Data e hora", fmtDateTime(st.approvedAt) + " (Brasília)"],
+    ["Endereço", st.signer?.address || "—"], [g ? "Aprovada em" : "Data e hora", fmtDateTime(st.approvedAt) + " (Brasília)"],
     ["Endereço IP", (st.signer?.ip || "—") + (st.signer?.city ? ` · ${st.signer.city}` : "")], ["Proposta", `${origin}/${q.slug}`],
-    ["E-mail confirmado por código", st.signer?.emailVerifiedAt ? `Sim · ${fmtDateTime(st.signer.emailVerifiedAt)}` : "Não"],
+    g ? ["Assinatura das partes", "Serviço de assinatura eletrônica do Google, com trilha de auditoria anexa ao documento assinado"] : ["E-mail confirmado por código", st.signer?.emailVerifiedAt ? `Sim · ${fmtDateTime(st.signer.emailVerifiedAt)}` : "Não"],
   ];
   for (let i = 0; i < rows.length; i += 2) {
     d.ensure(44); const y0 = d.y; let used = 1;
@@ -314,6 +315,12 @@ export default async (req: Request, context: Context) => {
   let bytes: Uint8Array, name: string;
   if (kind === "contrato") {
     if (!st.approvedAt || !st.contractText) return fail("Contrato disponível após a aprovação", 404);
+    // assinado pelo Google: entrega o PDF assinado (com a trilha de auditoria e o certificado do Google)
+    if (st.signing?.signedFileId) {
+      const { files } = await import("../lib/core.mts");
+      const buf = await files().get(`${q.slug}/${st.signing.signedFileId}`, { type: "arrayBuffer" });
+      if (buf) return new Response(buf as ArrayBuffer, { headers: { "content-type": "application/pdf", "content-disposition": `${new URL(req.url).searchParams.has("download") ? "attachment" : "inline"}; filename="Contrato-assinado-${q.slug}.pdf"`, "cache-control": "no-store" } });
+    }
     bytes = await contractPdf(q, s, st, origin); name = `Contrato-${q.slug}.pdf`;
   } else {
     const projs = (catalog as any).projects.filter((p: any) => (q.projectIds || []).includes(p.id)).map((p: any) => (p.case ? { ...p, url: `${origin}/projetos/${p.id}` } : p));

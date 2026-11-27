@@ -23,8 +23,10 @@ import * as m_quotes from "../netlify/functions/quotes.mts";
 import * as m_review from "../netlify/functions/review.mts";
 import * as m_settings from "../netlify/functions/settings.mts";
 import * as m_emailimg from "../netlify/functions/email-img.mts";
+import * as m_signing from "../netlify/functions/signing-api.mts";
+import { checkGoogleSignatures } from "../netlify/lib/signing.mts";
 import ogEdge from "../netlify/edge-functions/proposta-og.ts";
-const MODS: any[] = [m_auth,m_charges,m_client,m_clientlogo,m_delivery,m_files,m_google,m_history,m_inbox,m_infinitepay,m_manage,m_og,m_pay,m_pdf,m_portfolio,m_preview,m_previews,m_public,m_quotes,m_review,m_settings,m_emailimg];
+const MODS: any[] = [m_auth,m_charges,m_client,m_clientlogo,m_delivery,m_files,m_google,m_history,m_inbox,m_infinitepay,m_manage,m_og,m_pay,m_pdf,m_portfolio,m_preview,m_previews,m_public,m_quotes,m_review,m_settings,m_emailimg,m_signing];
 
 // ---------- rotas: os mesmos caminhos do netlify (config.path) ----------
 type Route = { re: RegExp; keys: string[]; score: number; mod: any };
@@ -131,5 +133,10 @@ const handler = {
     const og = await (ogEdge as any)(req, { next: page });
     return withHeaders(og || (await page()), extra);
   },
+};
+// a cada 10 minutos: procura no Drive os contratos que o Google já devolveu assinados
+(handler as any).scheduled = async (_ev: any, env: any, ctx: ExecutionContext) => {
+  RT.env = env; RT.ctx = ctx; SELF = { origin: "https://gustavoelian.com", env, ctx };
+  ctx.waitUntil(checkGoogleSignatures().then((r) => console.log("assinaturas", JSON.stringify(r))).catch((x) => console.error("assinaturas", x)));
 };
 export default handler;

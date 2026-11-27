@@ -3,6 +3,7 @@ import type { Config, Context } from "@netlify/functions";
 import { addEvent, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
 import { buildContract, paymentLabel } from "../lib/contract.mts";
 import { callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
+import { prepareGoogleSigning } from "../lib/signing.mts";
 
 function publicView(q: any) {
   return {
@@ -81,7 +82,8 @@ export default async (req: Request, context: Context) => {
     const contractPreview = q.contract?.enabled !== false ? buildContract(q, settings, null, state.selection || {}) : "";
     return json({
       quote: publicView(q),
-      state: { selection: state.selection || null, approvedAt: state.approvedAt || null, signer: state.signer ? { name: state.signer.name } : null, paidAt: state.paidAt || null, paymentNotice: state.paymentNotice || null },
+      state: { selection: state.selection || null, approvedAt: state.approvedAt || null, signer: state.signer ? { name: state.signer.name } : null, paidAt: state.paidAt || null, paymentNotice: state.paymentNotice || null, signing: state.signing ? { mode: state.signing.mode, status: state.signing.status, signedAt: state.signing.signedAt || null } : null },
+      signingMode: settings.signing === "google" ? "google" : "sistema",
       issuer: settings.issuer,
       payments: { entryPct: settings.payments.entryPct, pix: !!settings.pix.key, card: !!Netlify.env.get("INFINITEPAY_HANDLE") || !!Netlify.env.get("STRIPE_SECRET_KEY"), provider: Netlify.env.get("INFINITEPAY_HANDLE") ? "infinitepay" : "stripe" },
       otp: true, // assinatura sempre exige o código enviado ao e-mail de quem assina
@@ -159,6 +161,22 @@ export default async (req: Request, context: Context) => {
     if (signer.name.length < 5 || !signer.doc || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(signer.email)) return fail("Preencha nome completo, CPF ou CNPJ e e-mail válidos");
     if (q.contract?.enabled !== false && signer.address.length < 10) return fail("Informe o endereço completo, com cidade");
     if (!body.accept) return fail("É preciso aceitar os termos");
+    const googleMode = settings.signing === "google" && q.contract?.enabled !== false;
+    if (googleMode) {
+      // aprovação no site; a assinatura das partes é feita depois, pelo eSignature do Google
+      const sel = st.selection || { packageId: null, itemIds: (q.items || []).map((i: any) => i.id), method: "avista" };
+      const contract = buildContract(q, settings, signer, sel);
+      const pay = paymentLabel(q, settings, sel);
+      await patchState(slug, {
+        approvedAt: new Date().toISOString(),
+        signer: { ...signer, emailVerifiedAt: null, ip: context.ip, userAgent: clip(req.headers.get("user-agent"), 300), city: context.geo?.city || "" },
+        selection: sel, total: pay.total, paymentText: pay.text, contractText: contract, contractHash: await sha256(contract),
+        signatureImage: null, otp: null, signing: { mode: "google", status: "preparando" },
+      });
+      await addEvent(slug, { type: "approve", name: signer.name, total: pay.total, method: sel.method });
+      if (googleReady()) context.waitUntil(prepareGoogleSigning(slug, new URL(req.url).origin).catch(() => {}));
+      return json({ ok: true, signing: "google" });
+    }
     const sig = String(body.signature || "");
     if (sig && (!/^data:image\/(png|jpeg);base64,/.test(sig) || sig.length > 300_000)) return fail("Assinatura inválida");
     let emailVerifiedAt: string | null = null;

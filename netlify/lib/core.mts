@@ -156,6 +156,8 @@ export const DEFAULT_SETTINGS = {
   },
   pix: { key: "", merchantName: "GUSTAVO ELIAN", merchantCity: "MONTES CLAROS" },
   payments: { entryPct: 60, maxInstallments: 5 },
+  // "google": o cliente aprova no site e as partes assinam pelo eSignature do Google; "sistema": assinatura desenhada no site
+  signing: "google",
   contractTemplate: `CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE DESIGN, BRANDING E COMUNICAÇÃO
 Proposta nº {{proposta}}
 
@@ -231,8 +233,9 @@ Valem como comunicação formal entre as partes as mensagens enviadas aos e-mail
 
 13. ASSINATURA ELETRÔNICA
 13.1. As partes reconhecem a validade da assinatura eletrônica deste contrato, nos termos da Lei nº 14.063/2020 e do art. 10, § 2º, da MP nº 2.200-2/2001.
-13.2. O aceite do CONTRATANTE fica registrado com nome, documento, endereço, e-mail, data, hora, endereço IP, localização aproximada, dispositivo, assinatura desenhada e código de integridade (SHA-256) do texto aceito. Qualquer alteração posterior no texto invalida o código.
-13.3. O CONTRATADO manifesta sua concordância ao emitir a proposta e este contrato. Ambas as partes recebem uma cópia em PDF.
+13.2. As partes assinam este contrato pelo serviço de assinatura eletrônica do Google (Google Workspace), que registra o e-mail, a data e a hora de cada assinatura em trilha de auditoria anexada ao documento e protege o arquivo assinado com certificado digital, de modo que qualquer alteração posterior seja identificável.
+13.3. A aprovação da proposta pelo CONTRATANTE fica registrada com nome, documento, endereço, e-mail, data, hora, endereço IP, localização aproximada, dispositivo e código de integridade (SHA-256) do texto aprovado.
+13.4. Ambas as partes recebem uma cópia do documento assinado.
 
 14. FORO
 Fica eleito o foro da comarca de {{cidade}}/MG para resolver qualquer questão oriunda deste contrato.
