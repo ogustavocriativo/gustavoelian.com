@@ -7,6 +7,11 @@ const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;
 
 export type EmailParts = { title?: string; subject?: string; html?: string; button?: { href: string; label?: string } | null; eyebrow?: string };
 
+/** Cartão de link dentro do corpo do e-mail (sistema entregue, manual, certificado). */
+export function linkCard(href: string, label: string, sub = "") {
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 14px"><tr><td style="background:#F4F4F5;border-radius:20px;padding:18px 22px"><a href="${esc(href)}" style="font-family:${FONT};font-size:17px;font-weight:500;color:#0E0E10;text-decoration:none">${esc(label)} &nbsp;<span style="color:#2F5FD0">→</span></a>${sub ? `<br><span style="font-family:${FONT};font-size:13px;color:#55575E;word-break:break-all">${esc(sub)}</span>` : ""}</td></tr></table>`;
+}
+
 export function emailHtml(p: EmailParts) {
   const title = String(p.title || p.subject || "").trim();
   const eyebrow = p.eyebrow || "Gustavo Elian · Studio";

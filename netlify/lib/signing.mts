@@ -5,7 +5,8 @@
 // 3) a cada 10 minutos (ou pelo botão "Verificar agora" no Studio) o sistema procura esse PDF, anexa ao contrato
 //    e libera o pagamento da entrada.
 import { addEvent, getQuote, getSettings, getState, patchState, quotes, store, uid } from "./core.mts";
-import { callGoogle, contractPdfBase64, esc, firstName, googleReady } from "./google.mts";
+import { sendMail, callGoogle, contractPdfBase64, esc, firstName, googleReady } from "./google.mts";
+import { mails } from "./mails.mts";
 
 const SITE = "https://gustavoelian.com";
 
@@ -48,9 +49,7 @@ export async function prepareGoogleSigning(slug: string, origin: string) {
     `Abra o PDF no Drive e toque em "Solicitar assinatura": seu campo e o do cliente (${st.signer?.email || "e-mail do cliente"}).`,
   ], { href: r.pdfUrl, label: "Abrir o contrato no Drive" });
   const to = st.signer?.email || q.client?.email;
-  if (to) await callGoogle("email", { to, subject: `Proposta aprovada · ${q.title || "seu projeto"}`, title: "Proposta aprovada", eyebrow: "Contrato",
-    html: `<p>Olá${firstName(st.signer?.name || q.client?.name) ? ", " + firstName(st.signer?.name || q.client?.name) : ""}!</p><p>Recebi a aprovação de <b>${esc(q.title || "sua proposta")}</b>. Em instantes você recebe, do Google, o contrato para assinar eletronicamente. É só abrir o e-mail do Google, conferir e assinar.</p><p>Depois da assinatura, o pagamento da entrada fica disponível pelo mesmo link da proposta.</p>`,
-    button: { href: `${origin}/${slug}`, label: "Abrir a proposta" } });
+  if (to) await sendMail(to, mails.aprovada({ name: st.signer?.name || q.client?.name, title: q.title, link: `${origin}/${slug}`, contractNumber: st.contractNumber }));
 }
 
 /* Procura os PDFs assinados pelo Google dos contratos que aguardam assinatura. */
@@ -82,9 +81,7 @@ export async function checkGoogleSignatures(onlySlug?: string) {
     await addEvent(p.slug, { type: "signed-google" });
     signed.push(p.slug);
     const to = p.st.signer?.email || q.client?.email;
-    if (to) await callGoogle("email", { to, subject: `Contrato assinado · ${q.title || "seu projeto"}`, title: "Contrato assinado", eyebrow: "Contrato",
-      html: `<p>Olá${firstName(p.st.signer?.name) ? ", " + firstName(p.st.signer.name) : ""}!</p><p>O contrato de <b>${esc(q.title || "seu projeto")}</b> foi assinado pelas duas partes. A cópia assinada, com a trilha de auditoria do Google, está no link da proposta e no seu painel.</p><p>O próximo passo é o pagamento da entrada, pelo mesmo link.</p>`,
-      button: { href: `${SITE}/${p.slug}#pagamento`, label: "Pagar a entrada" } });
+    if (to) await sendMail(to, mails.assinado({ name: p.st.signer?.name, title: q.title, payLink: `${SITE}/${p.slug}#pagamento`, contractNumber: p.st.contractNumber }));
     await notifyOwner(`Contrato assinado · ${clientLabel(q, p.slug)}`, [`${p.st.signer?.name || "O cliente"} assinou pelo Google. A entrada já pode ser paga.`], { href: `${SITE}/app/#/c/${p.slug}`, label: "Abrir no Studio" });
   }
   return { checked: pending.length, signed };

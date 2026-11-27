@@ -25,6 +25,11 @@ const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;
 export const firstName = (n: any) => esc(String(n || "").trim().split(/\s+/)[0] || "");
 export { esc };
 
+/** Envia um dos modelos de mails.mts (com anexo opcional de um arquivo do Drive). */
+export async function sendMail(to: string, m: { subject: string; title: string; eyebrow: string; html: string; button?: any }, extra: Record<string, any> = {}) {
+  return callGoogle("email", { to, subject: m.subject, title: m.title, eyebrow: m.eyebrow, html: m.html, button: m.button || null, ...extra }, 30000);
+}
+
 /* PDF do contrato no layout aprovado (o mesmo de /api/pdf/:slug/contrato), em base64, para o Drive e o e-mail. */
 export async function contractPdfBase64(q: any, st: any, origin: string) {
   try {

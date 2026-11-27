@@ -10,7 +10,9 @@
 //   DELETE /api/previews/:id                apaga a prévia e os arquivos
 import type { Config, Context } from "@netlify/functions";
 import { sniff } from "../lib/og-card.mts";
-import { addEvent, fail, getQuote, isAdmin, json, shortCode, store } from "../lib/core.mts";
+import { addEvent, fail, getQuote, getState, isAdmin, json, shortCode, store } from "../lib/core.mts";
+import { googleReady, sendMail } from "../lib/google.mts";
+import { mails } from "../lib/mails.mts";
 
 export const previewStore = () => store("previews");
 export const FILE_MAX = 4.4 * 1024 * 1024;
@@ -126,6 +128,25 @@ export default async (req: Request, context: Context) => {
     return json({ ok: true, path, size: buf.byteLength });
   }
 
+  /* Envia a prévia ativa por e-mail ao cliente da proposta ligada (ou ao e-mail informado). { to?, note? } */
+  if (url.pathname.endsWith("/enviar")) {
+    if (req.method !== "POST") return fail("Método não permitido", 405);
+    if (!m.active) return fail("Publique uma versão antes de enviar");
+    const b = await req.json().catch(() => ({}));
+    const q: any = m.quoteSlug ? await getQuote(m.quoteSlug) : null;
+    const st: any = m.quoteSlug ? await getState(m.quoteSlug) : {};
+    const to = str(b?.to, 160) || st.signer?.email || q?.client?.email || "";
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return fail("Ligue a prévia a uma proposta com e-mail do cliente ou informe o e-mail");
+    if (!googleReady()) return fail("Gmail ainda não ligado", 503);
+    const ver = (m.versions || []).find((x: any) => x.v === m.active);
+    const r = await sendMail(to, mails.previa({ name: st.signer?.name || q?.client?.name || m.client, title: m.title || q?.title, version: m.active, note: str(b?.note, 600) || ver?.note || "", link: `${url.origin}/v/${m.slug || m.id}/` }));
+    if (!r?.ok) return fail(String(r?.error || "Não foi possível enviar"), 502);
+    const at = new Date().toISOString();
+    await S.setJSON(`meta/${id}`, { ...m, sent: [...(m.sent || []), { v: m.active, to, at }].slice(-20) });
+    if (m.quoteSlug) await addEvent(m.quoteSlug, { type: "email-sent", what: "previa", to, message: `v${m.active}` });
+    return json({ ok: true, to });
+  }
+
   if (url.pathname.endsWith("/publish")) {
     if (req.method !== "POST") return fail("Método não permitido", 405);
     const b = await req.json().catch(() => null);
@@ -174,4 +195,4 @@ export default async (req: Request, context: Context) => {
   return fail("Método não permitido", 405);
 };
 
-export const config: Config = { path: ["/api/previews", "/api/previews/:id", "/api/previews/:id/files", "/api/previews/:id/publish", "/api/previews/:id/cover", "/api/previews/:id/logo"] };
+export const config: Config = { path: ["/api/previews", "/api/previews/:id", "/api/previews/:id/files", "/api/previews/:id/publish", "/api/previews/:id/enviar", "/api/previews/:id/cover", "/api/previews/:id/logo"] };

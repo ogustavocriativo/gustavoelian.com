@@ -40,7 +40,7 @@
         p.dueDate ? h("div", { class: "ac-k" }, h("small", {}, "Previsão de entrega"), h("b", {}, dt(p.dueDate))) : null,
         p.total ? h("div", { class: "ac-k" }, h("small", {}, "Pago"), h("b", {}, brl(p.paid)), h("small", {}, `de ${brl(p.total)}`), h("div", { class: "ac-bar", role: "progressbar", "aria-valuenow": String(pct), "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Pagamento" }, h("i", { style: `width:${pct}%` }))) : null,
         p.approvedAt ? h("div", { class: "ac-k" }, h("small", {}, "Contrato assinado"), h("b", {}, dt(p.approvedAt))) : null),
-      p.delivery ? delivery(p.delivery) : null,
+      p.delivery ? delivery(p, p.delivery) : p.approvedAt ? certBox(p, null) : null,
       p.files.length ? h("div", { class: "ac-files", id: "acervo" }, h("p", { class: "ac-h3" }, "Acervo de materiais"), ...p.files.map((f) => h("a", { href: f.url }, f.name, h("span", {}, kb(f.size))))) : h("p", { class: "muted" }, "Os arquivos aparecem aqui assim que forem entregues."),
       h("div", { class: "ac-act" },
         h("a", { class: "btn dark", href: p.page }, p.status === "proposta" ? "Ver e aprovar a proposta" : "Abrir a proposta e pagamentos"),
@@ -48,20 +48,66 @@
         h("a", { class: "btn", href: "https://wa.me/5538984120719", target: "_blank", rel: "noopener" }, "Falar no WhatsApp")));
   }
 
-  function delivery(d) {
-    const byName = Object.fromEntries((d.files || []).map((f) => [f.name, f.hash]));
-    return h("section", { class: "ac-del", "aria-label": "Entrega final" },
-      h("span", { class: "eyebrow" }, `Entrega final · ${dt(d.at)}`),
-      h("h3", {}, "Seu projeto foi entregue"),
-      d.certificate
-        ? h("div", { class: "ac-cert" }, h("div", {}, h("small", {}, "Certificado de autoria e cessão de direitos"), h("br"), h("b", {}, d.certificate.code)), h("a", { class: "btn dark", href: d.certificate.url, target: "_blank", rel: "noopener" }, "Ver e baixar certificado"))
-        : h("p", { class: "muted" }, "O certificado de cessão de direitos é emitido assim que o pagamento for quitado."),
-      d.licenses?.length ? h("div", {}, h("p", { class: "ac-h3" }, "Licenças de terceiros"), h("ul", { class: "ac-list" }, ...d.licenses.map((x) => h("li", {}, x)))) : null,
-      d.accesses?.length ? h("div", {}, h("p", { class: "ac-h3" }, "Acessos transferidos para você"), h("ul", { class: "ac-list" }, ...d.accesses.map((x) => h("li", {}, x)))) : null,
-      d.support ? h("p", { class: "muted" }, h("b", {}, "Suporte pós-entrega: "), d.support) : null,
+  const CERT_INFO = "Ao final do projeto você recebe o certificado de autoria e cessão de direitos: o documento que transfere para você, em definitivo, os direitos patrimoniais de uso das peças entregues (Lei nº 9.610/1998), com o código de integridade de cada arquivo. É ele que comprova que você pode usar, reproduzir e registrar o material.";
+  const STATUS = { aguardando: "Aguardando sua aprovação", ajustes: "Alterações pedidas · em ajuste", aprovada: "Entrega aprovada" };
+
+  function certBox(p, d) {
+    const approved = d?.status === "aprovada", paid = p.total > 0 && p.paid >= p.total - 0.009;
+    if (d?.certificate) return h("div", { class: "ac-cert" }, h("div", {}, h("small", {}, "Certificado de autoria e cessão de direitos"), h("br"), h("b", {}, d.certificate.code)), h("a", { class: "btn dark", href: d.certificate.url, target: "_blank", rel: "noopener" }, "Ver e baixar certificado"));
+    return h("div", { class: "ac-certinfo" },
+      h("p", { class: "ac-h3" }, "Certificado de cessão de direitos"),
+      h("p", {}, CERT_INFO),
+      h("ul", { class: "ac-check", "aria-label": "Para liberar o certificado" },
+        h("li", { class: approved ? "ok" : "" }, approved ? "Entrega final aprovada" : "Aprovação da entrega final"),
+        h("li", { class: paid ? "ok" : "" }, paid ? "Pagamento quitado" : `Quitação do pagamento${p.total ? ` · falta ${brl(Math.max(0, p.total - p.paid))}` : ""}`)),
+      h("p", { class: "muted" }, "Com os dois itens concluídos, ele chega automaticamente no seu e-mail e fica disponível aqui."));
+  }
+
+  function respond(p, d, box) {
+    const msg = h("p", { class: "ac-msg", role: "status" });
+    const send = async (kind, message, btn) => {
+      btn.disabled = true; const old = btn.textContent; btn.textContent = "Enviando…"; msg.className = "ac-msg";
+      try {
+        const r = await fetch("/api/acompanhar/entrega", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ t: token, slug: p.slug, kind, message }) });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error || "Não foi possível enviar agora.");
+        panel();
+      } catch (x) { msg.textContent = x.message; msg.className = "ac-msg err"; btn.disabled = false; btn.textContent = old; }
+    };
+    const area = h("textarea", { class: "ac-in", id: `aj-${p.slug}`, rows: "4", placeholder: "Descreva o que precisa mudar: página, trecho, arquivo…" });
+    const form = h("div", { class: "ac-resp-form", hidden: "" },
+      h("label", { class: "ac-h3", for: `aj-${p.slug}` }, "O que precisa mudar?"), area,
+      h("div", { class: "ac-act" }, h("button", { class: "btn dark", type: "button", onclick: (e) => { if (area.value.trim().length < 5) { msg.textContent = "Descreva o que precisa mudar."; msg.className = "ac-msg err"; area.focus(); return; } send("ajustes", area.value, e.currentTarget); } }, "Enviar pedido de alteração"),
+        h("button", { class: "btn", type: "button", onclick: () => { form.hidden = true; choose.hidden = false; } }, "Voltar")));
+    const confirm = h("div", { class: "ac-resp-form", hidden: "" },
+      h("p", {}, `Confirmo que recebi e aprovo a entrega final${d.version > 1 ? ` (versão ${d.version})` : ""} de ${p.title}.`),
+      h("div", { class: "ac-act" }, h("button", { class: "btn dark", type: "button", onclick: (e) => send("aprovar", "", e.currentTarget) }, "Sim, aprovar a entrega"),
+        h("button", { class: "btn", type: "button", onclick: () => { confirm.hidden = true; choose.hidden = false; } }, "Voltar")));
+    const choose = h("div", { class: "ac-act" },
+      h("button", { class: "btn dark", type: "button", onclick: () => { choose.hidden = true; confirm.hidden = false; } }, "Aprovar entrega"),
+      h("button", { class: "btn", type: "button", onclick: () => { choose.hidden = true; form.hidden = false; area.focus(); } }, "Pedir alterações"));
+    box.append(h("div", { class: "ac-resp" }, h("p", { class: "ac-h3" }, "Sua resposta"), h("p", { class: "muted" }, "Confira tudo com calma. Se estiver tudo certo, aprove; se algo precisa mudar, descreva e eu envio uma nova versão."), choose, confirm, form, msg));
+  }
+
+  function delivery(p, d) {
+    const last = (d.feedback || []).slice(-1)[0];
+    const box = h("section", { class: "ac-del", id: "entrega", "aria-label": "Entrega final" },
+      h("div", { class: "ac-top" }, h("div", {}, h("span", { class: "eyebrow" }, `Entrega final${d.version > 1 ? ` · versão ${d.version}` : ""} · ${dt(d.at)}`), h("h3", {}, "Seu projeto foi entregue")), h("span", { class: "ac-badge" + (d.status === "aprovada" ? " ok" : "") }, STATUS[d.status] || STATUS.aguardando)),
+      d.note ? h("p", {}, d.note) : null,
+      d.systemUrl || d.manual ? h("div", { class: "ac-links" },
+        d.systemUrl ? h("a", { class: "ac-link", href: d.systemUrl, target: "_blank", rel: "noopener" }, h("b", {}, d.systemLabel || "Acessar o projeto"), h("small", {}, d.systemUrl.replace(/^https?:\/\//, ""))) : null,
+        d.manual ? h("a", { class: "ac-link", href: d.manual.url }, h("b", {}, "Manual de uso"), h("small", {}, `${d.manual.name} · ${kb(d.manual.size)}`)) : null) : null,
+      d.files?.length ? h("div", { class: "ac-files" }, h("p", { class: "ac-h3" }, "Arquivos da entrega"), ...d.files.map((f) => h("a", { href: f.url || "#" }, f.name, h("span", {}, kb(f.size))))) : null,
+      d.status === "ajustes" && last?.message ? h("div", { class: "ac-k" }, h("small", {}, `Seu pedido de alteração · ${dt(last.at)}`), h("p", {}, last.message), h("small", {}, "Estou ajustando. A nova versão chega por e-mail para você aprovar.")) : null);
+    if (d.status === "aguardando") respond(p, d, box);
+    box.append(certBox(p, d),
+      d.licenses?.length ? h("div", {}, h("p", { class: "ac-h3" }, "Licenças de terceiros"), h("ul", { class: "ac-list" }, ...d.licenses.map((x) => h("li", {}, x)))) : "",
+      d.accesses?.length ? h("div", {}, h("p", { class: "ac-h3" }, "Acessos transferidos para você"), h("ul", { class: "ac-list" }, ...d.accesses.map((x) => h("li", {}, x)))) : "",
+      d.support ? h("p", { class: "muted" }, h("b", {}, "Suporte pós-entrega: "), d.support) : "",
       h("div", {}, h("p", { class: "ac-h3" }, "Recomendações de segurança e conformidade"),
         h("ol", { class: "ac-recs" }, ...d.recommendations.map((r) => h("li", {}, h("b", {}, r.t), h("small", {}, r.d))))),
-      d.files?.length ? h("details", {}, h("summary", { class: "muted" }, "Códigos de integridade dos arquivos (SHA-256)"), ...d.files.map((f) => h("p", { class: "ac-hash" }, `${f.name}: ${f.hash || "—"}`))) : null);
+      d.files?.length ? h("details", {}, h("summary", { class: "muted" }, "Códigos de integridade dos arquivos (SHA-256)"), ...d.files.map((f) => h("p", { class: "ac-hash" }, `${f.name}: ${f.hash || "—"}`))) : "");
+    return box;
   }
 
   async function panel() {

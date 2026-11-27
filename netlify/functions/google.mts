@@ -1,7 +1,8 @@
 // Ações do Studio que passam pelo Google: testar a ligação, enviar a proposta por e-mail, gerar o contrato no Drive de novo.
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, fail, getQuote, getState, isAdmin, json } from "../lib/core.mts";
-import { callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
+import { sendMail, callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
+import { mails } from "../lib/mails.mts";
 
 export default async (req: Request, context: Context) => {
   if (!(await isAdmin(context))) return fail("Faça login", 401);
@@ -21,12 +22,7 @@ export default async (req: Request, context: Context) => {
     const to = String(q.client?.email || "").trim();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return fail("Cadastre o e-mail do cliente na proposta");
     const link = `${url.origin}/${slug}`;
-    const r = await callGoogle("email", {
-      to, subject: `Sua proposta${q.client?.company ? " · " + q.client.company : ""} está pronta`,
-      title: "Sua proposta está pronta", eyebrow: "Proposta",
-      html: `<p>Olá, ${firstName(q.client?.name)}!</p><p>Preparei a proposta${q.title ? ` de <b>${esc(q.title)}</b>` : ""} com escopo, prazos e formas de pagamento. Pelo link você vê os detalhes, escolhe o pacote e aprova.</p><p>Qualquer dúvida, é só responder este e-mail.</p>`,
-      button: { href: link, label: "Ver minha proposta" },
-    });
+    const r = await sendMail(to, mails.proposta({ name: q.client?.name, title: q.title, company: q.client?.company, link }));
     if (!r?.ok) return fail(r?.error || "Não foi possível enviar", 502);
     await addEvent(slug, { type: "email-sent", to });
     return json({ ok: true, to });

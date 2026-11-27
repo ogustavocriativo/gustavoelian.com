@@ -2,7 +2,8 @@
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, nextContractNumber, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid, formatDoc } from "../lib/core.mts";
 import { buildContract, paymentLabel } from "../lib/contract.mts";
-import { callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
+import { sendMail, callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
+import { mails } from "../lib/mails.mts";
 import { prepareGoogleSigning } from "../lib/signing.mts";
 
 function publicView(q: any) {
@@ -144,10 +145,7 @@ export default async (req: Request, context: Context) => {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("Digite um e-mail válido");
     if (st.otp && Date.now() - Date.parse(st.otp.sentAt) < 30_000) return fail("Aguarde meio minuto para pedir outro código", 429);
     const code = String(100000 + (crypto.getRandomValues(new Uint32Array(1))[0] % 900000));
-    const r = await callGoogle("email", {
-      to: email, subject: `${code} é o seu código para assinar`, title: "Código de confirmação", eyebrow: "Assinatura do contrato",
-      html: `<p>Olá${body.name ? ", " + firstName(body.name) : ""}!</p><p>Use este código para confirmar o seu e-mail e assinar a proposta${q.title ? ` de <b>${esc(q.title)}</b>` : ""}:</p><p style="margin:22px 0;padding:22px 0;background:#F4F4F5;border-radius:20px;text-align:center;font-size:40px;font-weight:500;letter-spacing:.32em;color:#0E0E10">${code}</p><p>Ele vale por 10 minutos. Se não foi você, ignore esta mensagem.</p>`,
-    }, 20000);
+    const r = await sendMail(email, mails.codigo({ name: body.name, title: q.title, code }));
     if (!r?.ok) return fail("Não consegui enviar o código agora. Tente de novo em instantes ou fale comigo pelo WhatsApp.", 502);
     await patchState(slug, { otp: { email, hash: await sha256(`${slug}|${email}|${code}`), exp: Date.now() + 10 * 60_000, tries: 0, sentAt: new Date().toISOString() } });
     await addEvent(slug, { type: "otp-sent" });

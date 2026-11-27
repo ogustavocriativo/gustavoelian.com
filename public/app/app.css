@@ -499,3 +499,4 @@ select.in{min-width:0;max-width:100%;text-overflow:ellipsis}
   #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
 }
 @media (max-width:600px) and (pointer:coarse){ body.typing .nav{transform:translateY(110%)} }
+.note-box{padding:12px 14px;border-radius:14px;background:var(--warn-soft)}

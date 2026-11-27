@@ -49,6 +49,18 @@
 .ac-k b{font-weight:300;font-size:var(--t-xl);letter-spacing:-.02em}
 .ac-bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:10px}.ac-bar i{display:block;height:100%;background:var(--accent-ink)}
 .ac-del{display:flex;flex-direction:column;gap:14px;padding:clamp(18px,3vw,28px);border-radius:var(--r-md,20px);background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}
+.ac-badge.ok{background:#1F7A4D;color:#fff}
+.ac-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.ac-link{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:16px;background:var(--card);text-decoration:none;box-shadow:inset 0 0 0 1px var(--line)}
+.ac-link b{font-weight:500}.ac-link b::after{content:" →";color:var(--accent-ink)}.ac-link small{color:var(--ink-2);font-size:var(--t-xs);word-break:break-all}
+.ac-resp{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 2px var(--accent-ink)}
+.ac-resp-form{display:flex;flex-direction:column;gap:10px}.ac-resp-form[hidden],.ac-act[hidden]{display:none}
+textarea.ac-in{min-height:110px;resize:vertical;line-height:1.5}
+.ac-certinfo{display:flex;flex-direction:column;gap:10px;padding:16px 18px;border-radius:16px;background:var(--card)}
+.ac-certinfo p{margin:0;font-size:var(--t-sm);line-height:1.6}
+.ac-check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--t-sm)}
+.ac-check li{display:flex;gap:10px;align-items:center}.ac-check li::before{content:"";width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--ink-3);flex:none}
+.ac-check li.ok::before{background:#1F7A4D;box-shadow:none}.ac-check li.ok{color:var(--ink)}
 .ac-del h3{font-size:var(--t-lg);margin:0}
 .ac-cert{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:14px;background:var(--card)}
 .ac-cert b{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em}

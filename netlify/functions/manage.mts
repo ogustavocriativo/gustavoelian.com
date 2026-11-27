@@ -1,7 +1,8 @@
 // Gestão (admin): catálogo de serviços, etapas do contrato e registro de pagamentos.
 import type { Config, Context } from "@netlify/functions";
 import { addEvent, brl, fail, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, settingsStore, sha256, uid, clientToken } from "../lib/core.mts";
-import { callGoogle, contractPdfBase64, esc, firstName, googleReady } from "../lib/google.mts";
+import { sendMail, callGoogle, contractPdfBase64, esc, firstName, googleReady } from "../lib/google.mts";
+import { mails } from "../lib/mails.mts";
 import { issueCertificateIfPaid } from "../lib/delivery.mts";
 
 const str = (v: any, max = 400) => String(v ?? "").trim().slice(0, max);
@@ -15,7 +16,7 @@ const STAGES = ["aprovado", "producao", "revisao", "entregue", "concluido"];
 const METHODS = ["pix", "cartao", "transferencia", "dinheiro", "boleto", "outro"];
 
 /* Recalcula total pago e marca/desmarca quitação. */
-async function settle(slug: string, payments: any[], st: any) {
+async function settle(slug: string, payments: any[], st: any, opt: { deferCert?: boolean } = {}) {
   const paidTotal = Math.round(payments.reduce((s, p) => s + Number(p.amount || 0), 0) * 100) / 100;
   const total = Number(st.total || 0);
   const patch: any = { payments, paidTotal };
@@ -24,7 +25,7 @@ async function settle(slug: string, payments: any[], st: any) {
   if (!quitado && st.paidAt && st.payment?.method !== "stripe") patch.paidAt = null;
   const next = await patchState(slug, patch);
   // entrega já feita e contrato quitado agora: o certificado de cessão sai sozinho
-  if (quitado && next.delivery && !next.delivery.certificate) { await issueCertificateIfPaid(slug); return getState(slug); }
+  if (!opt.deferCert && quitado && next.delivery && !next.delivery.certificate) { await issueCertificateIfPaid(slug); return getState(slug); }
   return next;
 }
 
@@ -127,9 +128,7 @@ export default async (req: Request, context: Context) => {
     // aviso do aditivo ao cliente, com o contrato atualizado no painel
     { const to = st.signer?.email || q.client?.email;
       if (googleReady() && to) {
-        const r = await callGoogle("email", { to, subject: `Aditivo ${amend.n} · condição de pagamento${st.contractNumber ? " · " + st.contractNumber : ""}`, title: `Aditivo ${amend.n} ao contrato`, eyebrow: "Contrato",
-          html: `<p>Olá${firstName(st.signer?.name) ? ", " + firstName(st.signer.name) : ""}!</p><p>Registrei o que combinamos por ${esc(channel)} sobre o pagamento de <b>${esc(q.title || "seu projeto")}</b>:</p><p>Antes: ${esc(prev.text || "—")}<br>Agora: <b>${esc(text)}</b></p><p>As demais cláusulas do contrato continuam as mesmas. O contrato atualizado, com o aditivo, está no seu painel.</p><p>Código do aditivo: ${esc(amend.hash.slice(0, 16))}…</p>`,
-          button: { href: `${new URL(req.url).origin}/api/pdf/${slug}/contrato`, label: "Ver o contrato atualizado" } });
+        const r = await sendMail(to, mails.aditivo({ name: st.signer?.name, title: q.title, n: amend.n, channel, before: prev.text, after: text, code: amend.hash.slice(0, 16), contractNumber: st.contractNumber, link: `${new URL(req.url).origin}/api/pdf/${slug}/contrato` }));
         await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "aditivo", to });
       } }
     // cópia do aditivo na pasta do cliente no Drive (se a ponte estiver ligada e atualizada)
@@ -160,20 +159,18 @@ export default async (req: Request, context: Context) => {
         at: new Date().toISOString(),
       };
       payments.push(p);
-      const next = await settle(slug, payments, st);
+      const next = await settle(slug, payments, st, { deferCert: true });
       await addEvent(slug, { type: "payment", total: amount, method: p.method });
       // recibo por e-mail para o cliente
       const to = st.signer?.email || q.client?.email;
       if (googleReady() && to) {
-        const brlf = (v: number) => "R$ " + Number(v || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        const rest = Math.max(0, Number(next.total || 0) - Number(next.paidTotal || 0));
-        const r = await callGoogle("email", { to, subject: `Recebimento confirmado · ${brlf(amount)}${st.contractNumber ? " · " + st.contractNumber : ""}`, title: "Recebimento confirmado", eyebrow: "Recibo",
-          html: `<p>Olá${firstName(st.signer?.name) ? ", " + firstName(st.signer.name) : ""}!</p><p>Confirmo o recebimento de <b>${brlf(amount)}</b> em ${esc(p.date.split("-").reverse().join("/"))}, por ${esc({ pix: "Pix", cartao: "cartão", transferencia: "transferência", dinheiro: "dinheiro", boleto: "boleto", outro: "outro meio" }[p.method] || p.method)}, referente a <b>${esc(q.title || "seu projeto")}</b>${st.contractNumber ? ` (contrato nº ${esc(st.contractNumber)})` : ""}.</p><p>Total pago: <b>${brlf(next.paidTotal)}</b> de ${brlf(next.total)}.${rest > 0.009 ? ` Saldo: <b>${brlf(rest)}</b>.` : " Contrato quitado."}</p><p>Código do lançamento: ${esc(p.id)}.</p>`,
-          button: { href: `${new URL(req.url).origin}/acompanhar?t=${await clientToken(to)}`, label: "Ver no meu painel" } });
+        const r = await sendMail(to, mails.recibo({ name: st.signer?.name, title: q.title, contractNumber: st.contractNumber, amount, date: p.date, method: { pix: "Pix", cartao: "cartão", transferencia: "transferência", dinheiro: "dinheiro", boleto: "boleto", outro: "outro meio" }[p.method] || p.method, paid: Number(next.paidTotal || 0), total: Number(next.total || 0), id: p.id, panel: `${new URL(req.url).origin}/acompanhar?t=${await clientToken(to)}` }));
         await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "recibo", to });
       }
+      // o e-mail de conclusão (agradecimento + certificado) é sempre o último: sai depois do recibo
+      const cert = await issueCertificateIfPaid(slug, new URL(req.url).origin);
       if (body.receiptId && st.paymentNotice?.fileId === body.receiptId) await patchState(slug, { paymentNotice: { ...st.paymentNotice, confirmedAt: p.at } });
-      return json(next, 201);
+      return json(cert ? await getState(slug) : next, 201);
     }
     if (req.method === "PATCH" && pid) {
       const body = await req.json().catch(() => ({}));

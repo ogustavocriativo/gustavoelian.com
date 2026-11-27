@@ -62,6 +62,7 @@ const ICONS = {
   eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>', trash: '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',
   copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
   check: '<path d="M20 6 9 17l-5-5"/>', image: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>', clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
   receipt: '<path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/>', send: '<path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/>',
   alert: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
   activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', trend: '<path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/>', box: '<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
@@ -116,10 +117,12 @@ const evText = (e) => ({
   paid: `Pagamento confirmado · ${brl(e.total)}`,
   payment: `Recebimento registrado · ${brl(e.total)} (${METHODS[e.method] || e.method})`,
   stage: `Contrato → ${stageLabel(e.stage)}`,
-  "email-sent": e.what === "entrega" ? "Entrega final enviada por e-mail" : e.what === "recibo" ? "Recibo enviado por e-mail" : e.what === "aditivo" ? "Aditivo enviado por e-mail" : `Proposta enviada por e-mail para ${e.to || "o cliente"}`,
-  certificate: e.certificate ? `Quitado: certificado de cessão emitido · ${e.certificate}` : "Certificado de cessão emitido",
+  "email-sent": e.what === "entrega" ? "Entrega final enviada por e-mail" : e.what === "conclusao" ? "E-mail de conclusão enviado: agradecimento e certificado" : e.what === "aprovada-saldo" ? "E-mail de entrega aprovada enviado (aguarda o saldo)" : e.what === "previa" ? `Prévia ${e.message || ""} enviada por e-mail` : e.what === "recibo" ? "Recibo enviado por e-mail" : e.what === "aditivo" ? "Aditivo enviado por e-mail" : `Proposta enviada por e-mail para ${e.to || "o cliente"}`,
+  certificate: e.certificate ? `Projeto concluído: certificado de cessão emitido · ${e.certificate}` : "Certificado de cessão emitido",
+  "delivery-approved": `Cliente aprovou a entrega${e.version > 1 ? ` (versão ${e.version})` : ""}`,
+  "delivery-changes": `Cliente pediu alterações${e.version > 1 ? ` na versão ${e.version}` : ""}`,
   "email-error": "E-mail da entrega não saiu",
-  delivery: e.certificate ? `Entrega final gerada · certificado ${e.certificate}` : "Entrega final gerada · certificado aguarda quitação",
+  delivery: e.version > 1 ? `Entrega final gerada · versão ${e.version}` : e.certificate ? `Entrega final gerada · certificado ${e.certificate}` : "Entrega final gerada",
   terms: `Condição de pagamento alterada · ${e.text || ""}`,
   "payment-edit": `Recebimento editado · ${brl(e.total)}`,
   "payment-delete": `Recebimento excluído · ${brl(e.total)}`,
@@ -413,7 +416,24 @@ function shareRow(p) {
   const msg = `Oi${p.client ? ", " + p.client.split(" ")[0] : ""}! Segue o link para você ver${p.title ? " " + p.title : " o projeto"} e aprovar ou pedir ajustes direto por lá:\n${link}`;
   return h("div", { class: "btns grid2" },
     h("button", { class: "btn", type: "button", onclick: () => copy(link) }, icon("copy"), "Copiar link"),
-    h("a", { class: "btn primary", href: `https://wa.me/?text=${encodeURIComponent(msg)}`, target: "_blank", rel: "noopener" }, icon("wa"), "WhatsApp"));
+    h("a", { class: "btn", href: `https://wa.me/?text=${encodeURIComponent(msg)}`, target: "_blank", rel: "noopener" }, icon("wa"), "WhatsApp"),
+    p.active ? h("button", { class: "btn primary", style: "grid-column:1/-1", type: "button", onclick: () => sendPreviewSheet(p) }, icon("send"), `Enviar a versão ${p.active} por e-mail`) : "");
+}
+/** Envia a prévia ativa por e-mail ao cliente (modelo "Prévia pronta para aprovação"). */
+function sendPreviewSheet(p) {
+  const to = h("input", { class: "in", type: "email", inputmode: "email", placeholder: p.quoteSlug ? "Deixe vazio para usar o e-mail do cliente da proposta" : "email@cliente.com" });
+  const note = h("textarea", { class: "in", rows: 3, placeholder: "Opcional: o que mudou nesta versão (vai no e-mail)." });
+  note.value = (p.versions || []).find((v) => v.v === p.active)?.note || "";
+  const err = h("p", { class: "err", role: "alert" });
+  sheet("Enviar prévia por e-mail", (close) => [
+    h("p", { class: "hint" }, "O cliente recebe o link da prévia. A aprovação ou o pedido de ajustes é feito na própria prévia, e a resposta chega para você."),
+    h("label", { class: "f" }, h("span", {}, "E-mail do cliente"), to),
+    h("label", { class: "f" }, h("span", {}, "O que mudou"), note), err,
+    h("button", { class: "btn primary block", type: "button", onclick: async (e) => {
+      const b = e.currentTarget; b.disabled = true; b.textContent = "Enviando…";
+      try { const r = await api(`/api/previews/${p.id}/enviar`, { method: "POST", body: { to: to.value.trim(), note: note.value } }); haptic(); close(); toast(`Prévia enviada para ${r.to}`); }
+      catch (x) { err.textContent = x.message; b.disabled = false; b.textContent = "Enviar"; }
+    } }, icon("send"), "Enviar")]);
 }
 /** Escolhe o .zip, mostra progresso e publica. `p` = prévia existente (nova versão) ou null (cria antes). */
 function zipSheet(p, onDone) {
@@ -1010,44 +1030,69 @@ async function renderContract(slug) {
     hero, h("div", { style: "height:12px" }), h("div", { class: "stack" }, signCard, workCard, termsCard, payCard, deliveryCard(slug, q0, s, rest), docCard),
     secH("Linha do tempo"), h("div", { class: "glass card" }, ...events.map((e) => evRow(e))), h("div", { class: "gap24" }));
 }
-/* Entrega final: certificado de cessão, integridade dos arquivos, licenças, acessos e recomendações de conformidade. */
+/* Entrega final: link do sistema/site, manual de uso, arquivos com integridade; o cliente aprova ou pede alterações no painel.
+   O certificado de cessão sai sozinho com a entrega APROVADA e o contrato QUITADO, no último e-mail (agradecimento). */
+const DSTATUS = { aguardando: ["Aguardando aprovação do cliente", "info"], ajustes: ["Cliente pediu alterações", "warn"], aprovada: ["Aprovada pelo cliente", "ok"] };
 function deliveryCard(slug, q0, s, rest) {
   const d = s.delivery;
   const box = h("section", { class: "form-card glass" }, h("h2", {}, "Entrega final"));
   const files = (q0.attachments || []).filter((a) => a.showToClient && !a.fromClient && a.kind !== "contrato-assinado");
   if (d) {
+    const st = d.certificate ? "aprovada" : d.status || "aguardando";
+    const last = (d.feedback || []).slice(-1)[0];
     box.append(
-      h("p", { class: "pill wrap " + (d.certificate ? "ok" : "") }, d.certificate ? `Certificado ${d.certificate.code} emitido em ${dateBR(d.at)}` : `Entregue em ${dateBR(d.at)} · certificado aguarda quitação`),
-      h("p", { class: "hint" }, `${d.files.length} arquivo(s) com código de integridade · ${d.recommendations.length} recomendações ao cliente.`),
-      d.certificate ? h("a", { class: "btn block", href: `/certificado?c=${d.certificate.code}`, target: "_blank", rel: "noopener" }, icon("doc"), "Ver certificado") : "");
+      h("p", { class: "pill wrap " + DSTATUS[st][1] }, `Versão ${d.version || 1} · entregue em ${dateBR(d.at)} · ${DSTATUS[st][0]}`),
+      st === "ajustes" && last?.message ? h("div", { class: "note-box" }, h("small", { class: "faint" }, `Pedido do cliente · ${dateBR(last.at)}`), h("p", { style: "margin:6px 0 0;white-space:pre-wrap" }, last.message)) : "",
+      h("p", { class: "hint" }, [d.systemUrl ? `Link: ${d.systemUrl.replace(/^https?:\/\//, "")}` : "", d.manual ? `Manual: ${d.manual.name}` : "", `${d.files.length} arquivo(s)`].filter(Boolean).join(" · ")),
+      d.certificate
+        ? h("a", { class: "btn block", href: `/certificado?c=${d.certificate.code}`, target: "_blank", rel: "noopener" }, icon("doc"), `Ver certificado ${d.certificate.code}`)
+        : h("p", { class: "hint" }, `Certificado: ${st === "aprovada" ? "entrega aprovada ✓" : "aguarda aprovação da entrega"} · ${rest > 0.01 ? `aguarda quitação (falta ${brl(rest)})` : "quitado ✓"}. Sai automaticamente, com o e-mail de agradecimento.`));
+  } else {
+    box.append(h("p", { class: "hint" }, files.length ? `Vão na entrega os ${files.length} arquivo(s) marcados como visíveis ao cliente em Arquivos.` : "Nenhum arquivo visível ao cliente ainda. Anexe as entregas na proposta antes de gerar."));
   }
-  box.append(d ? "" : h("p", { class: "hint" }, files.length ? `Vão na entrega os ${files.length} arquivo(s) marcados como visíveis ao cliente em Arquivos.` : "Nenhum arquivo visível ao cliente ainda. Anexe as entregas na proposta antes de gerar."),
-    rest > 0.01 ? h("p", { class: "pill wrap" }, "Ainda há saldo em aberto: a entrega sai, mas o certificado de cessão só é emitido após a quitação (cláusula 7.1).") : "",
-    h("button", { class: "btn primary block", type: "button", onclick: () => deliverySheet(slug, d) }, icon("check"), d ? "Gerar entrega de novo" : "Preparar entrega final"));
+  box.append(
+    d?.certificate ? h("p", { class: "pill ok wrap" }, "Projeto concluído: entrega aprovada, contrato quitado e certificado enviado.") :
+      h("button", { class: "btn primary block", type: "button", onclick: () => deliverySheet(slug, d, q0) }, icon("check"), d ? (d.status === "ajustes" ? "Enviar nova versão da entrega" : "Gerar entrega de novo") : "Preparar entrega final"),
+    h("button", { class: "btn ghost block", type: "button", onclick: async (e) => {
+      const b = e.currentTarget; b.disabled = true;
+      try { const r = await api(`/api/quotes/${slug}/delivery?painel`); window.open(r.url, "_blank", "noopener"); } catch (x) { toast(x.message); }
+      b.disabled = false;
+    } }, icon("eye"), "Ver o painel como o cliente"));
   return box;
 }
-async function deliverySheet(slug, prev) {
+async function deliverySheet(slug, prev, q0) {
   const info = await api(`/api/quotes/${slug}/delivery`);
   const chosen = new Set(prev?.kinds || info.suggested);
   const chips = h("div", { class: "chips", role: "group", "aria-label": "Tipo de projeto" }, ...Object.entries(info.kinds).map(([k, label]) => {
     const b = h("button", { type: "button", class: "chip", "aria-pressed": String(chosen.has(k)), onclick: () => { chosen.has(k) ? chosen.delete(k) : chosen.add(k); b.setAttribute("aria-pressed", String(chosen.has(k))); } }, label); return b; }));
   const ta = (v, ph, rows = 3) => { const t = h("textarea", { class: "in", rows, placeholder: ph }); t.value = (v || []).join ? (v || []).join("\n") : v || ""; return t; };
+  const url = h("input", { class: "in", type: "url", inputmode: "url", placeholder: "https://sistema.cliente.com.br", value: prev?.systemUrl || "" });
+  const urlLabel = h("input", { class: "in", placeholder: "Ex.: Acessar o sistema", value: prev?.systemLabel || "", maxlength: "60" });
+  const pdfs = (q0?.attachments || []).filter((a) => a.showToClient && !a.fromClient && a.kind !== "contrato-assinado" && /pdf/i.test(a.type || a.name));
+  const manual = h("select", { class: "in" }, h("option", { value: "" }, pdfs.length ? "Sem manual" : "Anexe o PDF em Arquivos (visível ao cliente)"), ...pdfs.map((a) => h("option", { value: a.id, selected: prev?.manual?.id === a.id || (!prev && /manual|guia/i.test(a.name)) }, a.name)));
+  const note = ta(prev?.status === "ajustes" ? "" : prev?.note, prev?.status === "ajustes" ? "O que mudou nesta versão (vai no e-mail)." : "Opcional: uma mensagem para o cliente no e-mail da entrega.", 2);
   const lic = ta(prev?.licenses, "Uma por linha. Ex.: Fonte Gilroy · licença desktop comercial · comprar em nome da empresa");
   const acc = ta(prev?.accesses, "Uma por linha, sem senhas. Ex.: Hospedagem Hostinger · conta transferida para contato@empresa.com");
   const sup = ta(prev?.support, "Opcional. Ex.: correção de erros técnicos sem custo por 30 dias após a entrega.", 2);
   const send = h("input", { type: "checkbox", checked: true });
   const err = h("p", { class: "err", role: "alert" });
-  sheet("Entrega final", (close) => [
-    h("p", { class: "hint" }, "O cliente recebe os arquivos com código de integridade (SHA-256), o certificado de autoria e cessão de direitos (se quitado) e as recomendações de segurança e conformidade do tipo de projeto."),
+  sheet(prev ? `Entrega final · versão ${(prev.version || 1) + 1}` : "Entrega final", (close) => [
+    h("p", { class: "hint" }, "O cliente recebe por e-mail o link do projeto, o manual em anexo e o acesso ao painel, onde aprova a entrega ou pede alterações. O certificado sai depois da aprovação e da quitação."),
+    h("label", { class: "f" }, h("span", {}, "Link do sistema ou site entregue"), url),
+    h("label", { class: "f" }, h("span", {}, "Texto do botão do link"), urlLabel),
+    h("label", { class: "f" }, h("span", {}, "Manual de uso (PDF, vai anexado no e-mail)"), manual),
+    h("label", { class: "f" }, h("span", {}, "Mensagem ao cliente"), note),
     h("label", { class: "f" }, h("span", {}, "Tipo de projeto (define as recomendações)"), chips),
     h("label", { class: "f" }, h("span", {}, "Licenças de terceiros"), lic),
     h("label", { class: "f" }, h("span", {}, "Acessos transferidos"), acc),
     h("label", { class: "f" }, h("span", {}, "Suporte pós-entrega"), sup),
     h("label", { class: "switch" }, "Enviar e-mail ao cliente", send), err,
     h("button", { class: "btn primary block", type: "button", onclick: async (e) => {
-      const b = e.currentTarget; b.disabled = true; b.textContent = "Gerando…";
+      const b = e.currentTarget;
+      if (url.value.trim() && !/^https?:\/\/\S+\.\S+$/i.test(url.value.trim())) { err.textContent = "O link precisa começar com https://"; url.focus(); return; }
+      b.disabled = true; b.textContent = "Gerando…";
       try {
-        const r = await api(`/api/quotes/${slug}/delivery`, { method: "POST", body: { kinds: [...chosen], licenses: lic.value, accesses: acc.value, support: sup.value, send: send.checked } });
+        const r = await api(`/api/quotes/${slug}/delivery`, { method: "POST", body: { kinds: [...chosen], systemUrl: url.value.trim(), systemLabel: urlLabel.value.trim(), manualId: manual.value, note: note.value, licenses: lic.value, accesses: acc.value, support: sup.value, send: send.checked } });
         haptic(); close(); toast(r.emailError ? r.emailError : r.emailed ? "Entrega enviada ao cliente" : "Entrega gerada"); renderContract(slug);
       } catch (x) { err.textContent = x.message; b.disabled = false; b.textContent = "Gerar entrega"; }
     } }, icon("check"), "Gerar entrega")]);
@@ -1222,7 +1267,7 @@ async function renderSettings() {
         f("WhatsApp (só números, com 55)", bind(s.issuer, "whatsapp", { inputmode: "numeric" })), f("WhatsApp exibido no PDF", bind(s.issuer, "whatsappLabel"))),
       (() => { const st = h("p", { class: "hint" }, "Verificando…");
         api("/api/google/status").then((r) => { st.textContent = !r.ready ? "Ainda não configurado. Falta cadastrar GOOGLE_SCRIPT_URL e GOOGLE_SCRIPT_SECRET no Cloudflare (Workers › gustavoelian › Settings › Variables and Secrets)." : r.ok ? `Ligado como ${r.user}. Contratos vão para Meu Drive › @adm › @clientes.` : `Configurado, mas com erro: ${r.error}`; st.className = "pill wrap " + (r.ready && r.ok ? "ok" : ""); }).catch(() => (st.textContent = "Não foi possível verificar."));
-        return h("section", { class: "form-card glass" }, h("h2", {}, "Gmail e Google Drive"), st); })(),
+        return h("section", { class: "form-card glass" }, h("h2", {}, "Gmail e Google Drive"), st, h("a", { class: "btn block", href: "/api/emails/modelos", target: "_blank", rel: "noopener" }, icon("mail"), "Ver os modelos de e-mail ao cliente")); })(),
       h("section", { class: "form-card glass" }, h("h2", {}, "Pagamento"),
         h("div", { class: "r2" }, f("Entrada à vista (%)", bind(s.payments, "entryPct", { min: 0, max: 100, inputmode: "numeric" }, "number")), f("Máx. parcelas", bind(s.payments, "maxInstallments", { min: 1, max: 12, inputmode: "numeric" }, "number"))),
         f("Chave Pix", bind(s.pix, "key", { placeholder: "CNPJ, e-mail, telefone ou aleatória" })),

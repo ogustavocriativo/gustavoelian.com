@@ -3,8 +3,9 @@
 //   GET  /api/acompanhar?t=<token>          → projetos do cliente: etapa, prazos, pagamentos e arquivos liberados
 import type { Config, Context } from "@netlify/functions";
 import { clientToken, fail, getState, json, quotes, readClientToken } from "../lib/core.mts";
-import { callGoogle, esc, firstName, googleReady } from "../lib/google.mts";
-import { publicDelivery } from "../lib/delivery.mts";
+import { sendMail, callGoogle, esc, firstName, googleReady } from "../lib/google.mts";
+import { mails } from "../lib/mails.mts";
+import { publicDelivery, respondDelivery } from "../lib/delivery.mts";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const STAGES: Record<string, string> = { aprovado: "Aprovado", producao: "Produção", revisao: "Revisão", entregue: "Entregue", concluido: "Concluído" };
@@ -34,14 +35,25 @@ export default async (req: Request, context: Context) => {
     if (found.length) {
       const link = `${url.origin}/acompanhar?t=${await clientToken(email)}`;
       const name = found[0].st.signer?.name || found[0].q.client?.name || "";
-      await callGoogle("email", {
-        to: email, subject: "Seu acesso para acompanhar o projeto", title: "Acompanhe o seu projeto", eyebrow: "Área do cliente",
-        html: `<p>Olá${name ? ", " + firstName(name) : ""}!</p><p>Por este link você acompanha a etapa do projeto, os prazos, os pagamentos e os arquivos já entregues. Ele vale por 14 dias; depois é só pedir outro no site.</p>`,
-        button: { href: link, label: "Abrir meu painel" },
-      });
+      await sendMail(email, mails.acesso({ name, link }));
     }
     await new Promise((r) => setTimeout(r, 400));
     return json({ ok: true });
+  }
+
+  /* Resposta à entrega final, no painel: { t, slug, kind: "aprovar" | "ajustes", message } */
+  if (url.pathname.endsWith("/entrega")) {
+    if (req.method !== "POST") return fail("Método não permitido", 405);
+    const b = await req.json().catch(() => ({}));
+    const who = await readClientToken(String(b.t || ""));
+    if (!who) return fail("Seu acesso expirou. Peça um novo link no painel.", 401);
+    const mine = (await quotesFor(who)).find((x) => x.q.slug === String(b.slug || ""));
+    if (!mine) return fail("Projeto não encontrado", 404);
+    const kind = b.kind === "aprovar" ? "aprovar" : b.kind === "ajustes" ? "ajustes" : "";
+    if (!kind) return fail("Resposta inválida");
+    const r: any = await respondDelivery(mine.q.slug, kind, String(b.message || ""), url.origin);
+    if (r.error) return fail(r.error, 409);
+    return json(r);
   }
 
   if (req.method !== "GET") return fail("Método não permitido", 405);
@@ -71,6 +83,6 @@ export default async (req: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: ["/api/acompanhar", "/api/acompanhar/entrar"],
+  path: ["/api/acompanhar", "/api/acompanhar/entrar", "/api/acompanhar/entrega"],
   rateLimit: { windowLimit: 12, windowSize: 60, aggregateBy: ["ip", "domain"] },
 };
