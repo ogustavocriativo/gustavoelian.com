@@ -191,23 +191,7 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
   const sub = [q.client?.company && q.client.company !== q.client?.name ? q.client.company : "", q.title].filter(Boolean).join(" · ");
   if (sub) d.text(sub, { font: "light", size: 13, color: C.soft, gap: 14 });
 
-  // cartão-resumo com os atalhos clicáveis
-  const top = d.y, h = 104;
-  round(d, M, top, W, h, 14, C.ice);
-  const col = (i: number, k: string, v: string) => {
-    const x = M + 18 + i * ((W - 36) / 3);
-    d.page.drawText(k.toUpperCase(), { x, y: top - 24, size: 7.5, font: d.f.med, color: C.accent });
-    d.page.drawText(v, { x, y: top - 40, size: 11, font: d.f.bold, color: C.ink });
-  };
-  col(0, "Valor", brl(Number(st.total || 0)));
-  col(1, "Assinado em", fmtDate(String(st.approvedAt).slice(0, 10)));
-  col(2, "Contratante", String(st.signer?.name || q.client?.name || "").split(" ").slice(0, 2).join(" "));
-  let px = M + 18;
-  px += pill(d, px, top - 62, "Acompanhar a demanda", links.painel, true) + 8;
-  px += pill(d, px, top - 62, "Acervo de materiais", links.acervo) + 8;
-  px += pill(d, px, top - 62, "Proposta online", links.proposta) + 8;
-  if (px + d.f.med.widthOfTextAtSize("WhatsApp", 9) + 40 <= M + W - 12) pill(d, px, top - 62, "WhatsApp", links.contato);
-  d.y = top - h - 22;
+  d.y -= 6;
 
   // corpo: títulos de cláusula destacados, parágrafos com respiro
   const lines = String(st.contractText || "").split("\n").filter((l, i) => !(i === 0 && /^CONTRATO DE/i.test(l)));
@@ -252,6 +236,25 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
   }
   sig(M + half + 24, s.issuer.name, `CONTRATADO · ${s.issuer.doc}`, `Ao emitir a proposta em ${fmtDate(String(q.createdAt || st.approvedAt).slice(0, 10))}`);
   d.y = sy - 124;
+
+  // cartão-resumo com os atalhos clicáveis, depois das assinaturas e antes do registro de aceite
+  d.ensure(104 + 40); d.y -= 8;
+  const top = d.y, h = 104;
+  round(d, M, top, W, h, 14, C.ice);
+  const col = (i: number, k: string, v: string) => {
+    const x = M + 18 + i * ((W - 36) / 3);
+    d.page.drawText(k.toUpperCase(), { x, y: top - 24, size: 7.5, font: d.f.med, color: C.accent });
+    d.page.drawText(v, { x, y: top - 40, size: 11, font: d.f.bold, color: C.ink });
+  };
+  col(0, "Valor", brl(Number(st.total || 0)));
+  col(1, "Assinado em", fmtDate(String(st.approvedAt).slice(0, 10)));
+  col(2, "Contratante", String(st.signer?.name || q.client?.name || "").split(" ").slice(0, 2).join(" "));
+  let px = M + 18;
+  px += pill(d, px, top - 62, "Acompanhar a demanda", links.painel, true) + 8;
+  px += pill(d, px, top - 62, "Acervo de materiais", links.acervo) + 8;
+  px += pill(d, px, top - 62, "Proposta online", links.proposta) + 8;
+  if (px + d.f.med.widthOfTextAtSize("WhatsApp", 9) + 40 <= M + W - 12) pill(d, px, top - 62, "WhatsApp", links.contato);
+  d.y = top - h - 22;
 
   // trilha de auditoria em duas colunas
   d.ensure(200); d.rule(16);
