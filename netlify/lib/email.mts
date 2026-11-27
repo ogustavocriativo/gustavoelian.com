@@ -2,20 +2,23 @@
 // logo oficial, apenas a tipografia LT Wave (fonte web, sem fonte reserva), tinta #0E0E10,
 // destaque #6699FF/#2F5FD0, cartões #F4F4F5 com cantos arredondados e botão em pílula.
 const ORIGIN = "https://gustavoelian.com";
-const FONT = `'LT Wave'`; // só a tipografia oficial, sem fontes reserva
+// texto corrido: LT Wave quando o leitor carrega a fonte; senão Georgia. Título, rótulo, botões e destaques vão como imagem na LT Wave (emailtext.mts)
+const FONT = `'LT Wave', Georgia, serif`;
 const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
 
 export type EmailParts = { title?: string; subject?: string; html?: string; button?: { href: string; label?: string } | null; eyebrow?: string };
 
 /** Cartão de link dentro do corpo do e-mail (sistema entregue, manual, certificado). */
+import { textImg } from "./emailtext.mts";
+
 export function linkCard(href: string, label: string, sub = "") {
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 14px"><tr><td style="background:#F4F4F5;border-radius:20px;padding:18px 22px"><a href="${esc(href)}" style="font-family:${FONT};font-size:17px;font-weight:500;color:#0E0E10;text-decoration:none">${esc(label)} &nbsp;<span style="color:#2F5FD0">→</span></a>${sub ? `<br><span style="font-family:${FONT};font-size:13px;color:#55575E;word-break:break-all">${esc(sub)}</span>` : ""}</td></tr></table>`;
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 14px"><tr><td style="background:#F4F4F5;border-radius:20px;padding:18px 22px"><a href="${esc(href)}" style="text-decoration:none;display:block">${textImg("destaque", label)}</a>${sub ? `<span style="display:block;margin-top:6px;font-family:${FONT};font-size:13px;color:#55575E;overflow-wrap:anywhere">${esc(sub)}</span>` : ""}</td></tr></table>`;
 }
 
 export function emailHtml(p: EmailParts) {
   const title = String(p.title || p.subject || "").trim();
   const eyebrow = p.eyebrow || "Gustavo Elian · Studio";
-  const btn = p.button?.href ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:30px 0 4px"><tr><td style="border-radius:999px;background:#0E0E10"><a href="${esc(p.button.href)}" style="display:inline-block;padding:16px 30px;font-family:${FONT};font-size:16px;font-weight:500;color:#FFFFFF;text-decoration:none;border-radius:999px">${esc(p.button.label || "Abrir")}</a></td></tr></table>` : "";
+  const btn = p.button?.href ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:30px 0 4px"><tr><td style="border-radius:999px;background:#0E0E10"><a href="${esc(p.button.href)}" style="display:inline-block;padding:16px 30px;font-family:${FONT};font-size:16px;font-weight:500;color:#FFFFFF;text-decoration:none;border-radius:999px">${textImg("botao", p.button.label || "Abrir")}</a></td></tr></table>` : "";
   // corpo: parágrafos e listas vindos do sistema recebem o estilo do site
   const body = String(p.html || "")
     .replace(/<p>/g, `<p style="margin:0 0 14px;font-family:${FONT};font-size:16px;line-height:1.6;color:#2E2F33">`)
@@ -36,8 +39,8 @@ a{color:#2F5FD0}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px">
 <tr><td style="padding:0 6px 20px"><a href="${ORIGIN}"><img src="${ORIGIN}/img/logo_gustavo.png" width="168" height="31" alt="@gustavoelian" style="display:block;border:0;width:168px;height:auto"></a></td></tr>
 <tr><td class="card" style="font-family:${FONT};color:#2E2F33;background:#FFFFFF;border-radius:32px;padding:40px 44px">
-<p style="margin:0 0 18px;font-family:${FONT};font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#55575E"><span style="color:#6699FF;font-size:14px">●</span>&nbsp; ${esc(eyebrow)}</p>
-${title ? `<h1 style="margin:0 0 20px;font-family:${FONT};font-size:34px;line-height:1.15;font-weight:300;letter-spacing:-.02em;color:#0E0E10">${esc(title)}</h1>` : ""}
+<div style="margin:0 0 18px">${textImg("rotulo", eyebrow)}</div>
+${title ? `<h1 style="margin:0 0 22px;font-size:0;line-height:0">${textImg("titulo", title)}</h1>` : ""}
 ${body}${btn}
 </td></tr>
 <tr><td style="padding:24px 10px 0;font-family:${FONT};font-size:12px;line-height:1.6;color:#6B6E76">

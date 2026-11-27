@@ -3,6 +3,7 @@
 // Ordem da jornada: proposta → código → aprovada → assinado → recibo → aditivo → prévia → entrega →
 // ajustes recebidos → entrega aprovada (saldo em aberto) → conclusão com certificado e agradecimento. "acesso" é o link do painel.
 import { linkCard } from "./email.mts";
+import { textImg } from "./emailtext.mts";
 
 const esc = (s: any) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c] as string));
 const first = (n: any) => esc(String(n || "").trim().split(/\s+/)[0] || "");
@@ -29,7 +30,7 @@ export const mails = {
   /** 2. Código de confirmação do e-mail (assinatura pelo sistema). */
   codigo: (p: { name?: string; title?: string; code: string }): Mail => ({
     subject: `${p.code} é o seu código para assinar`, title: "Código de confirmação", eyebrow: "Assinatura do contrato",
-    html: `${hi(p.name)}<p>Use este código para confirmar o seu e-mail e assinar a proposta${p.title ? ` de <b>${esc(p.title)}</b>` : ""}:</p><p style="margin:22px 0;padding:22px 0;background:#F4F4F5;border-radius:20px;text-align:center;font-size:40px;font-weight:500;letter-spacing:.32em;color:#0E0E10">${esc(p.code)}</p><p>Ele vale por 10 minutos. Se não foi você, ignore esta mensagem.</p>`,
+    html: `${hi(p.name)}<p>Use este código para confirmar o seu e-mail e assinar a proposta${p.title ? ` de <b>${esc(p.title)}</b>` : ""}:</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0"><tr><td align="center" style="padding:22px 0;background:#F4F4F5;border-radius:20px">${textImg("codigo", p.code, "margin:0 auto")}</td></tr></table><p>Ele vale por 10 minutos. Se não foi você, ignore esta mensagem.</p>`,
   }),
 
   /** 3. Cliente aprovou a proposta (assinatura pelo Google a caminho). */
@@ -51,7 +52,7 @@ export const mails = {
     const rest = Math.max(0, p.total - p.paid);
     return {
       subject: `Recebimento confirmado · ${brl(p.amount)}${p.contractNumber ? " · " + p.contractNumber : ""}`, title: "Recebimento confirmado", eyebrow: "Recibo",
-      html: `${hi(p.name)}<p>Confirmo o recebimento de <b>${brl(p.amount)}</b> em ${esc(p.date.split("-").reverse().join("/"))}, por ${esc(p.method)}, referente a <b>${proj(p.title)}</b>${num(p.contractNumber)}.</p><p>Total pago: <b>${brl(p.paid)}</b> de ${brl(p.total)}.${rest > 0.009 ? ` Saldo: <b>${brl(rest)}</b>.` : " <b>Contrato quitado.</b>"}</p><p>Código do lançamento: ${esc(p.id)}. O recibo em PDF segue em anexo.</p>${rest > 0.009 ? certInfo(`Ele é liberado com a quitação do saldo de ${brl(rest)} e a aprovação da entrega final.`) : ""}${bye}`,
+      html: `${hi(p.name)}<div style="margin:4px 0 16px">${textImg("valor", brl(p.amount))}</div><p>Confirmo o recebimento de <b>${brl(p.amount)}</b> em ${esc(p.date.split("-").reverse().join("/"))}, por ${esc(p.method)}, referente a <b>${proj(p.title)}</b>${num(p.contractNumber)}.</p><p>Total pago: <b>${brl(p.paid)}</b> de ${brl(p.total)}.${rest > 0.009 ? ` Saldo: <b>${brl(rest)}</b>.` : " <b>Contrato quitado.</b>"}</p><p>Código do lançamento: ${esc(p.id)}. O recibo em PDF segue em anexo.</p>${rest > 0.009 ? certInfo(`Ele é liberado com a quitação do saldo de ${brl(rest)} e a aprovação da entrega final.`) : ""}${bye}`,
       button: { href: p.panel, label: "Ver no meu painel" },
     };
   },
@@ -92,7 +93,7 @@ export const mails = {
   /** 10. Entrega aprovada, ainda com saldo: o certificado sai com a quitação. */
   aprovadaComSaldo: (p: { name: string; title: string; rest: number; payLink: string }): Mail => ({
     subject: `Entrega aprovada · ${p.title || "seu projeto"}`, title: "Entrega aprovada", eyebrow: "Entrega final",
-    html: `${hi(p.name)}<p>Obrigado por aprovar a entrega de <b>${proj(p.title)}</b>!</p><p>Falta o saldo de <b>${brl(p.rest)}</b>. Assim que o pagamento for confirmado, envio o <b>certificado de autoria e cessão de direitos</b>, que conclui o projeto.</p>${certInfo(`Ele é enviado automaticamente quando o saldo de ${brl(p.rest)} for confirmado.`)}${bye}`,
+    html: `${hi(p.name)}<p>Obrigado por aprovar a entrega de <b>${proj(p.title)}</b>!</p><div style="margin:4px 0 14px">${textImg("valor", `Saldo: ${brl(p.rest)}`)}</div><p>Falta o saldo de <b>${brl(p.rest)}</b>. Assim que o pagamento for confirmado, envio o <b>certificado de autoria e cessão de direitos</b>, que conclui o projeto.</p>${certInfo(`Ele é enviado automaticamente quando o saldo de ${brl(p.rest)} for confirmado.`)}${bye}`,
     button: { href: p.payLink, label: "Pagar o saldo" },
   }),
 
