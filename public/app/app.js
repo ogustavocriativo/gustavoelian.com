@@ -122,6 +122,7 @@ const evText = (e) => ({
   "payment-edit": `Recebimento editado · ${brl(e.total)}`,
   "payment-delete": `Recebimento excluído · ${brl(e.total)}`,
   "receipt-import": "Comprovante importado pelo Studio",
+  migracao: e.message || "Contrato restaurado do Studio antigo",
   previa: e.message || "Prévia",
   drive: "Contrato salvo no Drive e enviado por e-mail",
   "drive-error": `Contrato não foi para o Drive: ${e.message || "erro"}`,
