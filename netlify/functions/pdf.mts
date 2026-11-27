@@ -87,6 +87,13 @@ class Doc {
   }
 }
 
+/** Assinatura manuscrita com a linha de base do traço sobre a linha de assinatura (só as hastes descem além dela). */
+const SIG_BASELINE = 0.284; // fração da altura da imagem, de baixo para cima, onde termina o corpo principal do traço
+async function drawSignature(d: Doc, x: number, lineY: number, ih = 56) {
+  const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64"));
+  const iw = (ih * img.width) / img.height;
+  d.page.drawImage(img, { x, y: lineY - ih * SIG_BASELINE, width: iw, height: ih });
+}
 const fmtDate = (iso: string) => { try { return new Date(iso + (iso.length === 10 ? "T12:00:00" : "")).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "America/Sao_Paulo" }); } catch { return iso; } };
 const fmtDateTime = (iso: string) => new Date(iso).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
 
@@ -232,20 +239,18 @@ export async function contractPdf(q: any, s: any, st: any, origin: string) {
   }
   const sig = (x: number, name: string, role: string, note: string) => {
     d.page.drawLine({ start: { x, y: sy - 66 }, end: { x: x + half, y: sy - 66 }, thickness: 0.6, color: C.ink });
-    d.page.drawText(name, { x, y: sy - 80, size: 10, font: d.f.med, color: C.ink });
-    d.page.drawText(role, { x, y: sy - 93, size: 8, font: d.f.reg, color: C.soft });
-    d.page.drawText(note, { x, y: sy - 105, size: 7.5, font: d.f.reg, color: C.soft });
+    d.page.drawText(name, { x, y: sy - 90, size: 10, font: d.f.med, color: C.ink });
+    d.page.drawText(role, { x, y: sy - 103, size: 8, font: d.f.reg, color: C.soft });
+    d.page.drawText(note, { x, y: sy - 115, size: 7.5, font: d.f.reg, color: C.soft });
   };
   const g = st.signing?.mode === "google"; // assinatura das partes pelo eSignature do Google: bloco em branco para os campos do Google
   sig(M, st.signer?.name || "", `CONTRATANTE · ${st.signer?.doc || ""}`, g ? "Assinatura eletrônica pelo Google" : `Assinado eletronicamente em ${fmtDateTime(st.approvedAt)}`);
   // assinatura manuscrita do contratado, na mesma altura da do contratante
   if (!g) {
-    const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64"));
-    const ih = 56, iw = (ih * img.width) / img.height;
-    d.page.drawImage(img, { x: M + half + 24, y: sy - 64, width: iw, height: ih });
+    await drawSignature(d, M + half + 24, sy - 66);
   }
   sig(M + half + 24, s.issuer.name, `CONTRATADO · ${s.issuer.doc}`, g ? "Assinatura eletrônica pelo Google" : `Ao emitir a proposta em ${fmtDate(String(q.createdAt || st.approvedAt).slice(0, 10))}`);
-  d.y = sy - 124;
+  d.y = sy - 134;
 
   // cartão-resumo com os atalhos clicáveis, depois das assinaturas e antes do registro de aceite
   d.ensure(104 + 40); d.y -= 8;
@@ -394,12 +399,11 @@ export async function reciboPdf(q: any, s: any, st: any, pid: string, origin: st
   d.ensure(150); d.y -= 10;
   d.right(`${s.issuer.city || "Montes Claros"}, ${fmtDate(String(p.date || p.at).slice(0, 10))}`, d.y - 10.5, "reg", 10.5); d.y -= 30;
   { const sy = d.y, half = (A4[0] - 2 * M - 24) / 2;
-    const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64")); const ih = 56, iw = (ih * img.width) / img.height;
-    d.page.drawImage(img, { x: M, y: sy - 64, width: iw, height: ih });
+    await drawSignature(d, M, sy - 66);
     d.page.drawLine({ start: { x: M, y: sy - 66 }, end: { x: M + half, y: sy - 66 }, thickness: 0.6, color: C.ink });
-    d.page.drawText(s.issuer.name, { x: M, y: sy - 80, size: 10, font: d.f.med, color: C.ink });
-    d.page.drawText(`Recebedor · ${s.issuer.doc}`, { x: M, y: sy - 93, size: 8, font: d.f.reg, color: C.soft });
-    d.y = sy - 110; }
+    d.page.drawText(s.issuer.name, { x: M, y: sy - 90, size: 10, font: d.f.med, color: C.ink });
+    d.page.drawText(`Recebedor · ${s.issuer.doc}`, { x: M, y: sy - 103, size: 8, font: d.f.reg, color: C.soft });
+    d.y = sy - 120; }
   d.doc.setTitle(`Recibo ${brl(Number(p.amount || 0))} · Contrato ${st.contractNumber || q.slug}`); d.doc.setAuthor(s.issuer.name);
   return d.save();
 }
@@ -423,14 +427,12 @@ export async function certificadoPdf(q: any, s: any, st: any, origin: string) {
   }
   d.ensure(150); d.rule(16);
   const sy = d.y;
-  const img = await d.doc.embedPng(Buffer.from(issuerSignaturePng, "base64"));
-  const ih = 56, iw = (ih * img.width) / img.height;
-  d.page.drawImage(img, { x: M, y: sy - 64, width: iw, height: ih });
+  await drawSignature(d, M, sy - 66);
   const half = (A4[0] - 2 * M - 24) / 2;
   d.page.drawLine({ start: { x: M, y: sy - 66 }, end: { x: M + half, y: sy - 66 }, thickness: 0.6, color: C.ink });
-  d.page.drawText(s.issuer.name, { x: M, y: sy - 80, size: 10, font: d.f.med, color: C.ink });
-  d.page.drawText("Autor e cedente", { x: M, y: sy - 93, size: 8, font: d.f.reg, color: C.soft });
-  d.y = sy - 112;
+  d.page.drawText(s.issuer.name, { x: M, y: sy - 90, size: 10, font: d.f.med, color: C.ink });
+  d.page.drawText("Autor e cedente", { x: M, y: sy - 103, size: 8, font: d.f.reg, color: C.soft });
+  d.y = sy - 122;
   d.text("Código de integridade do certificado (SHA-256)", { font: "med", size: 7.5, color: C.soft, lh: 11 });
   d.text(c.hash, { size: 8.5, lh: 12, gap: 8 });
   d.link(`Verificar autenticidade: ${origin}/certificado?c=${c.code}`, `${origin}/certificado?c=${c.code}`, { size: 9 });
