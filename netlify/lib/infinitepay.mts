@@ -6,14 +6,20 @@ import { store } from "./core.mts";
 const API = "https://api.checkout.infinitepay.io";
 export const ipHandle = () => String(Netlify.env.get("INFINITEPAY_HANDLE") || "").trim().replace(/^\$/, "");
 export const ipReady = () => !!ipHandle();
-export const ipNoAddress = () => !!Netlify.env.get("INFINITEPAY_API_KEY");
 export const ipOrders = () => store("ip-orders");
 
 export type IpOrder = { kind: "charge" | "quote"; id: string; amount: number; label: string; createdAt: string; done?: boolean; paidAt?: string; transaction?: string; method?: string };
 
-function headers() {
+/** Chave de API: variável do Cloudflare ou, se não houver, a colada no Studio (Ajustes › Pagamento), guardada só para leitura do sistema. */
+export const secrets = () => store("secrets");
+export async function ipApiKey() {
+  const env = Netlify.env.get("INFINITEPAY_API_KEY");
+  if (env) return env;
+  return String((await secrets().get("INFINITEPAY_API_KEY", { type: "text" }).catch(() => null)) || "").trim();
+}
+async function headers() {
   const h: Record<string, string> = { "content-type": "application/json" };
-  const key = Netlify.env.get("INFINITEPAY_API_KEY");
+  const key = await ipApiKey();
   if (key) h["X-Api-Key"] = key;
   return h;
 }
@@ -38,8 +44,8 @@ export async function ipCreateLink(o: { kind: "charge" | "quote"; id: string; am
   const a = o.address;
   if (a?.cep && a.street && a.number && a.city && a.state) body.address = { cep: a.cep, street: a.street, number: a.number, neighborhood: a.neighborhood || "", city: a.city, state: a.state, ...(a.complement ? { complement: a.complement } : {}) };
   // serviço digital, sem entrega física: não pede endereço de entrega (exige a chave de API da InfinitePay)
-  if (Netlify.env.get("INFINITEPAY_API_KEY")) body.options = { require_delivery_address: false };
-  const r = await fetch(`${API}/links`, { method: "POST", headers: headers(), body: JSON.stringify(body) });
+  if (await ipApiKey()) body.options = { require_delivery_address: false };
+  const r = await fetch(`${API}/links`, { method: "POST", headers: await headers(), body: JSON.stringify(body) });
   const data: any = await r.json().catch(() => ({}));
   const url = data.url || data.link || data.checkout_url || data.payment_url;
   if (!r.ok || !url) throw new Error(data?.message || data?.error || `InfinitePay recusou o link (${r.status})`);
@@ -48,7 +54,7 @@ export async function ipCreateLink(o: { kind: "charge" | "quote"; id: string; am
 
 /** Confere na InfinitePay se o pedido foi pago. */
 export async function ipCheck(p: { order_nsu: string; transaction_nsu: string; slug: string }) {
-  const r = await fetch(`${API}/payment_check`, { method: "POST", headers: headers(), body: JSON.stringify({ handle: ipHandle(), ...p }) });
+  const r = await fetch(`${API}/payment_check`, { method: "POST", headers: await headers(), body: JSON.stringify({ handle: ipHandle(), ...p }) });
   const d: any = await r.json().catch(() => ({}));
   return { paid: !!(d.success && d.paid), amount: Number(d.amount || 0) / 100, paidAmount: Number(d.paid_amount || d.amount || 0) / 100, installments: Number(d.installments || 1), method: String(d.capture_method || "") };
 }

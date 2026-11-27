@@ -1311,7 +1311,16 @@ async function renderSettings() {
         f("Chave Pix", bind(s.pix, "key", { placeholder: "CNPJ, e-mail, telefone ou aleatória" })),
         f("Nome no Pix", bind(s.pix, "merchantName")), f("Cidade no Pix", bind(s.pix, "merchantCity")),
         s.ipEnabled ? h("p", { class: "pill ok wrap" }, "InfinitePay ativa: Pix e cartão em até 12x") : h("p", { class: "pill " + (s.stripeEnabled ? "ok" : "") }, s.stripeEnabled ? "Cartão e Apple Pay ativos" : "Cartão: aguardando chave do Stripe"),
-        s.ipEnabled ? h("p", { class: "pill wrap " + (s.ipApiKey ? "ok" : "warn") }, s.ipApiKey ? "Checkout sem pedir endereço; nome, e-mail, WhatsApp e endereço vão preenchidos" : "Checkout ainda pede endereço: falta INFINITEPAY_API_KEY no Cloudflare") : ""),
+        s.ipEnabled ? h("p", { class: "pill wrap " + (s.ipApiKey ? "ok" : "warn") }, s.ipApiKey ? "Checkout sem pedir endereço; nome, e-mail, WhatsApp e endereço vão preenchidos" : "Checkout ainda pede endereço: falta a chave de API da InfinitePay") : "",
+        s.ipEnabled ? (() => {
+          const k = h("input", { class: "in", type: "password", autocomplete: "off", spellcheck: "false", placeholder: s.ipApiKey ? "Chave guardada. Cole outra para trocar" : "Cole aqui a chave de API da InfinitePay", "aria-label": "Chave de API da InfinitePay" });
+          const b = h("button", { class: "btn block", type: "button", onclick: async () => {
+            b.disabled = true;
+            try { const r = await api("/api/settings/chave", { method: "PUT", body: { name: "INFINITEPAY_API_KEY", value: k.value } }); k.value = ""; settingsCache = null; toast(r.set ? "Chave guardada com segurança" : "Chave removida"); route(); }
+            catch (x) { toast(x.message); b.disabled = false; }
+          } }, icon("check"), "Guardar chave");
+          return h("div", { class: "stack" }, h("label", { class: "f" }, h("span", {}, "Chave de API da InfinitePay"), k), h("p", { class: "hint" }, "Fica guardada só para o sistema usar no checkout: não aparece de novo aqui nem para o cliente."), b);
+        })() : ""),
       h("section", { class: "form-card glass" }, h("h2", {}, "Modelo de contrato"), h("p", { class: "hint" }, "Usado em todas as propostas. Revise com um advogado."), (() => { const ta = bind(s, "contractTemplate", { rows: 14 }, "textarea"); return [ta, h("button", { class: "btn ghost small", type: "button", onclick: async () => { const d = await api("/api/settings/default-contract"); s.contractTemplate = ta.value = d.text; toast("Modelo padrão restaurado. Salve para aplicar."); } }, "Restaurar modelo padrão")]; })()),
       h("button", { class: "btn primary block", type: "button", onclick: async () => { try { const { stripeEnabled, ...body } = s; await api("/api/settings", { method: "PUT", body }); settingsCache = null; haptic(); toast("Ajustes salvos"); } catch (x) { toast(x.message); } } }, icon("check"), "Salvar ajustes"),
       h("button", { class: "btn block ghost", type: "button", onclick: async () => { await api("/api/logout", { method: "POST" }); renderLogin(); } }, icon("out"), "Sair do Studio")),
