@@ -69,7 +69,8 @@ export async function checkGoogleSignatures(onlySlug?: string) {
   const signed: string[] = [];
   for (const p of pending) {
     const base = String(p.st.signing.pdfName || "").replace(/\.pdf$/i, "");
-    const hit = (r.files || []).find((f: any) => String(f.name || "").startsWith(base + " - "));
+    // o Google cria uma cópia "- data, hora" já ao pedir a assinatura; só a versão concluída tem a assinatura digital (/ByteRange)
+    const hit = (r.files || []).filter((f: any) => String(f.name || "").startsWith(base + " - ") && Buffer.from(String(f.data || ""), "base64").includes("/ByteRange")).sort((a: any, b: any) => (a.created < b.created ? 1 : -1))[0];
     if (!hit) continue;
     const q: any = await getQuote(p.slug); if (!q) continue;
     const id = uid(), bytes = Buffer.from(String(hit.data || ""), "base64");

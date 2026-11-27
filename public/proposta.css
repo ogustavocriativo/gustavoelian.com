@@ -82,6 +82,7 @@ section.blk>h2{font-size:clamp(1.75rem,4vw,2.5rem)}
 form.stack,.stack{display:flex;flex-direction:column;gap:14px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media (max-width:560px){.grid2{grid-template-columns:1fr}}
+small.hint{margin-top:-6px;font-size:.8125rem;color:var(--fg2)}
 label.f{display:flex;flex-direction:column;gap:6px;font-size:.875rem;font-weight:500;color:var(--fg2)}
 input[type=text],input[type=email],input[type=tel],textarea{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--fg);font:inherit;font-size:1rem}
 textarea{min-height:110px;resize:vertical}

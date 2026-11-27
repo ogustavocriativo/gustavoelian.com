@@ -30,6 +30,7 @@ async function settle(order_nsu: string, transaction_nsu: string, slug: string) 
       const paidTotal = payments.reduce((t: number, p: any) => t + Number(p.amount || 0), 0);
       await patchState(o.id, { paidAt: cur.paidAt || at, payment: cur.payment || { method: "infinitepay", amount }, payments, paidTotal });
       await addEvent(o.id, { type: "paid", method: method === "pix" ? "Pix (InfinitePay)" : "cartão (InfinitePay)", total: amount });
+      await (await import("../lib/delivery.mts")).issueCertificateIfPaid(o.id).catch(() => {});
     }
   }
   return { ok: true, order: o } as const;

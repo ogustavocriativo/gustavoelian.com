@@ -107,14 +107,16 @@ export async function aliasOf(slug: string): Promise<string | null> {
 export async function getState(slug: string) {
   return ((await states().get(slug, { type: "json" })) as Record<string, any>) || {};
 }
-/* Número sequencial do contrato, por ano: GE-2026-0001, GE-2026-0002… (gerado na aprovação da proposta). */
+/* Código do contrato: aleatório e único, sem letras que se confundem (GE-7K3M-Q9TX). Gerado na aprovação da proposta. */
 export async function nextContractNumber() {
-  const year = new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo", year: "numeric" });
-  const key = `contratos-${year}`;
-  const cur: any = (await store("counters").get(key, { type: "json" })) || { n: 0 };
-  const n = Number(cur.n || 0) + 1;
-  await store("counters").setJSON(key, { n, at: new Date().toISOString() });
-  return `GE-${year}-${String(n).padStart(4, "0")}`;
+  const A = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+  for (let i = 0; i < 8; i++) {
+    const r = crypto.getRandomValues(new Uint8Array(8));
+    const c = Array.from(r, (x) => A[x % A.length]).join("");
+    const code = `GE-${c.slice(0, 4)}-${c.slice(4)}`;
+    if (!(await store("contract-codes").get(code, { type: "json" }))) { await store("contract-codes").setJSON(code, { at: new Date().toISOString() }); return code; }
+  }
+  return `GE-${Date.now().toString(36).toUpperCase()}`;
 }
 export async function patchState(slug: string, patch: Record<string, any>) {
   const cur = await getState(slug);

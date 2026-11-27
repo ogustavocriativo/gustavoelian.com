@@ -61,6 +61,7 @@ export default async (req: Request, context: Context) => {
         const paidTotal = payments.reduce((t: number, p: any) => t + Number(p.amount || 0), 0);
         await patchState(slug, { paidAt: new Date().toISOString(), payment: { method: "stripe", amount, sessionId: s.id }, payments, paidTotal });
         await addEvent(slug, { type: "paid", method: "cartão", total: s.amount_total / 100 });
+      await (await import("../lib/delivery.mts")).issueCertificateIfPaid(slug).catch(() => {});
       }
     }
     return json({ received: true });

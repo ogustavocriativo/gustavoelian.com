@@ -103,3 +103,26 @@ export function publicDelivery(d: any) {
   const { certificate, ...rest } = d;
   return { ...rest, certificate: certificate ? { code: certificate.code, at: certificate.at, text: certificate.text, hash: certificate.hash, url: `/certificado?c=${certificate.code}` } : null };
 }
+
+/* Quitação depois da entrega: emite o certificado de cessão na hora, sobre a entrega já feita (cláusula 7.1),
+   registra no histórico e avisa o cliente por e-mail. Usado por todo caminho que registra pagamento. */
+export async function issueCertificateIfPaid(slug: string, origin = "https://gustavoelian.com") {
+  const { getQuote, getState, patchState, addEvent } = await import("./core.mts");
+  const q: any = await getQuote(slug); const st: any = await getState(slug);
+  if (!q || !st.delivery || st.delivery.certificate) return null;
+  const paid = Number(st.total || 0) > 0 && Number(st.paidTotal || 0) >= Number(st.total || 0) - 0.009;
+  if (!paid) return null;
+  const d = st.delivery;
+  const fresh = await buildDelivery(q, st, { kinds: d.kinds, licenses: d.licenses, accesses: d.accesses, support: d.support });
+  const delivery = { ...fresh, at: d.at, certificateIssuedAt: new Date().toISOString() };
+  await patchState(slug, { delivery });
+  await addEvent(slug, { type: "certificate", certificate: delivery.certificate?.code || null });
+  const { callGoogle, googleReady, esc, firstName } = await import("./google.mts");
+  const to = st.signer?.email || q.client?.email;
+  if (googleReady() && to && delivery.certificate) {
+    await callGoogle("email", { to, subject: `Certificado de cessão de direitos · ${q.title || "seu projeto"}`, title: "Seu certificado foi emitido", eyebrow: "Certificado",
+      html: `<p>Olá${firstName(st.signer?.name) ? ", " + firstName(st.signer.name) : ""}!</p><p>Com a quitação de <b>${esc(q.title || "seu projeto")}</b>, emiti o <b>certificado de autoria e cessão de direitos</b>, código <b>${esc(delivery.certificate.code)}</b>.</p><p>Ele fica no seu painel, junto dos arquivos entregues, e qualquer pessoa pode conferir a autenticidade pelo link abaixo.</p>`,
+      button: { href: `${origin}/certificado?c=${delivery.certificate.code}`, label: "Ver o certificado" } });
+  }
+  return delivery.certificate;
+}

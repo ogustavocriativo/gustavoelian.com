@@ -192,6 +192,47 @@ function otpField(getForm, err) {
   } }, "Enviar código para o meu e-mail");
   return h("div", { class: "stack" }, h("label", { class: "f", for: "code" }, "Código recebido por e-mail *", code), btn, msg);
 }
+
+/* CPF/CNPJ com pontuação enquanto digita: 000.000.000-00 ou 00.000.000/0000-00 */
+function maskDoc(v) {
+  const d = String(v || "").replace(/\D/g, "").slice(0, 14);
+  if (d.length <= 11) return d.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return d.replace(/^(\d{2})(\d)/, "$1.$2").replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3").replace(/\.(\d{3})(\d)/, ".$1/$2").replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+}
+const validDoc = (v) => { const d = String(v || "").replace(/\D/g, ""); return d.length === 11 || d.length === 14; };
+
+/* Endereço completo com busca por CEP (ViaCEP): preenche rua, bairro, cidade e UF; o cliente completa número e complemento. */
+function addressFields() {
+  const f = (id, label, attrs = {}, req = true) => h("label", { class: "f", for: id }, label, h("input", { id, name: id, type: "text", ...(req ? { required: true } : {}), ...attrs }));
+  const cep = f("cep", "CEP *", { inputmode: "numeric", autocomplete: "postal-code", placeholder: "00000-000", maxlength: "9" });
+  const msg = h("small", { class: "hint" }, "Digite o CEP para preencher o endereço.");
+  const box = h("div", { class: "stack" },
+    cep, msg,
+    f("rua", "Rua / avenida *", { autocomplete: "address-line1" }),
+    h("div", { class: "grid2" }, f("numero", "Número *", { inputmode: "numeric", autocomplete: "off" }), f("complemento", "Complemento", { autocomplete: "address-line2" }, false)),
+    h("div", { class: "grid2" }, f("bairro", "Bairro *", {}), f("cidade", "Cidade *", { autocomplete: "address-level2" })),
+    h("div", { class: "grid2" }, f("uf", "UF *", { maxlength: "2", autocomplete: "address-level1", style: "text-transform:uppercase" }), h("span", {})));
+  const input = cep.querySelector("input"), q = (n) => box.querySelector(`[name=${n}]`);
+  input.addEventListener("input", async () => {
+    const d = input.value.replace(/\D/g, "").slice(0, 8);
+    input.value = d.length > 5 ? d.slice(0, 5) + "-" + d.slice(5) : d;
+    if (d.length !== 8) return;
+    msg.textContent = "Buscando o endereço…";
+    try {
+      const r = await fetch(`https://viacep.com.br/ws/${d}/json/`); const a = await r.json();
+      if (a.erro) { msg.textContent = "CEP não encontrado. Preencha o endereço abaixo."; return; }
+      q("rua").value = a.logradouro || ""; q("bairro").value = a.bairro || ""; q("cidade").value = a.localidade || ""; q("uf").value = a.uf || "";
+      msg.textContent = "Endereço encontrado. Confira e informe o número.";
+      (a.logradouro ? q("numero") : q("rua")).focus();
+    } catch { msg.textContent = "Não consegui buscar o CEP agora. Preencha o endereço abaixo."; }
+  });
+  return box;
+}
+const addressFrom = (fd) => {
+  const g = (k) => String(fd.get(k) || "").trim();
+  return [g("rua") && `${g("rua")}, ${g("numero")}${g("complemento") ? " - " + g("complemento") : ""}`, g("bairro"), g("cidade") && `${g("cidade")}/${g("uf").toUpperCase()}`, g("cep") && `CEP ${g("cep")}`].filter(Boolean).join(", ");
+};
+
 function approve() {
   const s = D.state;
   const G = D.signingMode === "google" && D.quote.contractEnabled; // assinatura pelo Google depois da aprovação
@@ -209,22 +250,24 @@ function approve() {
   const form = h("form", { class: "stack", onsubmit: async (e) => {
     e.preventDefault(); err.textContent = "";
     const fd = new FormData(form);
+    if (!validDoc(fd.get("doc"))) { err.textContent = "Confira o CPF (11 números) ou o CNPJ (14 números)."; return; }
+    if (D.quote.contractEnabled && !["cep", "rua", "numero", "bairro", "cidade", "uf"].every((k) => String(fd.get(k) || "").trim())) { err.textContent = "Complete o endereço: CEP, rua, número, bairro, cidade e UF."; return; }
     if (!fd.get("accept")) { err.textContent = "Para aprovar, marque que leu e aceita os termos."; return; }
     if (!G && D.otp && !String(fd.get("code") || "").trim()) { err.textContent = "Confirme o seu e-mail: peça o código e digite-o antes de assinar."; return; }
     const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Registrando…";
     try {
-      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: fd.get("address"), accept: true, signature: pad ? pad.getData() : "", code: fd.get("code") });
+      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: addressFrom(fd), accept: true, signature: pad ? pad.getData() : "", code: fd.get("code") });
       if (D.demo) { try { sessionStorage.setItem("ge_demo", JSON.stringify({ selection: sel, approvedAt: new Date().toISOString(), signer: { name: fd.get("name") } })); } catch {} }
       await load(); toast("Proposta aprovada. Obrigado!"); location.hash = "#pagamento";
     } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "Aprovar proposta"; }
   } },
-    h("div", { class: "grid2" }, inp("name", "Nome completo *", "text", { autocomplete: "name", value: D.quote.client.name || "" }), inp("doc", "CPF ou CNPJ *", "text", { inputmode: "numeric", autocomplete: "off" })),
+    h("div", { class: "grid2" }, inp("name", "Nome completo *", "text", { autocomplete: "name", value: D.quote.client.name || "" }), inp("doc", "CPF ou CNPJ *", "text", { inputmode: "numeric", autocomplete: "off", placeholder: "000.000.000-00", maxlength: "18", oninput: (e) => { e.target.value = maskDoc(e.target.value); } })),
     h("div", { class: "grid2" }, inp("email", "E-mail *", "email", { autocomplete: "email" }), h("label", { class: "f", for: "phone" }, "WhatsApp", h("input", { id: "phone", name: "phone", type: "tel", autocomplete: "tel" }))),
-    D.quote.contractEnabled ? inp("address", "Endereço completo, com cidade *", "text", { autocomplete: "street-address" }) : null,
+    D.quote.contractEnabled ? addressFields() : null,
     D.quote.contractEnabled ? [h("p", { style: "font-weight:500" }, "Termos de contratação"), fillContract(h("div", { class: "contract", id: "contractText", tabindex: "0" }), D.contractPreview)] : null,
     D.quote.contractEnabled && pad ? pad : null,
     !G && D.otp ? otpField(() => new FormData(form), err) : null,
-    h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), G ? "Li e aprovo a proposta e os termos de contratação. Sei que receberei o contrato por e-mail, do Google, para assinar eletronicamente." : D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
+    h("label", { class: "accept" }, h("input", { type: "checkbox", name: "accept", value: "1" }), G ? "Li e aprovo a proposta e os termos de contratação. Ciente de que receberei o contrato por e-mail, do Google, para assinar eletronicamente." : D.quote.contractEnabled ? "Li e aceito os termos de contratação. Entendo que este aceite eletrônico tem validade de assinatura e fica registrado com data, hora e endereço IP." : "Aprovo esta proposta nas condições escolhidas acima."),
     !G && D.signing === false ? h("p", { class: "err" }, "A assinatura está temporariamente indisponível. Fale comigo pelo WhatsApp que resolvo na hora.") : null,
     err, h("button", { class: "btn primary", type: "submit", ...(!G && D.signing === false ? { disabled: "" } : {}) }, "Aprovar proposta"));
   return h("section", { class: "blk", id: "aprovar" }, h("span", { class: "eyebrow" }, "Aprovação"), h("h2", {}, G ? "Aprovar proposta" : D.quote.contractEnabled ? "Aprovar e assinar" : "Aprovar proposta"),
