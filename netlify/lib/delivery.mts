@@ -1,6 +1,6 @@
 // Entrega final: dossiê com arquivos e seus códigos de integridade, certificado de autoria e cessão de direitos,
 // licenças de terceiros, acessos transferidos e recomendações de segurança e conformidade por tipo de projeto.
-import { brl, files, getSettings, sha256, shortCode, store } from "./core.mts";
+import { brl, files, getSettings, sha256, shortCode, store, formatDoc, docLabel } from "./core.mts";
 
 export const certs = () => store("certs");
 
@@ -69,7 +69,7 @@ export async function buildDelivery(q: any, st: any, input: any) {
   const kinds = (Array.isArray(input.kinds) ? input.kinds : guessKinds(q)).filter((k: string) => KINDS[k]);
   const at = new Date().toISOString();
   // arquivos visíveis ao cliente, com código de integridade calculado sobre os bytes guardados
-  const delivered = await Promise.all((q.attachments || []).filter((a: any) => a.showToClient && !a.fromClient).map(async (a: any) => {
+  const delivered = await Promise.all((q.attachments || []).filter((a: any) => a.showToClient && !a.fromClient && a.kind !== "contrato-assinado").map(async (a: any) => {
     const buf = await files().get(`${q.slug}/${a.id}`, { type: "arrayBuffer" });
     let hash = "";
     if (buf) { const d = await crypto.subtle.digest("SHA-256", buf as ArrayBuffer); hash = [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join(""); }
@@ -79,7 +79,7 @@ export async function buildDelivery(q: any, st: any, input: any) {
     .map((i: any) => i.title).filter(Boolean);
   const paid = Number(st.total || 0) > 0 && Number(st.paidTotal || 0) >= Number(st.total || 0) - 0.009;
   const signer = st.signer || {};
-  const holder = { name: signer.name || q.client?.name || "", doc: signer.doc || "", company: q.client?.company || "" };
+  const holder = { name: signer.name || q.client?.name || "", doc: signer.doc ? docLabel(signer.doc) + formatDoc(signer.doc) : "", company: q.client?.company || "" };
 
   let certificate: any = null;
   if (paid) {

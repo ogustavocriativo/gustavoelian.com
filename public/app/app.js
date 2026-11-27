@@ -37,6 +37,7 @@ const hue = (s) => [...String(s || "")].reduce((a, c) => a + c.charCodeAt(0), 0)
 function toast(msg) { toastEl.textContent = msg; toastEl.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (toastEl.hidden = true), 2800); }
 function haptic() { try { navigator.vibrate?.(8); } catch {} }
 
+const fmtDoc = (v) => { const d = String(v || "").replace(/\D/g, ""); return d.length === 11 ? d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") : d.length === 14 ? d.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5") : String(v || ""); };
 async function api(path, opts = {}) {
   const isForm = opts.body instanceof FormData;
   const res = await fetch(path, { credentials: "same-origin", ...opts, headers: opts.body && !isForm ? { "content-type": "application/json" } : {}, body: opts.body && !isForm ? JSON.stringify(opts.body) : opts.body });
@@ -109,7 +110,7 @@ const evText = (e) => ({
   view: "Abriu a proposta" + (e.city ? ` em ${e.city}` : ""),
   select: `Escolheu ${e.label} · ${e.method === "cartao" ? "cartão" : "à vista"} · ${brl(e.total)}`,
   comment: `${e.name || "Cliente"} comentou`,
-  approve: `${e.name} aprovou e assinou · ${brl(e.total)}`,
+  approve: e.mode === "google" || e.signing === "google" ? `${e.name} aprovou a proposta · ${brl(e.total)}` : `${e.name} aprovou e assinou · ${brl(e.total)}`,
   "payment-notice": "Enviou comprovante de Pix",
   "checkout-start": `Iniciou pagamento no cartão · ${brl(e.total)}`,
   paid: `Pagamento confirmado · ${brl(e.total)}`,
@@ -940,7 +941,7 @@ async function renderContract(slug) {
 
   const setWork = async (patch, msg) => { try { await api(`/api/quotes/${slug}/work`, { method: "PUT", body: patch }); haptic(); if (msg) toast(msg); renderContract(slug); } catch (x) { toast(x.message); } };
   const hero = h("section", { class: "hero glass" },
-    h("div", { style: "display:flex;justify-content:space-between;gap:10px;align-items:center" }, h("span", { class: "pill " + (rest < 0.01 ? "ok" : "info") }, rest < 0.01 ? "Quitado" : `Falta ${brl(rest)}`), h("span", { class: "faint", style: "font-size:var(--t-sm)" }, `Assinado ${dateBR(s.approvedAt)}`)),
+    h("div", { style: "display:flex;justify-content:space-between;gap:10px;align-items:center" }, h("span", { class: "pill " + (rest < 0.01 ? "ok" : "info") }, rest < 0.01 ? "Quitado" : `Falta ${brl(rest)}`), h("span", { class: "faint", style: "font-size:var(--t-sm)" }, s.signing?.mode === "google" ? (s.signing.status === "assinado" ? `Assinado ${dateBR(s.signing.signedAt)}` : `Aprovado ${dateBR(s.approvedAt)}`) : `Assinado ${dateBR(s.approvedAt)}`)),
     h("p", { class: "big" }, bigMoney(tot)),
     h("p", { class: "lbl" }, s.paymentText || q.title || ""),
     h("div", { class: "prog", role: "progressbar", "aria-label": "Recebido", "aria-valuemin": "0", "aria-valuemax": "100", "aria-valuenow": String(Math.round(tot ? (paid / tot) * 100 : 0)) }, h("i", { style: `width:${tot ? Math.min(100, (paid / tot) * 100) : 0}%` })),
@@ -989,7 +990,7 @@ async function renderContract(slug) {
       gs.status === "aguardando" ? signAct("verificar", "Verificar agora") : null,
       gs.status === "erro" || gs.status === "preparando" ? signAct("preparar", "Preparar contrato para assinatura") : null)) : null;
   const docCard = h("section", { class: "form-card glass" }, h("h2", {}, gs && gs.status !== "assinado" ? "Contrato aprovado" : "Contrato assinado", s.contractNumber ? h("span", { class: "pill", style: "margin-left:8px" }, s.contractNumber) : null),
-    h("dl", { class: "kv" }, h("dt", {}, "Assinante"), h("dd", {}, sg.name || "—"), h("dt", {}, "Documento"), h("dd", {}, sg.doc || "—"), h("dt", {}, "E-mail"), h("dd", {}, sg.email || "—"), h("dt", {}, "Quando"), h("dd", {}, new Date(s.approvedAt).toLocaleString("pt-BR")), h("dt", {}, "IP"), h("dd", {}, sg.ip || "—")),
+    h("dl", { class: "kv" }, h("dt", {}, "Assinante"), h("dd", {}, sg.name || "—"), h("dt", {}, "Documento"), h("dd", {}, fmtDoc(sg.doc) || "—"), h("dt", {}, "E-mail"), h("dd", {}, sg.email || "—"), h("dt", {}, "Quando"), h("dd", {}, new Date(s.approvedAt).toLocaleString("pt-BR")), h("dt", {}, "IP"), h("dd", {}, sg.ip || "—")),
     s.contractHash ? h("p", { class: "hash" }, "SHA-256 ", s.contractHash) : null,
     h("div", { class: "btns grid2" },
       s.contractText ? h("a", { class: "btn", href: `/api/pdf/${slug}/contrato?download`, target: "_blank" }, icon("pdf"), "Contrato") : null,
@@ -1000,7 +1001,7 @@ async function renderContract(slug) {
       h("a", { class: "btn", href: s.drive.pdfUrl, target: "_blank", rel: "noopener" }, icon("pdf"), "PDF no Drive"),
       h("a", { class: "btn", href: s.drive.folderUrl, target: "_blank", rel: "noopener" }, icon("box"), "Pasta do cliente"),
       s.drive.docUrl ? h("a", { class: "btn block", style: "grid-column:1/-1", href: s.drive.docUrl, target: "_blank", rel: "noopener" }, icon("pen"), "Abrir no Google Docs") : null) : null,
-    h("button", { class: "btn ghost block", type: "button", onclick: async (ev) => {
+    s.signing?.mode === "google" ? null : h("button", { class: "btn ghost block", type: "button", onclick: async (ev) => {
       const b = ev.currentTarget; b.disabled = true; b.textContent = "Gerando no Drive…";
       try { await api(`/api/quotes/${slug}/google/drive`, { method: "POST" }); toast("Contrato salvo no Drive"); renderContract(slug); } catch (x) { toast(x.message); b.disabled = false; b.textContent = "Tentar de novo"; }
     } }, icon("box"), s.drive ? "Gerar de novo no Drive" : "Salvar contrato no Drive e enviar por e-mail"));
@@ -1013,15 +1014,15 @@ async function renderContract(slug) {
 function deliveryCard(slug, q0, s, rest) {
   const d = s.delivery;
   const box = h("section", { class: "form-card glass" }, h("h2", {}, "Entrega final"));
-  const files = (q0.attachments || []).filter((a) => a.showToClient && !a.fromClient);
+  const files = (q0.attachments || []).filter((a) => a.showToClient && !a.fromClient && a.kind !== "contrato-assinado");
   if (d) {
     box.append(
       h("p", { class: "pill wrap " + (d.certificate ? "ok" : "") }, d.certificate ? `Certificado ${d.certificate.code} emitido em ${dateBR(d.at)}` : `Entregue em ${dateBR(d.at)} · certificado aguarda quitação`),
       h("p", { class: "hint" }, `${d.files.length} arquivo(s) com código de integridade · ${d.recommendations.length} recomendações ao cliente.`),
-      d.certificate ? h("a", { class: "btn block", href: `/certificado?c=${d.certificate.code}`, target: "_blank", rel: "noopener" }, icon("doc"), "Ver certificado") : null);
+      d.certificate ? h("a", { class: "btn block", href: `/certificado?c=${d.certificate.code}`, target: "_blank", rel: "noopener" }, icon("doc"), "Ver certificado") : "");
   }
-  box.append(h("p", { class: "hint" }, files.length ? `Vão na entrega os ${files.length} arquivo(s) marcados como visíveis ao cliente em Arquivos.` : "Nenhum arquivo visível ao cliente ainda. Anexe as entregas na proposta antes de gerar."),
-    rest > 0.01 ? h("p", { class: "pill wrap" }, "Ainda há saldo em aberto: a entrega sai, mas o certificado de cessão só é emitido após a quitação (cláusula 7.1).") : null,
+  box.append(d ? "" : h("p", { class: "hint" }, files.length ? `Vão na entrega os ${files.length} arquivo(s) marcados como visíveis ao cliente em Arquivos.` : "Nenhum arquivo visível ao cliente ainda. Anexe as entregas na proposta antes de gerar."),
+    rest > 0.01 ? h("p", { class: "pill wrap" }, "Ainda há saldo em aberto: a entrega sai, mas o certificado de cessão só é emitido após a quitação (cláusula 7.1).") : "",
     h("button", { class: "btn primary block", type: "button", onclick: () => deliverySheet(slug, d) }, icon("check"), d ? "Gerar entrega de novo" : "Preparar entrega final"));
   return box;
 }

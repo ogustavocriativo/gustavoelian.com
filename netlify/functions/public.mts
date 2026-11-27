@@ -1,6 +1,6 @@
 // Página do cliente: leitura da proposta e interações (seleção, comentário, aprovação/assinatura, aviso de pagamento).
 import type { Config, Context } from "@netlify/functions";
-import { addEvent, nextContractNumber, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid } from "../lib/core.mts";
+import { addEvent, nextContractNumber, aliasOf, fail, files, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, quotes, sha256, uid, formatDoc } from "../lib/core.mts";
 import { buildContract, paymentLabel } from "../lib/contract.mts";
 import { callGoogle, esc, firstName, googleReady, sendContractToDrive } from "../lib/google.mts";
 import { prepareGoogleSigning } from "../lib/signing.mts";
@@ -52,7 +52,7 @@ async function demo(req: Request, action: string | undefined) {
   if (action === "select") return json({ ok: true, selection: sel, contractPreview: buildContract(q, settings, null, sel) });
   if (action === "comment") return json({ ok: true, demo: true, event: { type: "comment", at: new Date().toISOString() } });
   if (action === "approve") {
-    const signer = { name: clip(body.name, 120), doc: clip(body.doc, 30), email: clip(body.email, 160), address: clip(body.address, 200) };
+    const signer = { name: clip(body.name, 120), doc: formatDoc(clip(body.doc, 30)), email: clip(body.email, 160), address: clip(body.address, 200) };
     if (signer.name.length < 5 || !signer.doc || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(signer.email)) return fail("Preencha nome completo, CPF ou CNPJ e e-mail válidos");
     if (signer.address.length < 10) return fail("Informe o endereço completo, com cidade");
     if (!body.accept) return fail("É preciso aceitar os termos");
@@ -157,7 +157,7 @@ export default async (req: Request, context: Context) => {
   if (action === "approve") {
     const st = await getState(slug);
     if (st.approvedAt) return fail("Esta proposta já foi aprovada", 409);
-    const signer = { name: clip(body.name, 120), doc: clip(body.doc, 30), email: clip(body.email, 160), phone: clip(body.phone, 40), address: clip(body.address, 200) };
+    const signer = { name: clip(body.name, 120), doc: formatDoc(clip(body.doc, 30)), email: clip(body.email, 160), phone: clip(body.phone, 40), address: clip(body.address, 200) };
     if (signer.name.length < 5 || !signer.doc || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(signer.email)) return fail("Preencha nome completo, CPF ou CNPJ e e-mail válidos");
     if (q.contract?.enabled !== false && signer.address.length < 10) return fail("Informe o endereço completo, com cidade");
     if (!body.accept) return fail("É preciso aceitar os termos");
@@ -174,7 +174,7 @@ export default async (req: Request, context: Context) => {
         selection: sel, total: pay.total, paymentText: pay.text, contractText: contract, contractHash: await sha256(contract),
         signatureImage: null, otp: null, signing: { mode: "google", status: "preparando" },
       });
-      await addEvent(slug, { type: "approve", name: signer.name, total: pay.total, method: sel.method });
+      await addEvent(slug, { type: "approve", name: signer.name, total: pay.total, method: sel.method, mode: "google" });
       if (googleReady()) context.waitUntil(prepareGoogleSigning(slug, new URL(req.url).origin).catch(() => {}));
       return json({ ok: true, signing: "google" });
     }

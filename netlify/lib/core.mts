@@ -291,3 +291,12 @@ export const brl = (v: number) => "R$ " + Number(v || 0).toLocaleString("pt-BR",
 export async function sha256(text: string) {
   return Buffer.from(await crypto.subtle.digest("SHA-256", enc.encode(text))).toString("hex");
 }
+
+/** CPF/CNPJ com pontuação (000.000.000-00 / 00.000.000/0000-00); outros formatos ficam como vieram. */
+export function formatDoc(v: string) {
+  const d = String(v || "").replace(/\D/g, "");
+  if (d.length === 11) return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  if (d.length === 14) return d.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+  return String(v || "").trim();
+}
+export const docLabel = (v: string) => { const n = String(v || "").replace(/\D/g, "").length; return n === 11 ? "CPF " : n === 14 ? "CNPJ " : ""; };

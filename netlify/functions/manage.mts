@@ -1,6 +1,6 @@
 // Gestão (admin): catálogo de serviços, etapas do contrato e registro de pagamentos.
 import type { Config, Context } from "@netlify/functions";
-import { addEvent, brl, fail, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, settingsStore, sha256, uid } from "../lib/core.mts";
+import { addEvent, brl, fail, getQuote, getSettings, getState, isAdmin, json, patchState, priceOf, settingsStore, sha256, uid, clientToken } from "../lib/core.mts";
 import { callGoogle, contractPdfBase64, esc, firstName, googleReady } from "../lib/google.mts";
 import { issueCertificateIfPaid } from "../lib/delivery.mts";
 
@@ -169,7 +169,7 @@ export default async (req: Request, context: Context) => {
         const rest = Math.max(0, Number(next.total || 0) - Number(next.paidTotal || 0));
         const r = await callGoogle("email", { to, subject: `Recebimento confirmado · ${brlf(amount)}${st.contractNumber ? " · " + st.contractNumber : ""}`, title: "Recebimento confirmado", eyebrow: "Recibo",
           html: `<p>Olá${firstName(st.signer?.name) ? ", " + firstName(st.signer.name) : ""}!</p><p>Confirmo o recebimento de <b>${brlf(amount)}</b> em ${esc(p.date.split("-").reverse().join("/"))}, por ${esc({ pix: "Pix", cartao: "cartão", transferencia: "transferência", dinheiro: "dinheiro", boleto: "boleto", outro: "outro meio" }[p.method] || p.method)}, referente a <b>${esc(q.title || "seu projeto")}</b>${st.contractNumber ? ` (contrato nº ${esc(st.contractNumber)})` : ""}.</p><p>Total pago: <b>${brlf(next.paidTotal)}</b> de ${brlf(next.total)}.${rest > 0.009 ? ` Saldo: <b>${brlf(rest)}</b>.` : " Contrato quitado."}</p><p>Código do lançamento: ${esc(p.id)}.</p>`,
-          button: { href: `${new URL(req.url).origin}/acompanhar`, label: "Ver no meu painel" } });
+          button: { href: `${new URL(req.url).origin}/acompanhar?t=${await clientToken(to)}`, label: "Ver no meu painel" } });
         await addEvent(slug, { type: r?.ok ? "email-sent" : "email-error", what: "recibo", to });
       }
       if (body.receiptId && st.paymentNotice?.fileId === body.receiptId) await patchState(slug, { paymentNotice: { ...st.paymentNotice, confirmedAt: p.at } });

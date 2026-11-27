@@ -3,7 +3,7 @@
 //   POST /api/quotes/:slug/delivery   { kinds, licenses, accesses, support, send } → gera o dossiê, marca "Entregue" e avisa o cliente
 //   GET  /api/certificado/:code       → verificação pública do certificado (código de integridade recalculado)
 import type { Config, Context } from "@netlify/functions";
-import { addEvent, fail, getQuote, getSettings, getState, isAdmin, json, patchState, sha256 } from "../lib/core.mts";
+import { addEvent, fail, getQuote, getSettings, getState, isAdmin, json, patchState, sha256, clientToken } from "../lib/core.mts";
 import { buildDelivery, certs, guessKinds, KINDS, publicDelivery } from "../lib/delivery.mts";
 import { callGoogle, esc, firstName, googleReady } from "../lib/google.mts";
 
@@ -61,7 +61,7 @@ export default async (req: Request, context: Context) => {
 <p>A entrega final de <b>${esc(q.title || "seu projeto")}</b> está no seu painel, com ${delivery.files.length} arquivo(s), cada um com seu código de integridade.</p>
 ${delivery.certificate ? `<p>O <b>certificado de autoria e cessão de direitos</b> foi emitido com o código <b>${esc(delivery.certificate.code)}</b>. Qualquer pessoa pode verificá-lo em ${esc(url.origin)}/certificado?c=${esc(delivery.certificate.code)}.</p>` : `<p>O certificado de cessão de direitos é emitido assim que o pagamento for quitado.</p>`}
 <p><b>Recomendações importantes:</b></p><ul>${recs}</ul><p>A lista completa está no painel.</p>`,
-        button: { href: `${url.origin}/acompanhar`, label: "Abrir a entrega" },
+        button: { href: `${url.origin}/acompanhar?t=${await clientToken(to)}`, label: "Abrir a entrega" },
       });
       emailed = !!r?.ok; if (!emailed) emailError = String(r?.error || "Falha no envio");
       await addEvent(slug, { type: emailed ? "email-sent" : "email-error", what: "entrega" });
