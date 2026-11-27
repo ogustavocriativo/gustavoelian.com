@@ -228,6 +228,7 @@ function addressFields() {
   });
   return box;
 }
+const partsFrom = (fd) => { const g = (k) => String(fd.get(k) || "").trim(); return { cep: g("cep").replace(/\D/g, ""), street: g("rua"), number: g("numero"), complement: g("complemento"), neighborhood: g("bairro"), city: g("cidade"), state: g("uf").toUpperCase() }; };
 const addressFrom = (fd) => {
   const g = (k) => String(fd.get(k) || "").trim();
   return [g("rua") && `${g("rua")}, ${g("numero")}${g("complemento") ? " - " + g("complemento") : ""}`, g("bairro"), g("cidade") && `${g("cidade")}/${g("uf").toUpperCase()}`, g("cep") && `CEP ${g("cep")}`].filter(Boolean).join(", ");
@@ -256,7 +257,7 @@ function approve() {
     if (!G && D.otp && !String(fd.get("code") || "").trim()) { err.textContent = "Confirme o seu e-mail: peça o código e digite-o antes de assinar."; return; }
     const btn = form.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Registrando…";
     try {
-      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: addressFrom(fd), accept: true, signature: pad ? pad.getData() : "", code: fd.get("code") });
+      await post("approve", { name: fd.get("name"), doc: fd.get("doc"), email: fd.get("email"), phone: fd.get("phone"), address: addressFrom(fd), addressParts: partsFrom(fd), accept: true, signature: pad ? pad.getData() : "", code: fd.get("code") });
       if (D.demo) { try { sessionStorage.setItem("ge_demo", JSON.stringify({ selection: sel, approvedAt: new Date().toISOString(), signer: { name: fd.get("name") } })); } catch {} }
       await load(); toast("Proposta aprovada. Obrigado!"); location.hash = "#pagamento";
     } catch (x) { err.textContent = x.message; btn.disabled = false; btn.textContent = "Aprovar proposta"; }

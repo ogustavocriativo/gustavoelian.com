@@ -53,13 +53,21 @@ async function demo(req: Request, action: string | undefined) {
   if (action === "select") return json({ ok: true, selection: sel, contractPreview: buildContract(q, settings, null, sel) });
   if (action === "comment") return json({ ok: true, demo: true, event: { type: "comment", at: new Date().toISOString() } });
   if (action === "approve") {
-    const signer = { name: clip(body.name, 120), doc: formatDoc(clip(body.doc, 30)), email: clip(body.email, 160), address: clip(body.address, 200) };
+    const signer = { name: clip(body.name, 120), doc: formatDoc(clip(body.doc, 30)), email: clip(body.email, 160), address: clip(body.address, 200), addressParts: addrParts(body.addressParts) };
     if (signer.name.length < 5 || !signer.doc || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(signer.email)) return fail("Preencha nome completo, CPF ou CNPJ e e-mail válidos");
     if (signer.address.length < 10) return fail("Informe o endereço completo, com cidade");
     if (!body.accept) return fail("É preciso aceitar os termos");
     return json({ ok: true, demo: true, approvedAt: new Date().toISOString(), contractHash: await sha256(buildContract(q, settings, signer, sel)) });
   }
   return fail("Ação desconhecida", 404);
+}
+
+/** Endereço em partes (CEP, rua, número…), para preencher o checkout da InfinitePay sem o cliente digitar de novo. */
+function addrParts(a: any) {
+  if (!a || typeof a !== "object") return null;
+  const c = (k: string, n: number) => String(a[k] ?? "").trim().slice(0, n);
+  const p = { cep: c("cep", 9).replace(/\D/g, ""), street: c("street", 120), number: c("number", 20), complement: c("complement", 60), neighborhood: c("neighborhood", 80), city: c("city", 80), state: c("state", 2).toUpperCase() };
+  return p.cep.length === 8 && p.street ? p : null;
 }
 
 export default async (req: Request, context: Context) => {
@@ -155,7 +163,7 @@ export default async (req: Request, context: Context) => {
   if (action === "approve") {
     const st = await getState(slug);
     if (st.approvedAt) return fail("Esta proposta já foi aprovada", 409);
-    const signer = { name: clip(body.name, 120), doc: formatDoc(clip(body.doc, 30)), email: clip(body.email, 160), phone: clip(body.phone, 40), address: clip(body.address, 200) };
+    const signer = { name: clip(body.name, 120), doc: formatDoc(clip(body.doc, 30)), email: clip(body.email, 160), phone: clip(body.phone, 40), address: clip(body.address, 200), addressParts: addrParts(body.addressParts) };
     if (signer.name.length < 5 || !signer.doc || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(signer.email)) return fail("Preencha nome completo, CPF ou CNPJ e e-mail válidos");
     if (q.contract?.enabled !== false && signer.address.length < 10) return fail("Informe o endereço completo, com cidade");
     if (!body.accept) return fail("É preciso aceitar os termos");

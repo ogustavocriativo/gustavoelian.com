@@ -2,7 +2,7 @@
 import type { Config, Context } from "@netlify/functions";
 import QRCode from "qrcode";
 import { markChargePaid } from "../lib/charges.mts";
-import { ipCreateLink, ipReady } from "../lib/infinitepay.mts";
+import { ipCreateLink, ipReady, parseAddress } from "../lib/infinitepay.mts";
 import { addEvent, brl, fail, getQuote, getSettings, getState, json, patchState, priceOf } from "../lib/core.mts";
 
 function tlv(id: string, value: string) { return id + String(value.length).padStart(2, "0") + value; }
@@ -86,7 +86,7 @@ export default async (req: Request, context: Context) => {
     if (ipReady()) {
       const { amount, label } = amountFor(q, settings, { ...sel, method: "cartao" });
       try {
-        const r = await ipCreateLink({ kind: "quote", id: slug, amount, label: `Proposta ${q.client?.name || ""} · ${label}`, origin: url.origin, back: `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email } });
+        const r = await ipCreateLink({ kind: "quote", id: slug, amount, label: `Proposta ${q.client?.name || ""} · ${label}`, origin: url.origin, back: `/${slug}`, customer: { name: st.signer?.name || q.client?.name, email: st.signer?.email || q.client?.email, phone: st.signer?.phone || q.client?.phone }, address: st.signer?.addressParts || parseAddress(st.signer?.address) });
         await addEvent(slug, { type: "checkout-start", total: amount });
         return json({ url: r.url });
       } catch (x: any) { return fail(x.message || "Não foi possível iniciar o pagamento", 502); }

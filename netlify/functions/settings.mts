@@ -5,11 +5,11 @@ import { DEFAULT_SETTINGS, fail, getSettings, isAdmin, json, settingsStore } fro
 export default async (req: Request, context: Context) => {
   if (!(await isAdmin(context))) return fail("Faça login", 401);
   if (new URL(req.url).pathname.endsWith("/default-contract")) return json({ text: DEFAULT_SETTINGS.contractTemplate });
-  if (req.method === "GET") return json({ ...(await getSettings()), stripeEnabled: !!Netlify.env.get("STRIPE_SECRET_KEY") });
+  if (req.method === "GET") return json({ ...(await getSettings()), stripeEnabled: !!Netlify.env.get("STRIPE_SECRET_KEY"), ipEnabled: !!Netlify.env.get("INFINITEPAY_HANDLE"), ipApiKey: !!Netlify.env.get("INFINITEPAY_API_KEY") });
   if (req.method === "PUT") {
     const body = await req.json().catch(() => null);
     if (!body) return fail("Dados inválidos");
-    const { stripeEnabled, ...rest } = body;
+    const { stripeEnabled, ipEnabled, ipApiKey, ...rest } = body;
     await settingsStore().setJSON("main", rest);
     return json(await getSettings());
   }
